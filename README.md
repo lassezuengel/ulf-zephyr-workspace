@@ -24,6 +24,12 @@ Your system must have the following software packages (you likely have at least 
 - `git` — [a distributed version control system](https://git-scm.com/)
 - `java` — [Java 17](https://openjdk.org/projects/jdk/17)
 
+Additionally, you might have to additionally install gcc-multilib on Linux to be able to build for 32-bit targets:
+
+```bash
+sudo apt-get install gcc-multilib
+```
+
 ### 1.2. Micro C Target for Lingua Franca
 
 This template uses [reactor-uc](https://github.com/lf-lang/reactor-uc), the "micro C" target for Lingua Franca. Clone this repo with one of the following commands:
