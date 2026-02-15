@@ -1,5 +1,9 @@
-target uC
-
+target uC {
+    platform: {
+        name: Zephyr,
+        board: nrf52833dk_nrf52833
+    },
+}
 
 main reactor {
 preamble {=
@@ -9,14 +13,15 @@ preamble {=
     #define LED0_NODE DT_ALIAS(led0)
     static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 =}
-    timer t (0, 300 msec)
-    
+    timer t (0, 500 msec)
+
     reaction(startup) {=
         assert(device_is_ready(led.port));
         gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
     =}
-    
+
     reaction(t) {=
         gpio_pin_toggle_dt(&led);
+        printk("Toggling LED!\n");
     =}
 }

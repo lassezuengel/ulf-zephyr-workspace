@@ -1,0 +1,39 @@
+target uC {
+    // platform: Native,
+    platform: {
+        name: Zephyr,
+        board: nrf52833dk_nrf52833
+        // board: nrf52840dk_nrf52840
+    },
+    net-interface: sicslowpan,
+    logging: log
+}
+
+reactor Source {
+    output out: int;
+
+    state counter: int = 0;
+
+    timer t(0, 1 sec);
+    reaction(t) -> out {=
+        self->counter++;
+
+        lf_set(out, self->counter);
+        printf("Source sending out value: %d\n", self->counter);
+    =}
+}
+
+reactor Sink {
+    input in: int;
+
+    reaction(in) {=
+        printf("Sink received value: %d\n", in->value);
+    =}
+}
+
+federated reactor {
+  srcFed = new Source();
+  snkFed = new Sink();
+
+  srcFed.out -> snkFed.in;
+}

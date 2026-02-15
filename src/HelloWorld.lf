@@ -5,7 +5,7 @@ target uC {
 main reactor {
     timer t(0, 1 sec)
     reaction(t) {=
-        printf("Hello World from R2\n");
+        printk("Hello World from R2\n");
     =}
 }
 
