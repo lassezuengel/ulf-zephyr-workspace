@@ -6,7 +6,8 @@ target uC {
         board: nrf52833dk/nrf52833
     },
     net-interface: sicslowpan,
-    logging: log
+    logging: warn,
+    clock-sync: on
 }
 
 preamble {=
@@ -16,6 +17,19 @@ preamble {=
 =}
 
 reactor Source {
+preamble {=
+    #include <zephyr/kernel.h>
+    #include <zephyr/drivers/gpio.h>
+    #include <assert.h>
+    #define LED0_NODE DT_PATH(leds, led_0)
+    static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+=}
+
+    reaction(startup) {=
+        assert(device_is_ready(led.port));
+        gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+    =}
+
     output out: int;
 
     state counter: int = 0;
@@ -33,10 +47,25 @@ reactor Source {
             "  SOURCE logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
             ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
         );
+
+        gpio_pin_toggle_dt(&led);
     =}
 }
 
 reactor Sink {
+preamble {=
+    #include <zephyr/kernel.h>
+    #include <zephyr/drivers/gpio.h>
+    #include <assert.h>
+    #define LED0_NODE DT_PATH(leds, led_0)
+    static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+=}
+
+    reaction(startup) {=
+        assert(device_is_ready(led.port));
+        gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+    =}
+
     input in: int;
 
     reaction(in) {=
@@ -48,6 +77,8 @@ reactor Sink {
             "  SINK logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
             ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
         );
+
+        gpio_pin_toggle_dt(&led);
     =}
 }
 
@@ -55,6 +86,6 @@ federated reactor {
   srcFed = new Source();
   snkFed = new Sink();
 
-//   @max_pending_events(2)
+  @buffer(5)
   srcFed.out -> snkFed.in;
 }
