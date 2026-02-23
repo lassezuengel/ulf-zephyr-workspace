@@ -2,24 +2,37 @@ target uC {
     // platform: Native,
     platform: {
         name: Zephyr,
+        // board: w5500_evb_pico
         board: nrf52833dk/nrf52833
-        // board: nrf52840dk_nrf52840
     },
     net-interface: sicslowpan,
     logging: log
 }
+
+preamble {=
+
+  #include "reactor-uc/reactor-c.h"
+
+=}
 
 reactor Source {
     output out: int;
 
     state counter: int = 0;
 
-    timer t(0, 1 sec);
+    timer t(0, 250 msec);
     reaction(t) -> out {=
         self->counter++;
 
         lf_set(out, self->counter);
         printf("Source sending out value: %d\n", self->counter);
+        interval_t ts = lf_time_logical_elapsed();
+        interval_t Ts = lf_time_physical_elapsed();
+
+        printf(
+            "  SOURCE logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
+            ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
+        );
     =}
 }
 
@@ -28,6 +41,13 @@ reactor Sink {
 
     reaction(in) {=
         printf("Sink received value: %d\n", in->value);
+        interval_t ts = lf_time_logical_elapsed();
+        interval_t Ts = lf_time_physical_elapsed();
+
+        printf(
+            "  SINK logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
+            ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
+        );
     =}
 }
 
@@ -35,5 +55,6 @@ federated reactor {
   srcFed = new Source();
   snkFed = new Sink();
 
+//   @max_pending_events(2)
   srcFed.out -> snkFed.in;
 }

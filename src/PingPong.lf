@@ -1,0 +1,70 @@
+target uC {
+    // platform: Native,
+    platform: {
+        name: Zephyr,
+        // board: w5500_evb_pico
+        board: nrf52833dk/nrf52833
+    },
+    net-interface: sicslowpan,
+    logging: warn,
+    // clock-sync: off
+}
+
+preamble {=
+
+  #include "reactor-uc/reactor-c.h"
+
+=}
+
+reactor PingFed {
+    input in: int;
+    output out: int;
+
+    reaction(startup) -> out {=
+        printf("Starting!\n");
+        lf_set(out, 0);
+    =}
+
+    reaction(in) -> out {=
+        lf_set(out, in->value + 1);
+        printf("value: %d\n", in->value + 1);
+        interval_t ts = lf_time_logical_elapsed();
+        interval_t Ts = lf_time_physical_elapsed();
+
+        printf(
+            "  logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
+            ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
+        );
+    =}
+}
+
+reactor PongFed {
+    input in: int;
+    output out: int;
+
+    reaction(in) -> out {=
+        lf_set(out, in->value + 1);
+        printf("value: %d\n", in->value + 1);
+        interval_t ts = lf_time_logical_elapsed();
+        interval_t Ts = lf_time_physical_elapsed();
+
+        printf(
+            "  logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
+            ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
+        );
+    =}
+}
+
+federated reactor {
+//   @interface_tcp(name="if1", address="127.0.0.1")
+  ping = new PingFed();
+//   @interface_tcp(name="if1", address="127.0.0.1")
+  pong = new PongFed();
+
+//   @max_pending_events(2)
+//   @link(left="if1", right="if1", server_side="right", server_port=3321)
+  ping.out -> pong.in after 33 msec;
+//   @max_pending_events(2)
+//   @link(left="if1", right="if1", server_side="right", server_port=3353)
+  pong.out -> ping.in after 33 msec;
+}
