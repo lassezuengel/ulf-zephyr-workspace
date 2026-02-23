@@ -1,7 +1,7 @@
 target uC {
     platform: {
         name: Zephyr,
-        board: nrf52833dk_nrf52833
+        board: rpi_pico
     },
 }
 
@@ -10,7 +10,7 @@ preamble {=
     #include <zephyr/kernel.h>
     #include <zephyr/drivers/gpio.h>
     #include <assert.h>
-    #define LED0_NODE DT_ALIAS(led0)
+    #define LED0_NODE DT_PATH(leds, led_0)
     static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 =}
     timer t (0, 500 msec)
