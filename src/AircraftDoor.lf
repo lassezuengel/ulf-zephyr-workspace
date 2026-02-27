@@ -1,0 +1,87 @@
+target uC {
+    // platform: Native,
+    platform: {
+        name: Zephyr,
+        // board: w5500_evb_pico
+        board: nrf52833dk/nrf52833
+    },
+    net-interface: sicslowpan,
+    logging: warn,
+    clock-sync: on
+}
+
+preamble {=
+
+  #include "reactor-uc/reactor-c.h"
+
+=}
+
+reactor Cockpit {
+    output open: int;
+
+    timer t1(1 sec, 1 sec);
+
+    reaction(startup) {=
+        printf("Cockpit: Starting!\n");
+    =}
+
+    reaction(t1) -> open {=
+        lf_set(open, 1);
+        printf("\nCockpit: Door open requested!\n");
+    =}
+}
+
+reactor Camera {
+    input check_ramp: int;
+    output ramp_present: int;
+
+    state randy: int = 0;
+
+    reaction(check_ramp) -> ramp_present {=
+        lf_set(ramp_present, self->randy % 2);
+        printf("Camera: Ramp check: %s\n",
+               self->randy % 2 == 1 ? "present" : "not present");
+
+        self->randy++;
+    =}
+}
+
+reactor Door {
+    input open: int;
+    input disarm: int;
+
+    state disarmed: int = 0;
+
+    reaction(disarm) {=
+        self->disarmed = disarm->value;
+        printf("Door: %s!\n",
+               self->disarmed == 1 ? "disarmed" : "armed");
+    =}
+
+    reaction(open) {=
+        if (self->disarmed == 1) {
+            printf("Door: [disarmed]  Door opening!\n");
+        } else {
+            printf("Door: [EMERGENCY] Door opening!\n");
+        }
+    =}
+}
+
+federated reactor {
+//   @interface_tcp(name="if1", address="127.0.0.1")
+  cockpit = new Cockpit();
+//   @interface_tcp(name="if1", address="127.0.0.1")
+  camera = new Camera();
+//   @interface_tcp(name="if1", address="127.0.0.1")
+  door = new Door();
+
+  //   @link(left="if1", right="if1", server_side="right", server_port=3321)
+  @buffer(5)
+  cockpit.open -> door.open after 33 msec;
+  @buffer(5)
+  cockpit.open -> camera.check_ramp;
+//   @max_pending_events(2)
+//   @link(left="if1", right="if1", server_side="right", server_port=3353)
+  @buffer(5)
+  camera.ramp_present -> door.disarm after 33 msec;
+}
