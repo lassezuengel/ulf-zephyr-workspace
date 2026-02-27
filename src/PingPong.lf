@@ -7,7 +7,7 @@ target uC {
     },
     net-interface: sicslowpan,
     logging: warn,
-    // clock-sync: off
+    clock-sync: on
 }
 
 preamble {=
