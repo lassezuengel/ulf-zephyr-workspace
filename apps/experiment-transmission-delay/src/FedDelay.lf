@@ -63,7 +63,7 @@ preamble {=
 
     state counter: int = 0;
 
-    timer t(0, 40 msec);
+    timer t(0, 200 msec);
     reaction(t) -> out {=
         self->counter++;
 

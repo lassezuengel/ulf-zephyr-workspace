@@ -20,6 +20,12 @@ Purpose
 This tool helps estimate transmission + processing latency between two MCUs where
 MCU A toggles a GPIO and MCU B toggles another GPIO upon receiving/processing a
 command. The CH1->CH2 edge delay approximates the end-to-end reaction time.
+
+When a known logical delay is configured in Lingua Franca port connections, you
+can pass it via --delay-offset-ms to subtract it from each measured edge delay.
+If that logical delay exceeds the actual transmission delay, it absorbs
+transmission effects; the remaining value after subtraction reflects clock
+synchronization error.
 """
 
 import argparse
@@ -283,6 +289,7 @@ def plot_signals(
     falling_delays: list[MatchedDelay],
     show_connectors: bool,
     lower_plot_mode: str,
+    delay_offset_ms: float,
     save_path: str | None,
 ) -> None:
     try:
@@ -322,13 +329,21 @@ def plot_signals(
     ax_signal.legend()
     ax_signal.set_ylim(y_min - 0.05 * y_span, y_max + 0.05 * y_span)
 
-    merged_y = [item.delay_ms for item in all_delays]
+    # Subtract configured logical delay from measured edge delay.
+    # In LF setups where logical delay exceeds transmission delay, this yields
+    # the residual clock synchronization error.
+    merged_y = [item.delay_ms - delay_offset_ms for item in all_delays]
+    lower_y_label = "Clock Sync Error (ms)" if delay_offset_ms != 0.0 else "Delay (ms)"
     if lower_plot_mode == "chronological":
         merged_x = list(range(1, len(all_delays) + 1))
-        ax_delay.plot(merged_x, merged_y, "o-", color="tab:purple", label="Edge delay (time-ordered)")
+        lower_series_label = "Clock sync error (time-ordered)" if delay_offset_ms != 0.0 else "Edge delay (time-ordered)"
+        ax_delay.plot(merged_x, merged_y, "o-", color="tab:purple", label=lower_series_label)
         ax_delay.set_xlabel("Edge index")
-        ax_delay.set_ylabel("Delay (ms)")
-        ax_delay.set_title("Per-edge delay (rising+falling merged, chronological)")
+        ax_delay.set_ylabel(lower_y_label)
+        if delay_offset_ms != 0.0:
+            ax_delay.set_title("Per-edge clock sync error (rising+falling merged, chronological)")
+        else:
+            ax_delay.set_title("Per-edge delay (rising+falling merged, chronological)")
         ax_delay.grid(True, alpha=0.3)
         ax_delay.legend()
 
@@ -342,11 +357,15 @@ def plot_signals(
             bins = min(30, max(8, int(len(merged_y) ** 0.5)))
             ax_delay.hist(merged_y, bins=bins, color="tab:purple", alpha=0.75, edgecolor="black")
             avg_delay = mean(merged_y)
-            ax_delay.axvline(avg_delay, color="black", linestyle="--", linewidth=1.2, label=f"avg={avg_delay:.3f} ms")
+            avg_label = "avg error" if delay_offset_ms != 0.0 else "avg"
+            ax_delay.axvline(avg_delay, color="black", linestyle="--", linewidth=1.2, label=f"{avg_label}={avg_delay:.3f} ms")
             ax_delay.legend()
-        ax_delay.set_xlabel("Delay (ms)")
+        ax_delay.set_xlabel(lower_y_label)
         ax_delay.set_ylabel("Count")
-        ax_delay.set_title("Delay distribution (all edges)")
+        if delay_offset_ms != 0.0:
+            ax_delay.set_title("Clock Sync Error")
+        else:
+            ax_delay.set_title("Delay distribution (all edges)")
         ax_delay.grid(True, alpha=0.3)
 
     plt.tight_layout()
@@ -359,7 +378,10 @@ def plot_signals(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Read a Siglent SDS CSV log and plot CH1/CH2 signals."
+        description=(
+            "Read a Siglent SDS CSV log and plot CH1/CH2 signals. "
+            "Optionally subtract a known logical delay to inspect clock sync error."
+        )
     )
     parser.add_argument(
         "csv_file",
@@ -375,6 +397,19 @@ def main() -> None:
         choices=["chronological", "distribution"],
         default="chronological",
         help="Lower subplot style: chronological (default) or distribution.",
+    )
+    parser.add_argument(
+        "--delay-offset-ms",
+        type=float,
+        default=0.0,
+        metavar="MS",
+        help=(
+            "Delay offset in milliseconds subtracted from each measured CH1->CH2 delay "
+            "for the lower plot. Set this to the Lingua Franca logical delay used in "
+            "port connections. If this logical delay exceeds transmission delay, it "
+            "absorbs transmission effects; the residual after subtraction represents "
+            "clock synchronization error. Default: 0.0"
+        ),
     )
     parser.add_argument(
         "--save",
@@ -410,6 +445,7 @@ def main() -> None:
         falling_delays,
         show_connectors=not args.no_connectors,
         lower_plot_mode=args.lower_plot,
+        delay_offset_ms=args.delay_offset_ms,
         save_path=save_path,
     )
 
