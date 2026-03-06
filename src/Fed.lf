@@ -1,99 +1,98 @@
 target uC {
-    // platform: Native,
-    platform: {
-        name: Zephyr,
-        // board: w5500_evb_pico
-        board: nrf54l15dk/nrf54l15/cpuapp
-        // board: nrf52840dk/nrf52840
-    },
-    net-interface: sicslowpan,
-    logging: warn,
-    clock-sync: on
+  // platform: Native,
+  platform: {
+    name: Zephyr,
+    // board: w5500_evb_pico
+    // board: nrf54l15dk/nrf54l15/cpuapp
+    // board: nrf52840dk/nrf52840
+    board: nrf52833dk/nrf52833
+  },
+  net-interface: sicslowpan,
+  logging: warn,
+  clock-sync: on
 }
 
 preamble {=
-
   #include "reactor-uc/reactor-c.h"
-
 =}
 
 reactor Source {
-preamble {=
+  preamble {=
     #include <zephyr/kernel.h>
     #include <zephyr/drivers/gpio.h>
     #include <assert.h>
     #define LED0_NODE DT_PATH(leds, led_0)
     static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
-=}
+  =}
 
-    reaction(startup) {=
-        assert(device_is_ready(led.port));
-        gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
-    =}
+  output out: int
 
-    output out: int;
+  state counter: int = 0
 
-    state counter: int = 0;
+  timer t(0, 500 msec)
 
-    timer t(0, 250 msec);
-    reaction(t) -> out {=
-        self->counter++;
+  reaction(startup) {=
+    assert(device_is_ready(led.port));
+    gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+  =}
 
-        lf_set(out, self->counter);
-        printf("Source sending out value: %d\n", self->counter);
-        interval_t ts = lf_time_logical_elapsed();
-        interval_t Ts = lf_time_physical_elapsed();
+  reaction(t) -> out {=
+    self->counter++;
 
-        printf(
-            "  SOURCE logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
-            ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
-        );
+    lf_set(out, self->counter);
+    interval_t ts = lf_time_logical_elapsed();
+    interval_t Ts = lf_time_physical_elapsed();
 
-        gpio_pin_toggle_dt(&led);
-    =}
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+
+    printf(
+        "SOURCE OUT %d with logical time: %lld ms, physical time: %lld ms\n",
+        self->counter, ts / 1000000, t_physclock / 1000000
+    );
+
+    gpio_pin_toggle_dt(&led);
+  =}
 }
 
 reactor Sink {
-preamble {=
+  preamble {=
     #include <zephyr/kernel.h>
     #include <zephyr/drivers/gpio.h>
     #include <assert.h>
     #define LED0_NODE DT_PATH(leds, led_0)
     static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
-=}
+  =}
 
-    reaction(startup) {=
-        assert(device_is_ready(led.port));
-        gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
-    =}
+  input in: int
 
-    input in: int;
+  reaction(startup) {=
+    assert(device_is_ready(led.port));
+    gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+  =}
 
-    reaction(in) {=
-        printf("Sink received value; %d\n", in->value);
-        interval_t ts = lf_time_logical_elapsed();
-        interval_t Ts = lf_time_physical_elapsed();
+  reaction(in) {=
+    interval_t ts = lf_time_logical_elapsed();
+    interval_t Ts = lf_time_physical_elapsed();
 
-        FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
 
-        interval_t TsF = envFed->clock.to_hw_time(&envFed->clock, Ts);
+    printf(
+        "SINK    IN %d logical time: %lld ms, physical clock: %lld ms\n",
+        in->value, ts / 1000000, t_physclock / 1000000
+    );
 
-        printf(
-            "  SINK logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
-            ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
-        );
-        printf("  Comparing physical time: Local: %lld ms, ClockSyn: %lld ms\n", Ts / 1000000, TsF / 1000000);
-
-        gpio_pin_toggle_dt(&led);
-    =}
+    gpio_pin_toggle_dt(&led);
+  =}
 }
 
 federated reactor {
-  @board("nrf54l15dk/nrf54l15/cpuapp")
-  srcFed = new Source();
-  @board("nrf52840dk/nrf52840")
-  snkFed = new Sink();
+  // @board("nrf54l15dk/nrf54l15/cpuapp")
+  srcFed = new Source()
+  // @board("nrf52840dk/nrf52840")
+  snkFed = new Sink()
 
-  @buffer(5)
-  srcFed.out -> snkFed.in;
+  @buffer(20)
+  srcFed.out ~> snkFed.in
 }
