@@ -34,8 +34,8 @@ reactor Source {
 
   reaction(t) -> out {=
     self->counter++;
-
     lf_set(out, self->counter);
+
     interval_t ts = lf_time_logical_elapsed();
     interval_t Ts = lf_time_physical_elapsed();
 
@@ -54,7 +54,46 @@ reactor Source {
   =}
 }
 
-reactor Sink(id: int = 1) {
+reactor Intermediate(id: int = 1) {
+  preamble {=
+    #include <zephyr/kernel.h>
+    #include <zephyr/drivers/gpio.h>
+    #include <assert.h>
+    #define LED0_NODE DT_PATH(leds, led_0)
+    static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+  =}
+
+  input in: int
+  output out: int
+
+  reaction(startup) {=
+    assert(device_is_ready(led.port));
+    gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+  =}
+
+  reaction(in) -> out {=
+    lf_set(out, in->value);
+
+    interval_t ts = lf_time_logical_elapsed();
+    interval_t Ts = lf_time_physical_elapsed();
+
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+
+    printf(
+      "[%d] Value %d at physical time %lld.%01lld ms and logical time %lld ms\n",
+      self->id,
+      in->value,
+      t_physclock / 1000000,
+      (t_physclock % 1000000) / 100000,
+      ts / 1000000
+    );
+
+    gpio_pin_toggle_dt(&led);
+  =}
+}
+
+reactor Sink(id: int = 2) {
   preamble {=
     #include <zephyr/kernel.h>
     #include <zephyr/drivers/gpio.h>
@@ -91,11 +130,18 @@ reactor Sink(id: int = 1) {
 }
 
 federated reactor {
+  @board("nrf52840dk/nrf52840")
   @interface_tcp(address="fd01::1")
   srcFed = new Source()
+  @board("nrf52840dk/nrf52840")
+  @interface_tcp(address="fd01::2")
+  intFed = new Intermediate(id=1)
+  @board("nrf52840dk/nrf52840")
   @interface_tcp(address="fd01::3")
-  snkFed = new Sink(id=1)
+  snkFed = new Sink(id=2)
 
   @buffer(20)
-  srcFed.out -> snkFed.in after 50ms
+  srcFed.out -> intFed.in after 50 msec
+  @buffer(20)
+  intFed.out -> snkFed.in after 50 msec
 }

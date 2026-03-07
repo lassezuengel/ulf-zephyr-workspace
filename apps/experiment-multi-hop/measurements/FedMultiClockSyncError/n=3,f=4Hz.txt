@@ -1,0 +1,371 @@
+[hailo-desktop:dwm3001cdk-8] [1] Value 34 at physical time 9994.9 ms and logical time 8300 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 34 at physical time 9944.0 ms and logical time 8250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 34 at physical time 10044.3 ms and logical time 8350 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 35 at physical time 10194.0 ms and logical time 8500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 35 at physical time 10294.0 ms and logical time 8600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 35 at physical time 10243.9 ms and logical time 8550 ms
+[hailo-desktop:dwm3001cdk-7] [32m(10356000000) [INFO] [CLOCK_SYNC] RTT: 10.0 ms OWD: 5.0 ms offset: 1.0 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 36 at physical time 10493.9 ms and logical time 8800 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 36 at physical time 10445.0 ms and logical time 8750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 36 at physical time 10544.0 ms and logical time 8850 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 37 at physical time 10694.0 ms and logical time 9000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 37 at physical time 10794.2 ms and logical time 9100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 37 at physical time 10743.9 ms and logical time 9050 ms
+[hailo-desktop:dwm3001cdk-8] [32m(10891000000) [INFO] [CLOCK_SYNC] RTT: 9.0 ms OWD: 4.5 ms offset: 0.6 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 38 at physical time 10993.9 ms and logical time 9300 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 38 at physical time 10944.0 ms and logical time 9250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 38 at physical time 11044.3 ms and logical time 9350 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 39 at physical time 11194.0 ms and logical time 9500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 39 at physical time 11294.5 ms and logical time 9600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 39 at physical time 11244.1 ms and logical time 9550 ms
+[hailo-desktop:dwm3001cdk-7] [32m(11360000000) [INFO] [CLOCK_SYNC] RTT: 10.0 ms OWD: 5.0 ms offset: 1.6 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 40 at physical time 11494.2 ms and logical time 9800 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 40 at physical time 11444.0 ms and logical time 9750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 40 at physical time 11544.8 ms and logical time 9850 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 41 at physical time 11694.0 ms and logical time 10000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 41 at physical time 11794.2 ms and logical time 10100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 41 at physical time 11743.3 ms and logical time 10050 ms
+[hailo-desktop:dwm3001cdk-8] [32m(11897000000) [INFO] [CLOCK_SYNC] RTT: 10.0 ms OWD: 5.0 ms offset: 0.5 ms[0m
+[hailo-desktop:dwm3001cdk-7] [2] Value 42 at physical time 12044.6 ms and logical time 10350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 42 at physical time 11993.5 ms and logical time 10300 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 42 at physical time 11945.0 ms and logical time 10250 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 43 at physical time 12194.0 ms and logical time 10500 ms
+[hailo-desktop:dwm3001cdk-7] [32m(12359000000) [INFO] [CLOCK_SYNC] RTT: 8.0 ms OWD: 4.0 ms offset: -0.3 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 44 at physical time 12444.0 ms and logical time 10750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 43 at physical time 12556.1 ms and logical time 10600 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 44 at physical time 12565.1 ms and logical time 10850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 43 at physical time 12544.8 ms and logical time 10550 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 44 at physical time 12551.9 ms and logical time 10800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 45 at physical time 12744.0 ms and logical time 11050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 45 at physical time 12694.0 ms and logical time 11000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 45 at physical time 12794.1 ms and logical time 11100 ms
+[hailo-desktop:dwm3001cdk-8] [32m(12899000000) [INFO] [CLOCK_SYNC] RTT: 9.0 ms OWD: 4.5 ms offset: -0.6 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 46 at physical time 12944.0 ms and logical time 11250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 46 at physical time 13044.1 ms and logical time 11350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 46 at physical time 12995.1 ms and logical time 11300 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 47 at physical time 13245.0 ms and logical time 11550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 47 at physical time 13194.0 ms and logical time 11500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 47 at physical time 13294.1 ms and logical time 11600 ms
+[hailo-desktop:dwm3001cdk-7] [32m(13366000000) [INFO] [CLOCK_SYNC] RTT: 11.0 ms OWD: 5.5 ms offset: 0.3 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 48 at physical time 13444.0 ms and logical time 11750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 48 at physical time 13544.2 ms and logical time 11850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 48 at physical time 13493.9 ms and logical time 11800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 49 at physical time 13743.8 ms and logical time 12050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 49 at physical time 13694.0 ms and logical time 12000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 49 at physical time 13794.4 ms and logical time 12100 ms
+[hailo-desktop:dwm3001cdk-8] [32m(13907000000) [INFO] [CLOCK_SYNC] RTT: 11.0 ms OWD: 5.5 ms offset: -1.3 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 50 at physical time 13944.0 ms and logical time 12250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 50 at physical time 14043.5 ms and logical time 12350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 50 at physical time 13993.6 ms and logical time 12300 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 51 at physical time 14194.0 ms and logical time 12500 ms
+[hailo-desktop:dwm3001cdk-7] [32m(14368000000) [INFO] [CLOCK_SYNC] RTT: 9.0 ms OWD: 4.5 ms offset: -2.0 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 52 at physical time 14444.0 ms and logical time 12750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 51 at physical time 14651.3 ms and logical time 12600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 51 at physical time 14639.9 ms and logical time 12550 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 52 at physical time 14645.9 ms and logical time 12800 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 52 at physical time 14661.3 ms and logical time 12850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 53 at physical time 14743.7 ms and logical time 13050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 53 at physical time 14694.0 ms and logical time 13000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 53 at physical time 14794.0 ms and logical time 13100 ms
+[hailo-desktop:dwm3001cdk-8] [32m(14912000000) [INFO] [CLOCK_SYNC] RTT: 9.0 ms OWD: 4.5 ms offset: 0.9 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 54 at physical time 14945.0 ms and logical time 13250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 54 at physical time 15044.6 ms and logical time 13350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 54 at physical time 14994.6 ms and logical time 13300 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 55 at physical time 15243.7 ms and logical time 13550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 55 at physical time 15195.0 ms and logical time 13500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 55 at physical time 15294.2 ms and logical time 13600 ms
+[hailo-desktop:dwm3001cdk-7] [32m(15374000000) [INFO] [CLOCK_SYNC] RTT: 10.0 ms OWD: 5.0 ms offset: -1.3 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 56 at physical time 15444.0 ms and logical time 13750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 56 at physical time 15543.8 ms and logical time 13850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 56 at physical time 15493.9 ms and logical time 13800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 57 at physical time 15745.0 ms and logical time 14050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 57 at physical time 15694.0 ms and logical time 14000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 57 at physical time 15794.5 ms and logical time 14100 ms
+[hailo-desktop:dwm3001cdk-8] [32m(15913000000) [INFO] [CLOCK_SYNC] RTT: 8.0 ms OWD: 4.0 ms offset: -0.2 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 58 at physical time 15944.0 ms and logical time 14250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 58 at physical time 16044.1 ms and logical time 14350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 58 at physical time 15994.1 ms and logical time 14300 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 59 at physical time 16244.1 ms and logical time 14550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 59 at physical time 16194.0 ms and logical time 14500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 59 at physical time 16293.7 ms and logical time 14600 ms
+[hailo-desktop:dwm3001cdk-7] [32m(16380000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 2.0 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 60 at physical time 16444.0 ms and logical time 14750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 60 at physical time 16544.8 ms and logical time 14850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 60 at physical time 16494.0 ms and logical time 14800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 61 at physical time 16744.0 ms and logical time 15050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 61 at physical time 16694.0 ms and logical time 15000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 61 at physical time 16793.1 ms and logical time 15100 ms
+[hailo-desktop:dwm3001cdk-8] [32m(16920000000) [INFO] [CLOCK_SYNC] RTT: 10.0 ms OWD: 5.0 ms offset: 0.0 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 62 at physical time 16944.0 ms and logical time 15250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 62 at physical time 17044.5 ms and logical time 15350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 62 at physical time 16994.9 ms and logical time 15300 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 63 at physical time 17243.9 ms and logical time 15550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 63 at physical time 17194.0 ms and logical time 15500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 63 at physical time 17294.8 ms and logical time 15600 ms
+[hailo-desktop:dwm3001cdk-7] [32m(17385000000) [INFO] [CLOCK_SYNC] RTT: 9.0 ms OWD: 4.5 ms offset: 0.5 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 64 at physical time 17445.0 ms and logical time 15750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 64 at physical time 17544.0 ms and logical time 15850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 64 at physical time 17494.9 ms and logical time 15800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 65 at physical time 17744.9 ms and logical time 16050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 65 at physical time 17694.0 ms and logical time 16000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 65 at physical time 17794.1 ms and logical time 16100 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 66 at physical time 17944.0 ms and logical time 16250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 66 at physical time 18043.2 ms and logical time 16350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 66 at physical time 17993.9 ms and logical time 16300 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 67 at physical time 18243.8 ms and logical time 16550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 67 at physical time 18194.0 ms and logical time 16500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 67 at physical time 18294.4 ms and logical time 16600 ms
+[hailo-desktop:dwm3001cdk-7] [32m(18389000000) [INFO] [CLOCK_SYNC] RTT: 11.0 ms OWD: 5.5 ms offset: -1.1 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 68 at physical time 18444.0 ms and logical time 16750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 68 at physical time 18544.3 ms and logical time 16850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 68 at physical time 18493.8 ms and logical time 16800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 69 at physical time 18743.8 ms and logical time 17050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 69 at physical time 18694.0 ms and logical time 17000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 69 at physical time 18794.0 ms and logical time 17100 ms
+[hailo-desktop:dwm3001cdk-8] [32m(18930000000) [INFO] [CLOCK_SYNC] RTT: 9.0 ms OWD: 4.5 ms offset: 1.6 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 70 at physical time 18944.0 ms and logical time 17250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 70 at physical time 19043.8 ms and logical time 17350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 70 at physical time 18994.9 ms and logical time 17300 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 71 at physical time 19243.3 ms and logical time 17550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 71 at physical time 19194.0 ms and logical time 17500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 71 at physical time 19294.6 ms and logical time 17600 ms
+[hailo-desktop:dwm3001cdk-7] [32m(19395000000) [INFO] [CLOCK_SYNC] RTT: 11.0 ms OWD: 5.5 ms offset: 1.5 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 72 at physical time 19444.0 ms and logical time 17750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 72 at physical time 19543.7 ms and logical time 17850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 72 at physical time 19494.7 ms and logical time 17800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 73 at physical time 19744.1 ms and logical time 18050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 73 at physical time 19695.0 ms and logical time 18000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 73 at physical time 19794.0 ms and logical time 18100 ms
+[hailo-desktop:dwm3001cdk-8] [32m(19933000000) [INFO] [CLOCK_SYNC] RTT: 9.0 ms OWD: 4.5 ms offset: 0.1 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 74 at physical time 19944.0 ms and logical time 18250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 74 at physical time 20043.3 ms and logical time 18350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 74 at physical time 19994.4 ms and logical time 18300 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 75 at physical time 20243.5 ms and logical time 18550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 75 at physical time 20194.0 ms and logical time 18500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 75 at physical time 20294.7 ms and logical time 18600 ms
+[hailo-desktop:dwm3001cdk-7] [32m(20396000000) [INFO] [CLOCK_SYNC] RTT: 8.0 ms OWD: 4.0 ms offset: 0.8 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 76 at physical time 20444.0 ms and logical time 18750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 76 at physical time 20544.0 ms and logical time 18850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 76 at physical time 20498.7 ms and logical time 18800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 77 at physical time 20744.8 ms and logical time 19050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 77 at physical time 20694.0 ms and logical time 19000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 77 at physical time 20794.2 ms and logical time 19100 ms
+[hailo-desktop:dwm3001cdk-8] [32m(20940000000) [INFO] [CLOCK_SYNC] RTT: 12.0 ms OWD: 6.0 ms offset: -1.9 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 78 at physical time 20945.0 ms and logical time 19250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 78 at physical time 21044.5 ms and logical time 19350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 78 at physical time 20994.8 ms and logical time 19300 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 79 at physical time 21243.4 ms and logical time 19550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 79 at physical time 21195.0 ms and logical time 19500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 79 at physical time 21293.8 ms and logical time 19600 ms
+[hailo-desktop:dwm3001cdk-7] [32m(21401000000) [INFO] [CLOCK_SYNC] RTT: 11.0 ms OWD: 5.5 ms offset: -0.2 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 80 at physical time 21444.0 ms and logical time 19750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 80 at physical time 21543.9 ms and logical time 19850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 80 at physical time 21494.1 ms and logical time 19800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 81 at physical time 21744.7 ms and logical time 20050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 81 at physical time 21694.0 ms and logical time 20000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 81 at physical time 21794.0 ms and logical time 20100 ms
+[hailo-desktop:dwm3001cdk-8] [32m(21943000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -1.0 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 82 at physical time 21945.0 ms and logical time 20250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 82 at physical time 22044.1 ms and logical time 20350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 82 at physical time 21993.3 ms and logical time 20300 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 83 at physical time 22294.2 ms and logical time 20600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 83 at physical time 22244.1 ms and logical time 20550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 83 at physical time 22194.0 ms and logical time 20500 ms
+[hailo-desktop:dwm3001cdk-7] [32m(22405000000) [INFO] [CLOCK_SYNC] RTT: 9.0 ms OWD: 4.5 ms offset: -0.8 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 84 at physical time 22445.0 ms and logical time 20750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 84 at physical time 22544.2 ms and logical time 20850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 84 at physical time 22494.8 ms and logical time 20800 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 85 at physical time 22694.0 ms and logical time 21000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 85 at physical time 22794.1 ms and logical time 21100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 85 at physical time 22744.5 ms and logical time 21050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 86 at physical time 22944.0 ms and logical time 21250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 86 at physical time 23044.0 ms and logical time 21350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 86 at physical time 22994.2 ms and logical time 21300 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 87 at physical time 23194.0 ms and logical time 21500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 87 at physical time 23294.9 ms and logical time 21600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 87 at physical time 23244.0 ms and logical time 21550 ms
+[hailo-desktop:dwm3001cdk-7] [32m(23409000000) [INFO] [CLOCK_SYNC] RTT: 10.0 ms OWD: 5.0 ms offset: -2.1 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 88 at physical time 23494.7 ms and logical time 21800 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 88 at physical time 23444.0 ms and logical time 21750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 88 at physical time 23543.6 ms and logical time 21850 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 89 at physical time 23694.0 ms and logical time 22000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 89 at physical time 23794.2 ms and logical time 22100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 89 at physical time 23744.4 ms and logical time 22050 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 90 at physical time 23994.2 ms and logical time 22300 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 90 at physical time 23948.0 ms and logical time 22250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 90 at physical time 24044.7 ms and logical time 22350 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 91 at physical time 24194.0 ms and logical time 22500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 91 at physical time 24294.2 ms and logical time 22600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 91 at physical time 24244.9 ms and logical time 22550 ms
+[hailo-desktop:dwm3001cdk-7] [32m(24412000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -1.8 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 92 at physical time 24494.6 ms and logical time 22800 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 92 at physical time 24444.0 ms and logical time 22750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 92 at physical time 24543.7 ms and logical time 22850 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 93 at physical time 24694.0 ms and logical time 23000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 93 at physical time 24794.2 ms and logical time 23100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 93 at physical time 24744.3 ms and logical time 23050 ms
+[hailo-desktop:dwm3001cdk-8] [32m(24977000000) [INFO] [CLOCK_SYNC] RTT: 14.0 ms OWD: 7.0 ms offset: 1.9 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 94 at physical time 24994.1 ms and logical time 23300 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 94 at physical time 24944.0 ms and logical time 23250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 94 at physical time 25043.6 ms and logical time 23350 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 95 at physical time 25194.0 ms and logical time 23500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 95 at physical time 25294.0 ms and logical time 23600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 95 at physical time 25243.5 ms and logical time 23550 ms
+[hailo-desktop:dwm3001cdk-7] [32m(25422000000) [INFO] [CLOCK_SYNC] RTT: 11.0 ms OWD: 5.5 ms offset: 0.4 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 96 at physical time 25494.8 ms and logical time 23800 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 96 at physical time 25444.0 ms and logical time 23750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 96 at physical time 25543.7 ms and logical time 23850 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 97 at physical time 25694.0 ms and logical time 24000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 97 at physical time 25793.6 ms and logical time 24100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 97 at physical time 25744.2 ms and logical time 24050 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 98 at physical time 25994.5 ms and logical time 24300 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 98 at physical time 25944.0 ms and logical time 24250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 98 at physical time 26044.4 ms and logical time 24350 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 99 at physical time 26194.0 ms and logical time 24500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 99 at physical time 26294.3 ms and logical time 24600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 99 at physical time 26265.9 ms and logical time 24550 ms
+[hailo-desktop:dwm3001cdk-7] [32m(26428000000) [INFO] [CLOCK_SYNC] RTT: 11.0 ms OWD: 5.5 ms offset: 2.4 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 100 at physical time 26494.3 ms and logical time 24800 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 100 at physical time 26444.0 ms and logical time 24750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 100 at physical time 26544.4 ms and logical time 24850 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 101 at physical time 26694.0 ms and logical time 25000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 101 at physical time 26794.8 ms and logical time 25100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 101 at physical time 26744.6 ms and logical time 25050 ms
+[hailo-desktop:dwm3001cdk-8] [32m(26972000000) [INFO] [CLOCK_SYNC] RTT: 10.0 ms OWD: 5.0 ms offset: 1.0 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 102 at physical time 26995.0 ms and logical time 25300 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 102 at physical time 26944.0 ms and logical time 25250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 102 at physical time 27044.2 ms and logical time 25350 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 103 at physical time 27195.0 ms and logical time 25500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 103 at physical time 27293.6 ms and logical time 25600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 103 at physical time 27244.3 ms and logical time 25550 ms
+[hailo-desktop:dwm3001cdk-7] [32m(27429000000) [INFO] [CLOCK_SYNC] RTT: 10.0 ms OWD: 5.0 ms offset: 2.7 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 104 at physical time 27493.5 ms and logical time 25800 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 104 at physical time 27444.0 ms and logical time 25750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 104 at physical time 27544.1 ms and logical time 25850 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 105 at physical time 27694.0 ms and logical time 26000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 105 at physical time 27794.7 ms and logical time 26100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 105 at physical time 27744.8 ms and logical time 26050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 106 at physical time 27944.0 ms and logical time 26250 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 107 at physical time 28194.0 ms and logical time 26500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 106 at physical time 28384.3 ms and logical time 26350 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 107 at physical time 28395.3 ms and logical time 26600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 106 at physical time 28375.6 ms and logical time 26300 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 107 at physical time 28381.6 ms and logical time 26550 ms
+[hailo-desktop:dwm3001cdk-7] [32m(28430000000) [INFO] [CLOCK_SYNC] RTT: 9.0 ms OWD: 4.5 ms offset: 0.8 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 108 at physical time 28493.7 ms and logical time 26800 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 108 at physical time 28444.0 ms and logical time 26750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 108 at physical time 28544.5 ms and logical time 26850 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 109 at physical time 28694.0 ms and logical time 27000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 109 at physical time 28794.9 ms and logical time 27100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 109 at physical time 28744.0 ms and logical time 27050 ms
+[hailo-desktop:dwm3001cdk-8] [32m(28981000000) [INFO] [CLOCK_SYNC] RTT: 10.0 ms OWD: 5.0 ms offset: -1.3 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 110 at physical time 28994.3 ms and logical time 27300 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 110 at physical time 28945.0 ms and logical time 27250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 110 at physical time 29044.3 ms and logical time 27350 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 111 at physical time 29195.0 ms and logical time 27500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 111 at physical time 29294.6 ms and logical time 27600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 111 at physical time 29244.0 ms and logical time 27550 ms
+[hailo-desktop:dwm3001cdk-7] [32m(29434000000) [INFO] [CLOCK_SYNC] RTT: 9.0 ms OWD: 4.5 ms offset: -1.4 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 112 at physical time 29494.8 ms and logical time 27800 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 112 at physical time 29444.0 ms and logical time 27750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 112 at physical time 29543.8 ms and logical time 27850 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 113 at physical time 29694.0 ms and logical time 28000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 113 at physical time 29793.7 ms and logical time 28100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 113 at physical time 29743.6 ms and logical time 28050 ms
+[hailo-desktop:dwm3001cdk-8] [32m(29986000000) [INFO] [CLOCK_SYNC] RTT: 11.0 ms OWD: 5.5 ms offset: -1.0 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 114 at physical time 29994.4 ms and logical time 28300 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 114 at physical time 29944.0 ms and logical time 28250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 114 at physical time 30044.5 ms and logical time 28350 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 115 at physical time 30194.0 ms and logical time 28500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 115 at physical time 30294.4 ms and logical time 28600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 115 at physical time 30244.2 ms and logical time 28550 ms
+[hailo-desktop:dwm3001cdk-7] [32m(30439000000) [INFO] [CLOCK_SYNC] RTT: 10.0 ms OWD: 5.0 ms offset: -2.3 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 116 at physical time 30493.9 ms and logical time 28800 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 116 at physical time 30444.0 ms and logical time 28750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 116 at physical time 30544.1 ms and logical time 28850 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 117 at physical time 30694.0 ms and logical time 29000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 117 at physical time 30793.7 ms and logical time 29100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 117 at physical time 30743.7 ms and logical time 29050 ms
+[hailo-desktop:dwm3001cdk-8] [32m(30990000000) [INFO] [CLOCK_SYNC] RTT: 10.0 ms OWD: 5.0 ms offset: -1.5 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 118 at physical time 30994.5 ms and logical time 29300 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 118 at physical time 30944.0 ms and logical time 29250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 118 at physical time 31044.2 ms and logical time 29350 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 119 at physical time 31194.0 ms and logical time 29500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 119 at physical time 31293.8 ms and logical time 29600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 119 at physical time 31244.0 ms and logical time 29550 ms
+[hailo-desktop:dwm3001cdk-7] [32m(31444000000) [INFO] [CLOCK_SYNC] RTT: 9.0 ms OWD: 4.5 ms offset: 0.7 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 120 at physical time 31494.6 ms and logical time 29800 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 120 at physical time 31444.0 ms and logical time 29750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 120 at physical time 31544.5 ms and logical time 29850 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 121 at physical time 31695.0 ms and logical time 30000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 121 at physical time 31793.7 ms and logical time 30100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 121 at physical time 31744.1 ms and logical time 30050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 122 at physical time 31944.0 ms and logical time 30250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 122 at physical time 32044.8 ms and logical time 30350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 122 at physical time 31993.7 ms and logical time 30300 ms
+[hailo-desktop:dwm3001cdk-8] [32m(32002000000) [INFO] [CLOCK_SYNC] RTT: 9.0 ms OWD: 4.5 ms offset: 0.7 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 123 at physical time 32195.0 ms and logical time 30500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 123 at physical time 32293.9 ms and logical time 30600 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 123 at physical time 32243.7 ms and logical time 30550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 124 at physical time 32444.0 ms and logical time 30750 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 125 at physical time 32694.0 ms and logical time 31000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 124 at physical time 32771.1 ms and logical time 30850 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 125 at physical time 32794.1 ms and logical time 31100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 124 at physical time 32756.7 ms and logical time 30800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 125 at physical time 32762.7 ms and logical time 31050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 126 at physical time 32944.0 ms and logical time 31250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 126 at physical time 33044.3 ms and logical time 31350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 126 at physical time 32995.7 ms and logical time 31300 ms
+[hailo-desktop:dwm3001cdk-8] [32m(33005000000) [INFO] [CLOCK_SYNC] RTT: 8.0 ms OWD: 4.0 ms offset: 1.2 ms[0m
+[hailo-desktop:dwm3001cdk-8] [1] Value 127 at physical time 33243.9 ms and logical time 31550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 127 at physical time 33194.0 ms and logical time 31500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 127 at physical time 33294.4 ms and logical time 31600 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 128 at physical time 33444.0 ms and logical time 31750 ms
+[hailo-desktop:dwm3001cdk-7] [32m(33457000000) [INFO] [CLOCK_SYNC] RTT: 10.0 ms OWD: 5.0 ms offset: -2.4 ms[0m
+[hailo-desktop:dwm3001cdk-7] [2] Value 128 at physical time 33544.3 ms and logical time 31850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 128 at physical time 33494.1 ms and logical time 31800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 129 at physical time 33744.3 ms and logical time 32050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 129 at physical time 33695.0 ms and logical time 32000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 129 at physical time 33793.7 ms and logical time 32100 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 130 at physical time 33944.0 ms and logical time 32250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 130 at physical time 34044.1 ms and logical time 32350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 130 at physical time 33993.5 ms and logical time 32300 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 131 at physical time 34243.6 ms and logical time 32550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 131 at physical time 34194.0 ms and logical time 32500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 131 at physical time 34314.4 ms and logical time 32600 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 132 at physical time 34444.0 ms and logical time 32750 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 132 at physical time 34543.8 ms and logical time 32850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 132 at physical time 34493.8 ms and logical time 32800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 133 at physical time 34744.0 ms and logical time 33050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 133 at physical time 34694.0 ms and logical time 33000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 133 at physical time 34794.2 ms and logical time 33100 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 134 at physical time 34944.0 ms and logical time 33250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 134 at physical time 35044.6 ms and logical time 33350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 134 at physical time 34998.2 ms and logical time 33300 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 135 at physical time 35243.4 ms and logical time 33550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 135 at physical time 35194.0 ms and logical time 33500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 135 at physical time 35294.0 ms and logical time 33600 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 136 at physical time 35444.0 ms and logical time 33750 ms
+[hailo-desktop:dwm3001cdk-7] [32m(35471000000) [INFO] [CLOCK_SYNC] RTT: 8.0 ms OWD: 4.0 ms offset: 3.9 ms[0m
+[hailo-desktop:dwm3001cdk-7] [2] Value 136 at physical time 35544.9 ms and logical time 33850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 136 at physical time 35494.6 ms and logical time 33800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 137 at physical time 35744.8 ms and logical time 34050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 137 at physical time 35694.0 ms and logical time 34000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 137 at physical time 35793.6 ms and logical time 34100 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 138 at physical time 35944.0 ms and logical time 34250 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 138 at physical time 36044.5 ms and logical time 34350 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 138 at physical time 35995.0 ms and logical time 34300 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 139 at physical time 36244.1 ms and logical time 34550 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 139 at physical time 36194.0 ms and logical time 34500 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 139 at physical time 36294.2 ms and logical time 34600 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 140 at physical time 36444.0 ms and logical time 34750 ms
+[hailo-desktop:dwm3001cdk-7] [32m(36473000000) [INFO] [CLOCK_SYNC] RTT: 11.0 ms OWD: 5.5 ms offset: 2.0 ms[0m
+[hailo-desktop:dwm3001cdk-7] [2] Value 140 at physical time 36544.0 ms and logical time 34850 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 140 at physical time 36494.3 ms and logical time 34800 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 141 at physical time 36743.5 ms and logical time 35050 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 141 at physical time 36695.0 ms and logical time 35000 ms
+[hailo-desktop:dwm3001cdk-7] [2] Value 141 at physical time 36793.6 ms and logical time 35100 ms
+[hailo-desktop:dwm3001cdk-8] [1] Value 142 at physical time 36994.7 ms and logical time 35300 ms
+[hailo-desktop:dwm3001cdk-8] [32m(37021000000) [INFO] [CLOCK_SYNC] RTT: 9.0 ms OWD: 4.5 ms offset: -2.3 ms[0m
+[hailo-desktop:dwm3001cdk-9] [0] Value 142 at physical time 36944.0 ms and logical time 35250 ms
+[hailo-desktop:dwm3001cdk-9] [0] Value 143 at physical time 37194.0 ms and logical time 35500 ms

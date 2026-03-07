@@ -1,0 +1,381 @@
+1772905209.655505;nrf52840dk-8;[0] Value 1 at physical time 1928.0 ms and logical time 0 ms
+1772905209.688963;nrf52840dk-6;[1] Value 1 at physical time 1977.1 ms and logical time 50 ms
+1772905209.735688;nrf52840dk-7;[2] Value 1 at physical time 2026.4 ms and logical time 100 ms
+1772905209.906489;nrf52840dk-8;[0] Value 2 at physical time 2177.0 ms and logical time 250 ms
+1772905209.945616;nrf52840dk-6;[1] Value 2 at physical time 2226.8 ms and logical time 300 ms
+1772905209.979774;nrf52840dk-7;[2] Value 2 at physical time 2277.3 ms and logical time 350 ms
+1772905210.012699;nrf52840dk-7;(2278000000) [INFO] [CLOCK_SYNC] RTT: 6.8 ms OWD: 3.4 ms offset: -20.4 ms
+1772905210.156629;nrf52840dk-8;[0] Value 3 at physical time 2427.0 ms and logical time 500 ms
+1772905210.202754;nrf52840dk-6;[1] Value 3 at physical time 2476.5 ms and logical time 550 ms
+1772905210.230560;nrf52840dk-7;[2] Value 3 at physical time 2527.2 ms and logical time 600 ms
+1772905210.298640;nrf52840dk-6;(2598000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -0.5 ms
+1772905210.406403;nrf52840dk-8;[0] Value 4 at physical time 2678.0 ms and logical time 750 ms
+1772905210.457319;nrf52840dk-6;[1] Value 4 at physical time 2727.2 ms and logical time 800 ms
+1772905210.482423;nrf52840dk-7;[2] Value 4 at physical time 2777.6 ms and logical time 850 ms
+1772905210.656554;nrf52840dk-8;[0] Value 5 at physical time 2927.0 ms and logical time 1000 ms
+1772905210.709329;nrf52840dk-6;[1] Value 5 at physical time 2976.9 ms and logical time 1050 ms
+1772905210.736300;nrf52840dk-7;[2] Value 5 at physical time 3027.9 ms and logical time 1100 ms
+1772905210.906376;nrf52840dk-8;[0] Value 6 at physical time 3177.0 ms and logical time 1250 ms
+1772905210.961469;nrf52840dk-6;[1] Value 6 at physical time 3226.6 ms and logical time 1300 ms
+1772905210.989429;nrf52840dk-7;[2] Value 6 at physical time 3277.2 ms and logical time 1350 ms
+1772905211.025103;nrf52840dk-7;(3292000000) [INFO] [CLOCK_SYNC] RTT: 6.9 ms OWD: 3.5 ms offset: -24.3 ms
+1772905211.155519;nrf52840dk-8;[0] Value 7 at physical time 3427.0 ms and logical time 1500 ms
+1772905211.214654;nrf52840dk-6;[1] Value 7 at physical time 3477.3 ms and logical time 1550 ms
+1772905211.242532;nrf52840dk-7;[2] Value 7 at physical time 3526.4 ms and logical time 1600 ms
+1772905211.312115;nrf52840dk-6;(3611000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 8.9 ms
+1772905211.405985;nrf52840dk-8;[0] Value 8 at physical time 3677.0 ms and logical time 1750 ms
+1772905211.466721;nrf52840dk-6;[1] Value 8 at physical time 3727.4 ms and logical time 1800 ms
+1772905211.497739;nrf52840dk-7;[2] Value 8 at physical time 3777.1 ms and logical time 1850 ms
+1772905211.656332;nrf52840dk-8;[0] Value 9 at physical time 3927.0 ms and logical time 2000 ms
+1772905211.715735;nrf52840dk-6;[1] Value 9 at physical time 3977.5 ms and logical time 2050 ms
+1772905211.753800;nrf52840dk-7;[2] Value 9 at physical time 4026.8 ms and logical time 2100 ms
+1772905211.906531;nrf52840dk-8;[0] Value 10 at physical time 4178.0 ms and logical time 2250 ms
+1772905211.966276;nrf52840dk-6;[1] Value 10 at physical time 4227.5 ms and logical time 2300 ms
+1772905212.008447;nrf52840dk-7;[2] Value 10 at physical time 4277.5 ms and logical time 2350 ms
+1772905212.048496;nrf52840dk-7;(4316000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -5.8 ms
+1772905212.156508;nrf52840dk-8;[0] Value 11 at physical time 4428.0 ms and logical time 2500 ms
+1772905212.217705;nrf52840dk-6;[1] Value 11 at physical time 4477.6 ms and logical time 2550 ms
+1772905212.261777;nrf52840dk-7;[2] Value 11 at physical time 4526.6 ms and logical time 2600 ms
+1772905212.314674;nrf52840dk-6;(4614000000) [INFO] [CLOCK_SYNC] RTT: 6.0 ms OWD: 3.0 ms offset: 9.3 ms
+1772905212.405793;nrf52840dk-8;[0] Value 12 at physical time 4677.0 ms and logical time 2750 ms
+1772905212.464891;nrf52840dk-6;[1] Value 12 at physical time 4727.1 ms and logical time 2800 ms
+1772905212.514723;nrf52840dk-7;[2] Value 12 at physical time 4777.2 ms and logical time 2850 ms
+1772905212.656662;nrf52840dk-8;[0] Value 13 at physical time 4927.0 ms and logical time 3000 ms
+1772905212.714548;nrf52840dk-6;[1] Value 13 at physical time 4976.9 ms and logical time 3050 ms
+1772905212.766401;nrf52840dk-7;[2] Value 13 at physical time 5027.8 ms and logical time 3100 ms
+1772905212.905708;nrf52840dk-8;[0] Value 14 at physical time 5177.0 ms and logical time 3250 ms
+1772905212.963685;nrf52840dk-6;[1] Value 14 at physical time 5226.7 ms and logical time 3300 ms
+1772905213.018579;nrf52840dk-7;[2] Value 14 at physical time 5276.4 ms and logical time 3350 ms
+1772905213.061406;nrf52840dk-7;(5328000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 6.4 ms
+1772905213.156369;nrf52840dk-8;[0] Value 15 at physical time 5427.0 ms and logical time 3500 ms
+1772905213.211457;nrf52840dk-6;[1] Value 15 at physical time 5477.6 ms and logical time 3550 ms
+1772905213.269612;nrf52840dk-7;[2] Value 15 at physical time 5527.2 ms and logical time 3600 ms
+1772905213.314462;nrf52840dk-6;(5614000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 6.6 ms
+1772905213.405451;nrf52840dk-8;[0] Value 16 at physical time 5677.0 ms and logical time 3750 ms
+1772905213.462175;nrf52840dk-6;[1] Value 16 at physical time 5726.4 ms and logical time 3800 ms
+1772905213.519282;nrf52840dk-7;[2] Value 16 at physical time 5776.4 ms and logical time 3850 ms
+1772905213.655179;nrf52840dk-8;[0] Value 17 at physical time 5927.0 ms and logical time 4000 ms
+1772905213.709596;nrf52840dk-6;[1] Value 17 at physical time 5977.2 ms and logical time 4050 ms
+1772905213.767659;nrf52840dk-7;[2] Value 17 at physical time 6026.7 ms and logical time 4100 ms
+1772905213.906143;nrf52840dk-8;[0] Value 18 at physical time 6177.0 ms and logical time 4250 ms
+1772905213.959473;nrf52840dk-6;[1] Value 18 at physical time 6227.1 ms and logical time 4300 ms
+1772905214.017573;nrf52840dk-7;[2] Value 18 at physical time 6277.0 ms and logical time 4350 ms
+1772905214.064622;nrf52840dk-7;(6331000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 8.9 ms
+1772905214.155836;nrf52840dk-8;[0] Value 19 at physical time 6427.0 ms and logical time 4500 ms
+1772905214.209064;nrf52840dk-6;[1] Value 19 at physical time 6476.9 ms and logical time 4550 ms
+1772905214.266658;nrf52840dk-7;[2] Value 19 at physical time 6527.1 ms and logical time 4600 ms
+1772905214.314157;nrf52840dk-6;(6613000000) [INFO] [CLOCK_SYNC] RTT: 6.0 ms OWD: 3.0 ms offset: 2.7 ms
+1772905214.405524;nrf52840dk-8;[0] Value 20 at physical time 6677.0 ms and logical time 4750 ms
+1772905214.458682;nrf52840dk-6;[1] Value 20 at physical time 6727.5 ms and logical time 4800 ms
+1772905214.515541;nrf52840dk-7;[2] Value 20 at physical time 6776.4 ms and logical time 4850 ms
+1772905214.656005;nrf52840dk-8;[0] Value 21 at physical time 6927.0 ms and logical time 5000 ms
+1772905214.707627;nrf52840dk-6;[1] Value 21 at physical time 6976.8 ms and logical time 5050 ms
+1772905214.764904;nrf52840dk-7;[2] Value 21 at physical time 7027.8 ms and logical time 5100 ms
+1772905214.906716;nrf52840dk-8;[0] Value 22 at physical time 7177.0 ms and logical time 5250 ms
+1772905214.957592;nrf52840dk-6;[1] Value 22 at physical time 7227.2 ms and logical time 5300 ms
+1772905215.013575;nrf52840dk-7;[2] Value 22 at physical time 7277.1 ms and logical time 5350 ms
+1772905215.060398;nrf52840dk-7;(7328000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 4.5 ms
+1772905215.155181;nrf52840dk-8;[0] Value 23 at physical time 7427.0 ms and logical time 5500 ms
+1772905215.207829;nrf52840dk-6;[1] Value 23 at physical time 7476.6 ms and logical time 5550 ms
+1772905215.261669;nrf52840dk-7;[2] Value 23 at physical time 7527.1 ms and logical time 5600 ms
+1772905215.315528;nrf52840dk-6;(7614000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.7 ms
+1772905215.405206;nrf52840dk-8;[0] Value 24 at physical time 7677.0 ms and logical time 5750 ms
+1772905215.458309;nrf52840dk-6;[1] Value 24 at physical time 7727.8 ms and logical time 5800 ms
+1772905215.511355;nrf52840dk-7;[2] Value 24 at physical time 7777.1 ms and logical time 5850 ms
+1772905215.656204;nrf52840dk-8;[0] Value 25 at physical time 7927.0 ms and logical time 6000 ms
+1772905215.707823;nrf52840dk-6;[1] Value 25 at physical time 7977.9 ms and logical time 6050 ms
+1772905215.760568;nrf52840dk-7;[2] Value 25 at physical time 8027.0 ms and logical time 6100 ms
+1772905215.906184;nrf52840dk-8;[0] Value 26 at physical time 8177.0 ms and logical time 6250 ms
+1772905215.956536;nrf52840dk-6;[1] Value 26 at physical time 8227.9 ms and logical time 6300 ms
+1772905216.008667;nrf52840dk-7;[2] Value 26 at physical time 8276.9 ms and logical time 6350 ms
+1772905216.060407;nrf52840dk-7;(8328000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 2.4 ms
+1772905216.155389;nrf52840dk-8;[0] Value 27 at physical time 8427.0 ms and logical time 6500 ms
+1772905216.208051;nrf52840dk-6;[1] Value 27 at physical time 8478.0 ms and logical time 6550 ms
+1772905216.258421;nrf52840dk-7;[2] Value 27 at physical time 8526.7 ms and logical time 6600 ms
+1772905216.319267;nrf52840dk-6;(8618000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 1.4 ms
+1772905216.406217;nrf52840dk-8;[0] Value 28 at physical time 8677.0 ms and logical time 6750 ms
+1772905216.456089;nrf52840dk-6;[1] Value 28 at physical time 8727.2 ms and logical time 6800 ms
+1772905216.508012;nrf52840dk-7;[2] Value 28 at physical time 8776.4 ms and logical time 6850 ms
+1772905216.656190;nrf52840dk-8;[0] Value 29 at physical time 8927.0 ms and logical time 7000 ms
+1772905216.705784;nrf52840dk-6;[1] Value 29 at physical time 8976.5 ms and logical time 7050 ms
+1772905216.758061;nrf52840dk-7;[2] Value 29 at physical time 9027.2 ms and logical time 7100 ms
+1772905216.905568;nrf52840dk-8;[0] Value 30 at physical time 9177.0 ms and logical time 7250 ms
+1772905216.955683;nrf52840dk-6;[1] Value 30 at physical time 9226.8 ms and logical time 7300 ms
+1772905217.006464;nrf52840dk-7;[2] Value 30 at physical time 9276.9 ms and logical time 7350 ms
+1772905217.062416;nrf52840dk-7;(9328000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.4 ms
+1772905217.155641;nrf52840dk-8;[0] Value 31 at physical time 9427.0 ms and logical time 7500 ms
+1772905217.205697;nrf52840dk-6;[1] Value 31 at physical time 9477.1 ms and logical time 7550 ms
+1772905217.256117;nrf52840dk-7;[2] Value 31 at physical time 9527.4 ms and logical time 7600 ms
+1772905217.321982;nrf52840dk-6;(9620000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.2 ms
+1772905217.406729;nrf52840dk-8;[0] Value 32 at physical time 9677.0 ms and logical time 7750 ms
+1772905217.456025;nrf52840dk-6;[1] Value 32 at physical time 9727.3 ms and logical time 7800 ms
+1772905217.504705;nrf52840dk-7;[2] Value 32 at physical time 9776.8 ms and logical time 7850 ms
+1772905217.655940;nrf52840dk-8;[0] Value 33 at physical time 9927.0 ms and logical time 8000 ms
+1772905217.704879;nrf52840dk-6;[1] Value 33 at physical time 9977.4 ms and logical time 8050 ms
+1772905217.754749;nrf52840dk-7;[2] Value 33 at physical time 10027.2 ms and logical time 8100 ms
+1772905217.905410;nrf52840dk-8;[0] Value 34 at physical time 10177.0 ms and logical time 8250 ms
+1772905217.955153;nrf52840dk-6;[1] Value 34 at physical time 10227.5 ms and logical time 8300 ms
+1772905218.004954;nrf52840dk-7;[2] Value 34 at physical time 10276.6 ms and logical time 8350 ms
+1772905218.063530;nrf52840dk-7;(10329000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -1.6 ms
+1772905218.155600;nrf52840dk-8;[0] Value 35 at physical time 10427.0 ms and logical time 8500 ms
+1772905218.204523;nrf52840dk-6;[1] Value 35 at physical time 10477.6 ms and logical time 8550 ms
+1772905218.254925;nrf52840dk-7;[2] Value 35 at physical time 10526.7 ms and logical time 8600 ms
+1772905218.323715;nrf52840dk-6;(10623000000) [INFO] [CLOCK_SYNC] RTT: 6.0 ms OWD: 3.0 ms offset: -0.7 ms
+1772905218.406270;nrf52840dk-8;[0] Value 36 at physical time 10677.0 ms and logical time 8750 ms
+1772905218.454647;nrf52840dk-6;[1] Value 36 at physical time 10726.6 ms and logical time 8800 ms
+1772905218.504491;nrf52840dk-7;[2] Value 36 at physical time 10777.6 ms and logical time 8850 ms
+1772905218.656509;nrf52840dk-8;[0] Value 37 at physical time 10927.0 ms and logical time 9000 ms
+1772905218.705561;nrf52840dk-6;[1] Value 37 at physical time 10976.5 ms and logical time 9050 ms
+1772905218.755460;nrf52840dk-7;[2] Value 37 at physical time 11026.5 ms and logical time 9100 ms
+1772905218.905346;nrf52840dk-8;[0] Value 38 at physical time 11177.0 ms and logical time 9250 ms
+1772905218.957610;nrf52840dk-6;[1] Value 38 at physical time 11227.4 ms and logical time 9300 ms
+1772905219.005304;nrf52840dk-7;[2] Value 38 at physical time 11276.5 ms and logical time 9350 ms
+1772905219.065804;nrf52840dk-7;(11332000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -1.6 ms
+1772905219.155362;nrf52840dk-8;[0] Value 39 at physical time 11427.0 ms and logical time 9500 ms
+1772905219.205622;nrf52840dk-6;[1] Value 39 at physical time 11477.3 ms and logical time 9550 ms
+1772905219.254517;nrf52840dk-7;[2] Value 39 at physical time 11527.3 ms and logical time 9600 ms
+1772905219.326537;nrf52840dk-6;(11626000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.2 ms
+1772905219.405648;nrf52840dk-8;[0] Value 40 at physical time 11677.0 ms and logical time 9750 ms
+1772905219.454522;nrf52840dk-6;[1] Value 40 at physical time 11727.3 ms and logical time 9800 ms
+1772905219.505263;nrf52840dk-7;[2] Value 40 at physical time 11777.1 ms and logical time 9850 ms
+1772905219.655604;nrf52840dk-8;[0] Value 41 at physical time 11927.0 ms and logical time 10000 ms
+1772905219.705746;nrf52840dk-6;[1] Value 41 at physical time 11977.3 ms and logical time 10050 ms
+1772905219.755740;nrf52840dk-7;[2] Value 41 at physical time 12027.0 ms and logical time 10100 ms
+1772905219.905367;nrf52840dk-8;[0] Value 42 at physical time 12177.0 ms and logical time 10250 ms
+1772905219.955595;nrf52840dk-6;[1] Value 42 at physical time 12227.4 ms and logical time 10300 ms
+1772905220.005673;nrf52840dk-7;[2] Value 42 at physical time 12276.8 ms and logical time 10350 ms
+1772905220.070471;nrf52840dk-7;(12337000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.2 ms
+1772905220.157975;nrf52840dk-8;[0] Value 43 at physical time 12427.0 ms and logical time 10500 ms
+1772905220.206762;nrf52840dk-6;[1] Value 43 at physical time 12477.5 ms and logical time 10550 ms
+1772905220.256497;nrf52840dk-7;[2] Value 43 at physical time 12527.8 ms and logical time 10600 ms
+1772905220.329916;nrf52840dk-6;(12628000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -1.0 ms
+1772905220.407142;nrf52840dk-8;[0] Value 44 at physical time 12678.0 ms and logical time 10750 ms
+1772905220.456483;nrf52840dk-6;[1] Value 44 at physical time 12727.4 ms and logical time 10800 ms
+1772905220.504681;nrf52840dk-7;[2] Value 44 at physical time 12777.0 ms and logical time 10850 ms
+1772905220.655330;nrf52840dk-8;[0] Value 45 at physical time 12927.0 ms and logical time 11000 ms
+1772905220.704932;nrf52840dk-6;[1] Value 45 at physical time 12977.2 ms and logical time 11050 ms
+1772905220.754451;nrf52840dk-7;[2] Value 45 at physical time 13027.1 ms and logical time 11100 ms
+1772905220.905564;nrf52840dk-8;[0] Value 46 at physical time 13177.0 ms and logical time 11250 ms
+1772905220.956719;nrf52840dk-6;[1] Value 46 at physical time 13226.9 ms and logical time 11300 ms
+1772905221.006045;nrf52840dk-7;[2] Value 46 at physical time 13277.3 ms and logical time 11350 ms
+1772905221.072055;nrf52840dk-7;(13339000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -2.0 ms
+1772905221.156317;nrf52840dk-8;[0] Value 47 at physical time 13427.0 ms and logical time 11500 ms
+1772905221.205716;nrf52840dk-6;[1] Value 47 at physical time 13476.7 ms and logical time 11550 ms
+1772905221.255150;nrf52840dk-7;[2] Value 47 at physical time 13527.1 ms and logical time 11600 ms
+1772905221.333698;nrf52840dk-6;(13633000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.9 ms
+1772905221.405413;nrf52840dk-8;[0] Value 48 at physical time 13677.0 ms and logical time 11750 ms
+1772905221.455814;nrf52840dk-6;[1] Value 48 at physical time 13726.7 ms and logical time 11800 ms
+1772905221.505583;nrf52840dk-7;[2] Value 48 at physical time 13776.7 ms and logical time 11850 ms
+1772905221.656748;nrf52840dk-8;[0] Value 49 at physical time 13927.0 ms and logical time 12000 ms
+1772905221.707547;nrf52840dk-6;[1] Value 49 at physical time 13976.8 ms and logical time 12050 ms
+1772905221.755771;nrf52840dk-7;[2] Value 49 at physical time 14027.3 ms and logical time 12100 ms
+1772905221.908368;nrf52840dk-8;[0] Value 50 at physical time 14178.0 ms and logical time 12250 ms
+1772905221.956467;nrf52840dk-6;[1] Value 50 at physical time 14227.0 ms and logical time 12300 ms
+1772905222.006665;nrf52840dk-7;[2] Value 50 at physical time 14276.9 ms and logical time 12350 ms
+1772905222.077303;nrf52840dk-7;(14343000000) [INFO] [CLOCK_SYNC] RTT: 6.0 ms OWD: 3.0 ms offset: 0.2 ms
+1772905222.155436;nrf52840dk-8;[0] Value 51 at physical time 14427.0 ms and logical time 12500 ms
+1772905222.204624;nrf52840dk-6;[1] Value 51 at physical time 14476.2 ms and logical time 12550 ms
+1772905222.257090;nrf52840dk-7;[2] Value 51 at physical time 14526.8 ms and logical time 12600 ms
+1772905222.337644;nrf52840dk-6;(14635000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -0.8 ms
+1772905222.406170;nrf52840dk-8;[0] Value 52 at physical time 14677.0 ms and logical time 12750 ms
+1772905222.455403;nrf52840dk-6;[1] Value 52 at physical time 14727.2 ms and logical time 12800 ms
+1772905222.506630;nrf52840dk-7;[2] Value 52 at physical time 14776.8 ms and logical time 12850 ms
+1772905222.656981;nrf52840dk-8;[0] Value 53 at physical time 14927.0 ms and logical time 13000 ms
+1772905222.705692;nrf52840dk-6;[1] Value 53 at physical time 14977.0 ms and logical time 13050 ms
+1772905222.757034;nrf52840dk-7;[2] Value 53 at physical time 15027.9 ms and logical time 13100 ms
+1772905222.905978;nrf52840dk-8;[0] Value 54 at physical time 15177.0 ms and logical time 13250 ms
+1772905222.955989;nrf52840dk-6;[1] Value 54 at physical time 15226.8 ms and logical time 13300 ms
+1772905223.006076;nrf52840dk-7;[2] Value 54 at physical time 15276.9 ms and logical time 13350 ms
+1772905223.078865;nrf52840dk-7;(15345000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -0.7 ms
+1772905223.157031;nrf52840dk-8;[0] Value 55 at physical time 15427.0 ms and logical time 13500 ms
+1772905223.207841;nrf52840dk-6;[1] Value 55 at physical time 15477.6 ms and logical time 13550 ms
+1772905223.256935;nrf52840dk-7;[2] Value 55 at physical time 15526.8 ms and logical time 13600 ms
+1772905223.340884;nrf52840dk-6;(15639000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.9 ms
+1772905223.405751;nrf52840dk-8;[0] Value 56 at physical time 15677.0 ms and logical time 13750 ms
+1772905223.456625;nrf52840dk-6;[1] Value 56 at physical time 15727.6 ms and logical time 13800 ms
+1772905223.508208;nrf52840dk-7;[2] Value 56 at physical time 15776.6 ms and logical time 13850 ms
+1772905223.656741;nrf52840dk-8;[0] Value 57 at physical time 15927.0 ms and logical time 14000 ms
+1772905223.707030;nrf52840dk-6;[1] Value 57 at physical time 15977.8 ms and logical time 14050 ms
+1772905223.756907;nrf52840dk-7;[2] Value 57 at physical time 16027.4 ms and logical time 14100 ms
+1772905223.907479;nrf52840dk-8;[0] Value 58 at physical time 16178.0 ms and logical time 14250 ms
+1772905223.957556;nrf52840dk-6;[1] Value 58 at physical time 16228.0 ms and logical time 14300 ms
+1772905224.007564;nrf52840dk-7;[2] Value 58 at physical time 16277.2 ms and logical time 14350 ms
+1772905224.081648;nrf52840dk-7;(16349000000) [INFO] [CLOCK_SYNC] RTT: 6.0 ms OWD: 3.0 ms offset: 0.9 ms
+1772905224.156118;nrf52840dk-8;[0] Value 59 at physical time 16427.0 ms and logical time 14500 ms
+1772905224.205056;nrf52840dk-6;[1] Value 59 at physical time 16477.2 ms and logical time 14550 ms
+1772905224.257851;nrf52840dk-7;[2] Value 59 at physical time 16527.3 ms and logical time 14600 ms
+1772905224.340783;nrf52840dk-6;(16640000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -0.8 ms
+1772905224.405923;nrf52840dk-8;[0] Value 60 at physical time 16677.0 ms and logical time 14750 ms
+1772905224.454775;nrf52840dk-6;[1] Value 60 at physical time 16726.2 ms and logical time 14800 ms
+1772905224.507496;nrf52840dk-7;[2] Value 60 at physical time 16777.4 ms and logical time 14850 ms
+1772905224.655738;nrf52840dk-8;[0] Value 61 at physical time 16927.0 ms and logical time 15000 ms
+1772905224.707007;nrf52840dk-6;[1] Value 61 at physical time 16977.0 ms and logical time 15050 ms
+1772905224.756716;nrf52840dk-7;[2] Value 61 at physical time 17027.6 ms and logical time 15100 ms
+1772905224.905919;nrf52840dk-8;[0] Value 62 at physical time 17177.0 ms and logical time 15250 ms
+1772905224.957488;nrf52840dk-6;[1] Value 62 at physical time 17226.8 ms and logical time 15300 ms
+1772905225.005770;nrf52840dk-7;[2] Value 62 at physical time 17276.7 ms and logical time 15350 ms
+1772905225.083602;nrf52840dk-7;(17351000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.5 ms
+1772905225.155475;nrf52840dk-8;[0] Value 63 at physical time 17427.0 ms and logical time 15500 ms
+1772905225.205876;nrf52840dk-6;[1] Value 63 at physical time 17477.7 ms and logical time 15550 ms
+1772905225.257220;nrf52840dk-7;[2] Value 63 at physical time 17526.9 ms and logical time 15600 ms
+1772905225.345938;nrf52840dk-6;(17645000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.9 ms
+1772905225.405447;nrf52840dk-8;[0] Value 64 at physical time 17677.0 ms and logical time 15750 ms
+1772905225.456009;nrf52840dk-6;[1] Value 64 at physical time 17726.6 ms and logical time 15800 ms
+1772905225.505567;nrf52840dk-7;[2] Value 64 at physical time 17777.0 ms and logical time 15850 ms
+1772905225.656252;nrf52840dk-8;[0] Value 65 at physical time 17927.0 ms and logical time 16000 ms
+1772905225.705912;nrf52840dk-6;[1] Value 65 at physical time 17976.8 ms and logical time 16050 ms
+1772905225.755642;nrf52840dk-7;[2] Value 65 at physical time 18027.1 ms and logical time 16100 ms
+1772905225.906539;nrf52840dk-8;[0] Value 66 at physical time 18178.0 ms and logical time 16250 ms
+1772905225.955798;nrf52840dk-6;[1] Value 66 at physical time 18227.0 ms and logical time 16300 ms
+1772905226.006861;nrf52840dk-7;[2] Value 66 at physical time 18277.2 ms and logical time 16350 ms
+1772905226.086015;nrf52840dk-7;(18353000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.3 ms
+1772905226.155471;nrf52840dk-8;[0] Value 67 at physical time 18427.0 ms and logical time 16500 ms
+1772905226.205652;nrf52840dk-6;[1] Value 67 at physical time 18476.2 ms and logical time 16550 ms
+1772905226.257055;nrf52840dk-7;[2] Value 67 at physical time 18527.4 ms and logical time 16600 ms
+1772905226.349217;nrf52840dk-6;(18647000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -0.8 ms
+1772905226.407459;nrf52840dk-8;[0] Value 68 at physical time 18678.0 ms and logical time 16750 ms
+1772905226.455984;nrf52840dk-6;[1] Value 68 at physical time 18726.2 ms and logical time 16800 ms
+1772905226.505603;nrf52840dk-7;[2] Value 68 at physical time 18776.5 ms and logical time 16850 ms
+1772905226.656236;nrf52840dk-8;[0] Value 69 at physical time 18927.0 ms and logical time 17000 ms
+1772905226.706066;nrf52840dk-6;[1] Value 69 at physical time 18977.1 ms and logical time 17050 ms
+1772905226.756365;nrf52840dk-7;[2] Value 69 at physical time 19027.6 ms and logical time 17100 ms
+1772905226.906190;nrf52840dk-8;[0] Value 70 at physical time 19177.0 ms and logical time 17250 ms
+1772905226.956995;nrf52840dk-6;[1] Value 70 at physical time 19226.9 ms and logical time 17300 ms
+1772905227.005378;nrf52840dk-7;[2] Value 70 at physical time 19276.7 ms and logical time 17350 ms
+1772905227.087615;nrf52840dk-7;(19355000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -0.5 ms
+1772905227.155685;nrf52840dk-8;[0] Value 71 at physical time 19427.0 ms and logical time 17500 ms
+1772905227.205881;nrf52840dk-6;[1] Value 71 at physical time 19476.7 ms and logical time 17550 ms
+1772905227.255605;nrf52840dk-7;[2] Value 71 at physical time 19526.7 ms and logical time 17600 ms
+1772905227.352861;nrf52840dk-6;(19652000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.9 ms
+1772905227.406299;nrf52840dk-8;[0] Value 72 at physical time 19677.0 ms and logical time 17750 ms
+1772905227.456023;nrf52840dk-6;[1] Value 72 at physical time 19726.7 ms and logical time 17800 ms
+1772905227.505663;nrf52840dk-7;[2] Value 72 at physical time 19776.7 ms and logical time 17850 ms
+1772905227.657654;nrf52840dk-8;[0] Value 73 at physical time 19927.0 ms and logical time 18000 ms
+1772905227.706198;nrf52840dk-6;[1] Value 73 at physical time 19976.8 ms and logical time 18050 ms
+1772905227.755874;nrf52840dk-7;[2] Value 73 at physical time 20026.6 ms and logical time 18100 ms
+1772905227.906816;nrf52840dk-8;[0] Value 74 at physical time 20177.0 ms and logical time 18250 ms
+1772905227.957628;nrf52840dk-6;[1] Value 74 at physical time 20227.0 ms and logical time 18300 ms
+1772905228.006214;nrf52840dk-7;[2] Value 74 at physical time 20276.6 ms and logical time 18350 ms
+1772905228.091440;nrf52840dk-7;(20358000000) [INFO] [CLOCK_SYNC] RTT: 6.0 ms OWD: 3.0 ms offset: -0.4 ms
+1772905228.157769;nrf52840dk-8;[0] Value 75 at physical time 20428.0 ms and logical time 18500 ms
+1772905228.205875;nrf52840dk-6;[1] Value 75 at physical time 20477.2 ms and logical time 18550 ms
+1772905228.256871;nrf52840dk-7;[2] Value 75 at physical time 20526.5 ms and logical time 18600 ms
+1772905228.355027;nrf52840dk-6;(20654000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -0.9 ms
+1772905228.406648;nrf52840dk-8;[0] Value 76 at physical time 20678.0 ms and logical time 18750 ms
+1772905228.456926;nrf52840dk-6;[1] Value 76 at physical time 20727.2 ms and logical time 18800 ms
+1772905228.505874;nrf52840dk-7;[2] Value 76 at physical time 20776.4 ms and logical time 18850 ms
+1772905228.656298;nrf52840dk-8;[0] Value 77 at physical time 20927.0 ms and logical time 19000 ms
+1772905228.705272;nrf52840dk-6;[1] Value 77 at physical time 20977.1 ms and logical time 19050 ms
+1772905228.755682;nrf52840dk-7;[2] Value 77 at physical time 21027.3 ms and logical time 19100 ms
+1772905228.906797;nrf52840dk-8;[0] Value 78 at physical time 21177.0 ms and logical time 19250 ms
+1772905228.955960;nrf52840dk-6;[1] Value 78 at physical time 21226.9 ms and logical time 19300 ms
+1772905229.007286;nrf52840dk-7;[2] Value 78 at physical time 21277.2 ms and logical time 19350 ms
+1772905229.095076;nrf52840dk-7;(21361000000) [INFO] [CLOCK_SYNC] RTT: 6.0 ms OWD: 3.0 ms offset: -0.4 ms
+1772905229.156654;nrf52840dk-8;[0] Value 79 at physical time 21427.0 ms and logical time 19500 ms
+1772905229.205909;nrf52840dk-6;[1] Value 79 at physical time 21476.7 ms and logical time 19550 ms
+1772905229.256265;nrf52840dk-7;[2] Value 79 at physical time 21527.1 ms and logical time 19600 ms
+1772905229.360567;nrf52840dk-6;(21659000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -0.1 ms
+1772905229.405977;nrf52840dk-8;[0] Value 80 at physical time 21677.0 ms and logical time 19750 ms
+1772905229.457535;nrf52840dk-6;[1] Value 80 at physical time 21726.6 ms and logical time 19800 ms
+1772905229.505870;nrf52840dk-7;[2] Value 80 at physical time 21777.0 ms and logical time 19850 ms
+1772905229.656155;nrf52840dk-8;[0] Value 81 at physical time 21927.0 ms and logical time 20000 ms
+1772905229.705869;nrf52840dk-6;[1] Value 81 at physical time 21977.5 ms and logical time 20050 ms
+1772905229.756177;nrf52840dk-7;[2] Value 81 at physical time 22026.9 ms and logical time 20100 ms
+1772905229.906427;nrf52840dk-8;[0] Value 82 at physical time 22177.0 ms and logical time 20250 ms
+1772905229.957156;nrf52840dk-6;[1] Value 82 at physical time 22227.4 ms and logical time 20300 ms
+1772905230.008275;nrf52840dk-7;[2] Value 82 at physical time 22276.8 ms and logical time 20350 ms
+1772905230.098835;nrf52840dk-7;(22364000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.1 ms
+1772905230.156603;nrf52840dk-8;[0] Value 83 at physical time 22427.0 ms and logical time 20500 ms
+1772905230.206802;nrf52840dk-6;[1] Value 83 at physical time 22477.4 ms and logical time 20550 ms
+1772905230.256705;nrf52840dk-7;[2] Value 83 at physical time 22527.8 ms and logical time 20600 ms
+1772905230.362782;nrf52840dk-6;(22662000000) [INFO] [CLOCK_SYNC] RTT: 6.0 ms OWD: 3.0 ms offset: 0.6 ms
+1772905230.406057;nrf52840dk-8;[0] Value 84 at physical time 22677.0 ms and logical time 20750 ms
+1772905230.456836;nrf52840dk-6;[1] Value 84 at physical time 22727.4 ms and logical time 20800 ms
+1772905230.506701;nrf52840dk-7;[2] Value 84 at physical time 22777.8 ms and logical time 20850 ms
+1772905230.658773;nrf52840dk-8;[0] Value 85 at physical time 22927.0 ms and logical time 21000 ms
+1772905230.707355;nrf52840dk-6;[1] Value 85 at physical time 22977.5 ms and logical time 21050 ms
+1772905230.757462;nrf52840dk-7;[2] Value 85 at physical time 23027.7 ms and logical time 21100 ms
+1772905230.906899;nrf52840dk-8;[0] Value 86 at physical time 23178.0 ms and logical time 21250 ms
+1772905230.957497;nrf52840dk-6;[1] Value 86 at physical time 23226.6 ms and logical time 21300 ms
+1772905231.007360;nrf52840dk-7;[2] Value 86 at physical time 23277.7 ms and logical time 21350 ms
+1772905231.100944;nrf52840dk-7;(23367000000) [INFO] [CLOCK_SYNC] RTT: 6.0 ms OWD: 3.0 ms offset: -0.1 ms
+1772905231.155933;nrf52840dk-8;[0] Value 87 at physical time 23427.0 ms and logical time 21500 ms
+1772905231.206069;nrf52840dk-6;[1] Value 87 at physical time 23476.7 ms and logical time 21550 ms
+1772905231.256958;nrf52840dk-7;[2] Value 87 at physical time 23527.7 ms and logical time 21600 ms
+1772905231.365073;nrf52840dk-6;(23664000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -0.3 ms
+1772905231.406857;nrf52840dk-8;[0] Value 88 at physical time 23678.0 ms and logical time 21750 ms
+1772905231.457081;nrf52840dk-6;[1] Value 88 at physical time 23727.8 ms and logical time 21800 ms
+1772905231.507979;nrf52840dk-7;[2] Value 88 at physical time 23777.7 ms and logical time 21850 ms
+1772905231.655708;nrf52840dk-8;[0] Value 89 at physical time 23927.0 ms and logical time 22000 ms
+1772905231.706887;nrf52840dk-6;[1] Value 89 at physical time 23976.7 ms and logical time 22050 ms
+1772905231.758102;nrf52840dk-7;[2] Value 89 at physical time 24027.6 ms and logical time 22100 ms
+1772905231.906975;nrf52840dk-8;[0] Value 90 at physical time 24177.0 ms and logical time 22250 ms
+1772905231.957064;nrf52840dk-6;[1] Value 90 at physical time 24226.6 ms and logical time 22300 ms
+1772905232.006204;nrf52840dk-7;[2] Value 90 at physical time 24276.6 ms and logical time 22350 ms
+1772905232.103926;nrf52840dk-7;(24371000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.5 ms
+1772905232.156299;nrf52840dk-8;[0] Value 91 at physical time 24427.0 ms and logical time 22500 ms
+1772905232.206099;nrf52840dk-6;[1] Value 91 at physical time 24477.5 ms and logical time 22550 ms
+1772905232.256985;nrf52840dk-7;[2] Value 91 at physical time 24526.6 ms and logical time 22600 ms
+1772905232.370340;nrf52840dk-6;(24668000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -0.0 ms
+1772905232.405775;nrf52840dk-8;[0] Value 92 at physical time 24677.0 ms and logical time 22750 ms
+1772905232.457090;nrf52840dk-6;[1] Value 92 at physical time 24726.5 ms and logical time 22800 ms
+1772905232.506702;nrf52840dk-7;[2] Value 92 at physical time 24776.7 ms and logical time 22850 ms
+1772905232.655913;nrf52840dk-8;[0] Value 93 at physical time 24927.0 ms and logical time 23000 ms
+1772905232.706126;nrf52840dk-6;[1] Value 93 at physical time 24976.4 ms and logical time 23050 ms
+1772905232.756427;nrf52840dk-7;[2] Value 93 at physical time 25026.8 ms and logical time 23100 ms
+1772905232.906182;nrf52840dk-8;[0] Value 94 at physical time 25177.0 ms and logical time 23250 ms
+1772905232.957129;nrf52840dk-6;[1] Value 94 at physical time 25227.4 ms and logical time 23300 ms
+1772905233.007227;nrf52840dk-7;[2] Value 94 at physical time 25276.9 ms and logical time 23350 ms
+1772905233.108109;nrf52840dk-7;(25373000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -0.0 ms
+1772905233.156974;nrf52840dk-8;[0] Value 95 at physical time 25427.0 ms and logical time 23500 ms
+1772905233.207948;nrf52840dk-6;[1] Value 95 at physical time 25477.4 ms and logical time 23550 ms
+1772905233.258385;nrf52840dk-7;[2] Value 95 at physical time 25526.9 ms and logical time 23600 ms
+1772905233.373382;nrf52840dk-6;(25672000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.1 ms
+1772905233.405996;nrf52840dk-8;[0] Value 96 at physical time 25677.0 ms and logical time 23750 ms
+1772905233.457003;nrf52840dk-6;[1] Value 96 at physical time 25726.4 ms and logical time 23800 ms
+1772905233.506136;nrf52840dk-7;[2] Value 96 at physical time 25776.9 ms and logical time 23850 ms
+1772905233.656663;nrf52840dk-8;[0] Value 97 at physical time 25927.0 ms and logical time 24000 ms
+1772905233.706203;nrf52840dk-6;[1] Value 97 at physical time 25977.4 ms and logical time 24050 ms
+1772905233.756050;nrf52840dk-7;[2] Value 97 at physical time 26026.9 ms and logical time 24100 ms
+1772905233.907019;nrf52840dk-8;[0] Value 98 at physical time 26177.0 ms and logical time 24250 ms
+1772905233.957820;nrf52840dk-6;[1] Value 98 at physical time 26227.4 ms and logical time 24300 ms
+1772905234.008065;nrf52840dk-7;[2] Value 98 at physical time 26276.9 ms and logical time 24350 ms
+1772905234.110909;nrf52840dk-7;(26377000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -0.1 ms
+1772905234.155917;nrf52840dk-8;[0] Value 99 at physical time 26427.0 ms and logical time 24500 ms
+1772905234.207180;nrf52840dk-6;[1] Value 99 at physical time 26477.4 ms and logical time 24550 ms
+1772905234.258015;nrf52840dk-7;[2] Value 99 at physical time 26527.9 ms and logical time 24600 ms
+1772905234.375012;nrf52840dk-6;(26675000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.1 ms
+1772905234.406939;nrf52840dk-8;[0] Value 100 at physical time 26677.0 ms and logical time 24750 ms
+1772905234.456272;nrf52840dk-6;[1] Value 100 at physical time 26727.4 ms and logical time 24800 ms
+1772905234.506969;nrf52840dk-7;[2] Value 100 at physical time 26776.9 ms and logical time 24850 ms
+1772905234.656459;nrf52840dk-8;[0] Value 101 at physical time 26927.0 ms and logical time 25000 ms
+1772905234.707497;nrf52840dk-6;[1] Value 101 at physical time 26977.4 ms and logical time 25050 ms
+1772905234.758115;nrf52840dk-7;[2] Value 101 at physical time 27027.9 ms and logical time 25100 ms
+1772905234.906871;nrf52840dk-8;[0] Value 102 at physical time 27177.0 ms and logical time 25250 ms
+1772905234.957615;nrf52840dk-6;[1] Value 102 at physical time 27227.4 ms and logical time 25300 ms
+1772905235.007381;nrf52840dk-7;[2] Value 102 at physical time 27276.9 ms and logical time 25350 ms
+1772905235.114150;nrf52840dk-7;(27379000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.0 ms
+1772905235.156925;nrf52840dk-8;[0] Value 103 at physical time 27428.0 ms and logical time 25500 ms
+1772905235.206016;nrf52840dk-6;[1] Value 103 at physical time 27476.4 ms and logical time 25550 ms
+1772905235.256054;nrf52840dk-7;[2] Value 103 at physical time 27526.9 ms and logical time 25600 ms
+1772905235.380235;nrf52840dk-6;(27678000000) [INFO] [CLOCK_SYNC] RTT: 6.0 ms OWD: 3.0 ms offset: 0.6 ms
+1772905235.407709;nrf52840dk-8;[0] Value 104 at physical time 27677.0 ms and logical time 25750 ms
+1772905235.457778;nrf52840dk-6;[1] Value 104 at physical time 27727.4 ms and logical time 25800 ms
+1772905235.508379;nrf52840dk-7;[2] Value 104 at physical time 27777.9 ms and logical time 25850 ms
+1772905235.658007;nrf52840dk-8;[0] Value 105 at physical time 27928.0 ms and logical time 26000 ms
+1772905235.707795;nrf52840dk-6;[1] Value 105 at physical time 27976.6 ms and logical time 26050 ms
+1772905235.756951;nrf52840dk-7;[2] Value 105 at physical time 28026.9 ms and logical time 26100 ms
+1772905235.905945;nrf52840dk-8;[0] Value 106 at physical time 28177.0 ms and logical time 26250 ms
+1772905235.956151;nrf52840dk-6;[1] Value 106 at physical time 28226.7 ms and logical time 26300 ms
+1772905236.006047;nrf52840dk-7;[2] Value 106 at physical time 28276.9 ms and logical time 26350 ms
+1772905236.116062;nrf52840dk-7;(28383000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: 0.4 ms
+1772905236.156914;nrf52840dk-8;[0] Value 107 at physical time 28427.0 ms and logical time 26500 ms
+1772905236.207540;nrf52840dk-6;[1] Value 107 at physical time 28476.8 ms and logical time 26550 ms
+1772905236.255942;nrf52840dk-7;[2] Value 107 at physical time 28526.9 ms and logical time 26600 ms
+1772905236.382153;nrf52840dk-6;(28681000000) [INFO] [CLOCK_SYNC] RTT: 7.0 ms OWD: 3.5 ms offset: -0.5 ms
+1772905236.406984;nrf52840dk-8;[0] Value 108 at physical time 28677.0 ms and logical time 26750 ms
+1772905236.457865;nrf52840dk-6;[1] Value 108 at physical time 28726.9 ms and logical time 26800 ms
+1772905236.507632;nrf52840dk-7;[2] Value 108 at physical time 28777.0 ms and logical time 26850 ms
+1772905236.655948;nrf52840dk-8;[0] Value 109 at physical time 28927.0 ms and logical time 27000 ms
+1772905236.706166;nrf52840dk-6;[1] Value 109 at physical time 28976.8 ms and logical time 27050 ms
+1772905236.756099;nrf52840dk-7;[2] Value 109 at physical time 29027.1 ms and logical time 27100 ms
