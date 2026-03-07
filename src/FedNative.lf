@@ -1,0 +1,39 @@
+target uC {
+  platform: Native,
+  logging: warn,
+  clock-sync: off
+}
+
+reactor Source {
+  output out: int
+
+  state counter: int = 0
+
+  timer t(0, 500 msec)
+
+  reaction(t) -> out {=
+    self->counter++;
+
+    lf_set(out, self->counter);
+
+    printf("Source sourced: %d\n", self->counter);
+  =}
+}
+
+reactor Sink {
+  input in: int
+
+  reaction(in) {=
+    printf("Sink received: %d\n", in->value);
+  =}
+}
+
+federated reactor {
+  @interface_tcp(address="127.0.0.1")
+  srcFed = new Source()
+  @interface_tcp(address="127.0.0.2")
+  snkFed = new Sink()
+
+  @buffer(20)
+  srcFed.out -> snkFed.in after 20 msec
+}
