@@ -268,8 +268,26 @@ def print_delay_report(rising_delays: list[MatchedDelay], falling_delays: list[M
     print_stats("Falling stats", [item.delay_ms for item in falling_delays])
 
 
-def _draw_delay_overlays(ax, delays: list[MatchedDelay], y_level: float) -> None:
-    for item in delays:
+def _build_ping_pong_levels(count: int, y_min: float, y_max: float, levels: int = 9) -> list[float]:
+    if count <= 0:
+        return []
+
+    if y_max <= y_min:
+        return [y_min] * count
+
+    levels = max(2, levels)
+    up = [y_min + (y_max - y_min) * idx / (levels - 1) for idx in range(levels)]
+    down = up[-2:0:-1]
+    pattern = up + down
+
+    result: list[float] = []
+    while len(result) < count:
+        result.extend(pattern)
+    return result[:count]
+
+
+def _draw_delay_overlays(ax, delays: list[MatchedDelay], y_levels: list[float]) -> None:
+    for item, y_level in zip(delays, y_levels):
         ax.hlines(
             y=y_level,
             xmin=item.ch1_time,
@@ -312,15 +330,18 @@ def plot_signals(
     ax_signal.plot(data.time_values, data.ch1_values, label=data.channel_names[0], linewidth=1)
     ax_signal.plot(data.time_values, data.ch2_values, label=data.channel_names[1], linewidth=1)
 
-    y_min = min(min(data.ch1_values), min(data.ch2_values))
-    y_max = max(max(data.ch1_values), max(data.ch2_values))
+    y_min = min(min(data.ch1_values), min(data.ch2_values)) * 1.1
+    y_max = min(max(data.ch1_values), max(data.ch2_values)) * 0.9
     y_span = y_max - y_min if y_max > y_min else 1.0
-    ch1_mid = 0.5 * (min(data.ch1_values) + max(data.ch1_values))
-    ch2_mid = 0.5 * (min(data.ch2_values) + max(data.ch2_values))
-    connector_y = 0.5 * (ch1_mid + ch2_mid)
 
     if show_connectors:
-        _draw_delay_overlays(ax_signal, all_delays, y_level=connector_y)
+        connector_margin = 0.06 * y_span
+        connector_y_levels = _build_ping_pong_levels(
+            count=len(all_delays),
+            y_min=y_min + connector_margin,
+            y_max=y_max - connector_margin,
+        )
+        _draw_delay_overlays(ax_signal, all_delays, y_levels=connector_y_levels)
 
     ax_signal.set_xlabel(f"Time ({horizontal_unit})")
     ax_signal.set_ylabel(f"Voltage ({y_unit})")
@@ -422,6 +443,11 @@ def main() -> None:
             "to save next to CSV with .png extension."
         ),
     )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Print detailed phase/delay edge matches and delay statistics in console.",
+    )
     args = parser.parse_args()
 
     csv_path = Path(args.csv_file)
@@ -438,7 +464,8 @@ def main() -> None:
     data = read_siglent_csv(csv_path)
     print_summary(data)
     rising_delays, falling_delays, _, _ = analyze_phase_delay(data)
-    print_delay_report(rising_delays, falling_delays)
+    if args.verbose:
+        print_delay_report(rising_delays, falling_delays)
     plot_signals(
         data,
         rising_delays,

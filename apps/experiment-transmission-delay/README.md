@@ -1,6 +1,6 @@
 Setup:
-- nRF54L15DK: Source
-- nRF52840DK: Sink
+- `nRF54L15DK`: Source
+- `nRF52840DK`: Sink
 - Power supply: USB connection (Laptop)
 
 If not stated otherwise, all traces have a duration of exactly 14 seconds.
