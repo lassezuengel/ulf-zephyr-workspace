@@ -236,6 +236,7 @@ def plot_neighbor_pair_delays(
   pair_delays: dict[tuple[int, int], list[tuple[int, float]]],
   logical_delay: int,
   total_only: bool = False,
+  svg_output_path: Path | None = None,
 ) -> None:
   try:
     import matplotlib.pyplot as plt
@@ -310,10 +311,10 @@ def plot_neighbor_pair_delays(
 
   axis.axhline(0.0, linestyle="--", linewidth=1.0, color="black")
   axis.set_title(
-    "Adjusted total accumulated delay" if total_only else "Adjusted delays per neighboring pair + total"
+    "Estimated total error" if total_only else "Estimated error per neighboring pair + total"
   )
-  axis.set_xlabel("Value")
-  axis.set_ylabel("Delay (ms)")
+  axis.set_xlabel("Message #")
+  axis.set_ylabel("Delta (ms)")
   axis.grid(True, linestyle=":", alpha=0.5)
 
   if plotted_series_count > 0:
@@ -327,7 +328,7 @@ def plot_neighbor_pair_delays(
       marker="o",
       linewidth=1.8,
       color="tab:blue",
-      label="Average cumulative delay",
+      label="Average clock difference",
     )
     summary_axis.fill_between(
       node_ids,
@@ -345,20 +346,25 @@ def plot_neighbor_pair_delays(
     first_node = min(node_ids)
     summary_axis.set_xlim(first_node, max(node_ids))
     summary_axis.set_xticks(node_ids)
-    summary_axis.set_title(f"Cumulative delay from node {first_node} to node b")
+    summary_axis.set_title(f"Approximate reaction timing error (delta) between node {first_node} and node b")
     summary_axis.set_xlabel("Node b")
-    summary_axis.set_ylabel("Delay (ms)")
+    summary_axis.set_ylabel("Delta (ms)")
     summary_axis.grid(True, linestyle=":", alpha=0.5)
     summary_axis.axhline(0.0, linestyle="--", linewidth=1.0, color="black")
     summary_axis.legend()
   else:
-    summary_axis.set_title("Cumulative delay summary")
+    summary_axis.set_title("Reaction timing error summary")
     summary_axis.set_xlabel("Node b")
-    summary_axis.set_ylabel("Delay (ms)")
+    summary_axis.set_ylabel("Delta (ms)")
     summary_axis.grid(True, linestyle=":", alpha=0.5)
 
-  fig.suptitle(f"Adjusted physical delays (physical - logical, logical_delay={logical_delay} ms)")
+  fig.suptitle(f"Approx. reaction timing error (logical delay: {logical_delay} ms)")
   fig.tight_layout()
+  if svg_output_path is not None:
+    fig.savefig(svg_output_path, format="svg")
+    print(f"Saved SVG plot to {svg_output_path}")
+    plt.close(fig)
+    return
   plt.show()
 
 
@@ -383,6 +389,11 @@ def main():
     "--total_only",
     action="store_true",
     help="Only show accumulated delay from node 0 to the last node (pointwise sum across neighboring pairs).",
+  )
+  parser.add_argument(
+    "--svg",
+    action="store_true",
+    help="Save plot as SVG next to the input log file and do not open an interactive window.",
   )
   args = parser.parse_args()
 
@@ -413,7 +424,7 @@ def main():
     first_fed_id = 0
     last_fed_id = max_fed_id
     if not total_delays:
-      print("No common values across all neighboring pairs for total accumulated delay output.")
+      print("No common values across all neighboring pairs for clock error output.")
     for value, delay in total_delays:
       print(f"Total delay for {first_fed_id}->{last_fed_id} with value {value}: {round(delay, 2)} ms")
   else:
@@ -428,6 +439,7 @@ def main():
     pair_delays,
     logical_delay=args.logical_delay,
     total_only=args.total_only,
+    svg_output_path=Path(args.log_file).with_suffix(".svg") if args.svg else None,
   )
 
 if __name__ == "__main__":

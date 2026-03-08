@@ -1,4 +1,5 @@
-Setup:
+# Setup
+
 - `nRF54L15DK`: Source
 - `nRF52840DK`: Sink
 - Power supply: USB connection (Laptop)
