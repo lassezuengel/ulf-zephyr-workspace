@@ -5,9 +5,28 @@ Evaluates multi-hop transmission delays and clock synchronization errors. The pr
 - `3001CDK` for all federates (`hailo-desktop`)
 - Power supply: USB connection (Raspberry PI)
 
-For evaluation, instead of using the oscilloscope setup, we just look at the physical timestamps of the events in the log files.
+We evaluate programs of the following shape (example for `n=3` federates):
 
-# Logging and Parsing
+<p align="center">
+  <img src="src/FedMultiClockSyncError.svg" alt="Program for n=3" title="Program with logical connections" width="700" />
+</p>
+<p align="center">
+  <span style="display:inline-block; width:49%;"><em>Figure 1: Program for n=3.</em></span>
+</p>
+
+# Experiment: Evaluating reported PTP offsets
+
+In this experiment, we evaluate the reported PTP offsets of the federates. The PTP offset is the difference between the local clock of a federate and the reference clock (e.g., the PTP master). By analyzing the reported PTP offsets, we can estimate the clock synchronization accuracy and stability of the federates over time.
+
+<p align="center">
+  <img src="measurements/FedMultiClockSyncError/n=3/f=1Hz,saclay,logical200ms.clock-sync.svg" alt="PTP result" title="PTP result" width="100%" />
+</p>
+
+# Experiment: Evaluating multi-hop clock sync / reaction invocation timing errors based on physical timestamp output
+
+For evaluation, instead of using the oscilloscope setup, we just look at the physical timestamps of the events in the log files. This only gives a rough estimate because the reported physical times are not perfectly accurate.
+
+## Logging and Parsing
 
 The logging format is expected to be
 ```
@@ -22,18 +41,7 @@ where
 
 Furthermore, in order to support the `iot-lab` serial aggregation, we ignore and drop any log line prefixes that end in `;`.
 
-# Evaluation
-
-We evaluate programs of the following shape (example for `n=3` federates):
-
-<p align="center">
-  <img src="src/FedMultiClockSyncError.svg" alt="Program for n=3" title="Program with logical connections" width="700" />
-</p>
-<p align="center">
-  <span style="display:inline-block; width:49%;"><em>Figure 1: Program for n=3.</em></span>
-</p>
-
-## Experiment: Reaction invocation delay
+## Evaluation: Reaction invocation delay based on physical timestamp output
 
 <p align="center">
   <img src="measurements/FedMultiClockSyncError/n=3/f=1Hz,saclay,logical200ms-ii.svg" alt="Program for n=3" title="Program with logical connections" width="49%" />
