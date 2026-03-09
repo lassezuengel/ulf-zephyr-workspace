@@ -4,12 +4,16 @@
 - `nRF52840DK`: Sink
 - Power supply: USB connection (Laptop)
 
-If not stated otherwise, all traces have a duration of exactly 14 seconds.
+If not stated otherwise, all traces have a duration of exactly 14 seconds. 
+
+A memory depth of 70k is usually reasonable for a trace of 14s, but keep in mind that if data is lost and packets are received too late (TCP retransmission), the packets might "dam up", resuling in the LED toggling reaction being invoked in quick succession. These events cannot usually be captured with 70k memory depth (see `25Hz-VeryFastSuccession.csv`). In order to capture these events, unfortunately, 700k memory depth must be chosen. 
 
 <p align="center">
   <img src="measurements/setupA.png" alt="Closeup of experiment setup using oscilloscope" title="Closeup of experiment setup" width="49%" />
   <img src="measurements/setupB.png" alt="Overview of experiment setup using oscilloscope" title="Overview of experiment setup" width="49%" />
 </p>
+
+Additional info: Almost no logging (`logging: warn`), only inspecting the `CLOCK_SYNC` offset of one device (logging on both).
 
 ## Experiment: FedDelay
 
