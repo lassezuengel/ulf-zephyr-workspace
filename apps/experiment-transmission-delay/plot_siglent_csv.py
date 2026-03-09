@@ -171,6 +171,14 @@ def _normalize_time_unit(label: str) -> str:
     return label.strip() or "s"
 
 
+def _invert_levels(values: list[float]) -> list[float]:
+    if not values:
+        return values
+    low = min(values)
+    high = max(values)
+    return [low + high - value for value in values]
+
+
 def _detect_edges(time_values: list[float], signal_values: list[float], threshold: float) -> list[EdgeEvent]:
     edges: list[EdgeEvent] = []
     for idx in range(1, len(signal_values)):
@@ -220,7 +228,10 @@ def _pair_edges(ch1_edges: list[EdgeEvent], ch2_edges: list[EdgeEvent], factor_t
     return matched
 
 
-def analyze_phase_delay(data: SiglentData) -> tuple[list[MatchedDelay], list[MatchedDelay], float, str]:
+def analyze_phase_delay(
+    data: SiglentData,
+    separate_edge_kinds: bool = True,
+) -> tuple[list[MatchedDelay], list[MatchedDelay], float, str]:
     time_unit = _normalize_time_unit(data.time_column_label)
     factor_to_ms = _unit_to_ms_factor(time_unit)
 
@@ -230,13 +241,19 @@ def analyze_phase_delay(data: SiglentData) -> tuple[list[MatchedDelay], list[Mat
     ch1_edges = _detect_edges(data.time_values, data.ch1_values, ch1_threshold)
     ch2_edges = _detect_edges(data.time_values, data.ch2_values, ch2_threshold)
 
-    ch1_rising = [edge for edge in ch1_edges if edge.kind == "rising"]
-    ch1_falling = [edge for edge in ch1_edges if edge.kind == "falling"]
-    ch2_rising = [edge for edge in ch2_edges if edge.kind == "rising"]
-    ch2_falling = [edge for edge in ch2_edges if edge.kind == "falling"]
+    if separate_edge_kinds:
+        ch1_rising = [edge for edge in ch1_edges if edge.kind == "rising"]
+        ch1_falling = [edge for edge in ch1_edges if edge.kind == "falling"]
+        ch2_rising = [edge for edge in ch2_edges if edge.kind == "rising"]
+        ch2_falling = [edge for edge in ch2_edges if edge.kind == "falling"]
 
-    rising_delays = _pair_edges(ch1_rising, ch2_rising, factor_to_ms)
-    falling_delays = _pair_edges(ch1_falling, ch2_falling, factor_to_ms)
+        rising_delays = _pair_edges(ch1_rising, ch2_rising, factor_to_ms)
+        falling_delays = _pair_edges(ch1_falling, ch2_falling, factor_to_ms)
+        return rising_delays, falling_delays, factor_to_ms, time_unit
+
+    all_delays = _pair_edges(ch1_edges, ch2_edges, factor_to_ms)
+    rising_delays = [item for item in all_delays if item.kind == "rising"]
+    falling_delays = [item for item in all_delays if item.kind == "falling"]
     return rising_delays, falling_delays, factor_to_ms, time_unit
 
 
@@ -354,6 +371,8 @@ def _add_middle_zoom_inset(
         loc="center",
         borderpad=0.8,
     )
+    inset.patch.set_facecolor("white")
+    inset.patch.set_alpha(0.9)
     inset.plot(data.time_values, data.ch1_values, linewidth=1)
     inset.plot(data.time_values, data.ch2_values, linewidth=1)
 
@@ -363,8 +382,10 @@ def _add_middle_zoom_inset(
     inset.set_xlim(x_center - x_half, x_center + x_half)
     inset.set_ylim(y_center - y_half, y_center + y_half)
     inset.grid(True, linestyle=":", alpha=0.4)
-    inset.set_title("Zoom", fontsize=9)
+    inset.set_title("Zoom", fontsize=9, bbox={"facecolor": "white", "alpha": 1, "edgecolor": "none", "pad": 1.8})
     inset.tick_params(labelsize=8)
+    for label in inset.get_xticklabels() + inset.get_yticklabels():
+        label.set_bbox({"facecolor": "white", "alpha": 1, "edgecolor": "none", "pad": 2.9})
 
     mark_inset(ax_signal, inset, loc1=1, loc2=3, fc="none", ec="0.35", lw=0.9)
 
@@ -528,6 +549,19 @@ def main() -> None:
         help="Enable a small zoom inset centered on the middle part of the upper signal plot.",
     )
     parser.add_argument(
+        "--invert-ch2",
+        action="store_true",
+        help="Invert CH2 signal levels (swap high/low around CH2 mid-level) before analysis and plotting.",
+    )
+    parser.add_argument(
+        "--chronological-edge-pairing",
+        action="store_true",
+        help=(
+            "Pair CH1 and CH2 edges in chronological order regardless of rising/falling kind. "
+            "Default behavior pairs rising with rising and falling with falling."
+        ),
+    )
+    parser.add_argument(
         "--delay-offset-ms",
         type=float,
         default=0.0,
@@ -571,13 +605,19 @@ def main() -> None:
     save_path: str | None = None
     if args.save is not None:
         if args.save == "__AUTO__":
-            save_path = str(csv_path.with_suffix(f".{args.format}"))
+            suffix = "-zoom" if args.zoom else ""
+            save_path = str(csv_path.with_name(f"{csv_path.stem}{suffix}.{args.format}"))
         else:
             save_path = args.save
 
     data = read_siglent_csv(csv_path)
+    if args.invert_ch2:
+        data.ch2_values = _invert_levels(data.ch2_values)
     print_summary(data)
-    rising_delays, falling_delays, _, _ = analyze_phase_delay(data)
+    rising_delays, falling_delays, _, _ = analyze_phase_delay(
+        data,
+        separate_edge_kinds=not args.chronological_edge_pairing,
+    )
     if args.verbose:
         print_delay_report(rising_delays, falling_delays)
     plot_signals(
