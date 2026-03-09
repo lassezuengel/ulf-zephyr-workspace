@@ -4,9 +4,9 @@
 - `nRF52840DK`: Sink
 - Power supply: USB connection (Laptop)
 
-If not stated otherwise, all traces have a duration of exactly 14 seconds. 
+If not stated otherwise, all traces have a duration of exactly 14 seconds.
 
-A memory depth of 70k is usually reasonable for a trace of 14s, but keep in mind that if data is lost and packets are received too late (TCP retransmission), the packets might "dam up", resuling in the LED toggling reaction being invoked in quick succession. These events cannot usually be captured with 70k memory depth (see `25Hz-VeryFastSuccession.csv`). In order to capture these events, unfortunately, 700k memory depth must be chosen. 
+A memory depth of 70k is usually reasonable for a trace of 14s, but keep in mind that if data is lost and packets are received too late (TCP retransmission), the packets might "dam up", resuling in the LED toggling reaction being invoked in quick succession. These events cannot usually be captured with 70k memory depth (see `25Hz-VeryFastSuccession.csv`). In order to capture these events, unfortunately, 700k memory depth must be chosen.
 
 <p align="center">
   <img src="measurements/setupA.png" alt="Closeup of experiment setup using oscilloscope" title="Closeup of experiment setup" width="49%" />
@@ -29,10 +29,16 @@ The program is as follows:
 The left view uses a `200ms` period (5Hz), the right view uses a `40ms` period (25Hz).
 
 <p align="center">
-  <img src="measurements/FedDelay/5Hz.png" alt="Measurements using 5Hz communication rate" title="5Hz communication rate" width="49%" />
-  <img src="measurements/FedDelay/25Hz.png" alt="Measurements using 25Hz communication rate" title="25Hz communication rate" width="49%" />
+  <img src="measurements/FedDelay/5Hz-CalibNoLog-zoom.svg" alt="Measurements using 5Hz communication rate" title="5Hz communication rate" width="49%" />
+  <img src="measurements/FedDelay/25Hz-CalibNoLogWrongEdges-zoom.svg" alt="Measurements using 25Hz communication rate" title="25Hz communication rate" width="49%" />
 </p>
 
+also consider
+
+<p align="center">
+  <img src="measurements/FedDelay/25Hz-CalibNoLogShortFail.svg" alt="Measurements using 25Hz communication rate with TCP retransmission" title="25Hz communication rate" width="49%" />
+  <img src="measurements/FedDelay/25Hz-CalibNoLogShortFail-zoom.svg" alt="Measurements using 25Hz communication rate with TCP retransmission" title="25Hz communication rate" width="49%" />
+</p>
 
 ## Experiment: FedClockSync
 
