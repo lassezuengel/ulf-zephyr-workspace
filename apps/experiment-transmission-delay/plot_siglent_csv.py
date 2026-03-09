@@ -301,14 +301,85 @@ def _draw_delay_overlays(ax, delays: list[MatchedDelay], y_levels: list[float]) 
         ax.plot(item.ch2_time, y_level, marker="o", color="tab:purple", markersize=3, alpha=0.9)
 
 
+def _compute_midpoint_level(data: SiglentData) -> float:
+    ch1_low = min(data.ch1_values)
+    ch2_low = min(data.ch2_values)
+    ch1_high = max(data.ch1_values)
+    ch2_high = max(data.ch2_values)
+
+    common_low = max(ch1_low, ch2_low)
+    common_high = min(ch1_high, ch2_high)
+
+    if common_high >= common_low:
+        return 0.5 * (common_low + common_high)
+
+    overall_low = min(ch1_low, ch2_low)
+    overall_high = max(ch1_high, ch2_high)
+    return 0.5 * (overall_low + overall_high)
+
+
+def _add_middle_zoom_inset(
+    ax_signal,
+    data: SiglentData,
+    all_delays: list[MatchedDelay],
+    connector_y_levels: list[float],
+    y_min: float,
+    y_max: float,
+) -> None:
+    from mpl_toolkits.axes_grid1.inset_locator import inset_axes, mark_inset
+
+    all_x = data.time_values
+    if not all_x:
+        return
+
+    x_min, x_max = min(all_x), max(all_x)
+    x_span = x_max - x_min
+    if x_span <= 0:
+        return
+
+    y_span = y_max - y_min
+    if y_span <= 0:
+        return
+
+    x_center = x_min + 0.5 * x_span
+    y_center = y_min + 0.5 * y_span
+
+    x_half = 0.04 * x_span
+    y_half = 0.46 * y_span
+
+    inset = inset_axes(
+        ax_signal,
+        width="39%",
+        height="39%",
+        loc="center",
+        borderpad=0.8,
+    )
+    inset.plot(data.time_values, data.ch1_values, linewidth=1)
+    inset.plot(data.time_values, data.ch2_values, linewidth=1)
+
+    if connector_y_levels:
+        _draw_delay_overlays(inset, all_delays, y_levels=connector_y_levels)
+
+    inset.set_xlim(x_center - x_half, x_center + x_half)
+    inset.set_ylim(y_center - y_half, y_center + y_half)
+    inset.grid(True, linestyle=":", alpha=0.4)
+    inset.set_title("Zoom", fontsize=9)
+    inset.tick_params(labelsize=8)
+
+    mark_inset(ax_signal, inset, loc1=1, loc2=3, fc="none", ec="0.35", lw=0.9)
+
+
 def plot_signals(
     data: SiglentData,
     rising_delays: list[MatchedDelay],
     falling_delays: list[MatchedDelay],
     show_connectors: bool,
+    connector_mode: str,
+    show_zoom: bool,
     lower_plot_mode: str,
     delay_offset_ms: float,
     save_path: str | None,
+    format: str,
 ) -> None:
     try:
         import matplotlib.pyplot as plt
@@ -330,25 +401,44 @@ def plot_signals(
     ax_signal.plot(data.time_values, data.ch1_values, label=data.channel_names[0], linewidth=1)
     ax_signal.plot(data.time_values, data.ch2_values, label=data.channel_names[1], linewidth=1)
 
-    y_min = min(min(data.ch1_values), min(data.ch2_values)) * 1.1
-    y_max = min(max(data.ch1_values), max(data.ch2_values)) * 0.9
+    lowest_val = min(min(data.ch1_values), min(data.ch2_values))
+    highest_val = max(max(data.ch1_values), max(data.ch2_values))
+
+    y_min = lowest_val - 0.5
+    y_max = highest_val + 0.5
     y_span = y_max - y_min if y_max > y_min else 1.0
 
+    connector_y_levels: list[float] = []
+
     if show_connectors:
-        connector_margin = 0.06 * y_span
-        connector_y_levels = _build_ping_pong_levels(
-            count=len(all_delays),
-            y_min=y_min + connector_margin,
-            y_max=y_max - connector_margin,
-        )
+        if connector_mode == "midpoint":
+            midpoint = _compute_midpoint_level(data)
+            connector_y_levels = [midpoint] * len(all_delays)
+        else:
+            connector_margin = 0.06 * y_span
+            connector_y_levels = _build_ping_pong_levels(
+                count=len(all_delays),
+                y_min=y_min + connector_margin,
+                y_max=y_max - connector_margin,
+            )
         _draw_delay_overlays(ax_signal, all_delays, y_levels=connector_y_levels)
+
+    if show_zoom:
+        _add_middle_zoom_inset(
+            ax_signal=ax_signal,
+            data=data,
+            all_delays=all_delays,
+            connector_y_levels=connector_y_levels,
+            y_min=y_min,
+            y_max=y_max,
+        )
 
     ax_signal.set_xlabel(f"Time ({horizontal_unit})")
     ax_signal.set_ylabel(f"Voltage ({y_unit})")
     ax_signal.set_title("Siglent SDS CSV Plot + CH1→CH2 Edge Delays")
     ax_signal.grid(True, alpha=0.3)
     ax_signal.legend()
-    ax_signal.set_ylim(y_min - 0.05 * y_span, y_max + 0.05 * y_span)
+    ax_signal.set_ylim(y_min, y_max)
 
     # Subtract configured logical delay from measured edge delay.
     # In LF setups where logical delay exceeds transmission delay, this yields
@@ -391,7 +481,10 @@ def plot_signals(
 
     plt.tight_layout()
     if save_path:
-        fig.savefig(save_path, dpi=160)
+        if format == "svg":
+            fig.savefig(save_path, format="svg")
+        else:
+            fig.savefig(save_path, dpi=160)
         print(f"Saved plot: {save_path}")
     else:
         plt.show()
@@ -414,10 +507,25 @@ def main() -> None:
         help="Disable dashed CH1->CH2 delay connectors in the upper plot.",
     )
     parser.add_argument(
+        "--connector-mode",
+        choices=["midpoint", "ping-pong"],
+        default="midpoint",
+        help=(
+            "Layout of CH1->CH2 dashed delay connectors in the upper plot. "
+            "'midpoint' draws all connectors at one shared y-level (default). "
+            "'ping-pong' staggers connector y-levels to reduce overlap."
+        ),
+    )
+    parser.add_argument(
         "--lower-plot",
         choices=["chronological", "distribution"],
         default="chronological",
         help="Lower subplot style: chronological (default) or distribution.",
+    )
+    parser.add_argument(
+        "--zoom",
+        action="store_true",
+        help="Enable a small zoom inset centered on the middle part of the upper signal plot.",
     )
     parser.add_argument(
         "--delay-offset-ms",
@@ -440,8 +548,14 @@ def main() -> None:
         default=None,
         help=(
             "Save plot image. Use '--save out.png' for explicit path, or '--save' "
-            "to save next to CSV with .png extension."
+            "to save next to CSV with the appropriate file type (see --format)."
         ),
+    )
+    parser.add_argument(
+      "--format",
+      choices=["png", "svg"],
+      default="svg",
+      help="Output image format when using --save. Default: svg (scalable vector graphics)."
     )
     parser.add_argument(
         "--verbose",
@@ -457,7 +571,7 @@ def main() -> None:
     save_path: str | None = None
     if args.save is not None:
         if args.save == "__AUTO__":
-            save_path = str(csv_path.with_suffix(".png"))
+            save_path = str(csv_path.with_suffix(f".{args.format}"))
         else:
             save_path = args.save
 
@@ -471,9 +585,12 @@ def main() -> None:
         rising_delays,
         falling_delays,
         show_connectors=not args.no_connectors,
+        connector_mode=args.connector_mode,
+        show_zoom=args.zoom,
         lower_plot_mode=args.lower_plot,
         delay_offset_ms=args.delay_offset_ms,
         save_path=save_path,
+        format=args.format,
     )
 
 
