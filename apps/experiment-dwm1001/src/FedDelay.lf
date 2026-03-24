@@ -1,0 +1,169 @@
+target uC {
+    platform: {
+        name: Zephyr,
+        board: decawave_dwm1001_dev
+    },
+    net-interface: sicslowpan,
+    logging: warn,
+    clock-sync: on
+}
+
+preamble {=
+
+  #include "reactor-uc/reactor-c.h"
+
+=}
+
+reactor Source {
+preamble {=
+    #include <zephyr/logging/log_ctrl.h>
+    #include <zephyr/kernel.h>
+    #include <zephyr/drivers/gpio.h>
+    #include <stdbool.h>
+    #define LED0_NODE DT_PATH(leds, led_0)
+    static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+    #define EXTRA_PIN 7
+    #if DT_NODE_HAS_STATUS(DT_NODELABEL(gpio2), okay)
+    static const struct device* extra_port = DEVICE_DT_GET(DT_NODELABEL(gpio2));
+    static bool extra_ready = false;
+    #else
+    static bool extra_ready = false;
+    #endif
+=}
+
+    reaction(startup) {=
+        log_filter_set(NULL, Z_LOG_LOCAL_DOMAIN_ID,
+                log_source_id_get("dw1000"),
+                LOG_LEVEL_WRN);
+
+        if (!device_is_ready(led.port)) {
+            printf("[Source] LED device not ready\n");
+        } else {
+            int err = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+            if (err) {
+                printf("[Source] Failed to configure LED0 (err=%d)\n", err);
+            }
+        }
+
+        #if DT_NODE_HAS_STATUS(DT_NODELABEL(gpio2), okay)
+        extra_ready = device_is_ready(extra_port);
+        if (!extra_ready) {
+            printf("[Source] GPIO2 device not ready\n");
+        } else {
+            int err = gpio_pin_configure(extra_port, EXTRA_PIN, GPIO_OUTPUT_INACTIVE);
+            if (err) {
+                printf("[Source] Failed to configure P1.%02d (err=%d)\n", EXTRA_PIN, err);
+                extra_ready = false;
+            }
+        }
+        #endif
+
+        printf("Extra GPIO is %s\n", extra_ready ? "ready" : "not ready");
+    =}
+
+    output out: int;
+
+    state counter: int = 0;
+
+    timer t(0, 50 msec);
+    reaction(t) -> out {=
+        self->counter++;
+
+        lf_set(out, self->counter);
+
+        int err = gpio_pin_toggle_dt(&led);
+        if (err) {
+            printf("[Source] Failed to toggle LED0 (err=%d)\n", err);
+        }
+        #if DT_NODE_HAS_STATUS(DT_NODELABEL(gpio2), okay)
+        if (extra_ready) {
+            err = gpio_pin_toggle(extra_port, EXTRA_PIN);
+            if (err) {
+                printf("[Source] Failed to toggle P1.%02d (err=%d)\n", EXTRA_PIN, err);
+            }
+        }
+        #endif
+
+        if(self->counter % 10 == 0) {
+            printf("[Source] Emitted value: %d\n", self->counter);
+        }
+    =}
+}
+
+reactor Sink {
+preamble {=
+    #include <zephyr/logging/log_ctrl.h>
+    #include <zephyr/kernel.h>
+    #include <zephyr/drivers/gpio.h>
+    #include <stdbool.h>
+    #define LED0_NODE DT_PATH(leds, led_0)
+    static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+    #define EXTRA_PIN 7
+    #if DT_NODE_HAS_STATUS(DT_NODELABEL(gpio1), okay)
+    static const struct device* extra_port = DEVICE_DT_GET(DT_NODELABEL(gpio1));
+    static bool extra_ready = false;
+    #else
+    static bool extra_ready = false;
+    #endif
+=}
+
+    reaction(startup) {=
+        log_filter_set(NULL, Z_LOG_LOCAL_DOMAIN_ID,
+               log_source_id_get("dw1000"),
+               LOG_LEVEL_WRN);
+
+        if (!device_is_ready(led.port)) {
+            printf("[Sink] LED device not ready\n");
+        } else {
+            int err = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+            if (err) {
+                printf("[Sink] Failed to configure LED0 (err=%d)\n", err);
+            }
+        }
+
+        #if DT_NODE_HAS_STATUS(DT_NODELABEL(gpio1), okay)
+        extra_ready = device_is_ready(extra_port);
+        if (!extra_ready) {
+            printf("[Sink] GPIO1 device not ready\n");
+        } else {
+            int err = gpio_pin_configure(extra_port, EXTRA_PIN, GPIO_OUTPUT_INACTIVE);
+            if (err) {
+                printf("[Sink] Failed to configure P1.%02d (err=%d)\n", EXTRA_PIN, err);
+                extra_ready = false;
+            }
+        }
+        #endif
+    =}
+
+    input in: int;
+
+    reaction(in) {=
+        int err = gpio_pin_toggle_dt(&led);
+        if (err) {
+            printf("[Sink] Failed to toggle LED0 (err=%d)\n", err);
+        }
+        #if DT_NODE_HAS_STATUS(DT_NODELABEL(gpio1), okay)
+        if (extra_ready) {
+            err = gpio_pin_toggle(extra_port, EXTRA_PIN);
+            if (err) {
+                printf("[Sink] Failed to toggle P1.%02d (err=%d)\n", EXTRA_PIN, err);
+            }
+        }
+        #endif
+
+        if(in->value % 10 == 0) {
+            printf("[Sink] Received value: %d\n", in->value);
+        }
+    =}
+}
+
+federated reactor {
+  @interface_rudp()
+  srcFed = new Source();
+
+  @interface_rudp()
+  snkFed = new Sink();
+
+  @buffer(20)
+  srcFed.out ~> snkFed.in;
+}
