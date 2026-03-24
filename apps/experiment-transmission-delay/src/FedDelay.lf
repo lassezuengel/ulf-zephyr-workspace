@@ -7,7 +7,7 @@ target uC {
         // board: nrf52840dk/nrf52840
     },
     net-interface: sicslowpan,
-    logging: log,
+    logging: warn,
     clock-sync: on
 }
 
@@ -63,7 +63,7 @@ preamble {=
 
     state counter: int = 0;
 
-    timer t(0, 200 msec);
+    timer t(0, 40 msec);
     reaction(t) -> out {=
         self->counter++;
 
@@ -147,3 +147,18 @@ federated reactor {
   @buffer(20)
   srcFed.out ~> snkFed.in;
 }
+
+/*
+
+#start
+# flash the Source and Sink Federates:
+nrfutil device program --serial-number 683266810  --firmware .\FedDelay\snkFed\build\zephyr\zephyr.hex --options chip_erase_mode=ERASE_ALL
+nrfutil device program --serial-number 1057774169 --firmware .\FedDelay\srcFed\build\zephyr\zephyr.hex --options chip_erase_mode=ERASE_ALL
+
+# Reset devices:
+nrfutil device reset --serial-number 1057774169
+nrfutil device reset --serial-number 683266810
+#end
+
+
+*/
