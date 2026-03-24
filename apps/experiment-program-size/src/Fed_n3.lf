@@ -1,0 +1,45 @@
+target uC {
+    // platform: Native,
+    platform: {
+        name: Zephyr,
+        // board: w5500_evb_pico
+        board: nrf54l15dk/nrf54l15/cpuapp
+        // board: nrf52840dk/nrf52840
+    },
+    net-interface: sicslowpan,
+    logging: log,
+    clock-sync: on
+}
+
+// RAM:       68204 B       128 KB     52.04%
+reactor Source {
+    output out: int;
+
+    state counter: int = 0;
+
+    timer t(0, 200 msec);
+    reaction(t) -> out {=
+    =}
+}
+
+reactor Sink {
+    input in: int;
+
+    reaction(in) {=
+
+    =}
+}
+
+federated reactor {
+  @board("nrf52833dk/nrf52833")
+  srcFed = new Source();
+  @board("nrf52833dk/nrf52833")
+  snkFedA = new Sink();
+  @board("nrf52833dk/nrf52833")
+  snkFedB = new Sink();
+
+  @buffer(20)
+  srcFed.out ~> snkFedA.in;
+  @buffer(20)
+  srcFed.out ~> snkFedB.in;
+}
