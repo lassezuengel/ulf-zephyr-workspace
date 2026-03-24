@@ -1,0 +1,67 @@
+target uC {
+    // platform: Native,
+    platform: {
+        name: Zephyr,
+        // board: w5500_evb_pico
+        board: nrf52833dk/nrf52833
+    },
+    net-interface: sicslowpan,
+    logging: warn,
+    clock-sync: on
+}
+
+preamble {=
+  #include "reactor-uc/reactor-c.h"
+=}
+
+reactor PingFed {
+    input in: int;
+    output out: int;
+
+    reaction(startup) -> out {=
+        printf("Starting!\n");
+        lf_set(out, 0);
+    =}
+
+    reaction(in) -> out {=
+        lf_set(out, in->value + 1);
+        printf("value: %d\n", in->value + 1);
+        interval_t ts = lf_time_logical_elapsed();
+        interval_t Ts = lf_time_physical_elapsed();
+
+        printf(
+            "  logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
+            ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
+        );
+    =}
+}
+
+reactor PongFed {
+    input in: int;
+    output out: int;
+
+    reaction(in) -> out {=
+        lf_set(out, in->value + 1);
+        printf("value: %d\n", in->value + 1);
+        interval_t ts = lf_time_logical_elapsed();
+        interval_t Ts = lf_time_physical_elapsed();
+
+        printf(
+            "  logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
+            ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
+        );
+    =}
+}
+
+federated reactor {
+  @board("nrf52833dk/nrf52833")
+  @interface_rudp()
+  ping = new PingFed();
+
+  @board("nrf52833dk/nrf52833")
+  @interface_rudp()
+  pong = new PongFed();
+
+  ping.out -> pong.in after 200 msec;
+  pong.out -> ping.in after 200 msec;
+}
