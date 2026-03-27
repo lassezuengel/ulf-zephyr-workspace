@@ -63,9 +63,15 @@ preamble {=
 
     state counter: int = 0;
 
-    timer t(0, 40 msec); // 40 ms
+    timer t(0, 100 msec);
     reaction(t) -> out {=
         self->counter++;
+
+        interval_t Ts = lf_time_physical_elapsed();
+
+        if(self->counter % 5 == 0) {
+            printf("[Source] Counter: %d\n (physical time: %lu ms)", self->counter, (unsigned long)Ts / 1000000);
+        }
 
         lf_set(out, self->counter);
 
@@ -73,12 +79,14 @@ preamble {=
         if (err) {
             printf("[Source] Failed to toggle LED0 (err=%d)\n", err);
         }
+        #if DT_NODE_HAS_STATUS(DT_NODELABEL(gpio2), okay)
         if (extra_ready) {
             err = gpio_pin_toggle(extra_port, EXTRA_PIN);
             if (err) {
                 printf("[Source] Failed to toggle P1.%02d (err=%d)\n", EXTRA_PIN, err);
             }
         }
+        #endif
     =}
 }
 
@@ -135,14 +143,21 @@ preamble {=
                 printf("[Sink] Failed to toggle P1.%02d (err=%d)\n", EXTRA_PIN, err);
             }
         }
+
+        interval_t Ts = lf_time_physical_elapsed();
+        if(in->value % 5 == 0) {
+            printf("[Sink] Counter: %d\n (physical time: %lu ms)", in->value, (unsigned long)Ts / 1000000);
+        }
     =}
 }
 
 federated reactor {
-  @board("nrf54l15dk/nrf54l15/cpuapp")
+  // @board("nrf52833dk/nrf52833")
   @interface_rudp()
+  @board("nrf52840dk/nrf52840")
   srcFed = new Source();
 
+  // @board("nrf52833dk/nrf52833")
   @board("nrf52840dk/nrf52840")
   @interface_rudp()
   snkFed = new Sink();

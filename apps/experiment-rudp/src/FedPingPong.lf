@@ -25,14 +25,17 @@ reactor PingFed {
 
     reaction(in) -> out {=
         lf_set(out, in->value + 1);
-        printf("value: %d\n", in->value + 1);
-        interval_t ts = lf_time_logical_elapsed();
-        interval_t Ts = lf_time_physical_elapsed();
 
-        printf(
-            "  logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
-            ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
-        );
+        if(in->value % 50 == 1) {
+          printf("value: %d\n", in->value + 1);
+          interval_t ts = lf_time_logical_elapsed();
+          interval_t Ts = lf_time_physical_elapsed();
+
+          printf(
+              "  logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
+              ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
+          );
+        }
     =}
 }
 
@@ -42,14 +45,17 @@ reactor PongFed {
 
     reaction(in) -> out {=
         lf_set(out, in->value + 1);
-        printf("value: %d\n", in->value + 1);
-        interval_t ts = lf_time_logical_elapsed();
-        interval_t Ts = lf_time_physical_elapsed();
 
-        printf(
-            "  logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
-            ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
-        );
+        if(in->value % 50 == 0) {
+          printf("value: %d\n", in->value + 1);
+          interval_t ts = lf_time_logical_elapsed();
+          interval_t Ts = lf_time_physical_elapsed();
+
+          printf(
+              "  logical time: %lld ms, physical time: %lld ms, lag: %lld ms\n",
+              ts / 1000000, Ts / 1000000, (Ts-ts) / 1000000
+          );
+        }
     =}
 }
 
@@ -62,6 +68,6 @@ federated reactor {
   @interface_rudp()
   pong = new PongFed();
 
-  ping.out -> pong.in after 200 msec;
-  pong.out -> ping.in after 200 msec;
+  ping.out -> pong.in after 15 msec;
+  pong.out -> ping.in after 15 msec;
 }

@@ -215,10 +215,12 @@ def plot_pair_offsets(
 
       if x_span > 0 and y_span > 0:
         x_center = x_min + 0.5 * x_span
-        y_center = y_min + 0.5 * y_span
+        # y_center = y_min + 0.5 * y_span
+        # Instead, keep zoom centered on the main plot's x-axis (y=0).
+        y_center = 0.0
 
-        x_half = 0.06 * x_span
-        y_half = 0.036 * y_span
+        x_half = 0.1 * x_span
+        y_half = 0.06 * y_span
 
         inset = inset_axes(
           axis,

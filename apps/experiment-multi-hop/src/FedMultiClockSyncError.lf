@@ -41,7 +41,7 @@ reactor Source {
   output out: int
 
   state counter: int = 0
-  timer t(3 sec, 500 msec)
+  timer t(3 sec, 1000 msec)
 
   reaction(t) -> out, led.in {=
     self->counter++;
@@ -114,19 +114,31 @@ reactor Sink(id: int = 2) {
   =}
 } /* Sink */
 
-federated reactor(x: time = 100 sec) {
+federated reactor {
   @board("nrf52840dk/nrf52840")
   @interface_tcp(address="fd01::48")
   srcFed = new Source()
+
   @board("nrf52840dk/nrf52840")
   @interface_tcp(address="fd01::1516")
-  intFed = new Intermediate(id=1)
+  intFed1 = new Intermediate(id=1)
+
+  @board("nrf52840dk/nrf52840")
+  intFed2 = new Intermediate(id=2)
+
+  @board("nrf52840dk/nrf52840")
+  intFed3 = new Intermediate(id=3)
+
   @board("nrf52840dk/nrf52840")
   @interface_tcp(address="fd01::2342")
-  snkFed = new Sink(id=2)
+  snkFed = new Sink(id=4)
 
   @buffer(20)
-  srcFed.out -> intFed.in after x
+  srcFed.out -> intFed1.in after 100 msec
   @buffer(20)
-  intFed.out -> snkFed.in after x
+  intFed1.out -> intFed2.in after 100 msec
+  @buffer(20)
+  intFed2.out -> intFed3.in after 100 msec
+  @buffer(20)
+  intFed3.out -> snkFed.in after 100 msec
 }

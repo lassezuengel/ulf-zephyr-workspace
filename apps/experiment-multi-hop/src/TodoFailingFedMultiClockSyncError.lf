@@ -1,0 +1,144 @@
+target uC {
+  platform: {
+    name: Zephyr,
+    board: nrf52833dk/nrf52833
+  },
+  net-interface: sicslowpan,
+  logging: warn,
+  clock-sync: on
+}
+
+preamble {=
+  #include "reactor-uc/reactor-c.h"
+=}
+
+/*
+ * Toggles an onboard LED (`led0`) every time it receives an input.
+ */
+reactor LedToggler {
+  preamble {=
+    #include <zephyr/kernel.h>
+    #include <zephyr/drivers/gpio.h>
+    #include <assert.h>
+    #define LED0_NODE DT_PATH(leds, led_0)
+    static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+  =}
+
+  input in: int
+
+  reaction(startup) {=
+    assert(device_is_ready(led.port));
+    gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+  =}
+
+  reaction(in) {=
+    gpio_pin_toggle_dt(&led);
+  =}
+} /* LedToggler */
+
+reactor Source {
+  led = new LedToggler()
+  output out: int
+
+  state counter: int = 0
+  timer t(3 sec, 500 msec)
+
+  reaction(t) -> out, led.in {=
+    self->counter++;
+    lf_set(out, self->counter);
+
+    interval_t ts = lf_time_logical_elapsed();
+
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+
+    printf(
+        "[0] Value %d at physical time %lld.%01lld ms and logical time %lld ms\n",
+        self->counter,
+        t_physclock / 1000000,
+        (t_physclock % 1000000) / 100000,
+        ts / 1000000
+    );
+
+    lf_set(led.in, 1);
+  =}
+} /* Source */
+
+reactor Intermediate(id: int = 1) {
+  led = new LedToggler()
+  input in: int
+  output out: int
+
+  reaction(in) -> out, led.in {=
+    lf_set(out, in->value);
+
+    interval_t ts = lf_time_logical_elapsed();
+
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+
+    printf(
+      "[%d] Value %d at physical time %lld.%01lld ms and logical time %lld ms\n",
+      self->id,
+      in->value,
+      t_physclock / 1000000,
+      (t_physclock % 1000000) / 100000,
+      ts / 1000000
+    );
+
+    lf_set(led.in, 1);
+  =}
+} /* Intermediate */
+
+reactor Sink(id: int = 2) {
+  led = new LedToggler()
+  input in: int
+
+  reaction(in) -> led.in {=
+    interval_t ts = lf_time_logical_elapsed();
+    interval_t Ts = lf_time_physical_elapsed();
+
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+
+    printf(
+        "[%d] Value %d at physical time %lld.%01lld ms and logical time %lld ms\n",
+        self->id,
+        in->value,
+        t_physclock / 1000000,
+        (t_physclock % 1000000) / 100000,
+        ts / 1000000
+    );
+
+    lf_set(led.in, 1);
+  =}
+} /* Sink */
+
+federated reactor(x: time = 100 sec) {
+  @board("nrf52840dk/nrf52840")
+  @interface_tcp(address="fd01::48")
+  srcFed = new Source()
+
+  @board("nrf52840dk/nrf52840")
+  @interface_tcp(address="fd01::1516")
+  intFed1 = new Intermediate(id=1)
+
+  @board("nrf52840dk/nrf52840")
+  intFed2 = new Intermediate(id=2)
+
+  @board("nrf52840dk/nrf52840")
+  intFed3 = new Intermediate(id=3)
+
+  @board("nrf52840dk/nrf52840")
+  @interface_tcp(address="fd01::2342")
+  snkFed = new Sink(id=4)
+
+  @buffer(20)
+  srcFed.out -> intFed1.in after x
+  @buffer(20)
+  intFed1.out -> intFed2.in after x
+  @buffer(20)
+  intFed2.out -> intFed3.in after x
+  @buffer(20)
+  intFed3.out -> snkFed.in after x
+}

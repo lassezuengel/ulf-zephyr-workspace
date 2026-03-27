@@ -21,6 +21,16 @@ In this experiment, we evaluate the reported PTP offsets of the federates. The P
 <p align="center">
   <img src="measurements/FedMultiClockSyncError/n=3/f=1Hz,saclay,logical200ms.clock-sync.svg" alt="PTP result" title="PTP result" width="100%" />
 </p>
+<p align="center">
+  <span style="display:inline-block; width:49%;"><em>Figure 2: Reported PTP offsets for n=3.</em></span>
+</p>
+
+<p align="center">
+  <img src="measurements/FedMultiClockSyncError/n=5/f=1Hz.clock-sync.svg" alt="PTP result" title="PTP result" width="100%" />
+</p>
+<p align="center">
+  <span style="display:inline-block; width:49%;"><em>Figure 3: Reported PTP offsets for n=5.</em></span>
+</p>
 
 # Experiment: Evaluating multi-hop clock sync / reaction invocation timing errors based on physical timestamp output
 
