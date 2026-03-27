@@ -19,3 +19,5 @@ venv/
 /fed_build_backup
 
 zephyr-tests/
+
+**/.lf-monobuild
