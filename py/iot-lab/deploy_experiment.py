@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 """
-This script automates running an IoT-LAB experiment for an arbitrary set of ELF files.
-It reserves as many nodes as there are input ELF files, then flashes one ELF per node.
+Deploy an IoT-LAB experiment and flash one firmware per reserved node.
+
+This script stores the node-to-firmware mapping in a JSON file so that
+active nodes can be reflashed later with reflash_active_nodes.py.
 """
 import argparse
-from pathlib import Path
-import subprocess
+from datetime import datetime, timezone
 import json
+from pathlib import Path
 import re
+import subprocess
 import sys
-from typing import List
+from typing import Any, Dict, List
+
+
+DEFAULT_MAPPING_FILE = Path(__file__).with_name("last_deployment.json")
 
 
 def run(args: List[str]) -> str:
@@ -51,6 +57,15 @@ def parse_args() -> argparse.Namespace:
         "--name",
         default="multi_elf_experiment",
         help="Experiment name (default: multi_elf_experiment).",
+    )
+    parser.add_argument(
+        "--mapping-file",
+        type=Path,
+        default=DEFAULT_MAPPING_FILE,
+        help=(
+            "Path where node-to-firmware mapping is written "
+            f"(default: {DEFAULT_MAPPING_FILE})."
+        ),
     )
     return parser.parse_args()
 
@@ -97,14 +112,47 @@ def get_node_id(network_address: str, archi: str) -> str:
     return match.group(1)
 
 
+def build_mapping_data(
+    exp_id: int,
+    exp_name: str,
+    site: str,
+    archi: str,
+    selected_nodes: List[Dict[str, Any]],
+    elf_paths: List[Path],
+    node_ids: List[str],
+) -> Dict[str, Any]:
+    node_programs: List[Dict[str, str]] = []
+    for elf_path, node_id, node in zip(elf_paths, node_ids, selected_nodes):
+        node_programs.append(
+            {
+                "node_id": node_id,
+                "network_address": node.get("network_address", ""),
+                "firmware": str(elf_path.resolve()),
+            }
+        )
+
+    return {
+        "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        "experiment_id": exp_id,
+        "experiment_name": exp_name,
+        "site": site,
+        "archi": archi,
+        "node_programs": node_programs,
+    }
+
+
+def write_mapping(mapping_file: Path, mapping_data: Dict[str, Any]) -> None:
+    mapping_file.parent.mkdir(parents=True, exist_ok=True)
+    mapping_file.write_text(json.dumps(mapping_data, indent=2), encoding="utf-8")
+    print(f"Saved deployment mapping to: {mapping_file}")
+
+
 def main() -> None:
     args = parse_args()
     elf_paths = validate_elf_paths(args.program_inputs)
     node_count = len(elf_paths)
 
-    # -------------------------------------------------------------------
-    # 1. Submit experiment sized to the number of provided ELF files
-    # -------------------------------------------------------------------
+    # 1. Submit experiment sized to the number of provided ELF files.
     submit_out = run(
         [
             "iotlab-experiment",
@@ -122,14 +170,10 @@ def main() -> None:
     exp_id = json.loads(submit_out)["id"]
     print("Experiment ID:", exp_id)
 
-    # -------------------------------------------------------------------
-    # 2. Wait until experiment is running
-    # -------------------------------------------------------------------
+    # 2. Wait until experiment is running.
     run(["iotlab-experiment", "wait"])
 
-    # -------------------------------------------------------------------
-    # 3. Get node list in JSON
-    # -------------------------------------------------------------------
+    # 3. Get node list in JSON.
     get_out = run(["iotlab-experiment", "get", "-n"])
     nodes = json.loads(get_out)["items"]
 
@@ -137,13 +181,11 @@ def main() -> None:
         print(f"Expected at least {node_count} nodes, got: {len(nodes)}")
         sys.exit(1)
 
-    # Keep a deterministic order so ELF-to-node mapping is reproducible.
+    # Keep deterministic order so ELF-to-node mapping is reproducible.
     nodes_sorted = sorted(nodes, key=lambda node: node.get("network_address", ""))
     selected_nodes = nodes_sorted[:node_count]
 
-    # -------------------------------------------------------------------
-    # 4. Extract proper node IDs
-    # -------------------------------------------------------------------
+    # 4. Extract proper node IDs.
     node_ids: List[str] = []
     for node in selected_nodes:
         network_address = node.get("network_address", "")
@@ -155,9 +197,18 @@ def main() -> None:
 
     print("Nodes identified:", node_ids)
 
-    # -------------------------------------------------------------------
-    # 5. Flash each node with the corresponding ELF file
-    # -------------------------------------------------------------------
+    mapping_data = build_mapping_data(
+        exp_id=exp_id,
+        exp_name=args.name,
+        site=args.site,
+        archi=args.archi,
+        selected_nodes=selected_nodes,
+        elf_paths=elf_paths,
+        node_ids=node_ids,
+    )
+    write_mapping(args.mapping_file.expanduser(), mapping_data)
+
+    # 5. Flash each node with corresponding ELF file.
     for index, (elf_path, node_id) in enumerate(zip(elf_paths, node_ids), start=1):
         flash_cmd = [
             "iotlab-node",
@@ -171,9 +222,7 @@ def main() -> None:
 
     print("All nodes flashed successfully!")
 
-    # -------------------------------------------------------------------
-    # 6. Reset nodes used in this experiment
-    # -------------------------------------------------------------------
+    # 6. Reset nodes used in this experiment.
     for node_id in node_ids:
         reset_cmd = [
             "iotlab-node",
