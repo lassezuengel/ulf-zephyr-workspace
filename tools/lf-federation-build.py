@@ -15,6 +15,7 @@ and the same Zephyr configuration (prj.conf and prj_lf.conf).
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
 import shlex
 import shutil
@@ -27,6 +28,7 @@ from typing import Sequence
 EXCLUDE_TOP = {"build"}
 SHARED_INPUTS = ("reactor-uc", "prj.conf", "prj_lf.conf")
 ARTIFACT_FILES = ("zephyr.elf", "zephyr.hex", "zephyr.bin", "zephyr.uf2")
+GRAPH_INPUT_FILES = ("Include.cmake", "Kconfig")
 
 
 def log(msg: str) -> None:
@@ -91,7 +93,9 @@ def copy_file_if_changed(src: Path, dst: Path, dry_run: bool) -> None:
         log(f"[dry-run] copy file {src} -> {dst}")
         return
     dst.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(src, dst)
+    # Use non-metadata-preserving copy so updated staged sources get a fresh
+    # mtime and are reliably rebuilt by Ninja in incremental monobuild mode.
+    shutil.copyfile(src, dst)
 
 
 def sync_tree(src: Path, dst: Path, dry_run: bool, exclude_top: set[str] | None = None) -> None:
@@ -185,6 +189,41 @@ def copy_artifacts(staging_build_dir: Path, federation_dir: Path, federate_name:
         shutil.copy2(src, dst)
 
 
+def file_digest(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        while True:
+            chunk = f.read(1024 * 1024)
+            if not chunk:
+                break
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def normalized_include_cmake_digest(path: Path) -> str:
+    # Ignore generated comments and whitespace-only noise so equivalent
+    # federates (e.g., src_0/src_1/src_2) can reuse one CMake configure.
+    normalized_lines: list[str] = []
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        normalized_lines.append(line)
+    payload = "\n".join(normalized_lines).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def compute_graph_signature(federate: Path) -> tuple[tuple[str, str], ...]:
+    # Capture the subset of inputs that alter CMake/Ninja graph generation.
+    parts: list[tuple[str, str]] = []
+    for name in GRAPH_INPUT_FILES:
+        p = federate / name
+        if p.exists() and p.is_file():
+            digest = normalized_include_cmake_digest(p) if name == "Include.cmake" else file_digest(p)
+            parts.append((name, digest))
+    return tuple(parts)
+
+
 def resolve_federation_path(src_gen: Path, federation: str) -> Path:
     given = Path(federation)
     if given.is_absolute():
@@ -244,12 +283,16 @@ def build_monodir(
 
     sync_exclude = set(EXCLUDE_TOP)
     sync_exclude.update(SHARED_INPUTS)
+    previous_graph_signature: tuple[tuple[str, str], ...] | None = None
 
     for i, federate in enumerate(federates):
         log(f"\n[monobuild] sync {federate.name}")
         sync_tree(federate, staging_src, dry_run=dry_run, exclude_top=sync_exclude)
 
         pristine = first_pristine if i == 0 else "never"
+        graph_signature = compute_graph_signature(federate)
+        run_cmake = i == 0 or graph_signature != previous_graph_signature
+        previous_graph_signature = graph_signature
 
         cmd: list[str] = [
             *west_cmd,
@@ -260,13 +303,14 @@ def build_monodir(
             str(staging_src),
             "-p",
             pristine,
-            "-c",
         ]
+        if run_cmake:
+            cmd.append("-c")
         if board:
             cmd.extend(["-b", board])
 
         cmake_cache = staging_build / "CMakeCache.txt"
-        if use_ccache and (dry_run or not cmake_cache.exists()):
+        if run_cmake and use_ccache and (dry_run or not cmake_cache.exists()):
             cmd.extend(
                 [
                     "--",
@@ -275,7 +319,8 @@ def build_monodir(
                 ]
             )
 
-        log(f"[monobuild] build {federate.name}")
+        cmake_mode = "on" if run_cmake else "off"
+        log(f"[monobuild] build {federate.name} (cmake: {cmake_mode})")
         rc = run_cmd(cmd, dry_run=dry_run)
         if rc != 0:
             log(f"ERROR: build failed for {federate.name} (exit code {rc})")
