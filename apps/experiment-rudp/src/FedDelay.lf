@@ -154,11 +154,11 @@ preamble {=
 federated reactor {
   // @board("nrf52833dk/nrf52833")
   @interface_rudp()
-  @board("nrf52840dk/nrf52840")
+  @board("nrf52833dk/nrf52833")
   srcFed = new Source();
 
   // @board("nrf52833dk/nrf52833")
-  @board("nrf52840dk/nrf52840")
+  @board("nrf52833dk/nrf52833")
   @interface_rudp()
   snkFed = new Sink();
 

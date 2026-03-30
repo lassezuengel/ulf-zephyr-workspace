@@ -69,6 +69,13 @@ def resolve_extra_zephyr_modules(workspace_root: Path) -> list[Path]:
     if local_drivers.exists() and local_drivers.is_dir() and local_drivers not in merged:
         merged.append(local_drivers)
 
+    # Also include the repository-level drivers module where this script lives,
+    # so app-local src-gen paths still pick up local Zephyr drivers/Kconfig.
+    repo_root = Path(__file__).resolve().parent.parent
+    repo_drivers = (repo_root / "drivers").resolve()
+    if repo_drivers.exists() and repo_drivers.is_dir() and repo_drivers not in merged:
+        merged.append(repo_drivers)
+
     return merged
 
 
@@ -417,14 +424,25 @@ def parse_args(argv: Sequence[str]) -> argparse.Namespace:
 def main(argv: Sequence[str]) -> int:
     args = parse_args(argv)
 
-    src_gen = Path(args.src_gen).resolve()
-    if not src_gen.exists() or not src_gen.is_dir():
-        log(f"ERROR: src-gen not found: {src_gen}")
-        return 2
+    given_federation = Path(args.federation)
+    if given_federation.is_absolute():
+        federation_dir = given_federation.resolve()
+        # When federation is provided as an absolute path, infer src-gen from it
+        # instead of requiring --src-gen in the current working directory.
+        src_gen = federation_dir.parent
+    else:
+        src_gen = Path(args.src_gen).resolve()
+        if not src_gen.exists() or not src_gen.is_dir():
+            log(f"ERROR: src-gen not found: {src_gen}")
+            return 2
+        federation_dir = resolve_federation_path(src_gen, args.federation)
 
-    federation_dir = resolve_federation_path(src_gen, args.federation)
     if not federation_dir.exists() or not federation_dir.is_dir():
         log(f"ERROR: federation directory not found: {federation_dir}")
+        return 2
+
+    if not src_gen.exists() or not src_gen.is_dir():
+        log(f"ERROR: src-gen not found: {src_gen}")
         return 2
 
     errors = build_monodir(
