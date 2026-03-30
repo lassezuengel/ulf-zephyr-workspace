@@ -1,0 +1,4 @@
+name: local_drivers
+build:
+  cmake: .
+  kconfig: Kconfig

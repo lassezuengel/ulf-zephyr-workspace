@@ -1,0 +1,149 @@
+# Copyright (c) 2020 PHYTEC Messtechnik GmbH
+# SPDX-License-Identifier: Apache-2.0
+
+menuconfig IEEE802154_DSKIEL_DW1000
+	bool "Decawave DW1000 Driver support"
+	default y
+	depends on DT_HAS_DECAWAVE_DSKIEL_DW1000_ENABLED
+	select SPI
+
+if IEEE802154_DSKIEL_DW1000
+
+module = IEEE802154_DSKIEL_DW1000
+module-str = ieee802154_dw1000_cau
+source "subsys/logging/Kconfig.template.log_config"
+
+config IEEE802154_DSKIEL_DW1000_SNIFF_ONT
+	int "SNIFF on time"
+	default 0
+	range 0 15
+	help
+	  SNIFF on time in unit of PAC. The minimum on time is the duration
+	  of two PACs. The SNIFF counter always adds 1 PAC unit to the on-time
+	  count. The SNIFF_ONT value should be in range of 1-15.
+	  Zero value disables SNIFF mode.
+
+config IEEE802154_DSKIEL_DW1000_SNIFF_OFFT
+	int "SNIFF off time"
+	default 16
+	range 1 255
+	help
+	  SNIFF off time in unit of approximate 1 microsecond.
+
+config IEEE802154_DSKIEL_DW1000_INIT_PRIO
+	int "DW1000 initialization priority"
+	default 80
+	help
+	  Set the initialization priority number. Do not mess with it unless
+	  you know what you are doing. Beware DW1000 requires gpio and spi to
+	  be ready first (and sometime gpio should be the very first as spi
+	  might need it too). And of course it has to start before the net stack.
+
+
+config IEEE802154_DSKIEL_DW1000_OTP_ANTENNA_DELAY
+	bool "Use OTP antenna delay"
+	default y
+	help
+	  Use the OTP antenna delay value. If this option is enabled, the
+	  antenna delay value will be read from the OTP memory. Otherwise,
+	  the antenna delay value will be set to the default value of 16450.
+
+config IEEE802154_DSKIEL_DW1000_WITH_CRC
+	bool "use dw1000 crc functionality"
+	default y
+
+config IEEE802154_DSKIEL_DW1000_RCPHASE_CORRECTION
+	bool "Apply RCPHASE correction to CIR phase measurements"
+	default y
+	help
+	  When enabled, applies the RCPHASE (receive carrier phase adjustment)
+	  correction to the real and imaginary CIR values before storing them
+	  in tagged timestamps. This improves phase measurement accuracy for
+	  MM ranging by correcting for receiver-side phase offsets.
+
+config IEEE802154_DSKIEL_DW1000_DIRECT_ISR_PROCESSING
+	bool "Process interrupts directly in ISR context"
+	default n
+	help
+	  When enabled, DW1000 interrupt processing is performed directly
+	  in the ISR context instead of using a work queue. This reduces
+	  interrupt latency and improves timing precision for UWB ranging,
+	  but may cause system instability due to:
+	  - Semaphore operations in ISR context
+	  - Memory allocation in ISR context
+	  - Network stack calls in ISR context
+	  - Increased ISR execution time (~100us)
+	  Only enable for testing or in systems where interrupt latency
+	  is more critical than system stability.
+
+endif
+
+menuconfig IEEE802154_DW3000
+	bool "Decawave DW3000 Driver support"
+	default y
+	depends on DT_HAS_DECAWAVE_DW3000_ENABLED
+	select SPI
+
+if IEEE802154_DW3000
+
+module = IEEE802154_DW3000
+module-str = ieee802154_dw3000
+source "subsys/logging/Kconfig.template.log_config"
+
+choice
+	prompt "Select DW3000 Chip Variant"
+	default DW3000_CHIP_DW3000
+	help
+	  Select the specific DW3000 chip variant
+
+	config DW3000_CHIP_DW3000
+		bool "DW3000"
+		help
+		  Standard DW3000 chip
+
+	config DW3000_CHIP_DW3720
+		bool "DW3720/QM33xx"
+		help
+		  DW3720 or QM33xx chip variant
+endchoice
+
+config IEEE802154_DW3000_RX_BUFFER_SIZE
+	int "RX buffer size"
+	default 127
+	help
+	  Size of the RX buffer in bytes. IEEE 802.15.4 maximum frame size is 127.
+
+config IEEE802154_DW3000_IRQ_THREAD_STACK_SIZE
+	int "IRQ thread stack size"
+	default 1024
+	help
+	  Stack size for the IRQ processing thread.
+
+config IEEE802154_DW3000_INIT_PRIO
+	int "DW3000 initialization priority"
+	default 80
+	help
+	  Set the initialization priority number. Do not mess with it unless
+	  you know what you are doing. Beware DW3000 requires gpio and spi to
+	  be ready first (and sometime gpio should be the very first as spi
+	  might need it too). And of course it has to start before the net stack.
+
+endif
+
+# General UWB Ranging Configuration
+menuconfig UWB_RANGING
+	bool "UWB Ranging Protocol Support"
+	default y if IEEE802154_DSKIEL_DW1000 || IEEE802154_DW3000
+	help
+	  Enable support for UWB ranging protocols (MTM, MM, etc.)
+
+if UWB_RANGING
+
+config UWB_MTM_MAX_FRAMES
+	int "Maximum amount of frames to buffer during MTM ranging"
+	default 80
+	help
+	  Maximum amount of frames to buffer during MTM ranging block. This essentially limits the maximum amount
+	  of achievable measurements during a MTM block. This setting is radio-agnostic.
+
+endif

@@ -1,0 +1,5 @@
+menu "Drivers"
+rsource "ieee802154/Kconfig"
+rsource "debug/Kconfig"
+rsource "foo/Kconfig"
+endmenu

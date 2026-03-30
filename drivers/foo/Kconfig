@@ -1,0 +1,11 @@
+config FOO_DRIVER_ENABLE
+	bool "Foo driver test"
+	default n
+	help
+	  Enable foo driver.
+
+config FOO_DRIVER_VALUE
+  int "Foo driver value"
+  default 42
+  help
+    An integer value for the foo driver.

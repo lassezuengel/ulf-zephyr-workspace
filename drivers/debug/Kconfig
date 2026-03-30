@@ -1,0 +1,9 @@
+config TIMESYNC_DEBUG_GPIO
+	bool "Time synchronization debug GPIO"
+	depends on GPIO
+	default y if $(dt_nodelabel_has_compat,timesync_debug,timesync-debug-gpio)
+	help
+	  Enable GPIO debugging support for time synchronization.
+	  Asserts a GPIO pin at critical synchronization points in the
+	  Glossy protocol, allowing observation with oscilloscope or
+	  logic analyzer.
