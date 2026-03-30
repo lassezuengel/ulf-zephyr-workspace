@@ -14,7 +14,6 @@ venv/
 .vscode/
 **/build
 **/src-gen/
-**/include/
 /bin
 /fed_build_backup
 

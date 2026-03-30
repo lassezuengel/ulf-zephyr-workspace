@@ -42,6 +42,36 @@ def run_cmd(cmd: list[str], dry_run: bool) -> int:
     return subprocess.run(cmd).returncode
 
 
+def parse_module_paths(raw: str | None) -> list[Path]:
+    if not raw:
+        return []
+    # Accept both CMake list ';' and shell path separators.
+    normalized = raw.replace(";", os.pathsep)
+    out: list[Path] = []
+    for part in normalized.split(os.pathsep):
+        part = part.strip()
+        if not part:
+            continue
+        p = Path(part).expanduser().resolve()
+        if p not in out:
+            out.append(p)
+    return out
+
+
+def resolve_extra_zephyr_modules(workspace_root: Path) -> list[Path]:
+    merged: list[Path] = []
+    for var in ("EXTRA_ZEPHYR_MODULES", "ZEPHYR_EXTRA_MODULES"):
+        for path in parse_module_paths(os.environ.get(var)):
+            if path not in merged:
+                merged.append(path)
+
+    local_drivers = (workspace_root / "drivers").resolve()
+    if local_drivers.exists() and local_drivers.is_dir() and local_drivers not in merged:
+        merged.append(local_drivers)
+
+    return merged
+
+
 def resolve_west_cmd() -> list[str] | None:
     west = shutil.which("west")
     if west:
@@ -251,6 +281,10 @@ def build_monodir(
     if use_ccache and not dry_run and shutil.which("ccache") is None:
         log("WARNING: ccache not found; continuing without compiler cache")
 
+    extra_modules = resolve_extra_zephyr_modules(src_gen.parent)
+    if extra_modules:
+        log(f"Extra Zephyr modules: {', '.join(str(p) for p in extra_modules)}")
+
     federates = detect_federates(federation_dir)
     if len(federates) < 1:
         log(f"ERROR: no federates found in {federation_dir}")
@@ -310,14 +344,20 @@ def build_monodir(
             cmd.extend(["-b", board])
 
         cmake_cache = staging_build / "CMakeCache.txt"
+        cmake_args: list[str] = []
+        if run_cmake and extra_modules:
+            cmake_args.append(
+                "-DEXTRA_ZEPHYR_MODULES=" + ";".join(str(p) for p in extra_modules)
+            )
         if run_cmake and use_ccache and (dry_run or not cmake_cache.exists()):
-            cmd.extend(
+            cmake_args.extend(
                 [
-                    "--",
                     "-DCMAKE_C_COMPILER_LAUNCHER=ccache",
                     "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
                 ]
             )
+        if cmake_args:
+            cmd.extend(["--", *cmake_args])
 
         cmake_mode = "on" if run_cmake else "off"
         log(f"[monobuild] build {federate.name} (cmake: {cmake_mode})")

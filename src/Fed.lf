@@ -89,8 +89,10 @@ reactor Sink {
 
 federated reactor {
   // @board("nrf54l15dk/nrf54l15/cpuapp")
+  @interface_tcp(address="fd01::1")
   srcFed = new Source()
   // @board("nrf52840dk/nrf52840")
+  @interface_tcp(address="fd01::1")
   snkFed = new Sink()
 
   @buffer(20)
