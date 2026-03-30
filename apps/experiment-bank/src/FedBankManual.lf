@@ -1,0 +1,116 @@
+target uC {
+  platform: {
+    name: Zephyr,
+    board: nrf52840dk/nrf52840
+  },
+  net-interface: sicslowpan,
+  logging: warn,
+  clock-sync: on
+}
+
+preamble {=
+  #include "reactor-uc/reactor-c.h"
+=}
+
+reactor Source(phase: time = 3000 msec) {
+  output out: int
+
+  state counter: int = 0
+  timer t(phase, 500 msec)
+
+  reaction(t) -> out {=
+    self->counter++;
+    lf_set(out, self->counter);
+
+    interval_t ts = lf_time_logical_elapsed();
+
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+
+    printf(
+        "[0] Value %d at physical time %lld.%01lld ms and logical time %lld ms\n",
+        self->counter,
+        t_physclock / 1000000,
+        (t_physclock % 1000000) / 100000,
+        ts / 1000000
+    );
+  =}
+} /* Source */
+
+reactor Sink(width: int = 3) {
+  input in1 : int
+  input in2 : int
+  input in3 : int
+
+  reaction(startup) {=
+    printf("Starting up manual bank stuff!");
+  =}
+
+  reaction(in1, in2, in3) {=
+    interval_t ts = lf_time_logical_elapsed();
+    interval_t Ts = lf_time_physical_elapsed();
+
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+
+    printf(
+        "At physical time %lld.%01lld ms and logical time %lld ms:\n",
+        t_physclock / 1000000,
+        (t_physclock % 1000000) / 100000,
+        ts / 1000000
+    );
+
+    if(lf_is_present(in1)) {
+      printf("%d, ", in1->value);
+    } else {
+      printf("_, ");
+    }
+    if(lf_is_present(in2)) {
+      printf("%d, ", in2->value);
+    } else {
+      printf("_, ");
+    }
+    if(lf_is_present(in3)) {
+      printf("%d, ", in3->value);
+    } else {
+      printf("_, ");
+    }
+    printf("\n");
+  =} tardy {=
+    interval_t ts = lf_time_logical_elapsed();
+    interval_t Ts = lf_time_physical_elapsed();
+
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+
+    printf(
+        "Tardy at physical time %lld.%01lld ms and logical time %lld ms\n",
+        t_physclock / 1000000,
+        (t_physclock % 1000000) / 100000,
+        ts / 1000000
+    );
+  =}
+} /* Sink */
+
+federated reactor {#
+  @interface_rudp()
+  src0 = new Source(phase = 3600 msec);
+  @interface_rudp()
+  src1 = new Source(phase = 3550 msec);
+  @interface_rudp()
+  src2 = new Source(phase = 3500 msec);
+  @interface_rudp()
+  snk = new Sink();
+
+  @buffer(20)
+  @max_pending_events(4)
+  src0.out -> snk.in1 after 50 msec;
+
+  @buffer(20)
+  @max_pending_events(4)
+  src1.out -> snk.in2 after 100 msec;
+
+  @buffer(20)
+  @max_pending_events(4)
+  src2.out -> snk.in3 after 150 msec;
+}
