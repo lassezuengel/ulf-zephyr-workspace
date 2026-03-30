@@ -32,6 +32,12 @@ struct dw3000_data {
 	uint16_t short_addr;
 	uint16_t channel;
 	bool promiscuous;
+	uint32_t rx_ok_cnt;
+	uint32_t rx_err_cnt;
+	uint32_t tx_ok_cnt;
+	uint32_t tx_err_cnt;
+	uint32_t tx_attempt_cnt;
+	bool rx_wait_logged;
 };
 
 struct dw3000_config {
@@ -39,14 +45,30 @@ struct dw3000_config {
 	size_t rx_stack_size;
 };
 
+static int dw3000_start(const struct device *dev);
+
 static void dw3000_iface_api_init(struct net_if *iface)
 {
 	const struct device *dev = net_if_get_device(iface);
 	struct dw3000_data *data = dev->data;
+	int ret;
 
 	net_if_set_link_addr(iface, data->mac_addr, sizeof(data->mac_addr), NET_LINK_IEEE802154);
 	data->iface = iface;
 	ieee802154_init(iface);
+
+	/*
+	 * Some integration flows don't trigger the radio start callback in time.
+	 * Start RX proactively once the net interface is initialized.
+	 */
+	if (!atomic_get(&data->started)) {
+		ret = dw3000_start(dev);
+		if (ret) {
+			LOG_WRN("Auto-start from iface init failed: %d", ret);
+		} else {
+			LOG_INF("Auto-started radio from iface init");
+		}
+	}
 }
 
 static void dw3000_generate_mac(uint8_t *mac)
@@ -132,9 +154,16 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 		uint32_t status;
 
 		if (!atomic_get(&data->started) || data->iface == NULL) {
+			if (!data->rx_wait_logged) {
+				LOG_INF("RX thread waiting (started=%ld iface=%p)",
+					atomic_get(&data->started), data->iface);
+				data->rx_wait_logged = true;
+			}
 			k_usleep(5000);
 			continue;
 		}
+
+		data->rx_wait_logged = false;
 
 		k_mutex_lock(&data->lock, K_FOREVER);
 		status = dwt_readsysstatuslo();
@@ -142,6 +171,10 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 		if (status & DWT_INT_RXFCG_BIT_MASK) {
 			pkt = dw3000_rx_read_pkt_locked(dev);
 		} else if (status & (SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)) {
+			data->rx_err_cnt++;
+			if ((data->rx_err_cnt % 64U) == 0U) {
+				LOG_INF("RX errors/timeouts=%u status=0x%08x", data->rx_err_cnt, status);
+			}
 			dwt_writesysstatuslo(status & (SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR));
 			dw3000_restart_rx_locked();
 		}
@@ -156,6 +189,11 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 		if (ieee802154_handle_ack(data->iface, pkt) != NET_OK &&
 		    net_recv_data(data->iface, pkt) != NET_OK) {
 			net_pkt_unref(pkt);
+		} else {
+			data->rx_ok_cnt++;
+			if ((data->rx_ok_cnt % 16U) == 0U) {
+				LOG_INF("RX packets=%u", data->rx_ok_cnt);
+			}
 		}
 	}
 }
@@ -191,6 +229,7 @@ static int dw3000_set_channel(const struct device *dev, uint16_t channel)
 	ret = dwt_setchannel(dw_ch);
 	if (ret == DWT_SUCCESS) {
 		data->channel = channel;
+		LOG_INF("Channel set to %u", channel);
 	}
 	k_mutex_unlock(&data->lock);
 
@@ -215,14 +254,17 @@ static int dw3000_filter(const struct device *dev,
 		if (set) {
 			memcpy(data->mac_addr, filter->ieee_addr, sizeof(data->mac_addr));
 		}
+		LOG_INF("Filter IEEE addr %s", set ? "set" : "clear");
 		break;
 
 	case IEEE802154_FILTER_TYPE_SHORT_ADDR:
 		data->short_addr = set ? filter->short_addr : 0xffffU;
+		LOG_INF("Filter short %s: 0x%04x", set ? "set" : "clear", data->short_addr);
 		break;
 
 	case IEEE802154_FILTER_TYPE_PAN_ID:
 		data->pan_id = set ? filter->pan_id : 0xffffU;
+		LOG_INF("Filter PAN %s: 0x%04x", set ? "set" : "clear", data->pan_id);
 		break;
 
 	default:
@@ -267,10 +309,19 @@ static int dw3000_tx(const struct device *dev,
 		return -EMSGSIZE;
 	}
 
-	if (mode == IEEE802154_TX_MODE_CCA) {
+	if (mode == IEEE802154_TX_MODE_CCA || mode == IEEE802154_TX_MODE_CSMA_CA ||
+	    mode == IEEE802154_TX_MODE_TXTIME_CCA) {
 		start_mode = DWT_START_TX_CCA;
-	} else if (mode != IEEE802154_TX_MODE_DIRECT) {
+	} else if (mode == IEEE802154_TX_MODE_DIRECT || mode == IEEE802154_TX_MODE_TXTIME) {
+		start_mode = DWT_START_TX_IMMEDIATE;
+	} else {
+		LOG_WRN("Unsupported TX mode=%d", mode);
 		return -ENOTSUP;
+	}
+
+	data->tx_attempt_cnt++;
+	if (data->tx_attempt_cnt <= 8U || (data->tx_attempt_cnt % 64U) == 0U) {
+		LOG_INF("TX attempt=%u len=%u mode=%d", data->tx_attempt_cnt, frag->len, mode);
 	}
 
 	k_mutex_lock(&data->lock, K_FOREVER);
@@ -280,6 +331,8 @@ static int dw3000_tx(const struct device *dev,
 
 	ret = dwt_writetxdata((uint16_t)frag->len, frag->data, 0);
 	if (ret != DWT_SUCCESS) {
+		data->tx_err_cnt++;
+		LOG_WRN("TX data write failed ret=%d tx_err=%u", ret, data->tx_err_cnt);
 		k_mutex_unlock(&data->lock);
 		return -EIO;
 	}
@@ -287,6 +340,8 @@ static int dw3000_tx(const struct device *dev,
 	dwt_writetxfctrl((uint16_t)frag->len + DW3000_FCS_LEN, 0, 0);
 	ret = dwt_starttx(start_mode);
 	if (ret != DWT_SUCCESS) {
+		data->tx_err_cnt++;
+		LOG_WRN("TX start failed ret=%d mode=%d tx_err=%u", ret, mode, data->tx_err_cnt);
 		dw3000_restart_rx_locked();
 		k_mutex_unlock(&data->lock);
 		return -EIO;
@@ -298,6 +353,10 @@ static int dw3000_tx(const struct device *dev,
 
 		if (status & DWT_INT_TXFRS_BIT_MASK) {
 			dwt_writesysstatuslo(DWT_INT_TXFRS_BIT_MASK);
+			data->tx_ok_cnt++;
+			if ((data->tx_ok_cnt % 16U) == 0U) {
+				LOG_INF("TX packets=%u", data->tx_ok_cnt);
+			}
 			dw3000_restart_rx_locked();
 			k_mutex_unlock(&data->lock);
 			return 0;
@@ -311,6 +370,8 @@ static int dw3000_tx(const struct device *dev,
 	}
 
 	dw3000_restart_rx_locked();
+	data->tx_err_cnt++;
+	LOG_WRN("TX timeout status=0x%08x tx_err=%u", dwt_readsysstatuslo(), data->tx_err_cnt);
 	k_mutex_unlock(&data->lock);
 
 	return -EIO;
@@ -320,12 +381,28 @@ static int dw3000_start(const struct device *dev)
 {
 	struct dw3000_data *data = dev->data;
 
+	LOG_DBG("dw3000_start: Entry");
 	k_mutex_lock(&data->lock, K_FOREVER);
+	LOG_DBG("dw3000_start: Mutex acquired");
+
 	atomic_set(&data->started, 1);
+	LOG_DBG("dw3000_start: Started flag set");
+
 	dwt_forcetrxoff();
+	LOG_DBG("dw3000_start: dwt_forcetrxoff() completed");
+
 	dwt_writesysstatuslo(DWT_INT_ALL_LO);
+	LOG_DBG("dw3000_start: dwt_writesysstatuslo() completed");
+
 	dw3000_restart_rx_locked();
+	LOG_DBG("dw3000_start: dw3000_restart_rx_locked() completed");
+
 	k_mutex_unlock(&data->lock);
+	LOG_DBG("dw3000_start: Mutex released");
+
+	LOG_INF("Radio start: channel=%u pan=0x%04x short=0x%04x", data->channel, data->pan_id,
+		data->short_addr);
+	LOG_DBG("dw3000_start: Final log completed");
 
 	return 0;
 }
@@ -404,13 +481,28 @@ static int dw3000_init(const struct device *dev)
 	data->short_addr = 0xffffU;
 	data->channel = 5U;
 	data->promiscuous = false;
+	data->rx_ok_cnt = 0U;
+	data->rx_err_cnt = 0U;
+	data->tx_ok_cnt = 0U;
+	data->tx_err_cnt = 0U;
+	data->tx_attempt_cnt = 0U;
+	data->rx_wait_logged = false;
 
 	k_mutex_lock(&data->lock, K_FOREVER);
+	/*
+	 * The UWB core enables double-buffer RX for interrupt-driven operation.
+	 * This minimal net driver uses polling, so force single-buffer mode.
+	 */
+	dwt_setdblrxbuffmode(DBL_BUF_STATE_DIS, DBL_BUF_MODE_MAN);
 	(void)dwt_setchannel(DWT_CH5);
 	(void)dw3000_apply_filter_hw(data);
 	dwt_setrxtimeout(0);
+	dwt_setpreambledetecttimeout(0);
+	dwt_writesysstatuslo(DWT_INT_ALL_LO);
 	dwt_forcetrxoff();
 	k_mutex_unlock(&data->lock);
+
+	LOG_INF("DW3000 minimal path configured for polling RX (double-buffer disabled)");
 
 	k_thread_create(&data->rx_thread,
 			cfg->rx_stack,
