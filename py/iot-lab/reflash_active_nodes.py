@@ -4,12 +4,13 @@ Reflash active IoT-LAB nodes using the deployment mapping created by
 `deploy_experiment.py`.
 """
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
 from pathlib import Path
 import re
 import subprocess
 import sys
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 
 DEFAULT_MAPPING_FILE = Path(__file__).with_name("last_deployment.json")
@@ -54,7 +55,29 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Do not reset nodes after reflashing.",
     )
+    parser.add_argument(
+        "--jobs",
+        type=int,
+        default=0,
+        help=(
+            "Number of parallel flash jobs. "
+            "Use 0 for automatic (one worker per targeted node)."
+        ),
+    )
     return parser.parse_args()
+
+
+def flash_node(site: str, archi: str, node_id: str, firmware_path: Path) -> Tuple[str, Path, int, str, str]:
+    cmd = [
+        "iotlab-node",
+        "--flash",
+        str(firmware_path),
+        "-l",
+        f"{site},{archi},{node_id}",
+    ]
+    print("Running:", " ".join(cmd))
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    return node_id, firmware_path, result.returncode, result.stdout.strip(), result.stderr.strip()
 
 
 def load_mapping(mapping_file: Path) -> Dict[str, object]:
@@ -125,7 +148,7 @@ def main() -> None:
         print("No active nodes found for the selected architecture.")
         sys.exit(1)
 
-    reflashed_node_ids: List[str] = []
+    reflash_targets: List[Tuple[str, Path]] = []
     for node_id in active_node_ids:
         firmware = firmware_by_node_id.get(node_id)
         if firmware is None:
@@ -136,23 +159,43 @@ def main() -> None:
             print(f"Firmware not found for node {node_id}: {firmware_path}")
             sys.exit(1)
 
-        print(f"Reflashing node {node_id} with {firmware_path}")
-        run(
-            [
-                "iotlab-node",
-                "--flash",
-                str(firmware_path),
-                "-l",
-                f"{site},{archi},{node_id}",
-            ]
-        )
-        reflashed_node_ids.append(node_id)
+        reflash_targets.append((node_id, firmware_path))
 
-    if not reflashed_node_ids:
+    if not reflash_targets:
         print("No active nodes matched entries in the mapping file.")
         sys.exit(1)
 
-    print(f"Reflashed {len(reflashed_node_ids)} node(s): {reflashed_node_ids}")
+    jobs = args.jobs if args.jobs > 0 else len(reflash_targets)
+    reflashed_node_ids: List[str] = []
+    failures: List[Tuple[str, Path, int, str, str]] = []
+    print(f"Starting parallel reflashing with {jobs} worker(s)...")
+
+    with ThreadPoolExecutor(max_workers=jobs) as executor:
+        future_to_target = {
+            executor.submit(flash_node, site, archi, node_id, firmware_path): (node_id, firmware_path)
+            for node_id, firmware_path in reflash_targets
+        }
+        for future in as_completed(future_to_target):
+            node_id, firmware_path, returncode, stdout, stderr = future.result()
+            if returncode == 0:
+                print(f"Reflash OK: node {node_id} <- {firmware_path}")
+                if stdout:
+                    print(stdout)
+                reflashed_node_ids.append(node_id)
+                continue
+
+            print(f"Reflash FAILED: node {node_id} <- {firmware_path} (exit {returncode})")
+            if stderr:
+                print(stderr)
+            failures.append((node_id, firmware_path, returncode, stdout, stderr))
+
+    if failures:
+        print(f"Reflashing failed for {len(failures)} node(s).")
+        for node_id, firmware_path, returncode, _stdout, _stderr in failures:
+            print(f"  node {node_id} <- {firmware_path} (exit {returncode})")
+        sys.exit(1)
+
+    print(f"Reflashed {len(reflashed_node_ids)} node(s): {sorted(reflashed_node_ids)}")
 
     if not args.no_reset:
         run(

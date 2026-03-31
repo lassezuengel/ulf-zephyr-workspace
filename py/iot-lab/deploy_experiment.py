@@ -6,13 +6,14 @@ This script stores the node-to-firmware mapping in a JSON file so that
 active nodes can be reflashed later with reflash_active_nodes.py.
 """
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 import json
 from pathlib import Path
 import re
 import subprocess
 import sys
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 
 DEFAULT_MAPPING_FILE = Path(__file__).with_name("last_deployment.json")
@@ -67,7 +68,29 @@ def parse_args() -> argparse.Namespace:
             f"(default: {DEFAULT_MAPPING_FILE})."
         ),
     )
+    parser.add_argument(
+        "--jobs",
+        type=int,
+        default=0,
+        help=(
+            "Number of parallel flash jobs. "
+            "Use 0 for automatic (one worker per node)."
+        ),
+    )
     return parser.parse_args()
+
+
+def flash_node(site: str, archi: str, node_id: str, elf_path: Path) -> Tuple[str, Path, int, str, str]:
+    cmd = [
+        "iotlab-node",
+        "--flash",
+        str(elf_path),
+        "-l",
+        f"{site},{archi},{node_id}",
+    ]
+    print("Running:", " ".join(cmd))
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    return node_id, elf_path, result.returncode, result.stdout.strip(), result.stderr.strip()
 
 
 def validate_elf_paths(raw_paths: List[str]) -> List[Path]:
@@ -208,17 +231,35 @@ def main() -> None:
     )
     write_mapping(args.mapping_file.expanduser(), mapping_data)
 
-    # 5. Flash each node with corresponding ELF file.
-    for index, (elf_path, node_id) in enumerate(zip(elf_paths, node_ids), start=1):
-        flash_cmd = [
-            "iotlab-node",
-            "--flash",
-            str(elf_path),
-            "-l",
-            f"{args.site},{args.archi},{node_id}",
-        ]
-        print(f"Flashing node {index}/{node_count}: {elf_path} -> {node_id}")
-        run(flash_cmd)
+    # 5. Flash each node with corresponding ELF file in parallel.
+    jobs = args.jobs if args.jobs > 0 else node_count
+    flash_inputs = list(zip(elf_paths, node_ids))
+    failures: List[Tuple[str, Path, int, str, str]] = []
+    print(f"Starting parallel flashing with {jobs} worker(s)...")
+
+    with ThreadPoolExecutor(max_workers=jobs) as executor:
+        future_to_target = {
+            executor.submit(flash_node, args.site, args.archi, node_id, elf_path): (node_id, elf_path)
+            for elf_path, node_id in flash_inputs
+        }
+        for future in as_completed(future_to_target):
+            node_id, elf_path, returncode, stdout, stderr = future.result()
+            if returncode == 0:
+                print(f"Flash OK: node {node_id} <- {elf_path}")
+                if stdout:
+                    print(stdout)
+                continue
+
+            print(f"Flash FAILED: node {node_id} <- {elf_path} (exit {returncode})")
+            if stderr:
+                print(stderr)
+            failures.append((node_id, elf_path, returncode, stdout, stderr))
+
+    if failures:
+        print(f"Flashing failed for {len(failures)} node(s).")
+        for node_id, elf_path, returncode, _stdout, _stderr in failures:
+            print(f"  node {node_id} <- {elf_path} (exit {returncode})")
+        sys.exit(1)
 
     print("All nodes flashed successfully!")
 
