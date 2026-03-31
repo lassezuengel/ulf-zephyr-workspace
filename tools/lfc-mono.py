@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import os
 import shlex
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -50,6 +51,20 @@ def find_generated_federation_dir(lf_file: Path, workspace_root: Path) -> Path |
         if candidate.exists() and candidate.is_dir():
             return candidate
     return None
+
+
+def find_lf_project_root(lf_file: Path) -> Path:
+    if lf_file.parent.name == "src":
+        return lf_file.parent.parent
+    return lf_file.parent
+
+
+def clean_build_roots(lf_project_root: Path) -> None:
+    # Always start from a clean generated tree and monobuild staging area.
+    for path in (lf_project_root / "src-gen", lf_project_root / ".lf-monobuild"):
+        if path.exists():
+            log(f"Cleaning: {path}")
+            shutil.rmtree(path)
 
 
 def main(argv: list[str]) -> int:
@@ -85,6 +100,7 @@ def main(argv: list[str]) -> int:
         return 2
 
     federation_name = lf_file.stem
+    lf_project_root = find_lf_project_root(lf_file)
 
     build_script = script_dir / "lf-federation-build.py"
     if not build_script.exists() or not build_script.is_file():
@@ -93,6 +109,8 @@ def main(argv: list[str]) -> int:
 
     log(f"LF file: {lf_file}")
     log(f"Federation: {federation_name}")
+
+    clean_build_roots(lf_project_root)
 
     rc = run_cmd([str(lfc_dev), "-n", str(lf_file)], dry_run=False, cwd=workspace_root)
     if rc != 0:

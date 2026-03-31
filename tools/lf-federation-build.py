@@ -8,8 +8,8 @@
 This gives monobuild semantics: reactor-uc and Zephyr dependencies compile once,
 then each federate is rebuilt with minimal incremental work.
 
-This approach assumes that all federates in the federation share the same reactor-uc
-and the same Zephyr configuration (prj.conf and prj_lf.conf).
+This approach assumes that all federates in the federation share the same reactor-uc.
+Zephyr config overlays (prj.conf/prj_lf.conf) are synchronized per federate.
 """
 
 from __future__ import annotations
@@ -26,9 +26,9 @@ from typing import Sequence
 
 
 EXCLUDE_TOP = {"build"}
-SHARED_INPUTS = ("reactor-uc", "prj.conf", "prj_lf.conf")
+SHARED_INPUTS = ("reactor-uc",)
 ARTIFACT_FILES = ("zephyr.elf", "zephyr.hex", "zephyr.bin", "zephyr.uf2")
-GRAPH_INPUT_FILES = ("Include.cmake", "Kconfig")
+GRAPH_INPUT_FILES = ("Include.cmake", "Kconfig", "prj.conf", "prj_lf.conf")
 
 
 def log(msg: str) -> None:
@@ -237,6 +237,81 @@ def file_digest(path: Path) -> str:
     return h.hexdigest()
 
 
+def tree_digest(root: Path, include_suffixes: tuple[str, ...]) -> str:
+    h = hashlib.sha256()
+    if not root.exists() or not root.is_dir():
+        return h.hexdigest()
+
+    for p in sorted(root.rglob("*")):
+        if not p.is_file():
+            continue
+        if p.suffix not in include_suffixes:
+            continue
+        rel = str(p.relative_to(root)).encode("utf-8")
+        h.update(rel)
+        h.update(b"\0")
+        h.update(file_digest(p).encode("utf-8"))
+        h.update(b"\n")
+    return h.hexdigest()
+
+
+def compute_staging_source_signature(staging_src: Path) -> str:
+    # Track source-relevant content. If this changes but output ELF stays
+    # unchanged, force a pristine rebuild to avoid stale-object reuse.
+    parts = [
+        tree_digest(staging_src / "src", (".c", ".h", ".S", ".s")),
+        tree_digest(staging_src / "reactor-uc", (".c", ".h", ".S", ".s", ".cmake", ".txt")),
+    ]
+    for name in ("prj.conf", "prj_lf.conf", "Kconfig", "Include.cmake"):
+        p = staging_src / name
+        parts.append(file_digest(p) if p.exists() and p.is_file() else "")
+    return hashlib.sha256("|".join(parts).encode("utf-8")).hexdigest()
+
+
+def force_pristine_rebuild(
+    west_cmd: list[str],
+    staging_build: Path,
+    staging_src: Path,
+    board: str | None,
+    extra_modules: list[Path],
+    use_ccache: bool,
+    dry_run: bool,
+) -> int:
+    remove_path(staging_build, dry_run=dry_run)
+    if not dry_run:
+        staging_build.mkdir(parents=True, exist_ok=True)
+
+    cmd: list[str] = [
+        *west_cmd,
+        "build",
+        "-d",
+        str(staging_build),
+        "-s",
+        str(staging_src),
+        "-p",
+        "always",
+        "-c",
+    ]
+    if board:
+        cmd.extend(["-b", board])
+
+    cmake_args: list[str] = []
+    if extra_modules:
+        cmake_args.append("-DEXTRA_ZEPHYR_MODULES=" + ";".join(str(p) for p in extra_modules))
+    if use_ccache:
+        cmake_args.extend(
+            [
+                "-DCMAKE_C_COMPILER_LAUNCHER=ccache",
+                "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
+            ]
+        )
+    if cmake_args:
+        cmd.extend(["--", *cmake_args])
+
+    log("[monobuild] forcing pristine rebuild due to stale-artifact suspicion")
+    return run_cmd(cmd, dry_run=dry_run)
+
+
 def normalized_include_cmake_digest(path: Path) -> str:
     # Ignore generated comments and whitespace-only noise so equivalent
     # federates (e.g., src_0/src_1/src_2) can reuse one CMake configure.
@@ -324,16 +399,19 @@ def build_monodir(
 
     sync_exclude = set(EXCLUDE_TOP)
     sync_exclude.update(SHARED_INPUTS)
-    previous_graph_signature: tuple[tuple[str, str], ...] | None = None
+    previous_source_signature: str | None = None
+    previous_elf_digest: str | None = None
 
     for i, federate in enumerate(federates):
         log(f"\n[monobuild] sync {federate.name}")
         sync_tree(federate, staging_src, dry_run=dry_run, exclude_top=sync_exclude)
 
+        source_signature = compute_staging_source_signature(staging_src)
+
         pristine = first_pristine if i == 0 else "never"
-        graph_signature = compute_graph_signature(federate)
-        run_cmake = i == 0 or graph_signature != previous_graph_signature
-        previous_graph_signature = graph_signature
+        # Reliability first: always rerun CMake per federate so Zephyr
+        # re-evaluates per-federate prj_lf.conf/prj.conf deterministically.
+        run_cmake = True
 
         cmd: list[str] = [
             *west_cmd,
@@ -352,6 +430,8 @@ def build_monodir(
 
         cmake_cache = staging_build / "CMakeCache.txt"
         cmake_args: list[str] = []
+        if run_cmake:
+            cmake_args.append("-DCONF_FILE=prj_lf.conf;prj.conf")
         if run_cmake and extra_modules:
             cmake_args.append(
                 "-DEXTRA_ZEPHYR_MODULES=" + ";".join(str(p) for p in extra_modules)
@@ -374,12 +454,44 @@ def build_monodir(
             errors += 1
             continue
 
+        elf_path = staging_build / "zephyr" / "zephyr.elf"
+        if not dry_run and not elf_path.exists():
+            log(f"ERROR: missing output ELF after build: {elf_path}")
+            errors += 1
+            continue
+
+        elf_digest = "" if dry_run else file_digest(elf_path)
+        source_changed = previous_source_signature is not None and source_signature != previous_source_signature
+        elf_unchanged = previous_elf_digest is not None and elf_digest == previous_elf_digest
+        if source_changed and elf_unchanged:
+            log(
+                "WARNING: staged source changed but zephyr.elf did not; "
+                f"retrying {federate.name} with pristine rebuild"
+            )
+            rc_retry = force_pristine_rebuild(
+                west_cmd=west_cmd,
+                staging_build=staging_build,
+                staging_src=staging_src,
+                board=board,
+                extra_modules=extra_modules,
+                use_ccache=use_ccache and (dry_run or shutil.which("ccache") is not None),
+                dry_run=dry_run,
+            )
+            if rc_retry != 0:
+                log(f"ERROR: fallback pristine rebuild failed for {federate.name} (exit code {rc_retry})")
+                errors += 1
+                continue
+            elf_digest = "" if dry_run else file_digest(elf_path)
+
         copy_artifacts(
             staging_build_dir=staging_build,
             federation_dir=federation_dir,
             federate_name=federate.name,
             dry_run=dry_run,
         )
+
+        previous_source_signature = source_signature
+        previous_elf_digest = elf_digest
 
     return errors
 
