@@ -155,15 +155,12 @@ def main() -> None:
     print(f"Reflashed {len(reflashed_node_ids)} node(s): {reflashed_node_ids}")
 
     if not args.no_reset:
-        for node_id in reflashed_node_ids:
-            run(
-                [
-                    "iotlab-node",
-                    "--reset",
-                    "-l",
-                    f"{site},{archi},{node_id}",
-                ]
-            )
+        run(
+            [
+                "iotlab-node",
+                "--reset"
+            ]
+        )
 
 
 if __name__ == "__main__":

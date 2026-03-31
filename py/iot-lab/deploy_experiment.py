@@ -222,15 +222,12 @@ def main() -> None:
 
     print("All nodes flashed successfully!")
 
-    # 6. Reset nodes used in this experiment.
-    for node_id in node_ids:
-        reset_cmd = [
-            "iotlab-node",
-            "--reset",
-            "-l",
-            f"{args.site},{args.archi},{node_id}",
-        ]
-        run(reset_cmd)
+    # 6. Reset all nodes used in this experiment.
+    reset_cmd = [
+        "iotlab-node",
+        "--reset",
+    ]
+    run(reset_cmd)
 
 
 if __name__ == "__main__":
