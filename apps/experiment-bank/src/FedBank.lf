@@ -12,14 +12,21 @@ preamble {=
   #include "reactor-uc/reactor-c.h"
 =}
 
-reactor Source {
+reactor Source(bank_index: int = 0) {
   output out: int
 
   state counter: int = 0
-  timer t(3 sec, 500 msec)
+  timer t(10 sec, 1000 msec)
+
+  reaction(startup) {=
+    printf("Starting source with bank id %d!\n", self->bank_index);
+  =}
 
   reaction(t) -> out {=
+    k_msleep(self->bank_index * 75);
+
     self->counter++;
+
     lf_set(out, self->counter);
 
     interval_t ts = lf_time_logical_elapsed();
@@ -37,8 +44,8 @@ reactor Source {
   =}
 } /* Source */
 
-reactor Sink(width: int = 3) {
-  input[width] in: int
+reactor Sink(in_width: int = 10) {
+  input[in_width] in: int
 
   reaction(startup) {=
     printf("Starting bank federation!");
@@ -58,7 +65,7 @@ reactor Sink(width: int = 3) {
         ts / 1000000
     );
 
-    for (int i = 0; i < self->width; i++) {
+    for (int i = 0; i < self->in_width; i++) {
       if(lf_is_present(in[i])) {
         printf("%d, ", in[i]->value);
       } else {
@@ -69,13 +76,13 @@ reactor Sink(width: int = 3) {
   =}
 } /* Sink */
 
-federated reactor(x: time = 100 sec) {
+federated reactor(n: int = 8) {
   @interface_rudp()
-  src = new[3] Source();
+  src = new[n] Source();
   @interface_rudp()
-  snk = new Sink(width=3);
+  snk = new Sink(in_width=n);
 
   @buffer(20)
-  @max_pending_events(4)
-  src.out -> snk.in after 100 msec;
+  @max_pending_events(10)
+  src.out -> snk.in after 1000 msec;
 }
