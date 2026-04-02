@@ -66,7 +66,7 @@ preamble {=
 
     state counter: int = 0;
 
-    timer t(0, 500 msec);
+    timer t(10 seconds, 100 msec);
     reaction(t) -> out {=
         self->counter++;
 
@@ -85,7 +85,7 @@ preamble {=
         }
         #endif
 
-        if(self->counter % 10 == 0) {
+        if(self->counter % 1 == 0) {
             printf("[Source] Emitted value: %d\n", self->counter);
         }
     =}
@@ -152,7 +152,7 @@ preamble {=
         }
         #endif
 
-        if(in->value % 10 == 0) {
+        if(in->value % 1 == 0) {
             printf("[Sink] Received value: %d\n", in->value);
         }
     =} tardy {=
