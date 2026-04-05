@@ -19,10 +19,16 @@
 
 #include "dw3000.h"
 
-LOG_MODULE_REGISTER(ieee802154_dw3000_minimal, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_DBG);
 
 #define DW3000_FCS_LEN 2U
 #define DW3000_MAX_PHY_PACKET_SIZE 127U
+#define DW3000_TX_WAIT_MS 20
+#define DW3000_CSMA_MAX_BACKOFFS 4U
+#define DW3000_CSMA_MIN_BE 3U
+#define DW3000_CSMA_MAX_BE 5U
+#define DW3000_UNIT_BACKOFF_US 320U
+#define DW3000_CCA_PTO_SYMBOLS 16U
 
 struct dw3000_data {
 	struct net_if *iface;
@@ -91,9 +97,9 @@ static void dw3000_iface_api_init(struct net_if *iface)
 	/*
 	 * Some integration flows don't trigger the radio start callback in time.
 	 * Start RX proactively once the net interface is initialized.
-   *
-   * TODO: This is probably not needed because the driver should be started
-   * by zephyr via the ieee802154 api.
+	 *
+	 * TODO: This is probably not needed because the driver should be started
+	 * by Zephyr via the ieee802154 API.
 	 */
 	if (!atomic_get(&data->started)) {
 		ret = dw3000_start(dev);
@@ -268,7 +274,8 @@ static enum ieee802154_hw_caps dw3000_get_capabilities(const struct device *dev)
 {
 	ARG_UNUSED(dev);
 
-	return IEEE802154_HW_FCS | IEEE802154_HW_FILTER | IEEE802154_HW_TXTIME;
+	return IEEE802154_HW_FCS | IEEE802154_HW_FILTER | IEEE802154_HW_TXTIME |
+		IEEE802154_HW_CSMA;
 }
 
 static int dw3000_cca(const struct device *dev)
@@ -366,6 +373,10 @@ static int dw3000_tx(const struct device *dev,
 	struct dw3000_data *data = dev->data;
 	int64_t timeout_end;
 	uint8_t start_mode = DWT_START_TX_IMMEDIATE;
+	bool use_csma = false;
+	uint8_t be = DW3000_CSMA_MIN_BE;
+	uint8_t max_tries = 1U;
+	uint8_t tx_try;
 	int ret;
 
 	ARG_UNUSED(pkt);
@@ -392,14 +403,14 @@ static int dw3000_tx(const struct device *dev,
 		return -EMSGSIZE;
 	}
 
-  // TODO: Support more TX modes, including CCA/CSMA and delayed TX. For now, treat all modes as direct TX.
-	if (mode == IEEE802154_TX_MODE_DIRECT || mode == IEEE802154_TX_MODE_TXTIME ||
-	    mode == IEEE802154_TX_MODE_CCA || mode == IEEE802154_TX_MODE_CSMA_CA ||
-	    mode == IEEE802154_TX_MODE_TXTIME_CCA) {
+	if (mode == IEEE802154_TX_MODE_DIRECT || mode == IEEE802154_TX_MODE_TXTIME) {
 		start_mode = DWT_START_TX_IMMEDIATE;
-		if (mode != IEEE802154_TX_MODE_DIRECT && mode != IEEE802154_TX_MODE_TXTIME) {
-			LOG_DBG("TX mode=%d requested CCA/CSMA, forcing IMMEDIATE for DW3000 minimal path", mode);
-		}
+	} else if (mode == IEEE802154_TX_MODE_CCA || mode == IEEE802154_TX_MODE_TXTIME_CCA) {
+		start_mode = DWT_START_TX_CCA;
+	} else if (mode == IEEE802154_TX_MODE_CSMA_CA) {
+		start_mode = DWT_START_TX_CCA;
+		use_csma = true;
+		max_tries = DW3000_CSMA_MAX_BACKOFFS + 1U;
 	} else {
 		LOG_WRN("Unsupported TX mode=%d", mode);
 		return -ENOTSUP;
@@ -410,73 +421,120 @@ static int dw3000_tx(const struct device *dev,
 		LOG_INF("TX attempt=%u len=%u mode=%d", data->tx_attempt_cnt, frag->len, mode);
 	}
 
-	k_mutex_lock(&data->lock, K_FOREVER);
-
-	if (data->uwb && data->uwb->force_trx_off) {
-		data->uwb->force_trx_off(dev);
-	} else {
-		dwt_forcetrxoff();
-	}
-	dw3000_clear_status_all();
-
-	if (data->uwb && data->uwb->setup_tx_frame && data->uwb->start_tx) {
-		data->uwb->setup_tx_frame(dev, frag->data, (uint16_t)frag->len);
-		ret = data->uwb->start_tx(dev, 0);
-	} else {
-		if (data->tx_entry_cnt <= 4U || (data->tx_entry_cnt % 256U) == 0U) {
-			LOG_WRN("TX using legacy direct dwt_* path");
+	for (tx_try = 0U; tx_try < max_tries; tx_try++) {
+		if (use_csma && tx_try > 0U) {
+			uint32_t bo_slots = 1U << MIN(be, DW3000_CSMA_MAX_BE);
+			uint32_t rand_slots = sys_rand32_get() % bo_slots;
+			k_usleep(rand_slots * DW3000_UNIT_BACKOFF_US);
+			if (be < DW3000_CSMA_MAX_BE) {
+				be++;
+			}
 		}
-		ret = dwt_writetxdata((uint16_t)frag->len, frag->data, 0);
+
+		k_mutex_lock(&data->lock, K_FOREVER);
+
+		if (data->uwb && data->uwb->force_trx_off) {
+			data->uwb->force_trx_off(dev);
+		} else {
+			dwt_forcetrxoff();
+		}
+		dw3000_clear_status_all();
+		dwt_setpreambledetecttimeout((start_mode == DWT_START_TX_CCA) ? DW3000_CCA_PTO_SYMBOLS : 0U);
+
+		if (data->uwb && data->uwb->setup_tx_frame && data->uwb->start_tx) {
+			/* The UWB abstraction exposes immediate TX only, use direct starttx for CCA mode. */
+			data->uwb->setup_tx_frame(dev, frag->data, (uint16_t)frag->len);
+			if (start_mode == DWT_START_TX_IMMEDIATE) {
+				ret = data->uwb->start_tx(dev, 0);
+			} else {
+				ret = dwt_starttx(start_mode);
+			}
+		} else {
+			if (data->tx_entry_cnt <= 4U || (data->tx_entry_cnt % 256U) == 0U) {
+				LOG_WRN("TX using legacy direct dwt_* path");
+			}
+			ret = dwt_writetxdata((uint16_t)frag->len, frag->data, 0);
+			if (ret != DWT_SUCCESS) {
+				data->tx_err_cnt++;
+				LOG_WRN("TX data write failed ret=%d tx_err=%u", ret, data->tx_err_cnt);
+				k_mutex_unlock(&data->lock);
+				return -EIO;
+			}
+
+			dwt_writetxfctrl((uint16_t)frag->len + DW3000_FCS_LEN, 0, 0);
+			ret = dwt_starttx(start_mode);
+		}
 		if (ret != DWT_SUCCESS) {
-			data->tx_err_cnt++;
-			LOG_WRN("TX data write failed ret=%d tx_err=%u", ret, data->tx_err_cnt);
+			uint32_t status_lo = dwt_readsysstatuslo();
+			uint32_t status_hi = dwt_readsysstatushi();
+			dw3000_restart_rx_locked();
 			k_mutex_unlock(&data->lock);
+
+			if (use_csma && (tx_try + 1U) < max_tries) {
+				continue;
+			}
+
+			data->tx_err_cnt++;
+			LOG_WRN("TX start failed ret=%d mode=%d lo=0x%08x hi=0x%08x tx_err=%u",
+				ret, mode, status_lo, status_hi, data->tx_err_cnt);
 			return -EIO;
 		}
 
-		dwt_writetxfctrl((uint16_t)frag->len + DW3000_FCS_LEN, 0, 0);
-		ret = dwt_starttx(start_mode);
-	}
-	if (ret != DWT_SUCCESS) {
-		uint32_t status_lo = dwt_readsysstatuslo();
-		uint32_t status_hi = dwt_readsysstatushi();
-		data->tx_err_cnt++;
-		LOG_WRN("TX start failed ret=%d mode=%d lo=0x%08x hi=0x%08x tx_err=%u",
-			ret, mode, status_lo, status_hi, data->tx_err_cnt);
-		dw3000_restart_rx_locked();
-		k_mutex_unlock(&data->lock);
-		return -EIO;
-	}
+		timeout_end = k_uptime_get() + DW3000_TX_WAIT_MS;
+		while (k_uptime_get() < timeout_end) {
+			uint32_t status_lo = dwt_readsysstatuslo();
+			uint32_t status_hi = dwt_readsysstatushi();
 
-	timeout_end = k_uptime_get() + 20;
-	while (k_uptime_get() < timeout_end) {
-		uint32_t status = dwt_readsysstatuslo();
-
-		if (status & DWT_INT_TXFRS_BIT_MASK) {
-			dwt_writesysstatuslo(DWT_INT_TXFRS_BIT_MASK);
-			data->tx_ok_cnt++;
-			if ((data->tx_ok_cnt % 16U) == 0U) {
-				LOG_INF("TX packets=%u", data->tx_ok_cnt);
+			if (status_lo & DWT_INT_TXFRS_BIT_MASK) {
+				dwt_writesysstatuslo(DWT_INT_TXFRS_BIT_MASK);
+				data->tx_ok_cnt++;
+				if ((data->tx_ok_cnt % 16U) == 0U) {
+					LOG_INF("TX packets=%u", data->tx_ok_cnt);
+				}
+				dw3000_restart_rx_locked();
+				k_mutex_unlock(&data->lock);
+				return 0;
 			}
+
+			if ((status_hi & DWT_INT_HI_CCA_FAIL_BIT_MASK) != 0U && start_mode == DWT_START_TX_CCA) {
+				dwt_writesysstatushi(DWT_INT_HI_CCA_FAIL_BIT_MASK);
+				dw3000_restart_rx_locked();
+				k_mutex_unlock(&data->lock);
+
+				if (use_csma && (tx_try + 1U) < max_tries) {
+					break;
+				}
+
+				data->tx_err_cnt++;
+				LOG_WRN("TX CCA busy mode=%d tries=%u tx_err=%u", mode, tx_try + 1U, data->tx_err_cnt);
+				return -EBUSY;
+			}
+
+			if (status_lo & (SYS_STATUS_ALL_RX_ERR | SYS_STATUS_ALL_RX_TO)) {
+				dwt_writesysstatuslo(status_lo & (SYS_STATUS_ALL_RX_ERR | SYS_STATUS_ALL_RX_TO));
+			}
+
+			k_usleep(1000);
+		}
+
+		if (k_uptime_get() >= timeout_end) {
 			dw3000_restart_rx_locked();
 			k_mutex_unlock(&data->lock);
-			return 0;
-		}
 
-		if (status & (SYS_STATUS_ALL_RX_ERR | SYS_STATUS_ALL_RX_TO)) {
-			dwt_writesysstatuslo(status & (SYS_STATUS_ALL_RX_ERR | SYS_STATUS_ALL_RX_TO));
-		}
+			if (use_csma && (tx_try + 1U) < max_tries) {
+				continue;
+			}
 
-		k_usleep(1000);
+			data->tx_err_cnt++;
+			LOG_WRN("TX timeout lo=0x%08x hi=0x%08x tx_err=%u",
+				dwt_readsysstatuslo(), dwt_readsysstatushi(), data->tx_err_cnt);
+			return -EIO;
+		}
 	}
 
-	dw3000_restart_rx_locked();
 	data->tx_err_cnt++;
-	LOG_WRN("TX timeout lo=0x%08x hi=0x%08x tx_err=%u",
-		dwt_readsysstatuslo(), dwt_readsysstatushi(), data->tx_err_cnt);
-	k_mutex_unlock(&data->lock);
-
-	return -EIO;
+	LOG_WRN("TX CSMA exhausted tries=%u tx_err=%u", max_tries, data->tx_err_cnt);
+	return -EBUSY;
 }
 
 static int dw3000_start(const struct device *dev)
@@ -635,7 +693,7 @@ static int dw3000_init(const struct device *dev)
 	k_mutex_lock(&data->lock, K_FOREVER);
 	/*
 	 * The UWB core enables double-buffer RX for interrupt-driven operation.
-	 * This minimal net driver uses polling, so force single-buffer mode.
+	 * The net driver uses polling, so force single-buffer mode.
 	 */
 	dwt_setdblrxbuffmode(DBL_BUF_STATE_DIS, DBL_BUF_MODE_MAN);
 	ret = dw3000_apply_phy_config_locked(data);
@@ -652,7 +710,7 @@ static int dw3000_init(const struct device *dev)
 	dwt_forcetrxoff();
 	k_mutex_unlock(&data->lock);
 
-	LOG_INF("DW3000 minimal path configured for polling RX (double-buffer disabled)");
+	LOG_INF("DW3000 path configured for polling RX (double-buffer disabled)");
 
 	k_thread_create(&data->rx_thread,
 			cfg->rx_stack,
