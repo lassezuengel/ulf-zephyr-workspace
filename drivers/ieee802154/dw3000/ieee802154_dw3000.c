@@ -35,6 +35,7 @@ struct dw3000_data {
 	const uwb_driver_t *uwb;
 	struct k_mutex lock;
 	struct k_thread rx_thread;
+	struct k_sem rx_irq_sem;
 	atomic_t started;
 	uint8_t mac_addr[8];
 	uint16_t pan_id;
@@ -50,6 +51,33 @@ struct dw3000_data {
 	uint32_t rx_nobuf_cnt;
 	bool rx_wait_logged;
 };
+
+static const struct device *dw3000_irq_dev;
+
+/**
+ * Handler of the DWM_IRQ GPIO interrupt, which is triggered on RX events.
+ * Used to wake the RX thread to process received packets.
+ *
+ * TODO: The existing UWB layer also uses this interrupt for its own purposes.
+ * If we want to use both functionalities simultaneously, we may need to split
+ * the interrupt handling so that the UWB layer can process the interrupt and
+ * then signal the DW3000 driver to wake the RX thread, instead of having the
+ * DW3000 driver directly handle the GPIO interrupt.
+ *
+ * -> Right now, the drivers will conflict!
+ */
+static void dw3000_irq_cb(void)
+{
+	const struct device *dev = dw3000_irq_dev;
+	struct dw3000_data *data;
+
+	if (dev == NULL) {
+		return;
+	}
+
+	data = dev->data;
+	k_sem_give(&data->rx_irq_sem);
+}
 
 struct dw3000_config {
 	k_thread_stack_t *rx_stack;
@@ -230,6 +258,14 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 
 		data->rx_wait_logged = false;
 
+#if defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
+		k_usleep(1000);
+#else
+		if (k_sem_take(&data->rx_irq_sem, K_FOREVER) != 0) {
+			continue;
+		}
+#endif
+
 		k_mutex_lock(&data->lock, K_FOREVER);
 		status = dwt_readsysstatuslo();
 
@@ -250,7 +286,6 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 		k_mutex_unlock(&data->lock);
 
 		if (!pkt) {
-			k_usleep(1000);
 			continue;
 		}
 
@@ -543,26 +578,23 @@ static int dw3000_start(const struct device *dev)
 
 	LOG_DBG("dw3000_start: Entry");
 	k_mutex_lock(&data->lock, K_FOREVER);
-	LOG_DBG("dw3000_start: Mutex acquired");
 
 	atomic_set(&data->started, 1);
-	LOG_DBG("dw3000_start: Started flag set");
 
 	dwt_forcetrxoff();
-	LOG_DBG("dw3000_start: dwt_forcetrxoff() completed");
 
 	dw3000_clear_status_all();
-	LOG_DBG("dw3000_start: clear_status_all() completed");
 
 	dw3000_restart_rx_locked();
-	LOG_DBG("dw3000_start: dw3000_restart_rx_locked() completed");
 
 	k_mutex_unlock(&data->lock);
-	LOG_DBG("dw3000_start: Mutex released");
 
 	LOG_INF("Radio start: channel=%u pan=0x%04x short=0x%04x", data->channel, data->pan_id,
 		data->short_addr);
-	LOG_DBG("dw3000_start: Final log completed");
+
+#if !defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
+	dw3000_hw_interrupt_enable();
+#endif
 
 	return 0;
 }
@@ -575,6 +607,12 @@ static int dw3000_stop(const struct device *dev)
 	atomic_set(&data->started, 0);
 	dwt_forcetrxoff();
 	k_mutex_unlock(&data->lock);
+
+#if !defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
+	dw3000_hw_interrupt_disable();
+	/* Wake RX thread so it can observe started=0 and park cleanly. */
+	k_sem_give(&data->rx_irq_sem);
+#endif
 
 	return 0;
 }
@@ -659,10 +697,11 @@ static int dw3000_init(const struct device *dev)
 
 	/*
 	 * The existing UWB layer installs its own IRQ work handler for ranging.
-	 * For the IEEE802154 net path, we poll status in a dedicated RX thread.
+	 * For the IEEE802154 net path, we use a dedicated RX thread that is woken
+	 * either by IRQ callbacks or by polling, depending on Kconfig.
 	 */
-	dw3000_hw_interrupt_disable();
 	dw3000_hw_clear_interrupt_handler();
+	dw3000_hw_interrupt_disable();
 
 	k_mutex_init(&data->lock);
 	data->uwb = uwb_driver_get(dev);
@@ -689,6 +728,7 @@ static int dw3000_init(const struct device *dev)
 	data->tx_entry_cnt = 0U;
 	data->rx_nobuf_cnt = 0U;
 	data->rx_wait_logged = false;
+	k_sem_init(&data->rx_irq_sem, 0, 1);
 
 	k_mutex_lock(&data->lock, K_FOREVER);
 	/*
@@ -710,7 +750,18 @@ static int dw3000_init(const struct device *dev)
 	dwt_forcetrxoff();
 	k_mutex_unlock(&data->lock);
 
+#if defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
 	LOG_INF("DW3000 path configured for polling RX (double-buffer disabled)");
+#else
+	if (dw3000_hw_init_interrupt() != 0) {
+		LOG_ERR("Failed to initialize DW3000 IRQ GPIO");
+		return -EIO;
+	}
+	dw3000_irq_dev = dev;
+	dw3000_hw_set_interrupt_handler(dw3000_irq_cb);
+	dw3000_hw_interrupt_enable();
+	LOG_INF("DW3000 path configured for IRQ-driven RX (double-buffer disabled)");
+#endif
 
 	k_thread_create(&data->rx_thread,
 			cfg->rx_stack,

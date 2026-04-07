@@ -119,6 +119,14 @@ config IEEE802154_DW3000_IRQ_THREAD_STACK_SIZE
 	help
 	  Stack size for the IRQ processing thread.
 
+config IEEE802154_DW3000_RX_POLLING_MODE
+	bool "Use polling RX mode"
+	default n
+	help
+	  Use RX polling in the DW3000 network driver instead of GPIO IRQ wakeups.
+	  Keep this enabled only as a fallback for bring-up or debugging.
+	  When disabled, the driver uses int-gpios callbacks to wake the RX thread.
+
 config IEEE802154_DW3000_INIT_PRIO
 	int "DW3000 initialization priority"
 	default 80
