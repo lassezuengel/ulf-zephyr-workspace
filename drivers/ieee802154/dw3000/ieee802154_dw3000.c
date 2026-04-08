@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SynchroFly Project
+ * Copyright (c) 2026 SynchroFly Project
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -732,8 +732,15 @@ static int dw3000_init(const struct device *dev)
 
 	k_mutex_lock(&data->lock, K_FOREVER);
 	/*
-	 * The UWB core enables double-buffer RX for interrupt-driven operation.
-	 * The net driver uses polling, so force single-buffer mode.
+	 * Use single-buffer RX mode for clarity and explicit control.
+	 * Double-buffer mode allows hardware to switch between two RX buffers automatically,
+	 * which is useful for high-speed interrupt handlers. In our case, the RX thread
+	 * (whether IRQ-woken or polling) has time to process packets and explicitly restart RX
+	 * via dw3000_restart_rx_locked(). Single-buffer with explicit restart is simpler and
+	 * sufficient for our thread-based model, avoiding state complexity and buffer tracking.
+   *
+   * TODO: Check if this is actually sufficient for our use case, or if we need to enable
+   * double-buffering. Unlikely.
 	 */
 	dwt_setdblrxbuffmode(DBL_BUF_STATE_DIS, DBL_BUF_MODE_MAN);
 	ret = dw3000_apply_phy_config_locked(data);
@@ -784,22 +791,22 @@ static int dw3000_init(const struct device *dev)
 
 #define DWT_PSDU_LENGTH (127 - DW3000_FCS_LEN)
 
-#define DW3000_INIT(n)                                                                  \
+#define DW3000_INIT(n)                                                                        \
 	K_KERNEL_STACK_DEFINE(dw3000_rx_stack_##n, CONFIG_IEEE802154_DW3000_IRQ_THREAD_STACK_SIZE); \
-	static struct dw3000_data dw3000_data_##n;                                        \
-	static const struct dw3000_config dw3000_config_##n = {                           \
-		.rx_stack = dw3000_rx_stack_##n,                                            \
-		.rx_stack_size = K_KERNEL_STACK_SIZEOF(dw3000_rx_stack_##n),                \
-	};                                                                                \
-	NET_DEVICE_DT_INST_DEFINE(n,                                                     \
-		dw3000_init,                                                              \
-		NULL,                                                                     \
-		&dw3000_data_##n,                                                        \
-		&dw3000_config_##n,                                                      \
-		CONFIG_IEEE802154_DW3000_INIT_PRIO,                                      \
-		&dw3000_radio_api,                                                       \
-		IEEE802154_L2,                                                           \
-		NET_L2_GET_CTX_TYPE(IEEE802154_L2),                                      \
+	static struct dw3000_data dw3000_data_##n;                                                  \
+	static const struct dw3000_config dw3000_config_##n = {                                     \
+		.rx_stack = dw3000_rx_stack_##n,                                                          \
+		.rx_stack_size = K_KERNEL_STACK_SIZEOF(dw3000_rx_stack_##n),                              \
+	};                                                                                          \
+	NET_DEVICE_DT_INST_DEFINE(n,                                                                \
+		dw3000_init,                                                                              \
+		NULL,                                                                                     \
+		&dw3000_data_##n,                                                                         \
+		&dw3000_config_##n,                                                                       \
+		CONFIG_IEEE802154_DW3000_INIT_PRIO,                                                       \
+		&dw3000_radio_api,                                                                        \
+		IEEE802154_L2,                                                                            \
+		NET_L2_GET_CTX_TYPE(IEEE802154_L2),                                                       \
 		DWT_PSDU_LENGTH)
 
 DT_INST_FOREACH_STATUS_OKAY(DW3000_INIT)
