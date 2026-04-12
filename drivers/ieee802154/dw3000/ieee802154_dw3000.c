@@ -19,7 +19,7 @@
 
 #include "dw3000.h"
 
-LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_WRN);
 
 #define DW3000_FCS_LEN 2U
 #define DW3000_MAX_PHY_PACKET_SIZE 127U
@@ -29,6 +29,25 @@ LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_DBG);
 #define DW3000_CSMA_MAX_BE 5U
 #define DW3000_UNIT_BACKOFF_US 320U
 #define DW3000_CCA_PTO_SYMBOLS 16U
+#define DW3000_ACK_PKT_LEN 3U
+#define DW3000_DUP_TRACK_SLOTS 8U
+
+#define IEEE802154_FCF_FRAME_TYPE_MASK 0x0007U
+#define IEEE802154_FCF_FRAME_TYPE_DATA 0x0001U
+#define IEEE802154_FCF_PAN_ID_COMP 0x0040U
+#define IEEE802154_FCF_DST_ADDR_MODE_MASK 0x0C00U
+#define IEEE802154_FCF_DST_ADDR_MODE_SHIFT 10U
+#define IEEE802154_FCF_SRC_ADDR_MODE_MASK 0xC000U
+#define IEEE802154_FCF_SRC_ADDR_MODE_SHIFT 14U
+#define IEEE802154_ADDR_MODE_NONE 0U
+#define IEEE802154_ADDR_MODE_SHORT 2U
+#define IEEE802154_ADDR_MODE_EXTENDED 3U
+
+struct dw3000_dup_entry {
+	uint32_t src_sig;
+	uint8_t seq;
+	bool valid;
+};
 
 struct dw3000_data {
 	struct net_if *iface;
@@ -50,9 +69,39 @@ struct dw3000_data {
 	uint32_t tx_entry_cnt;
 	uint32_t rx_nobuf_cnt;
 	bool rx_wait_logged;
+	uint32_t rx_pkt_alloc_cnt;
+	uint32_t rx_pkt_unref_cnt;
+	uint32_t rx_frames_per_wake_cnt;
+	uint32_t rx_fast_ack_cnt;
+	uint32_t rx_capture_cnt;
+	uint32_t rx_submit_cnt;
+	uint32_t rx_same_payload_submit_cnt;
+	uint32_t rx_last_payload_hash;
+	uint16_t rx_last_payload_len;
+	uint32_t rx_dup_drop_cnt;
+	uint8_t rx_dup_next_slot;
+	uint64_t rx_last_warn_ts;
+	uint8_t rx_stage[DW3000_MAX_PHY_PACKET_SIZE];
+	struct dw3000_dup_entry dup_tbl[DW3000_DUP_TRACK_SLOTS];
 };
 
 static const struct device *dw3000_irq_dev;
+
+/*
+ * Static ACK packet wrapper used for fast ACK handling without consuming
+ * entries from the net_pkt/net_buf RX pools.
+ */
+static uint8_t dw3000_ack_psdu[DW3000_ACK_PKT_LEN];
+static struct net_buf dw3000_ack_frame = {
+	.data = dw3000_ack_psdu,
+	.size = DW3000_ACK_PKT_LEN,
+	.len = DW3000_ACK_PKT_LEN,
+	.__buf = dw3000_ack_psdu,
+	.frags = NULL,
+};
+static struct net_pkt dw3000_ack_pkt = {
+	.buffer = &dw3000_ack_frame,
+};
 
 /**
  * Handler of the DWM_IRQ GPIO interrupt, which is triggered on RX events.
@@ -184,13 +233,138 @@ static inline void dw3000_clear_status_all(void)
 	dwt_writesysstatushi(DWT_INT_ALL_HI);
 }
 
-static struct net_pkt *dw3000_rx_read_pkt_locked(const struct device *dev)
+static uint32_t dw3000_payload_hash(const uint8_t *buf, uint16_t len)
+{
+	/* FNV-1a over up to 32 bytes keeps cost bounded while still being useful. */
+	uint32_t h = 2166136261U;
+	uint16_t n = MIN(len, 32U);
+	uint16_t i;
+
+	for (i = 0U; i < n; i++) {
+		h ^= buf[i];
+		h *= 16777619U;
+	}
+
+	h ^= len;
+	h *= 16777619U;
+
+	return h;
+}
+
+static bool dw3000_rx_is_duplicate(struct dw3000_data *data, const uint8_t *buf, uint16_t len)
+{
+	uint16_t fcf;
+	uint8_t seq;
+	uint8_t dst_mode;
+	uint8_t src_mode;
+	bool pan_comp;
+	uint16_t off = 3U;
+	uint16_t src_len;
+	uint32_t src_sig = 2166136261U;
+	uint8_t i;
+	int slot_same = -1;
+	int slot_free = -1;
+	uint8_t slot;
+
+	if (len < 3U) {
+		return false;
+	}
+
+	fcf = (uint16_t)buf[0] | ((uint16_t)buf[1] << 8);
+	if ((fcf & IEEE802154_FCF_FRAME_TYPE_MASK) != IEEE802154_FCF_FRAME_TYPE_DATA) {
+		return false;
+	}
+
+	seq = buf[2];
+	dst_mode = (uint8_t)((fcf & IEEE802154_FCF_DST_ADDR_MODE_MASK) >> IEEE802154_FCF_DST_ADDR_MODE_SHIFT);
+	src_mode = (uint8_t)((fcf & IEEE802154_FCF_SRC_ADDR_MODE_MASK) >> IEEE802154_FCF_SRC_ADDR_MODE_SHIFT);
+	pan_comp = (fcf & IEEE802154_FCF_PAN_ID_COMP) != 0U;
+
+	if (dst_mode == IEEE802154_ADDR_MODE_SHORT) {
+		off += 2U + 2U;
+	} else if (dst_mode == IEEE802154_ADDR_MODE_EXTENDED) {
+		off += 2U + 8U;
+	}
+
+	if (src_mode == IEEE802154_ADDR_MODE_NONE) {
+		return false;
+	}
+
+	if (!pan_comp) {
+		off += 2U;
+	}
+
+	if (src_mode == IEEE802154_ADDR_MODE_SHORT) {
+		src_len = 2U;
+	} else if (src_mode == IEEE802154_ADDR_MODE_EXTENDED) {
+		src_len = 8U;
+	} else {
+		return false;
+	}
+
+	if ((off + src_len) > len) {
+		return false;
+	}
+
+	for (i = 0U; i < src_len; i++) {
+		src_sig ^= buf[off + i];
+		src_sig *= 16777619U;
+	}
+	src_sig ^= src_mode;
+	src_sig *= 16777619U;
+
+	for (slot = 0U; slot < DW3000_DUP_TRACK_SLOTS; slot++) {
+		if (!data->dup_tbl[slot].valid) {
+			if (slot_free < 0) {
+				slot_free = (int)slot;
+			}
+			continue;
+		}
+
+		if (data->dup_tbl[slot].src_sig == src_sig) {
+			slot_same = (int)slot;
+			break;
+		}
+	}
+
+	if (slot_same >= 0) {
+		if (data->dup_tbl[slot_same].seq == seq) {
+			return true;
+		}
+		data->dup_tbl[slot_same].seq = seq;
+		return false;
+	}
+
+	if (slot_free >= 0) {
+		slot = (uint8_t)slot_free;
+	} else {
+		slot = data->rx_dup_next_slot;
+		data->rx_dup_next_slot = (uint8_t)((data->rx_dup_next_slot + 1U) % DW3000_DUP_TRACK_SLOTS);
+	}
+
+	data->dup_tbl[slot].src_sig = src_sig;
+	data->dup_tbl[slot].seq = seq;
+	data->dup_tbl[slot].valid = true;
+
+	return false;
+}
+
+static int dw3000_rx_capture_locked(const struct device *dev, bool *ack_handled,
+					    uint16_t *pkt_len_out)
 {
 	struct dw3000_data *data = dev->data;
-	struct net_pkt *pkt;
+	enum net_verdict ack_verdict;
 	uint8_t rng = 0;
 	uint16_t phy_len = 0;
 	uint16_t pkt_len;
+
+	if (ack_handled != NULL) {
+		*ack_handled = false;
+	}
+
+	if (pkt_len_out != NULL) {
+		*pkt_len_out = 0U;
+	}
 
 	if (data->uwb && data->uwb->get_rx_frame_length) {
 		phy_len = data->uwb->get_rx_frame_length(dev);
@@ -203,35 +377,52 @@ static struct net_pkt *dw3000_rx_read_pkt_locked(const struct device *dev)
 		LOG_DBG("Drop invalid frame len=%u", phy_len);
 		dwt_writesysstatuslo(SYS_STATUS_ALL_RX_GOOD);
 		dw3000_restart_rx_locked();
-		return NULL;
+		return 0;
 	}
 
 #if !defined(CONFIG_IEEE802154_RAW_MODE)
 	pkt_len -= DW3000_FCS_LEN;
 #endif
 
-	pkt = net_pkt_rx_alloc_with_buffer(data->iface, pkt_len, AF_UNSPEC, 0, K_NO_WAIT);
-	if (!pkt) {
-		data->rx_nobuf_cnt++;
-		if ((data->rx_nobuf_cnt % 32U) == 0U) {
-			LOG_WRN("RX dropped (no net_pkt): cnt=%u len=%u", data->rx_nobuf_cnt, pkt_len);
+	/*
+	 * Fast-path minimal ACK frames through a static wrapper packet so we do not
+	 * consume net_pkt pool entries for control traffic during bursts.
+	 */
+	if (pkt_len == DW3000_ACK_PKT_LEN) {
+		if (data->uwb && data->uwb->read_rx_frame) {
+			data->uwb->read_rx_frame(dev, dw3000_ack_psdu, DW3000_ACK_PKT_LEN, 0);
+		} else {
+			dwt_readrxdata(dw3000_ack_psdu, DW3000_ACK_PKT_LEN, 0);
 		}
+
 		dwt_writesysstatuslo(SYS_STATUS_ALL_RX_GOOD);
 		dw3000_restart_rx_locked();
-		return NULL;
+
+		net_pkt_cursor_init(&dw3000_ack_pkt);
+		ack_verdict = ieee802154_handle_ack(data->iface, &dw3000_ack_pkt);
+		if (ack_handled != NULL && ack_verdict == NET_OK) {
+			*ack_handled = true;
+			data->rx_fast_ack_cnt++;
+		}
+
+		return 0;
 	}
 
 	if (data->uwb && data->uwb->read_rx_frame) {
-		data->uwb->read_rx_frame(dev, pkt->buffer->data, pkt_len, 0);
+		data->uwb->read_rx_frame(dev, data->rx_stage, pkt_len, 0);
 	} else {
-		dwt_readrxdata(pkt->buffer->data, pkt_len, 0);
+		dwt_readrxdata(data->rx_stage, pkt_len, 0);
 	}
-	net_buf_add(pkt->buffer, pkt_len);
 
 	dwt_writesysstatuslo(SYS_STATUS_ALL_RX_GOOD);
 	dw3000_restart_rx_locked();
 
-	return pkt;
+	if (pkt_len_out != NULL) {
+		*pkt_len_out = pkt_len;
+	}
+	data->rx_capture_cnt++;
+
+	return 1;
 }
 
 static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
@@ -245,6 +436,9 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 	while (true) {
 		struct net_pkt *pkt = NULL;
 		uint32_t status;
+		uint16_t pkt_len = 0U;
+		int rx_capture = 0;
+		bool ack_handled = false;
 
 		if (!atomic_get(&data->started) || data->iface == NULL) {
 			if (!data->rx_wait_logged) {
@@ -270,7 +464,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 		status = dwt_readsysstatuslo();
 
 		if (status & DWT_INT_RXFCG_BIT_MASK) {
-			pkt = dw3000_rx_read_pkt_locked(dev);
+			rx_capture = dw3000_rx_capture_locked(dev, &ack_handled, &pkt_len);
 		} else if (status & (SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)) {
 			data->rx_err_cnt++;
 			if ((data->rx_err_cnt % 64U) == 0U) {
@@ -285,21 +479,88 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 
 		k_mutex_unlock(&data->lock);
 
-		if (!pkt) {
+		if (ack_handled) {
 			continue;
 		}
 
+		if (rx_capture <= 0 || pkt_len == 0U) {
+			continue;
+		}
+
+		/*
+		 * Allocate outside the radio lock so RX restart is not blocked by
+		 * transient net pool pressure.
+		 */
+		pkt = net_pkt_rx_alloc_with_buffer(data->iface, pkt_len, AF_UNSPEC, 0, K_NO_WAIT);
+		if (!pkt) {
+			int32_t driver_held = (int32_t)data->rx_pkt_alloc_cnt -
+				(int32_t)data->rx_pkt_unref_cnt - (int32_t)data->rx_ok_cnt;
+
+			data->rx_nobuf_cnt++;
+			if ((data->rx_nobuf_cnt % 32U) == 0U) {
+				uint64_t now_ts = k_uptime_get();
+				LOG_WRN("RX dropped (no net_pkt): cnt=%u len=%u alloc=%u rx_ok=%u unref=%u held=%d fastack=%u",
+					data->rx_nobuf_cnt, pkt_len, data->rx_pkt_alloc_cnt,
+					data->rx_ok_cnt, data->rx_pkt_unref_cnt, driver_held,
+					data->rx_fast_ack_cnt);
+				data->rx_last_warn_ts = now_ts;
+			}
+			continue;
+		}
+
+		data->rx_pkt_alloc_cnt++;
+		net_pkt_cursor_init(pkt);
+		if (net_pkt_write(pkt, data->rx_stage, pkt_len) < 0) {
+			net_pkt_unref(pkt);
+			data->rx_pkt_unref_cnt++;
+			continue;
+		}
+		net_pkt_cursor_init(pkt);
+
 		if (ieee802154_handle_ack(data->iface, pkt) == NET_OK) {
 			net_pkt_unref(pkt);
+			data->rx_pkt_unref_cnt++;
 			continue;
+		}
+
+		if (dw3000_rx_is_duplicate(data, data->rx_stage, pkt_len)) {
+			data->rx_dup_drop_cnt++;
+			if ((data->rx_dup_drop_cnt % 32U) == 0U) {
+				LOG_WRN("RX duplicate drops=%u submit=%u capture=%u", data->rx_dup_drop_cnt,
+					data->rx_submit_cnt, data->rx_capture_cnt);
+			}
+			net_pkt_unref(pkt);
+			data->rx_pkt_unref_cnt++;
+			continue;
+		}
+
+		data->rx_submit_cnt++;
+		{
+			uint32_t payload_hash = dw3000_payload_hash(data->rx_stage, pkt_len);
+
+			if (payload_hash == data->rx_last_payload_hash && pkt_len == data->rx_last_payload_len) {
+				data->rx_same_payload_submit_cnt++;
+				if ((data->rx_same_payload_submit_cnt % 64U) == 0U) {
+					LOG_WRN("RX repeated payload submits=%u capture=%u submit=%u len=%u",
+						data->rx_same_payload_submit_cnt,
+						data->rx_capture_cnt,
+						data->rx_submit_cnt,
+						pkt_len);
+				}
+			}
+
+			data->rx_last_payload_hash = payload_hash;
+			data->rx_last_payload_len = pkt_len;
 		}
 
 		if (net_recv_data(data->iface, pkt) != NET_OK) {
 			net_pkt_unref(pkt);
+			data->rx_pkt_unref_cnt++;
 		} else {
 			data->rx_ok_cnt++;
 			if ((data->rx_ok_cnt % 16U) == 0U) {
-				LOG_INF("RX packets=%u", data->rx_ok_cnt);
+				LOG_INF("RX packets=%u capture=%u submit=%u", data->rx_ok_cnt,
+					data->rx_capture_cnt, data->rx_submit_cnt);
 			}
 		}
 	}
@@ -728,6 +989,19 @@ static int dw3000_init(const struct device *dev)
 	data->tx_entry_cnt = 0U;
 	data->rx_nobuf_cnt = 0U;
 	data->rx_wait_logged = false;
+	data->rx_pkt_alloc_cnt = 0U;
+	data->rx_pkt_unref_cnt = 0U;
+	data->rx_frames_per_wake_cnt = 0U;
+	data->rx_fast_ack_cnt = 0U;
+	data->rx_capture_cnt = 0U;
+	data->rx_submit_cnt = 0U;
+	data->rx_same_payload_submit_cnt = 0U;
+	data->rx_last_payload_hash = 0U;
+	data->rx_last_payload_len = 0U;
+	data->rx_dup_drop_cnt = 0U;
+	data->rx_dup_next_slot = 0U;
+	memset(data->dup_tbl, 0, sizeof(data->dup_tbl));
+	data->rx_last_warn_ts = 0U;
 	k_sem_init(&data->rx_irq_sem, 0, 1);
 
 	k_mutex_lock(&data->lock, K_FOREVER);
