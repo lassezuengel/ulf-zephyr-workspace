@@ -23,14 +23,17 @@ LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_WRN);
 
 #define DW3000_FCS_LEN 2U
 #define DW3000_MAX_PHY_PACKET_SIZE 127U
-#define DW3000_TX_WAIT_MS 20
+#define DW3000_TX_WAIT_MS 6
+#define DW3000_TX_POLL_US 250
 #define DW3000_CSMA_MAX_BACKOFFS 4U
 #define DW3000_CSMA_MIN_BE 3U
 #define DW3000_CSMA_MAX_BE 5U
 #define DW3000_UNIT_BACKOFF_US 320U
 #define DW3000_CCA_PTO_SYMBOLS 16U
 #define DW3000_ACK_PKT_LEN 3U
-#define DW3000_DUP_TRACK_SLOTS 8U
+#define DW3000_DUP_TRACK_SLOTS 16U
+#define DW3000_TX_PG_DELAY 0x34U
+#define DW3000_TX_POWER_CH5 0xFDFDFDFDUL
 
 #define IEEE802154_FCF_FRAME_TYPE_MASK 0x0007U
 #define IEEE802154_FCF_FRAME_TYPE_DATA 0x0001U
@@ -46,6 +49,8 @@ LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_WRN);
 struct dw3000_dup_entry {
 	uint32_t src_sig;
 	uint8_t seq;
+	uint32_t payload_hash;
+	uint16_t payload_len;
 	bool valid;
 };
 
@@ -137,8 +142,10 @@ static int dw3000_start(const struct device *dev);
 
 static int dw3000_apply_phy_config_locked(struct dw3000_data *data)
 {
+	dwt_txconfig_t tx_cfg;
+	uint32_t tx_power;
 	dwt_config_t phy_cfg = {
-		.chan = (data->channel == 9U) ? 9U : 5U,
+		.chan = 5U,
 		.txPreambLength = DWT_PLEN_128,
 		.rxPAC = DWT_PAC8,
 		.txCode = 10,
@@ -157,6 +164,22 @@ static int dw3000_apply_phy_config_locked(struct dw3000_data *data)
 	if (dwt_configure(&phy_cfg) != DWT_SUCCESS) {
 		return -EIO;
 	}
+
+	/*
+	 * Ensure channel-dependent MRX LUT is refreshed after PHY reconfiguration.
+	 */
+	dwt_configmrxlut(5);
+
+	/*
+	 * Explicitly configure TX RF on every PHY/channel switch.
+	 */
+	tx_power = DW3000_TX_POWER_CH5;
+	tx_cfg.PGdly = DW3000_TX_PG_DELAY;
+	tx_cfg.power = tx_power;
+	tx_cfg.PGcount = 0U;
+	dwt_configuretxrf(&tx_cfg);
+
+	LOG_INF("Applied PHY: ch=5 code=10 tx_pwr=0x%08x", tx_power);
 
 	return 0;
 }
@@ -251,7 +274,8 @@ static uint32_t dw3000_payload_hash(const uint8_t *buf, uint16_t len)
 	return h;
 }
 
-static bool dw3000_rx_is_duplicate(struct dw3000_data *data, const uint8_t *buf, uint16_t len)
+static bool dw3000_rx_is_duplicate(struct dw3000_data *data, const uint8_t *buf, uint16_t len,
+				   bool commit)
 {
 	uint16_t fcf;
 	uint8_t seq;
@@ -261,6 +285,7 @@ static bool dw3000_rx_is_duplicate(struct dw3000_data *data, const uint8_t *buf,
 	uint16_t off = 3U;
 	uint16_t src_len;
 	uint32_t src_sig = 2166136261U;
+	uint32_t payload_hash;
 	uint8_t i;
 	int slot_same = -1;
 	int slot_free = -1;
@@ -306,6 +331,8 @@ static bool dw3000_rx_is_duplicate(struct dw3000_data *data, const uint8_t *buf,
 		return false;
 	}
 
+	payload_hash = dw3000_payload_hash(buf, len);
+
 	for (i = 0U; i < src_len; i++) {
 		src_sig ^= buf[off + i];
 		src_sig *= 16777619U;
@@ -328,10 +355,20 @@ static bool dw3000_rx_is_duplicate(struct dw3000_data *data, const uint8_t *buf,
 	}
 
 	if (slot_same >= 0) {
-		if (data->dup_tbl[slot_same].seq == seq) {
+		if (data->dup_tbl[slot_same].seq == seq &&
+		    data->dup_tbl[slot_same].payload_len == len &&
+		    data->dup_tbl[slot_same].payload_hash == payload_hash) {
 			return true;
 		}
-		data->dup_tbl[slot_same].seq = seq;
+		if (commit) {
+			data->dup_tbl[slot_same].seq = seq;
+			data->dup_tbl[slot_same].payload_hash = payload_hash;
+			data->dup_tbl[slot_same].payload_len = len;
+		}
+		return false;
+	}
+
+	if (!commit) {
 		return false;
 	}
 
@@ -344,6 +381,8 @@ static bool dw3000_rx_is_duplicate(struct dw3000_data *data, const uint8_t *buf,
 
 	data->dup_tbl[slot].src_sig = src_sig;
 	data->dup_tbl[slot].seq = seq;
+	data->dup_tbl[slot].payload_hash = payload_hash;
+	data->dup_tbl[slot].payload_len = len;
 	data->dup_tbl[slot].valid = true;
 
 	return false;
@@ -439,6 +478,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 		uint16_t pkt_len = 0U;
 		int rx_capture = 0;
 		bool ack_handled = false;
+		bool more_work_pending = false;
 
 		if (!atomic_get(&data->started) || data->iface == NULL) {
 			if (!data->rx_wait_logged) {
@@ -455,9 +495,11 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 #if defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
 		k_usleep(1000);
 #else
-		if (k_sem_take(&data->rx_irq_sem, K_FOREVER) != 0) {
-			continue;
-		}
+		/*
+		 * Do not block forever on IRQ semaphore: if IRQ edges are dropped while
+		 * RX status remains pending, periodic wakeups allow recovery.
+		 */
+		(void)k_sem_take(&data->rx_irq_sem, K_MSEC(1));
 #endif
 
 		k_mutex_lock(&data->lock, K_FOREVER);
@@ -477,13 +519,31 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 			dw3000_restart_rx_locked();
 		}
 
+		status = dwt_readsysstatuslo();
+		more_work_pending = (status & (DWT_INT_RXFCG_BIT_MASK | SYS_STATUS_ALL_RX_TO |
+					      SYS_STATUS_ALL_RX_ERR)) != 0U;
+
 		k_mutex_unlock(&data->lock);
+
+		if (more_work_pending) {
+			k_sem_give(&data->rx_irq_sem);
+		}
 
 		if (ack_handled) {
 			continue;
 		}
 
 		if (rx_capture <= 0 || pkt_len == 0U) {
+			continue;
+		}
+
+
+    if (dw3000_rx_is_duplicate(data, data->rx_stage, pkt_len, false)) {
+			data->rx_dup_drop_cnt++;
+			if ((data->rx_dup_drop_cnt % 32U) == 0U) {
+				LOG_WRN("RX duplicate drops=%u submit=%u capture=%u", data->rx_dup_drop_cnt,
+					data->rx_submit_cnt, data->rx_capture_cnt);
+			}
 			continue;
 		}
 
@@ -523,17 +583,6 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 			continue;
 		}
 
-		if (dw3000_rx_is_duplicate(data, data->rx_stage, pkt_len)) {
-			data->rx_dup_drop_cnt++;
-			if ((data->rx_dup_drop_cnt % 32U) == 0U) {
-				LOG_WRN("RX duplicate drops=%u submit=%u capture=%u", data->rx_dup_drop_cnt,
-					data->rx_submit_cnt, data->rx_capture_cnt);
-			}
-			net_pkt_unref(pkt);
-			data->rx_pkt_unref_cnt++;
-			continue;
-		}
-
 		data->rx_submit_cnt++;
 		{
 			uint32_t payload_hash = dw3000_payload_hash(data->rx_stage, pkt_len);
@@ -557,6 +606,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 			net_pkt_unref(pkt);
 			data->rx_pkt_unref_cnt++;
 		} else {
+			(void)dw3000_rx_is_duplicate(data, data->rx_stage, pkt_len, true);
 			data->rx_ok_cnt++;
 			if ((data->rx_ok_cnt % 16U) == 0U) {
 				LOG_INF("RX packets=%u capture=%u submit=%u", data->rx_ok_cnt,
@@ -583,14 +633,14 @@ static int dw3000_cca(const struct device *dev)
 static int dw3000_set_channel(const struct device *dev, uint16_t channel)
 {
 	struct dw3000_data *data = dev->data;
-	dwt_pll_ch_type_e dw_ch;
 	int ret;
 
-	if (channel == 5U) {
-		dw_ch = DWT_CH5;
-	} else if (channel == 9U) {
-		dw_ch = DWT_CH9;
-	} else {
+	if (channel == 9U) {
+		LOG_ERR("Channel 9 is disabled in ieee802154_dw3000: no RX preamble detection observed in validation tests");
+		return -ENOTSUP;
+	}
+
+	if (channel != 5U) {
 		return -EINVAL;
 	}
 
@@ -603,13 +653,17 @@ static int dw3000_set_channel(const struct device *dev, uint16_t channel)
 		return ret;
 	}
 
-	ret = dwt_setchannel(dw_ch);
-	if (ret == DWT_SUCCESS) {
-		LOG_INF("Channel set to %u", channel);
+	ret = dwt_setchannel(DWT_CH5);
+	if (ret != DWT_SUCCESS) {
+		LOG_WRN("dwt_setchannel failed channel=%u ret=%d", channel, ret);
+		k_mutex_unlock(&data->lock);
+		return -EIO;
 	}
+
+	LOG_WRN("Channel set to %u", channel);
 	k_mutex_unlock(&data->lock);
 
-	return (ret == DWT_SUCCESS) ? 0 : -EIO;
+	return 0;
 }
 
 static int dw3000_filter(const struct device *dev,
@@ -810,7 +864,7 @@ static int dw3000_tx(const struct device *dev,
 				dwt_writesysstatuslo(status_lo & (SYS_STATUS_ALL_RX_ERR | SYS_STATUS_ALL_RX_TO));
 			}
 
-			k_usleep(1000);
+			k_usleep(DW3000_TX_POLL_US);
 		}
 
 		if (k_uptime_get() >= timeout_end) {
@@ -903,16 +957,15 @@ static int dw3000_configure(const struct device *dev,
 
 /* Driver-allocated attribute memory constant across all instances. */
 static const struct {
-	const struct ieee802154_phy_channel_range phy_channel_range[2];
+	const struct ieee802154_phy_channel_range phy_channel_range[1];
 	const struct ieee802154_phy_supported_channels phy_supported_channels;
 } dw3000_drv_attr = {
 	.phy_channel_range = {
 		{ .from_channel = 5, .to_channel = 5 },
-		{ .from_channel = 9, .to_channel = 9 },
 	},
 	.phy_supported_channels = {
 		.ranges = dw3000_drv_attr.phy_channel_range,
-		.num_ranges = 2U,
+		.num_ranges = 1U,
 	},
 };
 
@@ -980,6 +1033,15 @@ static int dw3000_init(const struct device *dev)
 	data->pan_id = 0xffffU;
 	data->short_addr = 0xffffU;
 	data->channel = 5U;
+#if defined(CONFIG_NET_CONFIG_IEEE802154_CHANNEL)
+	if (CONFIG_NET_CONFIG_IEEE802154_CHANNEL == 9) {
+		LOG_ERR("CONFIG_NET_CONFIG_IEEE802154_CHANNEL=9 is unsupported for ieee802154_dw3000 (no RX preamble detection)");
+		return -ENOTSUP;
+	}
+	if (CONFIG_NET_CONFIG_IEEE802154_CHANNEL == 5) {
+		data->channel = CONFIG_NET_CONFIG_IEEE802154_CHANNEL;
+	}
+#endif
 	data->promiscuous = false;
 	data->rx_ok_cnt = 0U;
 	data->rx_err_cnt = 0U;
@@ -1002,7 +1064,7 @@ static int dw3000_init(const struct device *dev)
 	data->rx_dup_next_slot = 0U;
 	memset(data->dup_tbl, 0, sizeof(data->dup_tbl));
 	data->rx_last_warn_ts = 0U;
-	k_sem_init(&data->rx_irq_sem, 0, 1);
+	k_sem_init(&data->rx_irq_sem, 0, 64);
 
 	k_mutex_lock(&data->lock, K_FOREVER);
 	/*
@@ -1012,9 +1074,6 @@ static int dw3000_init(const struct device *dev)
 	 * (whether IRQ-woken or polling) has time to process packets and explicitly restart RX
 	 * via dw3000_restart_rx_locked(). Single-buffer with explicit restart is simpler and
 	 * sufficient for our thread-based model, avoiding state complexity and buffer tracking.
-   *
-   * TODO: Check if this is actually sufficient for our use case, or if we need to enable
-   * double-buffering. Unlikely.
 	 */
 	dwt_setdblrxbuffmode(DBL_BUF_STATE_DIS, DBL_BUF_MODE_MAN);
 	ret = dw3000_apply_phy_config_locked(data);
@@ -1023,13 +1082,27 @@ static int dw3000_init(const struct device *dev)
 		LOG_ERR("Failed to configure DW3000 PHY for IEEE802154");
 		return ret;
 	}
-	(void)dwt_setchannel(DWT_CH5);
+
+	ret = dwt_setchannel(DWT_CH5);
+	if (ret != DWT_SUCCESS) {
+		k_mutex_unlock(&data->lock);
+		LOG_ERR("dwt_setchannel failed during init: ch=%u ret=%d", data->channel, ret);
+		return -EIO;
+	}
 	(void)dw3000_apply_filter_hw(data);
 	dwt_setrxtimeout(0);
 	dwt_setpreambledetecttimeout(0);
 	dw3000_clear_status_all();
 	dwt_forcetrxoff();
 	k_mutex_unlock(&data->lock);
+
+#if defined(CONFIG_NET_CONFIG_IEEE802154_CHANNEL)
+	LOG_WRN("DW3000 IEEE802154 init channel=%u (kconfig=%d)",
+		data->channel,
+		CONFIG_NET_CONFIG_IEEE802154_CHANNEL);
+#else
+	LOG_WRN("DW3000 IEEE802154 init channel=%u (kconfig undefined)", data->channel);
+#endif
 
 #if defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
 	LOG_INF("DW3000 path configured for polling RX (double-buffer disabled)");
