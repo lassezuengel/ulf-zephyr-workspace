@@ -250,6 +250,17 @@ static inline void dw3000_restart_rx_locked(void)
 	(void)dwt_rxenable(DWT_START_RX_IMMEDIATE);
 }
 
+static inline void dw3000_reenable_rx_locked(void)
+{
+	/*
+	 * Re-enable RX without clearing SYS_STATUS, so a frame that arrived
+	 * around TX completion is not discarded before the RX thread can read it.
+	 */
+	dwt_setrxtimeout(0);
+	dwt_setpreambledetecttimeout(0);
+	(void)dwt_rxenable(DWT_START_RX_IMMEDIATE);
+}
+
 static inline void dw3000_clear_status_all(void)
 {
 	dwt_writesysstatuslo(DWT_INT_ALL_LO);
@@ -495,11 +506,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 #if defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
 		k_usleep(1000);
 #else
-		/*
-		 * Do not block forever on IRQ semaphore: if IRQ edges are dropped while
-		 * RX status remains pending, periodic wakeups allow recovery.
-		 */
-		(void)k_sem_take(&data->rx_irq_sem, K_MSEC(1));
+		(void)k_sem_take(&data->rx_irq_sem, K_NO_WAIT);
 #endif
 
 		k_mutex_lock(&data->lock, K_FOREVER);
@@ -636,7 +643,7 @@ static int dw3000_set_channel(const struct device *dev, uint16_t channel)
 	int ret;
 
 	if (channel == 9U) {
-		LOG_ERR("Channel 9 is disabled in ieee802154_dw3000: no RX preamble detection observed in validation tests");
+		LOG_ERR("Channel 9 is disabled in ieee802154_dw3000: no RX preamble detection observed");
 		return -ENOTSUP;
 	}
 
@@ -788,7 +795,12 @@ static int dw3000_tx(const struct device *dev,
 		} else {
 			dwt_forcetrxoff();
 		}
-		dw3000_clear_status_all();
+		/*
+		 * Do not clear RXFCG here; a frame may already be pending and should
+		 * be handled by the RX thread.
+		 */
+		dwt_writesysstatuslo(DWT_INT_TXFRS_BIT_MASK | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR);
+		dwt_writesysstatushi(DWT_INT_HI_CCA_FAIL_BIT_MASK);
 		dwt_setpreambledetecttimeout((start_mode == DWT_START_TX_CCA) ? DW3000_CCA_PTO_SYMBOLS : 0U);
 
 		if (data->uwb && data->uwb->setup_tx_frame && data->uwb->start_tx) {
@@ -841,7 +853,7 @@ static int dw3000_tx(const struct device *dev,
 				if ((data->tx_ok_cnt % 16U) == 0U) {
 					LOG_INF("TX packets=%u", data->tx_ok_cnt);
 				}
-				dw3000_restart_rx_locked();
+				dw3000_reenable_rx_locked();
 				k_mutex_unlock(&data->lock);
 				return 0;
 			}
