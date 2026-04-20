@@ -416,11 +416,7 @@ static int dw3000_rx_capture_locked(const struct device *dev, bool *ack_handled,
 		*pkt_len_out = 0U;
 	}
 
-	if (data->uwb && data->uwb->get_rx_frame_length) {
-		phy_len = data->uwb->get_rx_frame_length(dev);
-	} else {
-		phy_len = dwt_getframelength(&rng);
-	}
+	phy_len = dwt_getframelength(&rng);
 	pkt_len = phy_len;
 
 	if (phy_len < DW3000_FCS_LEN || phy_len > DW3000_MAX_PHY_PACKET_SIZE) {
@@ -439,11 +435,7 @@ static int dw3000_rx_capture_locked(const struct device *dev, bool *ack_handled,
 	 * consume net_pkt pool entries for control traffic during bursts.
 	 */
 	if (pkt_len == DW3000_ACK_PKT_LEN) {
-		if (data->uwb && data->uwb->read_rx_frame) {
-			data->uwb->read_rx_frame(dev, dw3000_ack_psdu, DW3000_ACK_PKT_LEN, 0);
-		} else {
-			dwt_readrxdata(dw3000_ack_psdu, DW3000_ACK_PKT_LEN, 0);
-		}
+		dwt_readrxdata(dw3000_ack_psdu, DW3000_ACK_PKT_LEN, 0);
 
 		dwt_writesysstatuslo(SYS_STATUS_ALL_RX_GOOD);
 		dw3000_restart_rx_locked();
@@ -458,11 +450,7 @@ static int dw3000_rx_capture_locked(const struct device *dev, bool *ack_handled,
 		return 0;
 	}
 
-	if (data->uwb && data->uwb->read_rx_frame) {
-		data->uwb->read_rx_frame(dev, data->rx_stage, pkt_len, 0);
-	} else {
-		dwt_readrxdata(data->rx_stage, pkt_len, 0);
-	}
+	dwt_readrxdata(data->rx_stage, pkt_len, 0);
 
 	dwt_writesysstatuslo(SYS_STATUS_ALL_RX_GOOD);
 	dw3000_restart_rx_locked();
@@ -564,7 +552,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 				(int32_t)data->rx_pkt_unref_cnt - (int32_t)data->rx_ok_cnt;
 
 			data->rx_nobuf_cnt++;
-			if ((data->rx_nobuf_cnt % 32U) == 0U) {
+			if ((data->rx_nobuf_cnt % 8U) == 0U) {
 				uint64_t now_ts = k_uptime_get();
 				LOG_WRN("RX dropped (no net_pkt): cnt=%u len=%u alloc=%u rx_ok=%u unref=%u held=%d fastack=%u",
 					data->rx_nobuf_cnt, pkt_len, data->rx_pkt_alloc_cnt,
@@ -596,7 +584,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 
 			if (payload_hash == data->rx_last_payload_hash && pkt_len == data->rx_last_payload_len) {
 				data->rx_same_payload_submit_cnt++;
-				if ((data->rx_same_payload_submit_cnt % 64U) == 0U) {
+				if ((data->rx_same_payload_submit_cnt % 32U) == 0U) {
 					LOG_WRN("RX repeated payload submits=%u capture=%u submit=%u len=%u",
 						data->rx_same_payload_submit_cnt,
 						data->rx_capture_cnt,
