@@ -38,15 +38,6 @@ bool spi_transfer(const uint8_t *tx_data, size_t tx_data_len,
 {
 	nrfx_err_t err;
 
-	// TODO: Remove debug printk statements after SPI issue is resolved
-	// if (tx_data_len > 0 && tx_data != NULL) {
-	// 	printk("SPI TX (%zu): ", tx_data_len);
-	// 	for (size_t i = 0; i < tx_data_len && i < 8; i++) {
-	// 		printk("%02x ", tx_data[i]);
-	// 	}
-	// 	printk("\n");
-	// }
-
 	nrfx_spim_xfer_desc_t xfer_desc = {
 		.p_tx_buffer = tx_data,
 		.tx_length = tx_data_len,
@@ -61,15 +52,6 @@ bool spi_transfer(const uint8_t *tx_data, size_t tx_data_len,
 		return false;
 	}
 
-	// TODO: Remove debug printk statements after SPI issue is resolved
-	// if (rx_buf_size > 0 && rx_buf != NULL) {
-	// 	printk("SPI RX (%zu): ", rx_buf_size);
-	// 	for (size_t i = 0; i < rx_buf_size && i < 8; i++) {
-	// 		printk("%02x ", rx_buf[i]);
-	// 	}
-	// 	printk("\n");
-	// }
-
 	return true;
 }
 
@@ -77,9 +59,9 @@ int dw3000_spi_init(void)
 {
 	nrfx_err_t err;
 
-	printk("[DEBUG] dw3000_spi_init: Entry point\n");
+	LOG_DBG("dw3000_spi_init: entry");
 	if (spi_initialized) {
-		printk("[DEBUG] dw3000_spi_init: Already initialized, returning\n");
+		LOG_DBG("dw3000_spi_init: already initialized");
 		return 0;
 	}
 
@@ -98,15 +80,15 @@ int dw3000_spi_init(void)
 	spi_config.skip_psel_cfg = false;
 	spi_config.mode = NRF_SPIM_MODE_0;
 
-	printk("[DEBUG] dw3000_spi_init: Calling nrfx_spim_init\n");
+	LOG_DBG("dw3000_spi_init: calling nrfx_spim_init");
 	err = nrfx_spim_init(&spi, &spi_config, NULL, NULL);
 	if (err != NRFX_SUCCESS) {
-		printk("[DEBUG] dw3000_spi_init: nrfx_spim_init FAILED: 0x%08x\n", err);
+		LOG_DBG("dw3000_spi_init: nrfx_spim_init failed: 0x%08x", err);
 		LOG_ERR("nrfx_spim_init() failed: 0x%08x", err);
 		return -EIO;
 	}
 
-	printk("[DEBUG] dw3000_spi_init: nrfx_spim_init SUCCESS\n");
+	LOG_DBG("dw3000_spi_init: nrfx_spim_init success");
 	spi_initialized = true;
 	LOG_INF("DW3000 nRFx SPIM initialized");
 	return 0;

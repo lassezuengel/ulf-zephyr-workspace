@@ -1,0 +1,3902 @@
+dwm3001-5 > [00:00:00.252,258] <inf> ieee802154_nrf5: nRF5 802154 radio initialized
+dwm3001-8 > [00:00:00.249,664] <inf> ieee802154_nrf5: nRF5 802154 radio initialized
+dwm3001-7 > [00:00:00.252,044] <inf> ieee802154_nrf5: nRF5 802154 radio initialized
+dwm3001-1 > *** Booting Zephyr OS build v4.1.0 ***
+dwm3001-2 > [00:00:00.250,701] <inf> lis2dh: fs=2, odr=0x4 lp_en=0x0 scale=9576
+dwm3001-6 > [00:00:00.251,495] <inf> lis2dh: fs=2, odr=0x4 lp_en=0x0 scale=9576
+dwm3001-5 > [00:00:00.252,899] <inf> lis2dh: fs=2, odr=0x4 lp_en=0x0 scale=9576
+dwm3001-4 > [00:00:00.252,655] <inf> lis2dh: fs=2, odr=0x4 lp_en=0x0 scale=9576
+dwm3001-6 > *** Booting Zephyr OS build v4.1.0 ***
+dwm3001-8 > [00:00:00.250,335] <inf> lis2dh: fs=2, odr=0x4 lp_en=0x0 scale=9576
+dwm3001-2 > *** Booting Zephyr OS build v4.1.0 ***
+dwm3001-3 > [00:00:00.252,349] <inf> lis2dh: fs=2, odr=0x4 lp_en=0x0 scale=9576
+dwm3001-7 > [00:00:00.252,716] <inf> lis2dh: fs=2, odr=0x4 lp_en=0x0 scale=9576
+dwm3001-8 > *** Booting Zephyr OS build v4.1.0 ***
+dwm3001-4 > *** Booting Zephyr OS build v4.1.0 ***
+dwm3001-5 > *** Booting Zephyr OS build v4.1.0 ***
+dwm3001-3 > *** Booting Zephyr OS build v4.1.0 ***
+dwm3001-7 > *** Booting Zephyr OS build v4.1.0 ***
+dwm3001-8 > [7] Starting up
+dwm3001-7 > [6] Starting up
+dwm3001-5 > [4] Starting up
+dwm3001-6 > [5] Starting up
+dwm3001-3 > [2] Starting up
+dwm3001-1 > [0] Starting up
+dwm3001-2 > [1] Starting up
+dwm3001-4 > [3] Starting up
+dwm3001-1 > [0] Sent 1
+dwm3001-3 > [WARN] Missed deadline for input at LT 10400 ms
+dwm3001-8 > [7] No value at PT 14871.5 ms and LT 10650 ms
+dwm3001-1 > [0] Sent 2
+dwm3001-2 > [WARN] Missed deadline for input at LT 11350 ms
+dwm3001-8 > [7] No value at PT 15872.4 ms and LT 11650 ms
+dwm3001-1 > [0] Sent 3
+dwm3001-8 > [7] Val 3 (NIT: 2)
+dwm3001-1 > [0] Sent 4
+dwm3001-8 > [7] Val 4 (NIT: 2)
+dwm3001-1 > [0] Sent 5
+dwm3001-4 > [WARN] Missed deadline for input at LT 14450 ms
+dwm3001-8 > [7] No value at PT 18871.9 ms and LT 14650 ms
+dwm3001-1 > [0] Sent 6
+dwm3001-5 > [WARN] Missed deadline for input at LT 15500 ms
+dwm3001-8 > [7] No value at PT 19871.5 ms and LT 15650 ms
+dwm3001-1 > [0] Sent 7
+dwm3001-6 > [WARN] Missed deadline for input at LT 16550 ms
+dwm3001-8 > [7] No value at PT 20873.0 ms and LT 16650 ms
+dwm3001-1 > [0] Sent 8
+dwm3001-8 > [7] No value at PT 21872.2 ms and LT 17650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 17550 ms
+dwm3001-1 > [0] Sent 9
+dwm3001-8 > [7] No value at PT 22871.1 ms and LT 18650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 18550 ms
+dwm3001-1 > [0] Sent 10
+dwm3001-8 > [7] No value at PT 23872.7 ms and LT 19650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 19600 ms
+dwm3001-1 > [0] Sent 11
+dwm3001-8 > [7] No value at PT 24872.9 ms and LT 20650 ms
+dwm3001-8 > [WARN] Tardy at PT 25132.6 ms and LT 20650 ms
+dwm3001-1 > [0] Sent 12
+dwm3001-8 > [7] No value at PT 25872.1 ms and LT 21650 ms
+dwm3001-8 > [WARN] Tardy at PT 26049.7 ms and LT 21650 ms
+dwm3001-1 > [0] Sent 13
+dwm3001-8 > [7] Val 13 (NIT: 10)
+dwm3001-1 > [0] Sent 14
+dwm3001-4 > [WARN] Missed deadline for input at LT 23450 ms
+dwm3001-8 > [7] No value at PT 27872.1 ms and LT 23650 ms
+dwm3001-1 > [0] Sent 15
+dwm3001-4 > [WARN] Missed deadline for input at LT 24450 ms
+dwm3001-8 > [7] No value at PT 28872.1 ms and LT 24650 ms
+dwm3001-1 > [0] Sent 16
+dwm3001-5 > [WARN] Missed deadline for input at LT 25500 ms
+dwm3001-8 > [7] No value at PT 29871.7 ms and LT 25650 ms
+dwm3001-1 > [0] Sent 17
+dwm3001-3 > [WARN] Missed deadline for input at LT 26400 ms
+dwm3001-8 > [7] No value at PT 30871.3 ms and LT 26650 ms
+dwm3001-8 > [7] No value at PT 31872.1 ms and LT 27650 ms
+dwm3001-1 > [0] Sent 18
+dwm3001-2 > [WARN] Missed deadline for input at LT 27350 ms
+dwm3001-8 > [7] No value at PT 32872.6 ms and LT 28650 ms
+dwm3001-1 > [0] Sent 19
+dwm3001-4 > [WARN] Missed deadline for input at LT 28450 ms
+dwm3001-8 > [7] No value at PT 33871.7 ms and LT 29650 ms
+dwm3001-1 > [0] Sent 20
+dwm3001-5 > [WARN] Missed deadline for input at LT 29500 ms
+dwm3001-1 > [0] Sent 21
+dwm3001-8 > [7] No value at PT 34872.3 ms and LT 30650 ms
+dwm3001-4 > [WARN] Missed deadline for input at LT 30450 ms
+dwm3001-1 > [0] Sent 22
+dwm3001-6 > [WARN] Missed deadline for input at LT 31550 ms
+dwm3001-8 > [7] No value at PT 35872.3 ms and LT 31650 ms
+dwm3001-1 > [0] Sent 23
+dwm3001-8 > [7] Val 23 (NIT: 19)
+dwm3001-1 > [0] Sent 24
+dwm3001-7 > [WARN] Missed deadline for input at LT 33600 ms
+dwm3001-8 > [7] No value at PT 37871.9 ms and LT 33650 ms
+dwm3001-1 > [0] Sent 25
+dwm3001-8 > [7] No value at PT 38871.8 ms and LT 34650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 34500 ms
+dwm3001-1 > [0] Sent 26
+dwm3001-8 > [7] No value at PT 39872.3 ms and LT 35650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 35500 ms
+dwm3001-1 > [0] Sent 27
+dwm3001-8 > [7] No value at PT 40871.7 ms and LT 36650 ms
+dwm3001-8 > [WARN] Tardy at PT 40892.3 ms and LT 36650 ms
+dwm3001-1 > [0] Sent 28
+dwm3001-8 > [7] No value at PT 41872.1 ms and LT 37650 ms
+dwm3001-1 > [0] Sent 29
+dwm3001-7 > [WARN] Missed deadline for input at LT 37600 ms
+dwm3001-8 > [7] No value at PT 42872.1 ms and LT 38650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 38550 ms
+dwm3001-1 > [0] Sent 30
+dwm3001-8 > [7] Val 30 (NIT: 25)
+dwm3001-1 > [0] Sent 31
+dwm3001-8 > [7] No value at PT 44873.0 ms and LT 40650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 40600 ms
+dwm3001-1 > [0] Sent 32
+dwm3001-8 > [7] No value at PT 45872.0 ms and LT 41650 ms
+dwm3001-8 > [WARN] Tardy at PT 46025.1 ms and LT 41650 ms
+dwm3001-1 > [0] Sent 33
+dwm3001-4 > [WARN] Missed deadline for input at LT 42450 ms
+dwm3001-8 > [7] No value at PT 46872.4 ms and LT 42650 ms
+dwm3001-1 > [0] Sent 34
+dwm3001-6 > [WARN] Missed deadline for input at LT 43550 ms
+dwm3001-8 > [7] No value at PT 47871.5 ms and LT 43650 ms
+dwm3001-1 > [0] Sent 35
+dwm3001-4 > [WARN] Missed deadline for input at LT 44450 ms
+dwm3001-8 > [7] No value at PT 48872.8 ms and LT 44650 ms
+dwm3001-1 > [0] Sent 36
+dwm3001-8 > [7] No value at PT 49872.4 ms and LT 45650 ms
+dwm3001-3 > [WARN] Missed deadline for input at LT 45400 ms
+dwm3001-1 > [0] Sent 37
+dwm3001-8 > [7] No value at PT 50872.2 ms and LT 46650 ms
+dwm3001-4 > [WARN] Missed deadline for input at LT 46450 ms
+dwm3001-1 > [0] Sent 38
+dwm3001-8 > [7] No value at PT 51872.7 ms and LT 47650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 47500 ms
+dwm3001-1 > [0] Sent 39
+dwm3001-8 > [7] No value at PT 52872.1 ms and LT 48650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 48550 ms
+dwm3001-1 > [0] Sent 40
+dwm3001-8 > [7] No value at PT 53871.9 ms and LT 49650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 49550 ms
+dwm3001-1 > [0] Sent 41
+dwm3001-8 > [7] No value at PT 54871.5 ms and LT 50650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 50550 ms
+dwm3001-1 > [0] Sent 42
+dwm3001-8 > [7] No value at PT 55872.3 ms and LT 51650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 51550 ms
+dwm3001-1 > [0] Sent 43
+dwm3001-4 > [WARN] Missed deadline for input at LT 52450 ms
+dwm3001-8 > [7] No value at PT 56871.7 ms and LT 52650 ms
+dwm3001-1 > [0] Sent 44
+dwm3001-8 > [7] No value at PT 57872.1 ms and LT 53650 ms
+dwm3001-1 > [0] Sent 45
+dwm3001-6 > [WARN] Missed deadline for input at LT 53550 ms
+dwm3001-8 > [7] No value at PT 58871.5 ms and LT 54650 ms
+dwm3001-1 > [0] Sent 46
+dwm3001-6 > [WARN] Missed deadline for input at LT 54550 ms
+dwm3001-8 > [7] No value at PT 59872.3 ms and LT 55650 ms
+dwm3001-1 > [0] Sent 47
+dwm3001-7 > [WARN] Missed deadline for input at LT 55600 ms
+dwm3001-1 > [0] Sent 48
+dwm3001-8 > [7] No value at PT 60871.5 ms and LT 56650 ms
+dwm3001-4 > [WARN] Missed deadline for input at LT 57450 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 56600 ms
+dwm3001-1 > [0] Sent 49
+dwm3001-4 > [WARN] Missed deadline for input at LT 58450 ms
+dwm3001-8 > [7] No value at PT 61872.3 ms and LT 57650 ms
+dwm3001-1 > [0] Sent 50
+dwm3001-4 > [WARN] Missed deadline for input at LT 59450 ms
+dwm3001-8 > [7] No value at PT 62872.3 ms and LT 58650 ms
+dwm3001-1 > [0] Sent 51
+dwm3001-3 > [WARN] Missed deadline for input at LT 60400 ms
+dwm3001-8 > [7] No value at PT 63872.3 ms and LT 59650 ms
+dwm3001-1 > [0] Sent 52
+dwm3001-1 > [0] Sent 53
+dwm3001-8 > [7] No value at PT 64872.3 ms and LT 60650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 62500 ms
+dwm3001-1 > [0] Sent 54
+dwm3001-8 > [7] Val 52 (NIT: 46)
+dwm3001-5 > [WARN] Missed deadline for input at LT 63500 ms
+dwm3001-1 > [0] Sent 55
+dwm3001-8 > [7] No value at PT 66871.9 ms and LT 62650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 64500 ms
+dwm3001-8 > [7] No value at PT 67872.7 ms and LT 63650 ms
+dwm3001-1 > [0] Sent 56
+dwm3001-5 > [WARN] Missed deadline for input at LT 65500 ms
+dwm3001-8 > [7] No value at PT 68872.3 ms and LT 64650 ms
+dwm3001-1 > [0] Sent 57
+dwm3001-5 > [WARN] Missed deadline for input at LT 66500 ms
+dwm3001-8 > [7] No value at PT 69871.9 ms and LT 65650 ms
+dwm3001-1 > [0] Sent 58
+dwm3001-8 > [7] No value at PT 70871.5 ms and LT 66650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 67500 ms
+dwm3001-1 > [0] Sent 59
+dwm3001-8 > [7] No value at PT 71872.3 ms and LT 67650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 68500 ms
+dwm3001-1 > [0] Sent 60
+dwm3001-8 > [7] No value at PT 72871.9 ms and LT 68650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 69500 ms
+dwm3001-8 > [7] No value at PT 73871.5 ms and LT 69650 ms
+dwm3001-1 > [0] Sent 61
+dwm3001-5 > [WARN] Missed deadline for input at LT 70500 ms
+dwm3001-8 > [7] No value at PT 74872.3 ms and LT 70650 ms
+dwm3001-1 > [0] Sent 62
+dwm3001-5 > [WARN] Missed deadline for input at LT 71500 ms
+dwm3001-8 > [7] No value at PT 75871.9 ms and LT 71650 ms
+dwm3001-1 > [0] Sent 63
+dwm3001-5 > [WARN] Missed deadline for input at LT 72500 ms
+dwm3001-8 > [7] No value at PT 76872.7 ms and LT 72650 ms
+dwm3001-1 > [0] Sent 64
+dwm3001-5 > [WARN] Missed deadline for input at LT 73500 ms
+dwm3001-8 > [7] No value at PT 77871.1 ms and LT 73650 ms
+dwm3001-1 > [0] Sent 65
+dwm3001-8 > [7] No value at PT 78871.9 ms and LT 74650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 74500 ms
+dwm3001-8 > [7] No value at PT 79872.7 ms and LT 75650 ms
+dwm3001-1 > [0] Sent 66
+dwm3001-5 > [WARN] Missed deadline for input at LT 75500 ms
+dwm3001-8 > [7] No value at PT 80872.3 ms and LT 76650 ms
+dwm3001-1 > [0] Sent 67
+dwm3001-5 > [WARN] Missed deadline for input at LT 76500 ms
+dwm3001-8 > [7] No value at PT 81871.9 ms and LT 77650 ms
+dwm3001-1 > [0] Sent 68
+dwm3001-6 > [WARN] Missed deadline for input at LT 77550 ms
+dwm3001-8 > [7] No value at PT 82872.7 ms and LT 78650 ms
+dwm3001-1 > [0] Sent 69
+dwm3001-6 > [WARN] Missed deadline for input at LT 78550 ms
+dwm3001-8 > [7] No value at PT 83872.3 ms and LT 79650 ms
+dwm3001-1 > [0] Sent 70
+dwm3001-8 > [7] No value at PT 84871.9 ms and LT 80650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 79550 ms
+dwm3001-8 > [7] No value at PT 85872.7 ms and LT 81650 ms
+dwm3001-1 > [0] Sent 71
+dwm3001-6 > [WARN] Missed deadline for input at LT 80550 ms
+dwm3001-8 > [7] No value at PT 86872.3 ms and LT 82650 ms
+dwm3001-1 > [0] Sent 72
+dwm3001-6 > [WARN] Missed deadline for input at LT 81550 ms
+dwm3001-8 > [7] No value at PT 87871.9 ms and LT 83650 ms
+dwm3001-1 > [0] Sent 73
+dwm3001-6 > [WARN] Missed deadline for input at LT 82550 ms
+dwm3001-8 > [7] No value at PT 88872.7 ms and LT 84650 ms
+dwm3001-1 > [0] Sent 74
+dwm3001-8 > [7] No value at PT 89872.3 ms and LT 85650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 83550 ms
+dwm3001-1 > [0] Sent 75
+dwm3001-8 > [7] No value at PT 90871.9 ms and LT 86650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 84600 ms
+dwm3001-8 > [7] No value at PT 91872.7 ms and LT 87650 ms
+dwm3001-1 > [0] Sent 76
+dwm3001-7 > [WARN] Missed deadline for input at LT 85600 ms
+dwm3001-8 > [7] No value at PT 92872.3 ms and LT 88650 ms
+dwm3001-1 > [0] Sent 77
+dwm3001-8 > [7] No value at PT 93871.9 ms and LT 89650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 86600 ms
+dwm3001-1 > [0] Sent 78
+dwm3001-8 > [7] No value at PT 94871.5 ms and LT 90650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 87600 ms
+dwm3001-1 > [0] Sent 79
+dwm3001-8 > [7] No value at PT 95872.3 ms and LT 91650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 88600 ms
+dwm3001-1 > [0] Sent 80
+dwm3001-8 > [7] No value at PT 96871.9 ms and LT 92650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 89600 ms
+dwm3001-1 > [0] Sent 81
+dwm3001-8 > [7] No value at PT 97871.9 ms and LT 93650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 90600 ms
+dwm3001-1 > [0] Sent 82
+dwm3001-7 > [WARN] Missed deadline for input at LT 91600 ms
+dwm3001-8 > [7] No value at PT 98874.3 ms and LT 94650 ms
+dwm3001-1 > [0] Sent 83
+dwm3001-7 > [WARN] Missed deadline for input at LT 92600 ms
+dwm3001-8 > [7] No value at PT 99872.7 ms and LT 95650 ms
+dwm3001-1 > [0] Sent 84
+dwm3001-7 > [WARN] Missed deadline for input at LT 93600 ms
+dwm3001-1 > [0] Sent 85
+dwm3001-8 > [7] No value at PT 100875.1 ms and LT 96650 ms
+dwm3001-8 > [WARN] Tardy at PT 101074.3 ms and LT 96650 ms
+dwm3001-1 > [0] Sent 86
+dwm3001-8 > [7] No value at PT 101871.9 ms and LT 97650 ms
+dwm3001-8 > [WARN] Tardy at PT 102074.3 ms and LT 97650 ms
+dwm3001-1 > [0] Sent 87
+dwm3001-8 > [7] No value at PT 102871.9 ms and LT 98650 ms
+dwm3001-8 > [WARN] Tardy at PT 103073.5 ms and LT 98650 ms
+dwm3001-1 > [0] Sent 88
+dwm3001-8 > [7] No value at PT 103871.9 ms and LT 99650 ms
+dwm3001-1 > [0] Sent 89
+dwm3001-8 > [WARN] Tardy at PT 104072.7 ms and LT 99650 ms
+dwm3001-1 > [0] Sent 90
+dwm3001-8 > [7] No value at PT 104872.7 ms and LT 100650 ms
+dwm3001-8 > [WARN] Tardy at PT 105071.9 ms and LT 100650 ms
+dwm3001-1 > [0] Sent 91
+dwm3001-8 > [7] No value at PT 105871.9 ms and LT 101650 ms
+dwm3001-8 > [WARN] Tardy at PT 106074.3 ms and LT 101650 ms
+dwm3001-1 > [0] Sent 92
+dwm3001-8 > [7] No value at PT 106871.9 ms and LT 102650 ms
+dwm3001-8 > [WARN] Tardy at PT 107074.3 ms and LT 102650 ms
+dwm3001-1 > [0] Sent 93
+dwm3001-8 > [WARN] Tardy at PT 107824.7 ms and LT 102650 ms
+dwm3001-8 > [7] No value at PT 107871.9 ms and LT 103650 ms
+dwm3001-1 > [0] Sent 94
+dwm3001-8 > [WARN] Tardy at PT 108496.7 ms and LT 103650 ms
+dwm3001-1 > [0] Sent 95
+dwm3001-8 > [7] No value at PT 108871.9 ms and LT 104650 ms
+dwm3001-8 > [WARN] Tardy at PT 109163.1 ms and LT 104650 ms
+dwm3001-1 > [0] Sent 96
+dwm3001-8 > [WARN] Tardy at PT 109830.3 ms and LT 104650 ms
+dwm3001-8 > [7] No value at PT 109871.9 ms and LT 105650 ms
+dwm3001-1 > [0] Sent 97
+dwm3001-8 > [WARN] Tardy at PT 110559.9 ms and LT 105650 ms
+dwm3001-8 > [7] No value at PT 110871.9 ms and LT 106650 ms
+dwm3001-8 > [WARN] Tardy at PT 111165.5 ms and LT 106650 ms
+dwm3001-1 > [0] Sent 98
+dwm3001-8 > [7] Val 98 (NIT: 91)
+dwm3001-1 > [0] Sent 99
+dwm3001-1 > [0] Sent 100
+dwm3001-8 > [7] Val 99 (NIT: 91)
+dwm3001-1 > [0] Sent 101
+dwm3001-8 > [7] Val 100 (NIT: 91)
+dwm3001-1 > [0] Sent 102
+dwm3001-7 > [WARN] Missed deadline for input at LT 111600 ms
+dwm3001-8 > [7] Val 101 (NIT: 91)
+dwm3001-1 > [0] Sent 103
+dwm3001-7 > [WARN] Missed deadline for input at LT 112600 ms
+dwm3001-8 > [7] No value at PT 115871.9 ms and LT 111650 ms
+dwm3001-1 > [0] Sent 104
+dwm3001-7 > [WARN] Missed deadline for input at LT 113600 ms
+dwm3001-1 > [0] Sent 105
+dwm3001-8 > [7] No value at PT 116871.9 ms and LT 112650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 114600 ms
+dwm3001-1 > [0] Sent 106
+dwm3001-7 > [WARN] Missed deadline for input at LT 115600 ms
+dwm3001-8 > [7] No value at PT 117872.7 ms and LT 113650 ms
+dwm3001-1 > [0] Sent 107
+dwm3001-7 > [WARN] Missed deadline for input at LT 116600 ms
+dwm3001-8 > [7] No value at PT 118871.9 ms and LT 114650 ms
+dwm3001-1 > [0] Sent 108
+dwm3001-8 > [7] No value at PT 119871.9 ms and LT 115650 ms
+dwm3001-1 > [0] Sent 109
+dwm3001-1 > [0] Sent 110
+dwm3001-8 > [7] No value at PT 120871.9 ms and LT 116650 ms
+dwm3001-1 > [0] Sent 111
+dwm3001-8 > [7] Val 108 (NIT: 97)
+dwm3001-1 > [0] Sent 112
+dwm3001-8 > [7] Val 109 (NIT: 97)
+dwm3001-1 > [0] Sent 113
+dwm3001-8 > [7] Val 110 (NIT: 97)
+dwm3001-1 > [0] Sent 114
+dwm3001-8 > [7] Val 111 (NIT: 97)
+dwm3001-1 > [0] Sent 115
+dwm3001-8 > [7] Val 112 (NIT: 97)
+dwm3001-8 > [7] Val 113 (NIT: 97)
+dwm3001-1 > [0] Sent 116
+dwm3001-8 > [7] Val 114 (NIT: 97)
+dwm3001-1 > [0] Sent 117
+dwm3001-8 > [7] Val 115 (NIT: 97)
+dwm3001-1 > [0] Sent 118
+dwm3001-8 > [7] Val 116 (NIT: 97)
+dwm3001-1 > [0] Sent 119
+dwm3001-8 > [7] Val 117 (NIT: 97)
+dwm3001-1 > [0] Sent 120
+dwm3001-8 > [7] Val 118 (NIT: 97)
+dwm3001-8 > [7] Val 119 (NIT: 97)
+dwm3001-1 > [0] Sent 121
+dwm3001-8 > [7] Val 120 (NIT: 97)
+dwm3001-1 > [0] Sent 122
+dwm3001-8 > [7] Val 121 (NIT: 97)
+dwm3001-1 > [0] Sent 123
+dwm3001-7 > [WARN] Missed deadline for input at LT 132600 ms
+dwm3001-8 > [7] Val 122 (NIT: 97)
+dwm3001-1 > [0] Sent 124
+dwm3001-8 > [7] No value at PT 136871.9 ms and LT 132650 ms
+dwm3001-1 > [0] Sent 125
+dwm3001-8 > [7] Val 124 (NIT: 98)
+dwm3001-8 > [7] Val 125 (NIT: 98)
+dwm3001-1 > [0] Sent 126
+dwm3001-8 > [7] Val 126 (NIT: 98)
+dwm3001-1 > [0] Sent 127
+dwm3001-8 > [7] Val 127 (NIT: 98)
+dwm3001-1 > [0] Sent 128
+dwm3001-8 > [7] Val 128 (NIT: 98)
+dwm3001-1 > [0] Sent 129
+dwm3001-8 > [7] No value at PT 142873.1 ms and LT 138650 ms
+dwm3001-8 > [WARN] Tardy at PT 142960.7 ms and LT 138650 ms
+dwm3001-1 > [0] Sent 130
+dwm3001-8 > [7] No value at PT 143872.7 ms and LT 139650 ms
+dwm3001-8 > [WARN] Tardy at PT 144154.7 ms and LT 139650 ms
+dwm3001-8 > [7] No value at PT 144872.3 ms and LT 140650 ms
+dwm3001-1 > [0] Sent 131
+dwm3001-8 > [WARN] Tardy at PT 145354.7 ms and LT 140650 ms
+dwm3001-8 > [7] No value at PT 145871.9 ms and LT 141650 ms
+dwm3001-1 > [0] Sent 132
+dwm3001-8 > [WARN] Tardy at PT 146552.3 ms and LT 141650 ms
+dwm3001-8 > [7] No value at PT 146871.5 ms and LT 142650 ms
+dwm3001-1 > [0] Sent 133
+dwm3001-8 > [WARN] Tardy at PT 147751.1 ms and LT 142650 ms
+dwm3001-8 > [7] No value at PT 147872.3 ms and LT 143650 ms
+dwm3001-1 > [0] Sent 134
+dwm3001-8 > [7] No value at PT 148871.9 ms and LT 144650 ms
+dwm3001-8 > [WARN] Tardy at PT 148948.7 ms and LT 144650 ms
+dwm3001-1 > [0] Sent 135
+dwm3001-8 > [7] No value at PT 149871.5 ms and LT 145650 ms
+dwm3001-8 > [WARN] Tardy at PT 150244.7 ms and LT 145650 ms
+dwm3001-8 > [7] No value at PT 150872.3 ms and LT 146650 ms
+dwm3001-1 > [0] Sent 136
+dwm3001-8 > [WARN] Tardy at PT 151347.5 ms and LT 146650 ms
+dwm3001-8 > [7] No value at PT 151873.1 ms and LT 147650 ms
+dwm3001-1 > [0] Sent 137
+dwm3001-8 > [WARN] Tardy at PT 152546.3 ms and LT 147650 ms
+dwm3001-8 > [7] No value at PT 152871.5 ms and LT 148650 ms
+dwm3001-1 > [0] Sent 138
+dwm3001-8 > [WARN] Tardy at PT 153758.3 ms and LT 148650 ms
+dwm3001-8 > [7] No value at PT 153871.1 ms and LT 149650 ms
+dwm3001-1 > [0] Sent 139
+dwm3001-8 > [7] No value at PT 154871.9 ms and LT 150650 ms
+dwm3001-8 > [WARN] Tardy at PT 154976.3 ms and LT 150650 ms
+dwm3001-1 > [0] Sent 140
+dwm3001-8 > [7] No value at PT 155872.7 ms and LT 151650 ms
+dwm3001-8 > [WARN] Tardy at PT 156190.6 ms and LT 151650 ms
+dwm3001-8 > [7] No value at PT 156871.7 ms and LT 152650 ms
+dwm3001-1 > [0] Sent 141
+dwm3001-8 > [WARN] Tardy at PT 157374.7 ms and LT 152650 ms
+dwm3001-8 > [7] No value at PT 157871.7 ms and LT 153650 ms
+dwm3001-1 > [0] Sent 142
+dwm3001-8 > [WARN] Tardy at PT 158419.1 ms and LT 153650 ms
+dwm3001-8 > [7] No value at PT 158871.9 ms and LT 154650 ms
+dwm3001-1 > [0] Sent 143
+dwm3001-8 > [WARN] Tardy at PT 159196.7 ms and LT 154650 ms
+dwm3001-1 > [0] Sent 144
+dwm3001-8 > [7] No value at PT 159872.7 ms and LT 155650 ms
+dwm3001-8 > [WARN] Tardy at PT 160020.7 ms and LT 155650 ms
+dwm3001-1 > [0] Sent 145
+dwm3001-7 > [WARN] Missed deadline for input at LT 154600 ms
+dwm3001-8 > [7] No value at PT 160871.9 ms and LT 156650 ms
+dwm3001-1 > [0] Sent 146
+dwm3001-8 > [WARN] Tardy at PT 161690.3 ms and LT 156650 ms
+dwm3001-8 > [7] No value at PT 161871.9 ms and LT 157650 ms
+dwm3001-1 > [0] Sent 147
+dwm3001-8 > [WARN] Tardy at PT 162525.5 ms and LT 157650 ms
+dwm3001-8 > [7] No value at PT 162871.9 ms and LT 158650 ms
+dwm3001-1 > [0] Sent 148
+dwm3001-8 > [WARN] Tardy at PT 163295.1 ms and LT 158650 ms
+dwm3001-1 > [0] Sent 149
+dwm3001-8 > [7] No value at PT 163871.9 ms and LT 159650 ms
+dwm3001-8 > [WARN] Tardy at PT 164020.7 ms and LT 159650 ms
+dwm3001-1 > [0] Sent 150
+dwm3001-8 > [WARN] Tardy at PT 164755.9 ms and LT 159650 ms
+dwm3001-8 > [7] No value at PT 164871.9 ms and LT 160650 ms
+dwm3001-1 > [0] Sent 151
+dwm3001-8 > [WARN] Tardy at PT 165593.5 ms and LT 160650 ms
+dwm3001-8 > [7] No value at PT 165871.9 ms and LT 161650 ms
+dwm3001-1 > [0] Sent 152
+dwm3001-8 > [WARN] Tardy at PT 166435.1 ms and LT 161650 ms
+dwm3001-8 > [7] No value at PT 166872.7 ms and LT 162650 ms
+dwm3001-1 > [0] Sent 153
+dwm3001-8 > [WARN] Tardy at PT 167265.5 ms and LT 162650 ms
+dwm3001-1 > [0] Sent 154
+dwm3001-8 > [7] No value at PT 167871.9 ms and LT 163650 ms
+dwm3001-8 > [WARN] Tardy at PT 168050.3 ms and LT 163650 ms
+dwm3001-1 > [0] Sent 155
+dwm3001-8 > [7] Val 155 (NIT: 124)
+dwm3001-1 > [0] Sent 156
+dwm3001-8 > [7] Val 156 (NIT: 124)
+dwm3001-1 > [0] Sent 157
+dwm3001-8 > [7] Val 157 (NIT: 124)
+dwm3001-1 > [0] Sent 158
+dwm3001-1 > [0] Sent 159
+dwm3001-8 > [7] Val 158 (NIT: 124)
+dwm3001-1 > [0] Sent 160
+dwm3001-8 > [7] Val 159 (NIT: 124)
+dwm3001-1 > [0] Sent 161
+dwm3001-8 > [7] Val 160 (NIT: 124)
+dwm3001-1 > [0] Sent 162
+dwm3001-8 > [7] Val 161 (NIT: 124)
+dwm3001-1 > [0] Sent 163
+dwm3001-8 > [7] Val 162 (NIT: 124)
+dwm3001-1 > [0] Sent 164
+dwm3001-8 > [7] Val 163 (NIT: 124)
+dwm3001-1 > [0] Sent 165
+dwm3001-8 > [7] Val 164 (NIT: 124)
+dwm3001-1 > [0] Sent 166
+dwm3001-8 > [7] Val 165 (NIT: 124)
+dwm3001-8 > [7] Val 166 (NIT: 124)
+dwm3001-1 > [0] Sent 167
+dwm3001-8 > [7] Val 167 (NIT: 124)
+dwm3001-1 > [0] Sent 168
+dwm3001-8 > [7] Val 168 (NIT: 124)
+dwm3001-1 > [0] Sent 169
+dwm3001-8 > [7] Val 169 (NIT: 124)
+dwm3001-1 > [0] Sent 170
+dwm3001-8 > [7] No value at PT 183872.6 ms and LT 179650 ms
+dwm3001-8 > [WARN] Tardy at PT 183907.4 ms and LT 179650 ms
+dwm3001-1 > [0] Sent 171
+dwm3001-8 > [7] No value at PT 184872.2 ms and LT 180650 ms
+dwm3001-8 > [WARN] Tardy at PT 185179.4 ms and LT 180650 ms
+dwm3001-1 > [0] Sent 172
+dwm3001-8 > [7] No value at PT 185872.0 ms and LT 181650 ms
+dwm3001-8 > [WARN] Tardy at PT 186328.2 ms and LT 181650 ms
+dwm3001-8 > [7] No value at PT 186872.2 ms and LT 182650 ms
+dwm3001-1 > [0] Sent 173
+dwm3001-8 > [WARN] Tardy at PT 187175.2 ms and LT 182650 ms
+dwm3001-1 > [0] Sent 174
+dwm3001-8 > [7] No value at PT 187871.9 ms and LT 183650 ms
+dwm3001-8 > [WARN] Tardy at PT 188065.8 ms and LT 183650 ms
+dwm3001-1 > [0] Sent 175
+dwm3001-8 > [7] No value at PT 188872.5 ms and LT 184650 ms
+dwm3001-8 > [WARN] Tardy at PT 189006.6 ms and LT 184650 ms
+dwm3001-1 > [0] Sent 176
+dwm3001-8 > [7] No value at PT 189873.0 ms and LT 185650 ms
+dwm3001-8 > [WARN] Tardy at PT 190025.5 ms and LT 185650 ms
+dwm3001-1 > [0] Sent 177
+dwm3001-8 > [7] No value at PT 190872.2 ms and LT 186650 ms
+dwm3001-8 > [WARN] Tardy at PT 191019.7 ms and LT 186650 ms
+dwm3001-1 > [0] Sent 178
+dwm3001-8 > [7] No value at PT 191872.3 ms and LT 187650 ms
+dwm3001-8 > [WARN] Tardy at PT 191965.8 ms and LT 187650 ms
+dwm3001-1 > [0] Sent 179
+dwm3001-8 > [7] No value at PT 192871.8 ms and LT 188650 ms
+dwm3001-8 > [WARN] Tardy at PT 192906.6 ms and LT 188650 ms
+dwm3001-1 > [0] Sent 180
+dwm3001-8 > [7] No value at PT 193871.7 ms and LT 189650 ms
+dwm3001-8 > [WARN] Tardy at PT 193894.5 ms and LT 189650 ms
+dwm3001-1 > [0] Sent 181
+dwm3001-4 > [WARN] Missed deadline for input at LT 190450 ms
+dwm3001-8 > [7] No value at PT 194872.4 ms and LT 190650 ms
+dwm3001-1 > [0] Sent 182
+dwm3001-8 > [7] Val 182 (NIT: 136)
+dwm3001-1 > [0] Sent 183
+dwm3001-8 > [7] Val 183 (NIT: 136)
+dwm3001-1 > [0] Sent 184
+dwm3001-8 > [7] Val 184 (NIT: 136)
+dwm3001-1 > [0] Sent 185
+dwm3001-8 > [7] Val 185 (NIT: 136)
+dwm3001-1 > [0] Sent 186
+dwm3001-5 > [WARN] Missed deadline for input at LT 195500 ms
+dwm3001-8 > [7] No value at PT 199872.4 ms and LT 195650 ms
+dwm3001-1 > [0] Sent 187
+dwm3001-5 > [WARN] Missed deadline for input at LT 196500 ms
+dwm3001-8 > [7] No value at PT 200872.3 ms and LT 196650 ms
+dwm3001-1 > [0] Sent 188
+dwm3001-6 > [WARN] Missed deadline for input at LT 197550 ms
+dwm3001-8 > [7] No value at PT 201871.9 ms and LT 197650 ms
+dwm3001-1 > [0] Sent 189
+dwm3001-6 > [WARN] Missed deadline for input at LT 198550 ms
+dwm3001-8 > [7] No value at PT 202871.5 ms and LT 198650 ms
+dwm3001-1 > [0] Sent 190
+dwm3001-8 > [7] No value at PT 203872.3 ms and LT 199650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 199550 ms
+dwm3001-8 > [7] No value at PT 204871.9 ms and LT 200650 ms
+dwm3001-1 > [0] Sent 191
+dwm3001-7 > [WARN] Missed deadline for input at LT 200600 ms
+dwm3001-8 > [7] No value at PT 205871.5 ms and LT 201650 ms
+dwm3001-1 > [0] Sent 192
+dwm3001-7 > [WARN] Missed deadline for input at LT 201600 ms
+dwm3001-8 > [7] No value at PT 206872.3 ms and LT 202650 ms
+dwm3001-1 > [0] Sent 193
+dwm3001-8 > [WARN] Tardy at PT 207610.3 ms and LT 202650 ms
+dwm3001-8 > [7] No value at PT 207871.9 ms and LT 203650 ms
+dwm3001-1 > [0] Sent 194
+dwm3001-8 > [WARN] Tardy at PT 208531.9 ms and LT 203650 ms
+dwm3001-8 > [7] No value at PT 208871.9 ms and LT 204650 ms
+dwm3001-1 > [0] Sent 195
+dwm3001-8 > [WARN] Tardy at PT 209467.1 ms and LT 204650 ms
+dwm3001-1 > [0] Sent 196
+dwm3001-8 > [7] No value at PT 209871.9 ms and LT 205650 ms
+dwm3001-8 > [WARN] Tardy at PT 210317.5 ms and LT 205650 ms
+dwm3001-1 > [0] Sent 197
+dwm3001-8 > [7] No value at PT 210872.7 ms and LT 206650 ms
+dwm3001-8 > [WARN] Tardy at PT 210982.3 ms and LT 206650 ms
+dwm3001-1 > [0] Sent 198
+dwm3001-8 > [7] Val 198 (NIT: 148)
+dwm3001-1 > [0] Sent 199
+dwm3001-7 > [WARN] Missed deadline for input at LT 208600 ms
+dwm3001-8 > [7] No value at PT 212872.7 ms and LT 208650 ms
+dwm3001-1 > [0] Sent 200
+dwm3001-7 > [WARN] Missed deadline for input at LT 209600 ms
+dwm3001-8 > [7] No value at PT 213872.5 ms and LT 209650 ms
+dwm3001-1 > [0] Sent 201
+dwm3001-8 > [7] No value at PT 214873.2 ms and LT 210650 ms
+dwm3001-1 > [0] Sent 202
+dwm3001-4 > [WARN] Missed deadline for input at LT 210450 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 211550 ms
+dwm3001-8 > [7] No value at PT 215871.6 ms and LT 211650 ms
+dwm3001-1 > [0] Sent 203
+dwm3001-8 > [7] No value at PT 216872.2 ms and LT 212650 ms
+dwm3001-8 > [WARN] Tardy at PT 216883.5 ms and LT 212650 ms
+dwm3001-1 > [0] Sent 204
+dwm3001-8 > [7] No value at PT 217872.1 ms and LT 213650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 213600 ms
+dwm3001-1 > [0] Sent 205
+dwm3001-8 > [7] No value at PT 218872.9 ms and LT 214650 ms
+dwm3001-8 > [WARN] Tardy at PT 218947.5 ms and LT 214650 ms
+dwm3001-1 > [0] Sent 206
+dwm3001-8 > [7] No value at PT 219871.8 ms and LT 215650 ms
+dwm3001-8 > [WARN] Tardy at PT 219910.0 ms and LT 215650 ms
+dwm3001-1 > [0] Sent 207
+dwm3001-8 > [7] No value at PT 220871.6 ms and LT 216650 ms
+dwm3001-8 > [WARN] Tardy at PT 220880.4 ms and LT 216650 ms
+dwm3001-1 > [0] Sent 208
+dwm3001-8 > [7] Val 208 (NIT: 157)
+dwm3001-1 > [0] Sent 209
+dwm3001-8 > [7] Val 209 (NIT: 157)
+dwm3001-1 > [0] Sent 210
+dwm3001-8 > [7] Val 210 (NIT: 157)
+dwm3001-1 > [0] Sent 211
+dwm3001-8 > [7] Val 211 (NIT: 157)
+dwm3001-1 > [0] Sent 212
+dwm3001-8 > [7] Val 212 (NIT: 157)
+dwm3001-1 > [0] Sent 213
+dwm3001-8 > [7] Val 213 (NIT: 157)
+dwm3001-1 > [0] Sent 214
+dwm3001-4 > [WARN] Missed deadline for input at LT 223450 ms
+dwm3001-8 > [7] No value at PT 227871.6 ms and LT 223650 ms
+dwm3001-1 > [0] Sent 215
+dwm3001-8 > [7] No value at PT 228871.9 ms and LT 224650 ms
+dwm3001-8 > [WARN] Tardy at PT 228898.1 ms and LT 224650 ms
+dwm3001-1 > [0] Sent 216
+dwm3001-3 > [WARN] Missed deadline for input at LT 225400 ms
+dwm3001-8 > [7] No value at PT 229871.8 ms and LT 225650 ms
+dwm3001-1 > [0] Sent 217
+dwm3001-8 > [7] Val 217 (NIT: 160)
+dwm3001-1 > [0] Sent 218
+dwm3001-8 > [7] Val 218 (NIT: 160)
+dwm3001-1 > [0] Sent 219
+dwm3001-8 > [7] Val 219 (NIT: 160)
+dwm3001-1 > [0] Sent 220
+dwm3001-5 > [WARN] Missed deadline for input at LT 229500 ms
+dwm3001-8 > [7] No value at PT 233872.1 ms and LT 229650 ms
+dwm3001-1 > [0] Sent 221
+dwm3001-8 > [7] Val 221 (NIT: 161)
+dwm3001-1 > [0] Sent 222
+dwm3001-8 > [7] Val 222 (NIT: 161)
+dwm3001-1 > [0] Sent 223
+dwm3001-3 > [WARN] Missed deadline for input at LT 232400 ms
+dwm3001-8 > [7] No value at PT 236872.1 ms and LT 232650 ms
+dwm3001-1 > [0] Sent 224
+dwm3001-8 > [7] No value at PT 237872.2 ms and LT 233650 ms
+dwm3001-8 > [WARN] Tardy at PT 238093.1 ms and LT 233650 ms
+dwm3001-8 > [7] No value at PT 238871.5 ms and LT 234650 ms
+dwm3001-1 > [0] Sent 225
+dwm3001-8 > [WARN] Tardy at PT 239222.3 ms and LT 234650 ms
+dwm3001-1 > [0] Sent 226
+dwm3001-8 > [7] No value at PT 239871.9 ms and LT 235650 ms
+dwm3001-2 > [WARN] Missed deadline for input at LT 235350 ms
+dwm3001-1 > [0] Sent 227
+dwm3001-8 > [7] No value at PT 240872.7 ms and LT 236650 ms
+dwm3001-8 > [WARN] Tardy at PT 241032.0 ms and LT 236650 ms
+dwm3001-1 > [0] Sent 228
+dwm3001-5 > [WARN] Missed deadline for input at LT 237500 ms
+dwm3001-8 > [7] No value at PT 241871.9 ms and LT 237650 ms
+dwm3001-1 > [0] Sent 229
+dwm3001-8 > [7] Val 229 (NIT: 167)
+dwm3001-1 > [0] Sent 230
+dwm3001-8 > [7] Val 230 (NIT: 167)
+dwm3001-1 > [0] Sent 231
+dwm3001-7 > [WARN] Missed deadline for input at LT 240600 ms
+dwm3001-8 > [7] No value at PT 244871.8 ms and LT 240650 ms
+dwm3001-1 > [0] Sent 232
+dwm3001-7 > [WARN] Missed deadline for input at LT 241600 ms
+dwm3001-8 > [7] No value at PT 245872.1 ms and LT 241650 ms
+dwm3001-1 > [0] Sent 233
+dwm3001-8 > [7] No value at PT 246871.5 ms and LT 242650 ms
+dwm3001-8 > [WARN] Tardy at PT 246977.6 ms and LT 242650 ms
+dwm3001-1 > [0] Sent 234
+dwm3001-8 > [7] No value at PT 247872.6 ms and LT 243650 ms
+dwm3001-8 > [WARN] Tardy at PT 247938.6 ms and LT 243650 ms
+dwm3001-1 > [0] Sent 235
+dwm3001-8 > [7] Val 235 (NIT: 171)
+dwm3001-1 > [0] Sent 236
+dwm3001-8 > [7] Val 236 (NIT: 171)
+dwm3001-1 > [0] Sent 237
+dwm3001-8 > [7] Val 237 (NIT: 171)
+dwm3001-1 > [0] Sent 238
+dwm3001-4 > [WARN] Missed deadline for input at LT 247450 ms
+dwm3001-8 > [7] No value at PT 251872.8 ms and LT 247650 ms
+dwm3001-1 > [0] Sent 239
+dwm3001-8 > [7] No value at PT 252871.7 ms and LT 248650 ms
+dwm3001-3 > [WARN] Missed deadline for input at LT 248400 ms
+dwm3001-1 > [0] Sent 240
+dwm3001-4 > [WARN] Missed deadline for input at LT 249450 ms
+dwm3001-8 > [7] No value at PT 253872.1 ms and LT 249650 ms
+dwm3001-1 > [0] Sent 241
+dwm3001-8 > [7] No value at PT 254871.9 ms and LT 250650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 250500 ms
+dwm3001-1 > [0] Sent 242
+dwm3001-8 > [7] Val 242 (NIT: 175)
+dwm3001-1 > [0] Sent 243
+dwm3001-5 > [WARN] Missed deadline for input at LT 252500 ms
+dwm3001-8 > [7] No value at PT 256872.8 ms and LT 252650 ms
+dwm3001-1 > [0] Sent 244
+dwm3001-8 > [7] No value at PT 257872.3 ms and LT 253650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 253500 ms
+dwm3001-1 > [0] Sent 245
+dwm3001-8 > [7] No value at PT 258871.9 ms and LT 254650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 254550 ms
+dwm3001-1 > [0] Sent 246
+dwm3001-8 > [7] No value at PT 259872.1 ms and LT 255650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 255600 ms
+dwm3001-1 > [0] Sent 247
+dwm3001-8 > [7] No value at PT 260872.0 ms and LT 256650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 256600 ms
+dwm3001-1 > [0] Sent 248
+dwm3001-8 > [7] No value at PT 261872.8 ms and LT 257650 ms
+dwm3001-8 > [WARN] Tardy at PT 262140.6 ms and LT 257650 ms
+dwm3001-1 > [0] Sent 249
+dwm3001-8 > [7] No value at PT 262872.5 ms and LT 258650 ms
+dwm3001-8 > [WARN] Tardy at PT 263073.3 ms and LT 258650 ms
+dwm3001-1 > [0] Sent 250
+dwm3001-8 > [7] No value at PT 263871.7 ms and LT 259650 ms
+dwm3001-8 > [WARN] Tardy at PT 263882.9 ms and LT 259650 ms
+dwm3001-1 > [0] Sent 251
+dwm3001-1 > [0] Sent 252
+dwm3001-8 > [7] Val 251 (NIT: 183)
+dwm3001-1 > [0] Sent 253
+dwm3001-8 > [7] Val 252 (NIT: 183)
+dwm3001-1 > [0] Sent 254
+dwm3001-8 > [7] Val 253 (NIT: 183)
+dwm3001-3 > [WARN] Missed deadline for input at LT 263400 ms
+dwm3001-8 > [7] No value at PT 267872.5 ms and LT 263650 ms
+dwm3001-1 > [0] Sent 255
+dwm3001-4 > [WARN] Missed deadline for input at LT 264450 ms
+dwm3001-8 > [7] No value at PT 268872.1 ms and LT 264650 ms
+dwm3001-1 > [0] Sent 256
+dwm3001-6 > [WARN] Missed deadline for input at LT 265550 ms
+dwm3001-8 > [7] No value at PT 269871.7 ms and LT 265650 ms
+dwm3001-1 > [0] Sent 257
+dwm3001-5 > [WARN] Missed deadline for input at LT 266500 ms
+dwm3001-8 > [7] No value at PT 270871.3 ms and LT 266650 ms
+dwm3001-1 > [0] Sent 258
+dwm3001-8 > [7] No value at PT 271872.1 ms and LT 267650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 267600 ms
+dwm3001-1 > [0] Sent 259
+dwm3001-8 > [7] No value at PT 272871.7 ms and LT 268650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 268600 ms
+dwm3001-8 > [7] No value at PT 273871.3 ms and LT 269650 ms
+dwm3001-1 > [0] Sent 260
+dwm3001-8 > [WARN] Tardy at PT 274622.5 ms and LT 269650 ms
+dwm3001-8 > [7] No value at PT 274872.6 ms and LT 270650 ms
+dwm3001-1 > [0] Sent 261
+dwm3001-8 > [WARN] Tardy at PT 275808.4 ms and LT 270650 ms
+dwm3001-8 > [7] No value at PT 275871.6 ms and LT 271650 ms
+dwm3001-1 > [0] Sent 262
+dwm3001-8 > [WARN] Tardy at PT 276522.0 ms and LT 271650 ms
+dwm3001-8 > [7] No value at PT 276871.6 ms and LT 272650 ms
+dwm3001-1 > [0] Sent 263
+dwm3001-8 > [WARN] Tardy at PT 277189.2 ms and LT 272650 ms
+dwm3001-1 > [0] Sent 264
+dwm3001-8 > [7] No value at PT 277872.5 ms and LT 273650 ms
+dwm3001-8 > [WARN] Tardy at PT 278005.6 ms and LT 273650 ms
+dwm3001-1 > [0] Sent 265
+dwm3001-8 > [7] No value at PT 278871.9 ms and LT 274650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 274600 ms
+dwm3001-1 > [0] Sent 266
+dwm3001-8 > [7] No value at PT 279871.8 ms and LT 275650 ms
+dwm3001-8 > [WARN] Tardy at PT 280077.8 ms and LT 275650 ms
+dwm3001-1 > [0] Sent 267
+dwm3001-8 > [7] No value at PT 280871.3 ms and LT 276650 ms
+dwm3001-8 > [WARN] Tardy at PT 280996.8 ms and LT 276650 ms
+dwm3001-1 > [0] Sent 268
+dwm3001-8 > [7] Val 268 (NIT: 197)
+dwm3001-1 > [0] Sent 269
+dwm3001-8 > [7] Val 269 (NIT: 197)
+dwm3001-1 > [0] Sent 270
+dwm3001-8 > [7] Val 270 (NIT: 197)
+dwm3001-1 > [0] Sent 271
+dwm3001-8 > [7] Val 271 (NIT: 197)
+dwm3001-1 > [0] Sent 272
+dwm3001-8 > [7] Val 272 (NIT: 197)
+dwm3001-1 > [0] Sent 273
+dwm3001-8 > [7] No value at PT 286872.5 ms and LT 282650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 282550 ms
+dwm3001-1 > [0] Sent 274
+dwm3001-8 > [7] No value at PT 287871.8 ms and LT 283650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 283600 ms
+dwm3001-1 > [0] Sent 275
+dwm3001-8 > [7] No value at PT 288872.3 ms and LT 284650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 284600 ms
+dwm3001-1 > [0] Sent 276
+dwm3001-8 > [7] No value at PT 289871.5 ms and LT 285650 ms
+dwm3001-3 > [WARN] Missed deadline for input at LT 285400 ms
+dwm3001-1 > [0] Sent 277
+dwm3001-8 > [7] No value at PT 290871.8 ms and LT 286650 ms
+dwm3001-8 > [WARN] Tardy at PT 291190.2 ms and LT 286650 ms
+dwm3001-1 > [0] Sent 278
+dwm3001-8 > [7] No value at PT 291871.4 ms and LT 287650 ms
+dwm3001-8 > [WARN] Tardy at PT 292192.2 ms and LT 287650 ms
+dwm3001-1 > [0] Sent 279
+dwm3001-8 > [7] No value at PT 292872.2 ms and LT 288650 ms
+dwm3001-8 > [WARN] Tardy at PT 292936.2 ms and LT 288650 ms
+dwm3001-1 > [0] Sent 280
+dwm3001-8 > [7] Val 280 (NIT: 204)
+dwm3001-1 > [0] Sent 281
+dwm3001-8 > [7] Val 281 (NIT: 204)
+dwm3001-1 > [0] Sent 282
+dwm3001-8 > [7] No value at PT 295872.3 ms and LT 291650 ms
+dwm3001-8 > [WARN] Tardy at PT 296002.0 ms and LT 291650 ms
+dwm3001-1 > [0] Sent 283
+dwm3001-8 > [7] No value at PT 296872.3 ms and LT 292650 ms
+dwm3001-8 > [WARN] Tardy at PT 296898.9 ms and LT 292650 ms
+dwm3001-1 > [0] Sent 284
+dwm3001-8 > [7] Val 284 (NIT: 206)
+dwm3001-1 > [0] Sent 285
+dwm3001-8 > [7] Val 285 (NIT: 206)
+dwm3001-1 > [0] Sent 286
+dwm3001-7 > [WARN] Missed deadline for input at LT 295600 ms
+dwm3001-8 > [7] No value at PT 299871.5 ms and LT 295650 ms
+dwm3001-1 > [0] Sent 287
+dwm3001-8 > [7] No value at PT 300872.3 ms and LT 296650 ms
+dwm3001-8 > [WARN] Tardy at PT 300959.9 ms and LT 296650 ms
+dwm3001-1 > [0] Sent 288
+dwm3001-8 > [7] No value at PT 301871.9 ms and LT 297650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 297600 ms
+dwm3001-1 > [0] Sent 289
+dwm3001-8 > [7] No value at PT 302872.0 ms and LT 298650 ms
+dwm3001-8 > [WARN] Tardy at PT 303096.6 ms and LT 298650 ms
+dwm3001-1 > [0] Sent 290
+dwm3001-8 > [7] No value at PT 303876.0 ms and LT 299650 ms
+dwm3001-8 > [WARN] Tardy at PT 304075.3 ms and LT 299650 ms
+dwm3001-1 > [0] Sent 291
+dwm3001-8 > [7] No value at PT 304872.1 ms and LT 300650 ms
+dwm3001-8 > [WARN] Tardy at PT 304916.5 ms and LT 300650 ms
+dwm3001-1 > [0] Sent 292
+dwm3001-8 > [7] Val 292 (NIT: 212)
+dwm3001-1 > [0] Sent 293
+dwm3001-8 > [7] Val 293 (NIT: 212)
+dwm3001-1 > [0] Sent 294
+dwm3001-8 > [7] Val 294 (NIT: 212)
+dwm3001-1 > [0] Sent 295
+dwm3001-8 > [7] Val 295 (NIT: 212)
+dwm3001-1 > [0] Sent 296
+dwm3001-8 > [7] No value at PT 309872.3 ms and LT 305650 ms
+dwm3001-8 > [WARN] Tardy at PT 309877.6 ms and LT 305650 ms
+dwm3001-1 > [0] Sent 297
+dwm3001-8 > [7] No value at PT 310872.0 ms and LT 306650 ms
+dwm3001-8 > [WARN] Tardy at PT 310896.6 ms and LT 306650 ms
+dwm3001-1 > [0] Sent 298
+dwm3001-8 > [7] No value at PT 311872.1 ms and LT 307650 ms
+dwm3001-8 > [WARN] Tardy at PT 311881.6 ms and LT 307650 ms
+dwm3001-1 > [0] Sent 299
+dwm3001-8 > [7] Val 299 (NIT: 215)
+dwm3001-1 > [0] Sent 300
+dwm3001-8 > [7] Val 300 (NIT: 215)
+dwm3001-1 > [0] Sent 301
+dwm3001-8 > [7] Val 301 (NIT: 215)
+dwm3001-1 > [0] Sent 302
+dwm3001-8 > [7] No value at PT 315872.7 ms and LT 311650 ms
+dwm3001-8 > [WARN] Tardy at PT 316059.1 ms and LT 311650 ms
+dwm3001-1 > [0] Sent 303
+dwm3001-8 > [7] No value at PT 316871.4 ms and LT 312650 ms
+dwm3001-8 > [WARN] Tardy at PT 317144.9 ms and LT 312650 ms
+dwm3001-1 > [0] Sent 304
+dwm3001-8 > [7] Val 304 (NIT: 217)
+dwm3001-1 > [0] Sent 305
+dwm3001-8 > [7] Val 305 (NIT: 217)
+dwm3001-1 > [0] Sent 306
+dwm3001-8 > [7] Val 306 (NIT: 217)
+dwm3001-1 > [0] Sent 307
+dwm3001-7 > [WARN] Missed deadline for input at LT 316600 ms
+dwm3001-8 > [7] No value at PT 320873.0 ms and LT 316650 ms
+dwm3001-1 > [0] Sent 308
+dwm3001-8 > [7] No value at PT 321871.4 ms and LT 317650 ms
+dwm3001-8 > [WARN] Tardy at PT 322053.8 ms and LT 317650 ms
+dwm3001-1 > [0] Sent 309
+dwm3001-8 > [7] No value at PT 322872.1 ms and LT 318650 ms
+dwm3001-8 > [WARN] Tardy at PT 323028.6 ms and LT 318650 ms
+dwm3001-1 > [0] Sent 310
+dwm3001-8 > [7] No value at PT 323871.6 ms and LT 319650 ms
+dwm3001-8 > [WARN] Tardy at PT 323945.5 ms and LT 319650 ms
+dwm3001-1 > [0] Sent 311
+dwm3001-8 > [7] Val 311 (NIT: 221)
+dwm3001-1 > [0] Sent 312
+dwm3001-8 > [7] Val 312 (NIT: 221)
+dwm3001-1 > [0] Sent 313
+dwm3001-8 > [7] No value at PT 326871.8 ms and LT 322650 ms
+dwm3001-8 > [WARN] Tardy at PT 326876.7 ms and LT 322650 ms
+dwm3001-1 > [0] Sent 314
+dwm3001-8 > [7] Val 314 (NIT: 222)
+dwm3001-1 > [0] Sent 315
+dwm3001-8 > [7] Val 315 (NIT: 222)
+dwm3001-1 > [0] Sent 316
+dwm3001-8 > [7] Val 316 (NIT: 222)
+dwm3001-1 > [0] Sent 317
+dwm3001-7 > [WARN] Missed deadline for input at LT 326600 ms
+dwm3001-8 > [7] No value at PT 330871.3 ms and LT 326650 ms
+dwm3001-1 > [0] Sent 318
+dwm3001-8 > [7] No value at PT 331872.1 ms and LT 327650 ms
+dwm3001-8 > [WARN] Tardy at PT 331942.9 ms and LT 327650 ms
+dwm3001-1 > [0] Sent 319
+dwm3001-8 > [7] No value at PT 332872.6 ms and LT 328650 ms
+dwm3001-8 > [WARN] Tardy at PT 333024.1 ms and LT 328650 ms
+dwm3001-1 > [0] Sent 320
+dwm3001-8 > [7] No value at PT 333872.6 ms and LT 329650 ms
+dwm3001-8 > [WARN] Tardy at PT 333959.4 ms and LT 329650 ms
+dwm3001-1 > [0] Sent 321
+dwm3001-8 > [7] Val 321 (NIT: 226)
+dwm3001-1 > [0] Sent 322
+dwm3001-8 > [7] Val 322 (NIT: 226)
+dwm3001-1 > [0] Sent 323
+dwm3001-8 > [7] No value at PT 336872.1 ms and LT 332650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 332600 ms
+dwm3001-1 > [0] Sent 324
+dwm3001-8 > [7] No value at PT 337871.9 ms and LT 333650 ms
+dwm3001-8 > [WARN] Tardy at PT 338072.9 ms and LT 333650 ms
+dwm3001-1 > [0] Sent 325
+dwm3001-8 > [7] No value at PT 338872.1 ms and LT 334650 ms
+dwm3001-8 > [WARN] Tardy at PT 338902.5 ms and LT 334650 ms
+dwm3001-1 > [0] Sent 326
+dwm3001-8 > [7] Val 326 (NIT: 229)
+dwm3001-1 > [0] Sent 327
+dwm3001-8 > [7] Val 327 (NIT: 229)
+dwm3001-1 > [0] Sent 328
+dwm3001-8 > [7] Val 328 (NIT: 229)
+dwm3001-1 > [0] Sent 329
+dwm3001-8 > [7] No value at PT 342872.1 ms and LT 338650 ms
+dwm3001-8 > [WARN] Tardy at PT 342930.8 ms and LT 338650 ms
+dwm3001-1 > [0] Sent 330
+dwm3001-8 > [7] No value at PT 343871.9 ms and LT 339650 ms
+dwm3001-8 > [WARN] Tardy at PT 343951.4 ms and LT 339650 ms
+dwm3001-1 > [0] Sent 331
+dwm3001-4 > [WARN] Missed deadline for input at LT 340450 ms
+dwm3001-8 > [7] No value at PT 344872.3 ms and LT 340650 ms
+dwm3001-1 > [0] Sent 332
+dwm3001-4 > [WARN] Missed deadline for input at LT 341450 ms
+dwm3001-8 > [7] No value at PT 345872.6 ms and LT 341650 ms
+dwm3001-1 > [0] Sent 333
+dwm3001-5 > [WARN] Missed deadline for input at LT 342500 ms
+dwm3001-8 > [7] No value at PT 346871.5 ms and LT 342650 ms
+dwm3001-1 > [0] Sent 334
+dwm3001-8 > [7] No value at PT 347872.7 ms and LT 343650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 343500 ms
+dwm3001-1 > [0] Sent 335
+dwm3001-8 > [7] No value at PT 348872.3 ms and LT 344650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 344500 ms
+dwm3001-1 > [0] Sent 336
+dwm3001-8 > [7] No value at PT 349872.4 ms and LT 345650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 345550 ms
+dwm3001-1 > [0] Sent 337
+dwm3001-8 > [7] No value at PT 350872.1 ms and LT 346650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 346550 ms
+dwm3001-1 > [0] Sent 338
+dwm3001-8 > [7] No value at PT 351872.5 ms and LT 347650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 347550 ms
+dwm3001-1 > [0] Sent 339
+dwm3001-8 > [7] No value at PT 352871.7 ms and LT 348650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 348600 ms
+dwm3001-1 > [0] Sent 340
+dwm3001-8 > [7] No value at PT 353871.9 ms and LT 349650 ms
+dwm3001-8 > [WARN] Tardy at PT 354079.1 ms and LT 349650 ms
+dwm3001-1 > [0] Sent 341
+dwm3001-8 > [7] No value at PT 354871.9 ms and LT 350650 ms
+dwm3001-8 > [WARN] Tardy at PT 354999.1 ms and LT 350650 ms
+dwm3001-1 > [0] Sent 342
+dwm3001-3 > [WARN] Missed deadline for input at LT 351400 ms
+dwm3001-1 > [0] Sent 343
+dwm3001-8 > [7] No value at PT 355871.9 ms and LT 351650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 352500 ms
+dwm3001-1 > [0] Sent 344
+dwm3001-5 > [WARN] Missed deadline for input at LT 353500 ms
+dwm3001-8 > [7] No value at PT 356871.9 ms and LT 352650 ms
+dwm3001-1 > [0] Sent 345
+dwm3001-5 > [WARN] Missed deadline for input at LT 354500 ms
+dwm3001-8 > [7] No value at PT 357871.9 ms and LT 353650 ms
+dwm3001-1 > [0] Sent 346
+dwm3001-8 > [7] No value at PT 358872.7 ms and LT 354650 ms
+dwm3001-8 > [7] Val 346 (NIT: 246)
+dwm3001-1 > [0] Sent 347
+dwm3001-6 > [WARN] Missed deadline for input at LT 356550 ms
+dwm3001-8 > [7] No value at PT 360871.9 ms and LT 356650 ms
+dwm3001-1 > [0] Sent 348
+dwm3001-6 > [WARN] Missed deadline for input at LT 357550 ms
+dwm3001-8 > [7] No value at PT 361872.7 ms and LT 357650 ms
+dwm3001-1 > [0] Sent 349
+dwm3001-6 > [WARN] Missed deadline for input at LT 358550 ms
+dwm3001-8 > [7] No value at PT 362872.3 ms and LT 358650 ms
+dwm3001-1 > [0] Sent 350
+dwm3001-6 > [WARN] Missed deadline for input at LT 359550 ms
+dwm3001-8 > [7] No value at PT 363871.9 ms and LT 359650 ms
+dwm3001-1 > [0] Sent 351
+dwm3001-8 > [7] No value at PT 364871.5 ms and LT 360650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 360550 ms
+dwm3001-8 > [7] No value at PT 365872.3 ms and LT 361650 ms
+dwm3001-1 > [0] Sent 352
+dwm3001-7 > [WARN] Missed deadline for input at LT 361600 ms
+dwm3001-8 > [7] No value at PT 366871.9 ms and LT 362650 ms
+dwm3001-1 > [0] Sent 353
+dwm3001-7 > [WARN] Missed deadline for input at LT 362600 ms
+dwm3001-8 > [7] No value at PT 367871.5 ms and LT 363650 ms
+dwm3001-1 > [0] Sent 354
+dwm3001-7 > [WARN] Missed deadline for input at LT 363600 ms
+dwm3001-8 > [7] No value at PT 368872.3 ms and LT 364650 ms
+dwm3001-1 > [0] Sent 355
+dwm3001-8 > [7] No value at PT 369871.9 ms and LT 365650 ms
+dwm3001-8 > [WARN] Tardy at PT 370036.3 ms and LT 365650 ms
+dwm3001-1 > [0] Sent 356
+dwm3001-8 > [7] No value at PT 370871.5 ms and LT 366650 ms
+dwm3001-8 > [WARN] Tardy at PT 370941.9 ms and LT 366650 ms
+dwm3001-1 > [0] Sent 357
+dwm3001-8 > [WARN] Tardy at PT 371630.7 ms and LT 366650 ms
+dwm3001-8 > [7] No value at PT 371871.5 ms and LT 367650 ms
+dwm3001-1 > [0] Sent 358
+dwm3001-8 > [WARN] Tardy at PT 372424.3 ms and LT 367650 ms
+dwm3001-8 > [7] No value at PT 372872.3 ms and LT 368650 ms
+dwm3001-1 > [0] Sent 359
+dwm3001-8 > [WARN] Tardy at PT 373315.5 ms and LT 368650 ms
+dwm3001-1 > [0] Sent 360
+dwm3001-8 > [7] No value at PT 373871.5 ms and LT 369650 ms
+dwm3001-8 > [WARN] Tardy at PT 374053.9 ms and LT 369650 ms
+dwm3001-1 > [0] Sent 361
+dwm3001-8 > [7] No value at PT 374872.3 ms and LT 370650 ms
+dwm3001-8 > [WARN] Tardy at PT 374942.2 ms and LT 370650 ms
+dwm3001-1 > [0] Sent 362
+dwm3001-8 > [7] No value at PT 375871.5 ms and LT 371650 ms
+dwm3001-8 > [WARN] Tardy at PT 375909.7 ms and LT 371650 ms
+dwm3001-1 > [0] Sent 363
+dwm3001-8 > [7] No value at PT 376872.3 ms and LT 372650 ms
+dwm3001-8 > [WARN] Tardy at PT 376896.3 ms and LT 372650 ms
+dwm3001-1 > [0] Sent 364
+dwm3001-8 > [7] No value at PT 377872.5 ms and LT 373650 ms
+dwm3001-8 > [WARN] Tardy at PT 377886.9 ms and LT 373650 ms
+dwm3001-1 > [0] Sent 365
+dwm3001-8 > [7] Val 365 (NIT: 264)
+dwm3001-1 > [0] Sent 366
+dwm3001-8 > [7] Val 366 (NIT: 264)
+dwm3001-1 > [0] Sent 367
+dwm3001-8 > [7] Val 367 (NIT: 264)
+dwm3001-1 > [0] Sent 368
+dwm3001-8 > [7] Val 368 (NIT: 264)
+dwm3001-1 > [0] Sent 369
+dwm3001-8 > [7] Val 369 (NIT: 264)
+dwm3001-1 > [0] Sent 370
+dwm3001-8 > [7] Val 370 (NIT: 264)
+dwm3001-1 > [0] Sent 371
+dwm3001-8 > [7] Val 371 (NIT: 264)
+dwm3001-1 > [0] Sent 372
+dwm3001-8 > [7] Val 372 (NIT: 264)
+dwm3001-1 > [0] Sent 373
+dwm3001-8 > [7] No value at PT 386873.0 ms and LT 382650 ms
+dwm3001-8 > [WARN] Tardy at PT 386948.9 ms and LT 382650 ms
+dwm3001-1 > [0] Sent 374
+dwm3001-8 > [7] Val 374 (NIT: 265)
+dwm3001-1 > [0] Sent 375
+dwm3001-8 > [7] Val 375 (NIT: 265)
+dwm3001-1 > [0] Sent 376
+dwm3001-8 > [7] Val 376 (NIT: 265)
+dwm3001-1 > [0] Sent 377
+dwm3001-8 > [7] Val 377 (NIT: 265)
+dwm3001-1 > [0] Sent 378
+dwm3001-8 > [7] Val 378 (NIT: 265)
+dwm3001-1 > [0] Sent 379
+dwm3001-8 > [7] Val 379 (NIT: 265)
+dwm3001-1 > [0] Sent 380
+dwm3001-8 > [7] Val 380 (NIT: 265)
+dwm3001-1 > [0] Sent 381
+dwm3001-8 > [7] Val 381 (NIT: 265)
+dwm3001-1 > [0] Sent 382
+dwm3001-8 > [7] Val 382 (NIT: 265)
+dwm3001-1 > [0] Sent 383
+dwm3001-8 > [7] Val 383 (NIT: 265)
+dwm3001-1 > [0] Sent 384
+dwm3001-8 > [7] Val 384 (NIT: 265)
+dwm3001-1 > [0] Sent 385
+dwm3001-8 > [7] Val 385 (NIT: 265)
+dwm3001-1 > [0] Sent 386
+dwm3001-8 > [7] Val 386 (NIT: 265)
+dwm3001-1 > [0] Sent 387
+dwm3001-8 > [7] Val 387 (NIT: 265)
+dwm3001-1 > [0] Sent 388
+dwm3001-8 > [7] Val 388 (NIT: 265)
+dwm3001-1 > [0] Sent 389
+dwm3001-8 > [7] Val 389 (NIT: 265)
+dwm3001-1 > [0] Sent 390
+dwm3001-8 > [7] Val 390 (NIT: 265)
+dwm3001-1 > [0] Sent 391
+dwm3001-8 > [7] Val 391 (NIT: 265)
+dwm3001-1 > [0] Sent 392
+dwm3001-8 > [7] Val 392 (NIT: 265)
+dwm3001-1 > [0] Sent 393
+dwm3001-8 > [7] Val 393 (NIT: 265)
+dwm3001-1 > [0] Sent 394
+dwm3001-8 > [7] Val 394 (NIT: 265)
+dwm3001-1 > [0] Sent 395
+dwm3001-8 > [7] No value at PT 408872.6 ms and LT 404650 ms
+dwm3001-8 > [WARN] Tardy at PT 408909.5 ms and LT 404650 ms
+dwm3001-1 > [0] Sent 396
+dwm3001-8 > [7] No value at PT 409872.4 ms and LT 405650 ms
+dwm3001-8 > [WARN] Tardy at PT 409935.5 ms and LT 405650 ms
+dwm3001-1 > [0] Sent 397
+dwm3001-8 > [7] No value at PT 410872.1 ms and LT 406650 ms
+dwm3001-8 > [WARN] Tardy at PT 410908.0 ms and LT 406650 ms
+dwm3001-1 > [0] Sent 398
+dwm3001-8 > [7] Val 398 (NIT: 268)
+dwm3001-1 > [0] Sent 399
+dwm3001-4 > [WARN] Missed deadline for input at LT 408450 ms
+dwm3001-8 > [7] No value at PT 412872.1 ms and LT 408650 ms
+dwm3001-1 > [0] Sent 400
+dwm3001-8 > [7] Val 400 (NIT: 269)
+dwm3001-1 > [0] Sent 401
+dwm3001-8 > [7] Val 401 (NIT: 269)
+dwm3001-1 > [0] Sent 402
+dwm3001-8 > [7] Val 402 (NIT: 269)
+dwm3001-1 > [0] Sent 403
+dwm3001-8 > [7] No value at PT 416872.7 ms and LT 412650 ms
+dwm3001-8 > [WARN] Tardy at PT 416899.8 ms and LT 412650 ms
+dwm3001-1 > [0] Sent 404
+dwm3001-8 > [7] No value at PT 417872.1 ms and LT 413650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 413600 ms
+dwm3001-1 > [0] Sent 405
+dwm3001-8 > [7] No value at PT 418872.0 ms and LT 414650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 414600 ms
+dwm3001-1 > [0] Sent 406
+dwm3001-8 > [7] No value at PT 419871.8 ms and LT 415650 ms
+dwm3001-8 > [WARN] Tardy at PT 420024.3 ms and LT 415650 ms
+dwm3001-1 > [0] Sent 407
+dwm3001-5 > [WARN] Missed deadline for input at LT 416500 ms
+dwm3001-8 > [7] No value at PT 420872.1 ms and LT 416650 ms
+dwm3001-1 > [0] Sent 408
+dwm3001-6 > [WARN] Missed deadline for input at LT 417550 ms
+dwm3001-8 > [7] No value at PT 421872.1 ms and LT 417650 ms
+dwm3001-1 > [0] Sent 409
+dwm3001-6 > [WARN] Missed deadline for input at LT 418550 ms
+dwm3001-8 > [7] No value at PT 422872.5 ms and LT 418650 ms
+dwm3001-1 > [0] Sent 410
+dwm3001-8 > [7] No value at PT 423871.6 ms and LT 419650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 419600 ms
+dwm3001-1 > [0] Sent 411
+dwm3001-8 > [7] No value at PT 424871.8 ms and LT 420650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 420550 ms
+dwm3001-1 > [0] Sent 412
+dwm3001-8 > [7] No value at PT 425872.0 ms and LT 421650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 421550 ms
+dwm3001-1 > [0] Sent 413
+dwm3001-8 > [7] No value at PT 426872.2 ms and LT 422650 ms
+dwm3001-8 > [WARN] Tardy at PT 426936.8 ms and LT 422650 ms
+dwm3001-1 > [0] Sent 414
+dwm3001-8 > [7] Val 414 (NIT: 280)
+dwm3001-1 > [0] Sent 415
+dwm3001-4 > [WARN] Missed deadline for input at LT 424450 ms
+dwm3001-8 > [7] No value at PT 428871.8 ms and LT 424650 ms
+dwm3001-1 > [0] Sent 416
+dwm3001-5 > [WARN] Missed deadline for input at LT 425500 ms
+dwm3001-8 > [7] No value at PT 429872.3 ms and LT 425650 ms
+dwm3001-1 > [0] Sent 417
+dwm3001-3 > [WARN] Missed deadline for input at LT 426400 ms
+dwm3001-8 > [7] No value at PT 430872.0 ms and LT 426650 ms
+dwm3001-1 > [0] Sent 418
+dwm3001-6 > [WARN] Missed deadline for input at LT 427550 ms
+dwm3001-8 > [7] No value at PT 431871.4 ms and LT 427650 ms
+dwm3001-1 > [0] Sent 419
+dwm3001-8 > [7] No value at PT 432873.0 ms and LT 428650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 428600 ms
+dwm3001-1 > [0] Sent 420
+dwm3001-8 > [7] No value at PT 433872.3 ms and LT 429650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 429600 ms
+dwm3001-1 > [0] Sent 421
+dwm3001-8 > [7] No value at PT 434872.6 ms and LT 430650 ms
+dwm3001-8 > [WARN] Tardy at PT 435064.4 ms and LT 430650 ms
+dwm3001-1 > [0] Sent 422
+dwm3001-8 > [7] No value at PT 435871.5 ms and LT 431650 ms
+dwm3001-8 > [WARN] Tardy at PT 435928.9 ms and LT 431650 ms
+dwm3001-1 > [0] Sent 423
+dwm3001-6 > [WARN] Missed deadline for input at LT 432550 ms
+dwm3001-8 > [7] No value at PT 436872.7 ms and LT 432650 ms
+dwm3001-1 > [0] Sent 424
+dwm3001-8 > [7] Val 424 (NIT: 289)
+dwm3001-1 > [0] Sent 425
+dwm3001-8 > [7] Val 425 (NIT: 289)
+dwm3001-1 > [0] Sent 426
+dwm3001-8 > [7] Val 426 (NIT: 289)
+dwm3001-1 > [0] Sent 427
+dwm3001-8 > [7] No value at PT 440871.5 ms and LT 436650 ms
+dwm3001-4 > [WARN] Missed deadline for input at LT 436450 ms
+dwm3001-1 > [0] Sent 428
+dwm3001-8 > [7] No value at PT 441872.2 ms and LT 437650 ms
+dwm3001-8 > [WARN] Tardy at PT 441916.1 ms and LT 437650 ms
+dwm3001-1 > [0] Sent 429
+dwm3001-4 > [WARN] Missed deadline for input at LT 438450 ms
+dwm3001-8 > [7] No value at PT 442872.0 ms and LT 438650 ms
+dwm3001-1 > [0] Sent 430
+dwm3001-4 > [WARN] Missed deadline for input at LT 439450 ms
+dwm3001-8 > [7] No value at PT 443871.9 ms and LT 439650 ms
+dwm3001-1 > [0] Sent 431
+dwm3001-4 > [WARN] Missed deadline for input at LT 440450 ms
+dwm3001-8 > [7] No value at PT 444871.2 ms and LT 440650 ms
+dwm3001-1 > [0] Sent 432
+dwm3001-8 > [7] Val 432 (NIT: 294)
+dwm3001-1 > [0] Sent 433
+dwm3001-8 > [7] Val 433 (NIT: 294)
+dwm3001-1 > [0] Sent 434
+dwm3001-8 > [7] Val 434 (NIT: 294)
+dwm3001-1 > [0] Sent 435
+dwm3001-8 > [7] No value at PT 448872.2 ms and LT 444650 ms
+dwm3001-8 > [WARN] Tardy at PT 448905.5 ms and LT 444650 ms
+dwm3001-1 > [0] Sent 436
+dwm3001-6 > [WARN] Missed deadline for input at LT 445550 ms
+dwm3001-8 > [7] No value at PT 449873.0 ms and LT 445650 ms
+dwm3001-1 > [0] Sent 437
+dwm3001-6 > [WARN] Missed deadline for input at LT 446550 ms
+dwm3001-8 > [7] No value at PT 450872.8 ms and LT 446650 ms
+dwm3001-1 > [0] Sent 438
+dwm3001-8 > [7] No value at PT 451872.3 ms and LT 447650 ms
+dwm3001-8 > [WARN] Tardy at PT 451902.2 ms and LT 447650 ms
+dwm3001-1 > [0] Sent 439
+dwm3001-8 > [7] No value at PT 452871.7 ms and LT 448650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 448600 ms
+dwm3001-1 > [0] Sent 440
+dwm3001-4 > [WARN] Missed deadline for input at LT 449450 ms
+dwm3001-8 > [7] No value at PT 453871.5 ms and LT 449650 ms
+dwm3001-1 > [0] Sent 441
+dwm3001-8 > [7] No value at PT 454871.6 ms and LT 450650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 450600 ms
+dwm3001-1 > [0] Sent 442
+dwm3001-8 > [7] No value at PT 455872.9 ms and LT 451650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 451600 ms
+dwm3001-1 > [0] Sent 443
+dwm3001-8 > [7] No value at PT 456871.5 ms and LT 452650 ms
+dwm3001-8 > [WARN] Tardy at PT 457173.4 ms and LT 452650 ms
+dwm3001-1 > [0] Sent 444
+dwm3001-8 > [7] No value at PT 457871.6 ms and LT 453650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 453550 ms
+dwm3001-1 > [0] Sent 445
+dwm3001-6 > [WARN] Missed deadline for input at LT 454550 ms
+dwm3001-8 > [7] No value at PT 458872.0 ms and LT 454650 ms
+dwm3001-1 > [0] Sent 446
+dwm3001-6 > [WARN] Missed deadline for input at LT 455550 ms
+dwm3001-8 > [7] No value at PT 459871.4 ms and LT 455650 ms
+dwm3001-1 > [0] Sent 447
+dwm3001-6 > [WARN] Missed deadline for input at LT 456550 ms
+dwm3001-8 > [7] No value at PT 460872.2 ms and LT 456650 ms
+dwm3001-1 > [0] Sent 448
+dwm3001-8 > [7] No value at PT 461872.4 ms and LT 457650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 457600 ms
+dwm3001-1 > [0] Sent 449
+dwm3001-8 > [7] No value at PT 462871.8 ms and LT 458650 ms
+dwm3001-8 > [WARN] Tardy at PT 463051.2 ms and LT 458650 ms
+dwm3001-1 > [0] Sent 450
+dwm3001-8 > [7] No value at PT 463871.6 ms and LT 459650 ms
+dwm3001-8 > [WARN] Tardy at PT 464025.6 ms and LT 459650 ms
+dwm3001-1 > [0] Sent 451
+dwm3001-8 > [7] No value at PT 464872.0 ms and LT 460650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 460600 ms
+dwm3001-1 > [0] Sent 452
+dwm3001-8 > [7] No value at PT 465871.7 ms and LT 461650 ms
+dwm3001-8 > [WARN] Tardy at PT 465884.3 ms and LT 461650 ms
+dwm3001-1 > [0] Sent 453
+dwm3001-8 > [7] Val 453 (NIT: 312)
+dwm3001-1 > [0] Sent 454
+dwm3001-8 > [7] No value at PT 467872.8 ms and LT 463650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 463600 ms
+dwm3001-1 > [0] Sent 455
+dwm3001-8 > [7] No value at PT 468871.5 ms and LT 464650 ms
+dwm3001-8 > [WARN] Tardy at PT 468956.5 ms and LT 464650 ms
+dwm3001-1 > [0] Sent 456
+dwm3001-8 > [7] No value at PT 469872.2 ms and LT 465650 ms
+dwm3001-8 > [WARN] Tardy at PT 469933.8 ms and LT 465650 ms
+dwm3001-1 > [0] Sent 457
+dwm3001-8 > [7] No value at PT 470872.4 ms and LT 466650 ms
+dwm3001-8 > [WARN] Tardy at PT 470881.6 ms and LT 466650 ms
+dwm3001-1 > [0] Sent 458
+dwm3001-8 > [7] Val 458 (NIT: 316)
+dwm3001-1 > [0] Sent 459
+dwm3001-8 > [7] Val 459 (NIT: 316)
+dwm3001-1 > [0] Sent 460
+dwm3001-7 > [WARN] Missed deadline for input at LT 469600 ms
+dwm3001-8 > [7] No value at PT 473873.1 ms and LT 469650 ms
+dwm3001-1 > [0] Sent 461
+dwm3001-8 > [7] No value at PT 474871.5 ms and LT 470650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 470600 ms
+dwm3001-1 > [0] Sent 462
+dwm3001-8 > [7] No value at PT 475871.9 ms and LT 471650 ms
+dwm3001-8 > [WARN] Tardy at PT 475971.9 ms and LT 471650 ms
+dwm3001-1 > [0] Sent 463
+dwm3001-8 > [7] No value at PT 476872.3 ms and LT 472650 ms
+dwm3001-8 > [WARN] Tardy at PT 476905.2 ms and LT 472650 ms
+dwm3001-1 > [0] Sent 464
+dwm3001-8 > [7] Val 464 (NIT: 320)
+dwm3001-1 > [0] Sent 465
+dwm3001-8 > [7] Val 465 (NIT: 320)
+dwm3001-1 > [0] Sent 466
+dwm3001-6 > [WARN] Missed deadline for input at LT 475550 ms
+dwm3001-8 > [7] No value at PT 479871.8 ms and LT 475650 ms
+dwm3001-1 > [0] Sent 467
+dwm3001-8 > [7] Val 467 (NIT: 321)
+dwm3001-1 > [0] Sent 468
+dwm3001-8 > [7] No value at PT 481871.5 ms and LT 477650 ms
+dwm3001-8 > [WARN] Tardy at PT 481921.0 ms and LT 477650 ms
+dwm3001-1 > [0] Sent 469
+dwm3001-8 > [7] Val 469 (NIT: 322)
+dwm3001-1 > [0] Sent 470
+dwm3001-8 > [7] Val 470 (NIT: 322)
+dwm3001-1 > [0] Sent 471
+dwm3001-8 > [7] No value at PT 484871.7 ms and LT 480650 ms
+dwm3001-8 > [WARN] Tardy at PT 484899.0 ms and LT 480650 ms
+dwm3001-1 > [0] Sent 472
+dwm3001-8 > [7] Val 472 (NIT: 323)
+dwm3001-1 > [0] Sent 473
+dwm3001-8 > [7] No value at PT 486871.5 ms and LT 482650 ms
+dwm3001-8 > [WARN] Tardy at PT 486933.0 ms and LT 482650 ms
+dwm3001-1 > [0] Sent 474
+dwm3001-8 > [7] No value at PT 487873.0 ms and LT 483650 ms
+dwm3001-8 > [WARN] Tardy at PT 487880.8 ms and LT 483650 ms
+dwm3001-1 > [0] Sent 475
+dwm3001-8 > [7] No value at PT 488871.6 ms and LT 484650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 484600 ms
+dwm3001-1 > [0] Sent 476
+dwm3001-8 > [7] Val 476 (NIT: 326)
+dwm3001-1 > [0] Sent 477
+dwm3001-8 > [7] Val 477 (NIT: 326)
+dwm3001-1 > [0] Sent 478
+dwm3001-8 > [7] Val 478 (NIT: 326)
+dwm3001-1 > [0] Sent 479
+dwm3001-8 > [7] No value at PT 492871.6 ms and LT 488650 ms
+dwm3001-8 > [WARN] Tardy at PT 492886.8 ms and LT 488650 ms
+dwm3001-1 > [0] Sent 480
+dwm3001-8 > [7] No value at PT 493872.3 ms and LT 489650 ms
+dwm3001-8 > [WARN] Tardy at PT 493951.1 ms and LT 489650 ms
+dwm3001-1 > [0] Sent 481
+dwm3001-8 > [7] No value at PT 494872.1 ms and LT 490650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 490600 ms
+dwm3001-1 > [0] Sent 482
+dwm3001-8 > [7] No value at PT 495872.5 ms and LT 491650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 491600 ms
+dwm3001-1 > [0] Sent 483
+dwm3001-8 > [7] No value at PT 496871.3 ms and LT 492650 ms
+dwm3001-8 > [WARN] Tardy at PT 496930.5 ms and LT 492650 ms
+dwm3001-1 > [0] Sent 484
+dwm3001-8 > [7] Val 484 (NIT: 331)
+dwm3001-1 > [0] Sent 485
+dwm3001-8 > [7] Val 485 (NIT: 331)
+dwm3001-1 > [0] Sent 486
+dwm3001-8 > [7] Val 486 (NIT: 331)
+dwm3001-1 > [0] Sent 487
+dwm3001-8 > [7] Val 487 (NIT: 331)
+dwm3001-1 > [0] Sent 488
+dwm3001-8 > [7] No value at PT 501872.5 ms and LT 497650 ms
+dwm3001-8 > [WARN] Tardy at PT 501883.1 ms and LT 497650 ms
+dwm3001-1 > [0] Sent 489
+dwm3001-8 > [7] Val 489 (NIT: 332)
+dwm3001-1 > [0] Sent 490
+dwm3001-8 > [7] Val 490 (NIT: 332)
+dwm3001-1 > [0] Sent 491
+dwm3001-8 > [7] Val 491 (NIT: 332)
+dwm3001-1 > [0] Sent 492
+dwm3001-8 > [7] Val 492 (NIT: 332)
+dwm3001-1 > [0] Sent 493
+dwm3001-8 > [7] Val 493 (NIT: 332)
+dwm3001-1 > [0] Sent 494
+dwm3001-8 > [7] Val 494 (NIT: 332)
+dwm3001-1 > [0] Sent 495
+dwm3001-8 > [7] Val 495 (NIT: 332)
+dwm3001-1 > [0] Sent 496
+dwm3001-8 > [7] Val 496 (NIT: 332)
+dwm3001-1 > [0] Sent 497
+dwm3001-8 > [7] Val 497 (NIT: 332)
+dwm3001-1 > [0] Sent 498
+dwm3001-8 > [7] Val 498 (NIT: 332)
+dwm3001-1 > [0] Sent 499
+dwm3001-8 > [7] Val 499 (NIT: 332)
+dwm3001-1 > [0] Sent 500
+dwm3001-8 > [7] Val 500 (NIT: 332)
+dwm3001-1 > [0] Sent 501
+dwm3001-8 > [7] Val 501 (NIT: 332)
+dwm3001-1 > [0] Sent 502
+dwm3001-8 > [7] Val 502 (NIT: 332)
+dwm3001-1 > [0] Sent 503
+dwm3001-8 > [7] Val 503 (NIT: 332)
+dwm3001-1 > [0] Sent 504
+dwm3001-8 > [7] Val 504 (NIT: 332)
+dwm3001-1 > [0] Sent 505
+dwm3001-8 > [7] No value at PT 518871.9 ms and LT 514650 ms
+dwm3001-8 > [WARN] Tardy at PT 518932.6 ms and LT 514650 ms
+dwm3001-1 > [0] Sent 506
+dwm3001-8 > [7] No value at PT 519872.3 ms and LT 515650 ms
+dwm3001-8 > [WARN] Tardy at PT 519899.6 ms and LT 515650 ms
+dwm3001-1 > [0] Sent 507
+dwm3001-8 > [7] Val 507 (NIT: 334)
+dwm3001-1 > [0] Sent 508
+dwm3001-8 > [7] Val 508 (NIT: 334)
+dwm3001-1 > [0] Sent 509
+dwm3001-8 > [7] Val 509 (NIT: 334)
+dwm3001-1 > [0] Sent 510
+dwm3001-8 > [7] Val 510 (NIT: 334)
+dwm3001-1 > [0] Sent 511
+dwm3001-8 > [7] Val 511 (NIT: 334)
+dwm3001-1 > [0] Sent 512
+dwm3001-8 > [7] Val 512 (NIT: 334)
+dwm3001-1 > [0] Sent 513
+dwm3001-8 > [7] Val 513 (NIT: 334)
+dwm3001-1 > [0] Sent 514
+dwm3001-8 > [7] Val 514 (NIT: 334)
+dwm3001-1 > [0] Sent 515
+dwm3001-8 > [7] Val 515 (NIT: 334)
+dwm3001-1 > [0] Sent 516
+dwm3001-8 > [7] Val 516 (NIT: 334)
+dwm3001-1 > [0] Sent 517
+dwm3001-8 > [7] Val 517 (NIT: 334)
+dwm3001-1 > [0] Sent 518
+dwm3001-8 > [7] Val 518 (NIT: 334)
+dwm3001-1 > [0] Sent 519
+dwm3001-8 > [7] Val 519 (NIT: 334)
+dwm3001-1 > [0] Sent 520
+dwm3001-8 > [7] Val 520 (NIT: 334)
+dwm3001-1 > [0] Sent 521
+dwm3001-8 > [7] Val 521 (NIT: 334)
+dwm3001-1 > [0] Sent 522
+dwm3001-8 > [7] Val 522 (NIT: 334)
+dwm3001-1 > [0] Sent 523
+dwm3001-8 > [7] Val 523 (NIT: 334)
+dwm3001-1 > [0] Sent 524
+dwm3001-8 > [7] Val 524 (NIT: 334)
+dwm3001-1 > [0] Sent 525
+dwm3001-8 > [7] Val 525 (NIT: 334)
+dwm3001-1 > [0] Sent 526
+dwm3001-8 > [7] Val 526 (NIT: 334)
+dwm3001-1 > [0] Sent 527
+dwm3001-8 > [7] Val 527 (NIT: 334)
+dwm3001-1 > [0] Sent 528
+dwm3001-8 > [7] Val 528 (NIT: 334)
+dwm3001-1 > [0] Sent 529
+dwm3001-8 > [7] Val 529 (NIT: 334)
+dwm3001-1 > [0] Sent 530
+dwm3001-8 > [7] Val 530 (NIT: 334)
+dwm3001-1 > [0] Sent 531
+dwm3001-8 > [7] Val 531 (NIT: 334)
+dwm3001-1 > [0] Sent 532
+dwm3001-8 > [7] Val 532 (NIT: 334)
+dwm3001-1 > [0] Sent 533
+dwm3001-8 > [7] Val 533 (NIT: 334)
+dwm3001-1 > [0] Sent 534
+dwm3001-8 > [7] Val 534 (NIT: 334)
+dwm3001-1 > [0] Sent 535
+dwm3001-8 > [7] Val 535 (NIT: 334)
+dwm3001-1 > [0] Sent 536
+dwm3001-8 > [7] Val 536 (NIT: 334)
+dwm3001-1 > [0] Sent 537
+dwm3001-8 > [7] Val 537 (NIT: 334)
+dwm3001-1 > [0] Sent 538
+dwm3001-8 > [7] Val 538 (NIT: 334)
+dwm3001-1 > [0] Sent 539
+dwm3001-8 > [7] Val 539 (NIT: 334)
+dwm3001-1 > [0] Sent 540
+dwm3001-8 > [7] Val 540 (NIT: 334)
+dwm3001-1 > [0] Sent 541
+dwm3001-8 > [7] Val 541 (NIT: 334)
+dwm3001-1 > [0] Sent 542
+dwm3001-8 > [7] Val 542 (NIT: 334)
+dwm3001-1 > [0] Sent 543
+dwm3001-8 > [7] Val 543 (NIT: 334)
+dwm3001-1 > [0] Sent 544
+dwm3001-8 > [7] Val 544 (NIT: 334)
+dwm3001-1 > [0] Sent 545
+dwm3001-8 > [7] Val 545 (NIT: 334)
+dwm3001-1 > [0] Sent 546
+dwm3001-8 > [7] Val 546 (NIT: 334)
+dwm3001-1 > [0] Sent 547
+dwm3001-8 > [7] Val 547 (NIT: 334)
+dwm3001-1 > [0] Sent 548
+dwm3001-8 > [7] Val 548 (NIT: 334)
+dwm3001-1 > [0] Sent 549
+dwm3001-8 > [7] Val 549 (NIT: 334)
+dwm3001-1 > [0] Sent 550
+dwm3001-8 > [7] Val 550 (NIT: 334)
+dwm3001-1 > [0] Sent 551
+dwm3001-8 > [7] Val 551 (NIT: 334)
+dwm3001-1 > [0] Sent 552
+dwm3001-8 > [7] Val 552 (NIT: 334)
+dwm3001-1 > [0] Sent 553
+dwm3001-8 > [7] Val 553 (NIT: 334)
+dwm3001-1 > [0] Sent 554
+dwm3001-8 > [7] Val 554 (NIT: 334)
+dwm3001-1 > [0] Sent 555
+dwm3001-8 > [7] Val 555 (NIT: 334)
+dwm3001-1 > [0] Sent 556
+dwm3001-8 > [7] Val 556 (NIT: 334)
+dwm3001-1 > [0] Sent 557
+dwm3001-8 > [7] Val 557 (NIT: 334)
+dwm3001-1 > [0] Sent 558
+dwm3001-8 > [7] Val 558 (NIT: 334)
+dwm3001-1 > [0] Sent 559
+dwm3001-8 > [7] Val 559 (NIT: 334)
+dwm3001-1 > [0] Sent 560
+dwm3001-8 > [7] Val 560 (NIT: 334)
+dwm3001-1 > [0] Sent 561
+dwm3001-8 > [7] Val 561 (NIT: 334)
+dwm3001-1 > [0] Sent 562
+dwm3001-8 > [7] Val 562 (NIT: 334)
+dwm3001-1 > [0] Sent 563
+dwm3001-8 > [7] Val 563 (NIT: 334)
+dwm3001-1 > [0] Sent 564
+dwm3001-8 > [7] Val 564 (NIT: 334)
+dwm3001-1 > [0] Sent 565
+dwm3001-8 > [7] Val 565 (NIT: 334)
+dwm3001-1 > [0] Sent 566
+dwm3001-8 > [7] Val 566 (NIT: 334)
+dwm3001-1 > [0] Sent 567
+dwm3001-8 > [7] Val 567 (NIT: 334)
+dwm3001-1 > [0] Sent 568
+dwm3001-8 > [7] Val 568 (NIT: 334)
+dwm3001-1 > [0] Sent 569
+dwm3001-8 > [7] Val 569 (NIT: 334)
+dwm3001-1 > [0] Sent 570
+dwm3001-8 > [7] Val 570 (NIT: 334)
+dwm3001-1 > [0] Sent 571
+dwm3001-8 > [7] Val 571 (NIT: 334)
+dwm3001-1 > [0] Sent 572
+dwm3001-8 > [7] Val 572 (NIT: 334)
+dwm3001-1 > [0] Sent 573
+dwm3001-8 > [7] Val 573 (NIT: 334)
+dwm3001-1 > [0] Sent 574
+dwm3001-8 > [7] Val 574 (NIT: 334)
+dwm3001-1 > [0] Sent 575
+dwm3001-8 > [7] Val 575 (NIT: 334)
+dwm3001-1 > [0] Sent 576
+dwm3001-8 > [7] Val 576 (NIT: 334)
+dwm3001-1 > [0] Sent 577
+dwm3001-8 > [7] Val 577 (NIT: 334)
+dwm3001-1 > [0] Sent 578
+dwm3001-8 > [7] Val 578 (NIT: 334)
+dwm3001-1 > [0] Sent 579
+dwm3001-8 > [7] Val 579 (NIT: 334)
+dwm3001-1 > [0] Sent 580
+dwm3001-8 > [7] Val 580 (NIT: 334)
+dwm3001-1 > [0] Sent 581
+dwm3001-8 > [7] Val 581 (NIT: 334)
+dwm3001-1 > [0] Sent 582
+dwm3001-8 > [7] Val 582 (NIT: 334)
+dwm3001-1 > [0] Sent 583
+dwm3001-8 > [7] Val 583 (NIT: 334)
+dwm3001-1 > [0] Sent 584
+dwm3001-8 > [7] Val 584 (NIT: 334)
+dwm3001-1 > [0] Sent 585
+dwm3001-8 > [7] Val 585 (NIT: 334)
+dwm3001-1 > [0] Sent 586
+dwm3001-8 > [7] Val 586 (NIT: 334)
+dwm3001-1 > [0] Sent 587
+dwm3001-8 > [7] Val 587 (NIT: 334)
+dwm3001-1 > [0] Sent 588
+dwm3001-8 > [7] Val 588 (NIT: 334)
+dwm3001-1 > [0] Sent 589
+dwm3001-8 > [7] Val 589 (NIT: 334)
+dwm3001-1 > [0] Sent 590
+dwm3001-8 > [7] Val 590 (NIT: 334)
+dwm3001-1 > [0] Sent 591
+dwm3001-8 > [7] Val 591 (NIT: 334)
+dwm3001-1 > [0] Sent 592
+dwm3001-8 > [7] Val 592 (NIT: 334)
+dwm3001-1 > [0] Sent 593
+dwm3001-8 > [7] Val 593 (NIT: 334)
+dwm3001-1 > [0] Sent 594
+dwm3001-8 > [7] Val 594 (NIT: 334)
+dwm3001-1 > [0] Sent 595
+dwm3001-8 > [7] Val 595 (NIT: 334)
+dwm3001-1 > [0] Sent 596
+dwm3001-8 > [7] Val 596 (NIT: 334)
+dwm3001-1 > [0] Sent 597
+dwm3001-8 > [7] Val 597 (NIT: 334)
+dwm3001-1 > [0] Sent 598
+dwm3001-8 > [7] Val 598 (NIT: 334)
+dwm3001-1 > [0] Sent 599
+dwm3001-8 > [7] Val 599 (NIT: 334)
+dwm3001-1 > [0] Sent 600
+dwm3001-8 > [7] Val 600 (NIT: 334)
+dwm3001-1 > [0] Sent 601
+dwm3001-8 > [7] Val 601 (NIT: 334)
+dwm3001-1 > [0] Sent 602
+dwm3001-8 > [7] Val 602 (NIT: 334)
+dwm3001-1 > [0] Sent 603
+dwm3001-8 > [7] Val 603 (NIT: 334)
+dwm3001-1 > [0] Sent 604
+dwm3001-8 > [7] No value at PT 617871.9 ms and LT 613650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 613600 ms
+dwm3001-1 > [0] Sent 605
+dwm3001-2 > [WARN] Missed deadline for input at LT 614350 ms
+dwm3001-8 > [7] No value at PT 618871.9 ms and LT 614650 ms
+dwm3001-1 > [0] Sent 606
+dwm3001-8 > [7] Val 606 (NIT: 336)
+dwm3001-1 > [0] Sent 607
+dwm3001-8 > [7] Val 607 (NIT: 336)
+dwm3001-1 > [0] Sent 608
+dwm3001-4 > [WARN] Missed deadline for input at LT 617450 ms
+dwm3001-8 > [7] No value at PT 621871.9 ms and LT 617650 ms
+dwm3001-1 > [0] Sent 609
+dwm3001-8 > [7] Val 609 (NIT: 337)
+dwm3001-1 > [0] Sent 610
+dwm3001-8 > [7] Val 610 (NIT: 337)
+dwm3001-1 > [0] Sent 611
+dwm3001-8 > [7] Val 611 (NIT: 337)
+dwm3001-1 > [0] Sent 612
+dwm3001-8 > [7] Val 612 (NIT: 337)
+dwm3001-1 > [0] Sent 613
+dwm3001-8 > [7] Val 613 (NIT: 337)
+dwm3001-1 > [0] Sent 614
+dwm3001-8 > [7] Val 614 (NIT: 337)
+dwm3001-1 > [0] Sent 615
+dwm3001-8 > [7] Val 615 (NIT: 337)
+dwm3001-1 > [0] Sent 616
+dwm3001-3 > [WARN] Missed deadline for input at LT 625400 ms
+dwm3001-8 > [7] No value at PT 629872.4 ms and LT 625650 ms
+dwm3001-1 > [0] Sent 617
+dwm3001-8 > [7] Val 617 (NIT: 338)
+dwm3001-1 > [0] Sent 618
+dwm3001-8 > [7] Val 618 (NIT: 338)
+dwm3001-1 > [0] Sent 619
+dwm3001-8 > [7] No value at PT 632872.0 ms and LT 628650 ms
+dwm3001-8 > [WARN] Tardy at PT 632900.7 ms and LT 628650 ms
+dwm3001-1 > [0] Sent 620
+dwm3001-8 > [7] No value at PT 633872.0 ms and LT 629650 ms
+dwm3001-8 > [WARN] Tardy at PT 633899.5 ms and LT 629650 ms
+dwm3001-1 > [0] Sent 621
+dwm3001-8 > [7] Val 621 (NIT: 340)
+dwm3001-1 > [0] Sent 622
+dwm3001-2 > [WARN] Missed deadline for input at LT 631350 ms
+dwm3001-8 > [7] No value at PT 635872.5 ms and LT 631650 ms
+dwm3001-1 > [0] Sent 623
+dwm3001-8 > [7] Val 623 (NIT: 341)
+dwm3001-1 > [0] Sent 624
+dwm3001-8 > [7] No value at PT 637872.0 ms and LT 633650 ms
+dwm3001-1 > [0] Sent 625
+dwm3001-8 > [7] No value at PT 638872.9 ms and LT 634650 ms
+dwm3001-1 > [0] Sent 626
+dwm3001-3 > [WARN] Missed deadline for input at LT 635400 ms
+dwm3001-8 > [7] No value at PT 639872.8 ms and LT 635650 ms
+dwm3001-1 > [0] Sent 627
+dwm3001-8 > [7] No value at PT 640872.0 ms and LT 636650 ms
+dwm3001-1 > [0] Sent 628
+dwm3001-8 > [7] No value at PT 641872.7 ms and LT 637650 ms
+dwm3001-1 > [0] Sent 629
+dwm3001-4 > [WARN] Missed deadline for input at LT 633450 ms
+dwm3001-4 > [WARN] Missed deadline for input at LT 634450 ms
+dwm3001-4 > [WARN] Missed deadline for input at LT 636450 ms
+dwm3001-4 > [WARN] Missed deadline for input at LT 637450 ms
+dwm3001-4 > [WARN] Missed deadline for input at LT 638450 ms
+dwm3001-8 > [7] No value at PT 642872.5 ms and LT 638650 ms
+dwm3001-1 > [0] Sent 630
+dwm3001-4 > [WARN] Missed deadline for input at LT 639450 ms
+dwm3001-8 > [7] No value at PT 643872.3 ms and LT 639650 ms
+dwm3001-1 > [0] Sent 631
+dwm3001-5 > [WARN] Missed deadline for input at LT 640500 ms
+dwm3001-8 > [7] No value at PT 644872.3 ms and LT 640650 ms
+dwm3001-1 > [0] Sent 632
+dwm3001-8 > [7] No value at PT 645871.9 ms and LT 641650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 641500 ms
+dwm3001-1 > [0] Sent 633
+dwm3001-8 > [7] No value at PT 646871.5 ms and LT 642650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 642550 ms
+dwm3001-8 > [7] No value at PT 647872.3 ms and LT 643650 ms
+dwm3001-1 > [0] Sent 634
+dwm3001-7 > [WARN] Missed deadline for input at LT 643600 ms
+dwm3001-8 > [7] No value at PT 648872.4 ms and LT 644650 ms
+dwm3001-1 > [0] Sent 635
+dwm3001-7 > [WARN] Missed deadline for input at LT 644600 ms
+dwm3001-8 > [7] No value at PT 649872.3 ms and LT 645650 ms
+dwm3001-1 > [0] Sent 636
+dwm3001-7 > [WARN] Missed deadline for input at LT 645600 ms
+dwm3001-1 > [0] Sent 637
+dwm3001-8 > [7] No value at PT 650872.3 ms and LT 646650 ms
+dwm3001-8 > [WARN] Tardy at PT 651325.1 ms and LT 646650 ms
+dwm3001-1 > [0] Sent 638
+dwm3001-8 > [7] No value at PT 651871.5 ms and LT 647650 ms
+dwm3001-8 > [WARN] Tardy at PT 652282.7 ms and LT 647650 ms
+dwm3001-1 > [0] Sent 639
+dwm3001-8 > [7] No value at PT 652871.5 ms and LT 648650 ms
+dwm3001-8 > [WARN] Tardy at PT 652949.9 ms and LT 648650 ms
+dwm3001-1 > [0] Sent 640
+dwm3001-8 > [7] Val 640 (NIT: 357)
+dwm3001-1 > [0] Sent 641
+dwm3001-3 > [WARN] Missed deadline for input at LT 650400 ms
+dwm3001-8 > [7] No value at PT 654872.3 ms and LT 650650 ms
+dwm3001-1 > [0] Sent 642
+dwm3001-6 > [WARN] Missed deadline for input at LT 651550 ms
+dwm3001-8 > [7] No value at PT 655871.9 ms and LT 651650 ms
+dwm3001-1 > [0] Sent 643
+dwm3001-6 > [WARN] Missed deadline for input at LT 652550 ms
+dwm3001-8 > [7] No value at PT 656871.5 ms and LT 652650 ms
+dwm3001-1 > [0] Sent 644
+dwm3001-7 > [WARN] Missed deadline for input at LT 653600 ms
+dwm3001-8 > [7] No value at PT 657872.3 ms and LT 653650 ms
+dwm3001-1 > [0] Sent 645
+dwm3001-8 > [7] No value at PT 658871.9 ms and LT 654650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 654600 ms
+dwm3001-1 > [0] Sent 646
+dwm3001-8 > [7] No value at PT 659872.7 ms and LT 655650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 655600 ms
+dwm3001-8 > [7] No value at PT 660871.8 ms and LT 656650 ms
+dwm3001-1 > [0] Sent 647
+dwm3001-8 > [WARN] Tardy at PT 661304.9 ms and LT 656650 ms
+dwm3001-8 > [7] No value at PT 661872.2 ms and LT 657650 ms
+dwm3001-1 > [0] Sent 648
+dwm3001-8 > [WARN] Tardy at PT 662293.5 ms and LT 657650 ms
+dwm3001-1 > [0] Sent 649
+dwm3001-8 > [7] No value at PT 662871.8 ms and LT 658650 ms
+dwm3001-8 > [WARN] Tardy at PT 663068.3 ms and LT 658650 ms
+dwm3001-1 > [0] Sent 650
+dwm3001-8 > [7] No value at PT 663871.9 ms and LT 659650 ms
+dwm3001-8 > [WARN] Tardy at PT 663930.5 ms and LT 659650 ms
+dwm3001-1 > [0] Sent 651
+dwm3001-8 > [7] No value at PT 664872.4 ms and LT 660650 ms
+dwm3001-8 > [WARN] Tardy at PT 664911.1 ms and LT 660650 ms
+dwm3001-1 > [0] Sent 652
+dwm3001-8 > [7] No value at PT 665871.4 ms and LT 661650 ms
+dwm3001-8 > [WARN] Tardy at PT 665895.4 ms and LT 661650 ms
+dwm3001-1 > [0] Sent 653
+dwm3001-8 > [7] No value at PT 666871.7 ms and LT 662650 ms
+dwm3001-8 > [WARN] Tardy at PT 666876.5 ms and LT 662650 ms
+dwm3001-1 > [0] Sent 654
+dwm3001-8 > [7] Val 654 (NIT: 370)
+dwm3001-1 > [0] Sent 655
+dwm3001-8 > [7] No value at PT 668872.2 ms and LT 664650 ms
+dwm3001-8 > [WARN] Tardy at PT 668884.2 ms and LT 664650 ms
+dwm3001-1 > [0] Sent 656
+dwm3001-8 > [7] Val 656 (NIT: 371)
+dwm3001-1 > [0] Sent 657
+dwm3001-8 > [7] Val 657 (NIT: 371)
+dwm3001-1 > [0] Sent 658
+dwm3001-8 > [7] Val 658 (NIT: 371)
+dwm3001-1 > [0] Sent 659
+dwm3001-8 > [7] No value at PT 672872.2 ms and LT 668650 ms
+dwm3001-8 > [WARN] Tardy at PT 672911.0 ms and LT 668650 ms
+dwm3001-1 > [0] Sent 660
+dwm3001-8 > [7] Val 660 (NIT: 372)
+dwm3001-1 > [0] Sent 661
+dwm3001-8 > [7] Val 661 (NIT: 372)
+dwm3001-1 > [0] Sent 662
+dwm3001-3 > (674685000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 341 retransmissions
+dwm3001-8 > [7] Val 662 (NIT: 372)
+dwm3001-1 > [0] Sent 663
+dwm3001-8 > [7] Val 663 (NIT: 372)
+dwm3001-1 > [0] Sent 664
+dwm3001-8 > [7] Val 664 (NIT: 372)
+dwm3001-1 > [0] Sent 665
+dwm3001-8 > [7] No value at PT 678871.8 ms and LT 674650 ms
+dwm3001-8 > [WARN] Tardy at PT 678900.3 ms and LT 674650 ms
+dwm3001-1 > [0] Sent 666
+dwm3001-8 > [7] Val 666 (NIT: 373)
+dwm3001-1 > [0] Sent 667
+dwm3001-8 > [7] Val 667 (NIT: 373)
+dwm3001-1 > [0] Sent 668
+dwm3001-8 > [7] Val 668 (NIT: 373)
+dwm3001-1 > [0] Sent 669
+dwm3001-8 > [7] Val 669 (NIT: 373)
+dwm3001-1 > [0] Sent 670
+dwm3001-8 > [7] Val 670 (NIT: 373)
+dwm3001-1 > [0] Sent 671
+dwm3001-8 > [7] Val 671 (NIT: 373)
+dwm3001-1 > [0] Sent 672
+dwm3001-2 > [WARN] Missed deadline for input at LT 681350 ms
+dwm3001-8 > [7] No value at PT 685871.7 ms and LT 681650 ms
+dwm3001-1 > [0] Sent 673
+dwm3001-8 > [7] Val 673 (NIT: 374)
+dwm3001-1 > [0] Sent 674
+dwm3001-8 > [7] Val 674 (NIT: 374)
+dwm3001-1 > [0] Sent 675
+dwm3001-8 > [7] No value at PT 688871.7 ms and LT 684650 ms
+dwm3001-8 > [WARN] Tardy at PT 688893.6 ms and LT 684650 ms
+dwm3001-1 > [0] Sent 676
+dwm3001-8 > [7] Val 676 (NIT: 375)
+dwm3001-1 > [0] Sent 677
+dwm3001-8 > [7] Val 677 (NIT: 375)
+dwm3001-1 > [0] Sent 678
+dwm3001-8 > [7] Val 678 (NIT: 375)
+dwm3001-1 > [0] Sent 679
+dwm3001-8 > [7] Val 679 (NIT: 375)
+dwm3001-1 > [0] Sent 680
+dwm3001-8 > [7] Val 680 (NIT: 375)
+dwm3001-1 > [0] Sent 681
+dwm3001-8 > [7] Val 681 (NIT: 375)
+dwm3001-1 > [0] Sent 682
+dwm3001-8 > [7] Val 682 (NIT: 375)
+dwm3001-1 > [0] Sent 683
+dwm3001-8 > [7] Val 683 (NIT: 375)
+dwm3001-1 > [0] Sent 684
+dwm3001-8 > [7] No value at PT 697871.5 ms and LT 693650 ms
+dwm3001-8 > [WARN] Tardy at PT 697983.3 ms and LT 693650 ms
+dwm3001-1 > [0] Sent 685
+dwm3001-8 > [7] Val 685 (NIT: 376)
+dwm3001-1 > [0] Sent 686
+dwm3001-8 > [7] No value at PT 699872.0 ms and LT 695650 ms
+dwm3001-8 > [WARN] Tardy at PT 699899.2 ms and LT 695650 ms
+dwm3001-1 > [0] Sent 687
+dwm3001-8 > [7] No value at PT 700872.1 ms and LT 696650 ms
+dwm3001-8 > [WARN] Tardy at PT 700887.3 ms and LT 696650 ms
+dwm3001-1 > [0] Sent 688
+dwm3001-8 > [7] No value at PT 701872.0 ms and LT 697650 ms
+dwm3001-8 > [WARN] Tardy at PT 701894.7 ms and LT 697650 ms
+dwm3001-1 > [0] Sent 689
+dwm3001-8 > [7] Val 689 (NIT: 379)
+dwm3001-1 > [0] Sent 690
+dwm3001-8 > [7] No value at PT 703872.1 ms and LT 699650 ms
+dwm3001-8 > [WARN] Tardy at PT 703900.4 ms and LT 699650 ms
+dwm3001-1 > [0] Sent 691
+dwm3001-8 > [7] No value at PT 704872.3 ms and LT 700650 ms
+dwm3001-8 > [WARN] Tardy at PT 704921.8 ms and LT 700650 ms
+dwm3001-1 > [0] Sent 692
+dwm3001-8 > [7] No value at PT 705871.8 ms and LT 701650 ms
+dwm3001-8 > [WARN] Tardy at PT 705940.0 ms and LT 701650 ms
+dwm3001-1 > [0] Sent 693
+dwm3001-8 > [7] Val 693 (NIT: 382)
+dwm3001-1 > [0] Sent 694
+dwm3001-8 > [7] Val 694 (NIT: 382)
+dwm3001-1 > [0] Sent 695
+dwm3001-8 > [7] Val 695 (NIT: 382)
+dwm3001-1 > [0] Sent 696
+dwm3001-8 > [7] Val 696 (NIT: 382)
+dwm3001-1 > [0] Sent 697
+dwm3001-8 > [7] Val 697 (NIT: 382)
+dwm3001-1 > [0] Sent 698
+dwm3001-8 > [7] No value at PT 711874.1 ms and LT 707650 ms
+dwm3001-8 > [WARN] Tardy at PT 711890.2 ms and LT 707650 ms
+dwm3001-1 > [0] Sent 699
+dwm3001-8 > [7] No value at PT 712872.4 ms and LT 708650 ms
+dwm3001-8 > [WARN] Tardy at PT 712887.1 ms and LT 708650 ms
+dwm3001-1 > [0] Sent 700
+dwm3001-8 > [7] No value at PT 713872.0 ms and LT 709650 ms
+dwm3001-8 > [WARN] Tardy at PT 713881.8 ms and LT 709650 ms
+dwm3001-1 > [0] Sent 701
+dwm3001-8 > [7] No value at PT 714871.9 ms and LT 710650 ms
+dwm3001-8 > [WARN] Tardy at PT 714913.1 ms and LT 710650 ms
+dwm3001-1 > [0] Sent 702
+dwm3001-8 > [7] Val 702 (NIT: 386)
+dwm3001-1 > [0] Sent 703
+dwm3001-8 > [7] Val 703 (NIT: 386)
+dwm3001-1 > [0] Sent 704
+dwm3001-8 > [7] Val 704 (NIT: 386)
+dwm3001-1 > [0] Sent 705
+dwm3001-8 > [7] Val 705 (NIT: 386)
+dwm3001-1 > [0] Sent 706
+dwm3001-8 > [7] Val 706 (NIT: 386)
+dwm3001-1 > [0] Sent 707
+dwm3001-8 > [7] Val 707 (NIT: 386)
+dwm3001-1 > [0] Sent 708
+dwm3001-8 > [7] Val 708 (NIT: 386)
+dwm3001-1 > [0] Sent 709
+dwm3001-8 > [7] Val 709 (NIT: 386)
+dwm3001-1 > [0] Sent 710
+dwm3001-8 > [7] Val 710 (NIT: 386)
+dwm3001-1 > [0] Sent 711
+dwm3001-8 > [7] Val 711 (NIT: 386)
+dwm3001-1 > [0] Sent 712
+dwm3001-8 > [7] Val 712 (NIT: 386)
+dwm3001-1 > [0] Sent 713
+dwm3001-8 > [7] Val 713 (NIT: 386)
+dwm3001-1 > [0] Sent 714
+dwm3001-8 > [7] Val 714 (NIT: 386)
+dwm3001-1 > [0] Sent 715
+dwm3001-8 > [7] No value at PT 728871.7 ms and LT 724650 ms
+dwm3001-8 > [WARN] Tardy at PT 728888.7 ms and LT 724650 ms
+dwm3001-1 > [0] Sent 716
+dwm3001-8 > [7] Val 716 (NIT: 387)
+dwm3001-1 > [0] Sent 717
+dwm3001-8 > [7] Val 717 (NIT: 387)
+dwm3001-1 > [0] Sent 718
+dwm3001-8 > [7] Val 718 (NIT: 387)
+dwm3001-1 > [0] Sent 719
+dwm3001-8 > [7] Val 719 (NIT: 387)
+dwm3001-1 > [0] Sent 720
+dwm3001-8 > [7] Val 720 (NIT: 387)
+dwm3001-1 > [0] Sent 721
+dwm3001-8 > [7] Val 721 (NIT: 387)
+dwm3001-1 > [0] Sent 722
+dwm3001-8 > [7] Val 722 (NIT: 387)
+dwm3001-1 > [0] Sent 723
+dwm3001-8 > [7] Val 723 (NIT: 387)
+dwm3001-1 > [0] Sent 724
+dwm3001-8 > [7] Val 724 (NIT: 387)
+dwm3001-1 > [0] Sent 725
+dwm3001-8 > [7] Val 725 (NIT: 387)
+dwm3001-1 > [0] Sent 726
+dwm3001-8 > [7] Val 726 (NIT: 387)
+dwm3001-1 > [0] Sent 727
+dwm3001-8 > [7] Val 727 (NIT: 387)
+dwm3001-1 > [0] Sent 728
+dwm3001-8 > [7] Val 728 (NIT: 387)
+dwm3001-1 > [0] Sent 729
+dwm3001-8 > [7] Val 729 (NIT: 387)
+dwm3001-1 > [0] Sent 730
+dwm3001-8 > [7] Val 730 (NIT: 387)
+dwm3001-1 > [0] Sent 731
+dwm3001-8 > [7] Val 731 (NIT: 387)
+dwm3001-1 > [0] Sent 732
+dwm3001-8 > [7] Val 732 (NIT: 387)
+dwm3001-1 > [0] Sent 733
+dwm3001-8 > [7] Val 733 (NIT: 387)
+dwm3001-1 > [0] Sent 734
+dwm3001-8 > [7] Val 734 (NIT: 387)
+dwm3001-1 > [0] Sent 735
+dwm3001-8 > [7] Val 735 (NIT: 387)
+dwm3001-1 > [0] Sent 736
+dwm3001-8 > [7] Val 736 (NIT: 387)
+dwm3001-1 > [0] Sent 737
+dwm3001-8 > [7] Val 737 (NIT: 387)
+dwm3001-1 > [0] Sent 738
+dwm3001-8 > [7] Val 738 (NIT: 387)
+dwm3001-1 > [0] Sent 739
+dwm3001-8 > [7] Val 739 (NIT: 387)
+dwm3001-1 > [0] Sent 740
+dwm3001-8 > [7] Val 740 (NIT: 387)
+dwm3001-1 > [0] Sent 741
+dwm3001-8 > [7] Val 741 (NIT: 387)
+dwm3001-1 > [0] Sent 742
+dwm3001-8 > [7] Val 742 (NIT: 387)
+dwm3001-1 > [0] Sent 743
+dwm3001-8 > [7] Val 743 (NIT: 387)
+dwm3001-1 > [0] Sent 744
+dwm3001-8 > [7] Val 744 (NIT: 387)
+dwm3001-1 > [0] Sent 745
+dwm3001-8 > [7] Val 745 (NIT: 387)
+dwm3001-1 > [0] Sent 746
+dwm3001-8 > [7] Val 746 (NIT: 387)
+dwm3001-1 > [0] Sent 747
+dwm3001-8 > [7] Val 747 (NIT: 387)
+dwm3001-1 > [0] Sent 748
+dwm3001-8 > [7] Val 748 (NIT: 387)
+dwm3001-1 > [0] Sent 749
+dwm3001-8 > [7] Val 749 (NIT: 387)
+dwm3001-1 > [0] Sent 750
+dwm3001-8 > [7] Val 750 (NIT: 387)
+dwm3001-1 > [0] Sent 751
+dwm3001-8 > [7] Val 751 (NIT: 387)
+dwm3001-1 > [0] Sent 752
+dwm3001-8 > [7] Val 752 (NIT: 387)
+dwm3001-1 > [0] Sent 753
+dwm3001-8 > [7] Val 753 (NIT: 387)
+dwm3001-1 > [0] Sent 754
+dwm3001-8 > [7] Val 754 (NIT: 387)
+dwm3001-1 > [0] Sent 755
+dwm3001-8 > [7] Val 755 (NIT: 387)
+dwm3001-1 > [0] Sent 756
+dwm3001-8 > [7] Val 756 (NIT: 387)
+dwm3001-1 > [0] Sent 757
+dwm3001-8 > [7] Val 757 (NIT: 387)
+dwm3001-1 > [0] Sent 758
+dwm3001-8 > [7] Val 758 (NIT: 387)
+dwm3001-1 > [0] Sent 759
+dwm3001-8 > [7] Val 759 (NIT: 387)
+dwm3001-1 > [0] Sent 760
+dwm3001-8 > [7] Val 760 (NIT: 387)
+dwm3001-1 > [0] Sent 761
+dwm3001-8 > [7] Val 761 (NIT: 387)
+dwm3001-1 > [0] Sent 762
+dwm3001-8 > [7] Val 762 (NIT: 387)
+dwm3001-1 > [0] Sent 763
+dwm3001-8 > [7] No value at PT 776872.0 ms and LT 772650 ms
+dwm3001-8 > [WARN] Tardy at PT 776893.0 ms and LT 772650 ms
+dwm3001-1 > [0] Sent 764
+dwm3001-8 > [7] Val 764 (NIT: 388)
+dwm3001-1 > [0] Sent 765
+dwm3001-8 > [7] Val 765 (NIT: 388)
+dwm3001-1 > [0] Sent 766
+dwm3001-8 > [7] Val 766 (NIT: 388)
+dwm3001-1 > [0] Sent 767
+dwm3001-8 > [7] Val 767 (NIT: 388)
+dwm3001-1 > [0] Sent 768
+dwm3001-8 > [7] No value at PT 781872.9 ms and LT 777650 ms
+dwm3001-8 > [WARN] Tardy at PT 781899.2 ms and LT 777650 ms
+dwm3001-1 > [0] Sent 769
+dwm3001-8 > [7] Val 769 (NIT: 389)
+dwm3001-1 > [0] Sent 770
+dwm3001-8 > [7] Val 770 (NIT: 389)
+dwm3001-1 > [0] Sent 771
+dwm3001-8 > [7] Val 771 (NIT: 389)
+dwm3001-1 > [0] Sent 772
+dwm3001-8 > [7] Val 772 (NIT: 389)
+dwm3001-1 > [0] Sent 773
+dwm3001-8 > [7] Val 773 (NIT: 389)
+dwm3001-1 > [0] Sent 774
+dwm3001-8 > [7] Val 774 (NIT: 389)
+dwm3001-1 > [0] Sent 775
+dwm3001-8 > [7] Val 775 (NIT: 389)
+dwm3001-1 > [0] Sent 776
+dwm3001-8 > [7] Val 776 (NIT: 389)
+dwm3001-1 > [0] Sent 777
+dwm3001-8 > [7] Val 777 (NIT: 389)
+dwm3001-1 > [0] Sent 778
+dwm3001-8 > [7] Val 778 (NIT: 389)
+dwm3001-1 > [0] Sent 779
+dwm3001-8 > [7] Val 779 (NIT: 389)
+dwm3001-1 > [0] Sent 780
+dwm3001-8 > [7] Val 780 (NIT: 389)
+dwm3001-1 > [0] Sent 781
+dwm3001-8 > [7] Val 781 (NIT: 389)
+dwm3001-1 > [0] Sent 782
+dwm3001-8 > [7] Val 782 (NIT: 389)
+dwm3001-1 > [0] Sent 783
+dwm3001-8 > [7] Val 783 (NIT: 389)
+dwm3001-1 > [0] Sent 784
+dwm3001-8 > [7] No value at PT 797871.4 ms and LT 793650 ms
+dwm3001-8 > [WARN] Tardy at PT 797893.6 ms and LT 793650 ms
+dwm3001-1 > [0] Sent 785
+dwm3001-8 > [7] Val 785 (NIT: 390)
+dwm3001-1 > [0] Sent 786
+dwm3001-8 > [7] Val 786 (NIT: 390)
+dwm3001-1 > [0] Sent 787
+dwm3001-8 > [7] Val 787 (NIT: 390)
+dwm3001-1 > [0] Sent 788
+dwm3001-8 > [7] Val 788 (NIT: 390)
+dwm3001-1 > [0] Sent 789
+dwm3001-8 > [7] Val 789 (NIT: 390)
+dwm3001-1 > [0] Sent 790
+dwm3001-8 > [7] No value at PT 803872.7 ms and LT 799650 ms
+dwm3001-8 > [WARN] Tardy at PT 803884.7 ms and LT 799650 ms
+dwm3001-1 > [0] Sent 791
+dwm3001-8 > [7] No value at PT 804871.5 ms and LT 800650 ms
+dwm3001-8 > [WARN] Tardy at PT 804931.9 ms and LT 800650 ms
+dwm3001-1 > [0] Sent 792
+dwm3001-8 > [7] No value at PT 805871.7 ms and LT 801650 ms
+dwm3001-8 > [WARN] Tardy at PT 805920.3 ms and LT 801650 ms
+dwm3001-1 > [0] Sent 793
+dwm3001-2 > [WARN] Missed deadline for input at LT 802350 ms
+dwm3001-8 > [7] No value at PT 806872.2 ms and LT 802650 ms
+dwm3001-1 > [0] Sent 794
+dwm3001-2 > [WARN] Missed deadline for input at LT 803350 ms
+dwm3001-8 > [7] No value at PT 807871.7 ms and LT 803650 ms
+dwm3001-1 > [0] Sent 795
+dwm3001-8 > [7] Val 795 (NIT: 395)
+dwm3001-1 > [0] Sent 796
+dwm3001-8 > [7] Val 796 (NIT: 395)
+dwm3001-1 > [0] Sent 797
+dwm3001-8 > [7] Val 797 (NIT: 395)
+dwm3001-1 > [0] Sent 798
+dwm3001-8 > [7] Val 798 (NIT: 395)
+dwm3001-1 > [0] Sent 799
+dwm3001-2 > (811642000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 193 retransmissions
+dwm3001-8 > [7] Val 799 (NIT: 395)
+dwm3001-1 > [0] Sent 800
+dwm3001-5 > [WARN] Missed deadline for input at LT 809500 ms
+dwm3001-8 > [7] No value at PT 813872.1 ms and LT 809650 ms
+dwm3001-1 > [0] Sent 801
+dwm3001-8 > [7] Val 801 (NIT: 396)
+dwm3001-1 > [0] Sent 802
+dwm3001-8 > [7] Val 802 (NIT: 396)
+dwm3001-1 > [0] Sent 803
+dwm3001-8 > [7] Val 803 (NIT: 396)
+dwm3001-1 > [0] Sent 804
+dwm3001-8 > [7] No value at PT 817872.7 ms and LT 813650 ms
+dwm3001-8 > [WARN] Tardy at PT 817905.8 ms and LT 813650 ms
+dwm3001-1 > [0] Sent 805
+dwm3001-8 > [7] No value at PT 818871.8 ms and LT 814650 ms
+dwm3001-8 > [WARN] Tardy at PT 818896.2 ms and LT 814650 ms
+dwm3001-1 > [0] Sent 806
+dwm3001-8 > [7] No value at PT 819871.6 ms and LT 815650 ms
+dwm3001-8 > [WARN] Tardy at PT 819880.3 ms and LT 815650 ms
+dwm3001-1 > [0] Sent 807
+dwm3001-8 > [7] Val 807 (NIT: 399)
+dwm3001-1 > [0] Sent 808
+dwm3001-8 > [7] Val 808 (NIT: 399)
+dwm3001-1 > [0] Sent 809
+dwm3001-8 > [7] Val 809 (NIT: 399)
+dwm3001-1 > [0] Sent 810
+dwm3001-8 > [7] Val 810 (NIT: 399)
+dwm3001-1 > [0] Sent 811
+dwm3001-6 > [WARN] Missed deadline for input at LT 820550 ms
+dwm3001-8 > [7] No value at PT 824872.6 ms and LT 820650 ms
+dwm3001-1 > [0] Sent 812
+dwm3001-6 > [WARN] Missed deadline for input at LT 821550 ms
+dwm3001-8 > [7] No value at PT 825872.2 ms and LT 821650 ms
+dwm3001-1 > [0] Sent 813
+dwm3001-8 > [7] No value at PT 826871.9 ms and LT 822650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 822600 ms
+dwm3001-1 > [0] Sent 814
+dwm3001-8 > [7] No value at PT 827871.8 ms and LT 823650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 823600 ms
+dwm3001-1 > [0] Sent 815
+dwm3001-8 > [7] No value at PT 828871.9 ms and LT 824650 ms
+dwm3001-8 > [WARN] Tardy at PT 829089.2 ms and LT 824650 ms
+dwm3001-1 > [0] Sent 816
+dwm3001-8 > [7] No value at PT 829872.1 ms and LT 825650 ms
+dwm3001-8 > [WARN] Tardy at PT 830025.7 ms and LT 825650 ms
+dwm3001-1 > [0] Sent 817
+dwm3001-4 > [WARN] Missed deadline for input at LT 826450 ms
+dwm3001-8 > [7] No value at PT 830872.5 ms and LT 826650 ms
+dwm3001-1 > [0] Sent 818
+dwm3001-8 > [7] Val 818 (NIT: 406)
+dwm3001-1 > [0] Sent 819
+dwm3001-8 > [7] Val 819 (NIT: 406)
+dwm3001-1 > [0] Sent 820
+dwm3001-2 > [WARN] Missed deadline for input at LT 829350 ms
+dwm3001-8 > [7] No value at PT 833872.9 ms and LT 829650 ms
+dwm3001-1 > [0] Sent 821
+dwm3001-8 > [7] No value at PT 834871.3 ms and LT 830650 ms
+dwm3001-4 > [WARN] Missed deadline for input at LT 830450 ms
+dwm3001-1 > [0] Sent 822
+dwm3001-8 > [7] No value at PT 835872.1 ms and LT 831650 ms
+dwm3001-8 > [WARN] Tardy at PT 836071.6 ms and LT 831650 ms
+dwm3001-1 > [0] Sent 823
+dwm3001-8 > [7] No value at PT 836871.7 ms and LT 832650 ms
+dwm3001-8 > [WARN] Tardy at PT 837066.5 ms and LT 832650 ms
+dwm3001-1 > [0] Sent 824
+dwm3001-8 > [7] No value at PT 837872.4 ms and LT 833650 ms
+dwm3001-8 > [WARN] Tardy at PT 837982.6 ms and LT 833650 ms
+dwm3001-1 > [0] Sent 825
+dwm3001-8 > [7] No value at PT 838872.0 ms and LT 834650 ms
+dwm3001-8 > [WARN] Tardy at PT 838909.6 ms and LT 834650 ms
+dwm3001-1 > [0] Sent 826
+dwm3001-8 > [7] Val 826 (NIT: 412)
+dwm3001-1 > [0] Sent 827
+dwm3001-8 > [7] Val 827 (NIT: 412)
+dwm3001-1 > [0] Sent 828
+dwm3001-7 > [WARN] Missed deadline for input at LT 837600 ms
+dwm3001-8 > [7] No value at PT 841873.0 ms and LT 837650 ms
+dwm3001-1 > [0] Sent 829
+dwm3001-4 > [WARN] Missed deadline for input at LT 838450 ms
+dwm3001-8 > [7] No value at PT 842872.6 ms and LT 838650 ms
+dwm3001-1 > [0] Sent 830
+dwm3001-8 > [7] No value at PT 843872.4 ms and LT 839650 ms
+dwm3001-8 > [WARN] Tardy at PT 843962.4 ms and LT 839650 ms
+dwm3001-1 > [0] Sent 831
+dwm3001-8 > [7] No value at PT 844872.2 ms and LT 840650 ms
+dwm3001-8 > [WARN] Tardy at PT 845044.0 ms and LT 840650 ms
+dwm3001-1 > [0] Sent 832
+dwm3001-8 > [7] Val 832 (NIT: 416)
+dwm3001-1 > [0] Sent 833
+dwm3001-8 > [7] Val 833 (NIT: 416)
+dwm3001-1 > [0] Sent 834
+dwm3001-1 > (846529000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 159 retransmissions
+dwm3001-8 > [7] No value at PT 847871.1 ms and LT 843650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 843600 ms
+dwm3001-1 > [0] Sent 835
+dwm3001-8 > [7] No value at PT 848871.6 ms and LT 844650 ms
+dwm3001-8 > [WARN] Tardy at PT 849058.7 ms and LT 844650 ms
+dwm3001-1 > [0] Sent 836
+dwm3001-8 > [7] No value at PT 849872.5 ms and LT 845650 ms
+dwm3001-8 > [WARN] Tardy at PT 849990.2 ms and LT 845650 ms
+dwm3001-1 > [0] Sent 837
+dwm3001-8 > [7] No value at PT 850871.5 ms and LT 846650 ms
+dwm3001-8 > [WARN] Tardy at PT 850960.3 ms and LT 846650 ms
+dwm3001-1 > [0] Sent 838
+dwm3001-8 > [7] No value at PT 851871.9 ms and LT 847650 ms
+dwm3001-8 > [WARN] Tardy at PT 851900.3 ms and LT 847650 ms
+dwm3001-1 > [0] Sent 839
+dwm3001-8 > [7] Val 839 (NIT: 421)
+dwm3001-1 > [0] Sent 840
+dwm3001-7 > [WARN] Missed deadline for input at LT 849600 ms
+dwm3001-8 > [7] No value at PT 853872.5 ms and LT 849650 ms
+dwm3001-1 > [0] Sent 841
+dwm3001-2 > [WARN] Missed deadline for input at LT 850350 ms
+dwm3001-8 > [7] No value at PT 854872.6 ms and LT 850650 ms
+dwm3001-1 > [0] Sent 842
+dwm3001-8 > [7] No value at PT 855872.3 ms and LT 851650 ms
+dwm3001-8 > [WARN] Tardy at PT 856024.1 ms and LT 851650 ms
+dwm3001-1 > [0] Sent 843
+dwm3001-8 > [7] No value at PT 856872.6 ms and LT 852650 ms
+dwm3001-8 > [WARN] Tardy at PT 857010.4 ms and LT 852650 ms
+dwm3001-1 > [0] Sent 844
+dwm3001-8 > [7] No value at PT 857871.9 ms and LT 853650 ms
+dwm3001-8 > [WARN] Tardy at PT 857906.6 ms and LT 853650 ms
+dwm3001-1 > [0] Sent 845
+dwm3001-8 > [7] Val 845 (NIT: 426)
+dwm3001-1 > [0] Sent 846
+dwm3001-8 > [7] Val 846 (NIT: 426)
+dwm3001-1 > [0] Sent 847
+dwm3001-8 > [7] Val 847 (NIT: 426)
+dwm3001-1 > [0] Sent 848
+dwm3001-8 > [7] Val 848 (NIT: 426)
+dwm3001-1 > [0] Sent 849
+dwm3001-8 > [7] Val 849 (NIT: 426)
+dwm3001-1 > [0] Sent 850
+dwm3001-8 > [7] No value at PT 863872.1 ms and LT 859650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 859500 ms
+dwm3001-1 > [0] Sent 851
+dwm3001-8 > [7] No value at PT 864872.4 ms and LT 860650 ms
+dwm3001-8 > [WARN] Tardy at PT 864925.6 ms and LT 860650 ms
+dwm3001-1 > [0] Sent 852
+dwm3001-8 > [7] Val 852 (NIT: 428)
+dwm3001-1 > [0] Sent 853
+dwm3001-8 > [7] Val 853 (NIT: 428)
+dwm3001-1 > [0] Sent 854
+dwm3001-8 > [7] No value at PT 867872.4 ms and LT 863650 ms
+dwm3001-8 > [WARN] Tardy at PT 867939.2 ms and LT 863650 ms
+dwm3001-1 > [0] Sent 855
+dwm3001-4 > [WARN] Missed deadline for input at LT 864450 ms
+dwm3001-8 > [7] No value at PT 868872.0 ms and LT 864650 ms
+dwm3001-1 > [0] Sent 856
+dwm3001-8 > [7] Val 856 (NIT: 430)
+dwm3001-1 > [0] Sent 857
+dwm3001-8 > [7] Val 857 (NIT: 430)
+dwm3001-1 > [0] Sent 858
+dwm3001-8 > [7] No value at PT 871871.4 ms and LT 867650 ms
+dwm3001-8 > [WARN] Tardy at PT 871912.1 ms and LT 867650 ms
+dwm3001-1 > [0] Sent 859
+dwm3001-8 > [7] Val 859 (NIT: 431)
+dwm3001-1 > [0] Sent 860
+dwm3001-8 > [7] Val 860 (NIT: 431)
+dwm3001-1 > [0] Sent 861
+dwm3001-6 > [WARN] Missed deadline for input at LT 870550 ms
+dwm3001-8 > [7] No value at PT 874871.5 ms and LT 870650 ms
+dwm3001-1 > [0] Sent 862
+dwm3001-6 > [WARN] Missed deadline for input at LT 871550 ms
+dwm3001-8 > [7] No value at PT 875871.7 ms and LT 871650 ms
+dwm3001-1 > [0] Sent 863
+dwm3001-8 > [7] No value at PT 876872.5 ms and LT 872650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 872550 ms
+dwm3001-1 > [0] Sent 864
+dwm3001-8 > [7] No value at PT 877872.1 ms and LT 873650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 873600 ms
+dwm3001-8 > [7] No value at PT 878872.2 ms and LT 874650 ms
+dwm3001-1 > [0] Sent 865
+dwm3001-7 > [WARN] Missed deadline for input at LT 874600 ms
+dwm3001-1 > [0] Sent 866
+dwm3001-8 > [7] No value at PT 879871.7 ms and LT 875650 ms
+dwm3001-8 > [WARN] Tardy at PT 880147.7 ms and LT 875650 ms
+dwm3001-1 > [0] Sent 867
+dwm3001-8 > [7] No value at PT 880871.7 ms and LT 876650 ms
+dwm3001-8 > [WARN] Tardy at PT 880986.1 ms and LT 876650 ms
+dwm3001-1 > [0] Sent 868
+dwm3001-8 > [7] Val 868 (NIT: 438)
+dwm3001-1 > [0] Sent 869
+dwm3001-8 > [7] Val 869 (NIT: 438)
+dwm3001-1 > [0] Sent 870
+dwm3001-5 > [WARN] Missed deadline for input at LT 879500 ms
+dwm3001-8 > [7] No value at PT 883872.0 ms and LT 879650 ms
+dwm3001-1 > [0] Sent 871
+dwm3001-5 > [WARN] Missed deadline for input at LT 880500 ms
+dwm3001-8 > [7] No value at PT 884871.7 ms and LT 880650 ms
+dwm3001-1 > [0] Sent 872
+dwm3001-6 > [WARN] Missed deadline for input at LT 881550 ms
+dwm3001-8 > [7] No value at PT 885871.2 ms and LT 881650 ms
+dwm3001-1 > [0] Sent 873
+dwm3001-8 > [7] No value at PT 886871.5 ms and LT 882650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 882550 ms
+dwm3001-1 > [0] Sent 874
+dwm3001-8 > [7] No value at PT 887872.2 ms and LT 883650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 883550 ms
+dwm3001-1 > [0] Sent 875
+dwm3001-8 > [7] No value at PT 888872.0 ms and LT 884650 ms
+dwm3001-4 > [WARN] Missed deadline for input at LT 884450 ms
+dwm3001-1 > [0] Sent 876
+dwm3001-8 > [7] No value at PT 889872.3 ms and LT 885650 ms
+dwm3001-4 > [WARN] Missed deadline for input at LT 885450 ms
+dwm3001-1 > [0] Sent 877
+dwm3001-8 > [7] No value at PT 890872.2 ms and LT 886650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 886600 ms
+dwm3001-1 > [0] Sent 878
+dwm3001-8 > [7] No value at PT 891872.1 ms and LT 887650 ms
+dwm3001-8 > [WARN] Tardy at PT 892072.9 ms and LT 887650 ms
+dwm3001-1 > [0] Sent 879
+dwm3001-8 > [7] Val 879 (NIT: 447)
+dwm3001-1 > [0] Sent 880
+dwm3001-8 > [7] Val 880 (NIT: 447)
+dwm3001-1 > [0] Sent 881
+dwm3001-8 > [7] No value at PT 894872.7 ms and LT 890650 ms
+dwm3001-8 > [WARN] Tardy at PT 894917.1 ms and LT 890650 ms
+dwm3001-1 > [0] Sent 882
+dwm3001-8 > [7] Val 882 (NIT: 448)
+dwm3001-1 > [0] Sent 883
+dwm3001-8 > [7] No value at PT 896871.8 ms and LT 892650 ms
+dwm3001-8 > [WARN] Tardy at PT 897072.9 ms and LT 892650 ms
+dwm3001-1 > [0] Sent 884
+dwm3001-8 > [7] Val 884 (NIT: 449)
+dwm3001-1 > [0] Sent 885
+dwm3001-8 > [7] Val 885 (NIT: 449)
+dwm3001-1 > [0] Sent 886
+dwm3001-8 > [7] Val 886 (NIT: 449)
+dwm3001-1 > [0] Sent 887
+dwm3001-8 > [7] Val 887 (NIT: 449)
+dwm3001-1 > [0] Sent 888
+dwm3001-8 > [7] Val 888 (NIT: 449)
+dwm3001-1 > [0] Sent 889
+dwm3001-8 > [7] No value at PT 902872.0 ms and LT 898650 ms
+dwm3001-8 > [WARN] Tardy at PT 902885.7 ms and LT 898650 ms
+dwm3001-1 > [0] Sent 890
+dwm3001-8 > [7] No value at PT 903872.8 ms and LT 899650 ms
+dwm3001-8 > [WARN] Tardy at PT 904013.9 ms and LT 899650 ms
+dwm3001-1 > [0] Sent 891
+dwm3001-8 > [7] No value at PT 904871.8 ms and LT 900650 ms
+dwm3001-8 > [WARN] Tardy at PT 904934.3 ms and LT 900650 ms
+dwm3001-1 > [0] Sent 892
+dwm3001-8 > [7] No value at PT 905872.0 ms and LT 901650 ms
+dwm3001-4 > (904749000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 156 retransmissions
+dwm3001-8 > [WARN] Tardy at PT 905956.1 ms and LT 901650 ms
+dwm3001-1 > [0] Sent 893
+dwm3001-8 > [7] No value at PT 906871.5 ms and LT 902650 ms
+dwm3001-8 > [WARN] Tardy at PT 906979.3 ms and LT 902650 ms
+dwm3001-1 > [0] Sent 894
+dwm3001-8 > [7] No value at PT 907872.4 ms and LT 903650 ms
+dwm3001-8 > [WARN] Tardy at PT 907947.0 ms and LT 903650 ms
+dwm3001-1 > [0] Sent 895
+dwm3001-8 > [7] No value at PT 908871.5 ms and LT 904650 ms
+dwm3001-8 > [WARN] Tardy at PT 908899.3 ms and LT 904650 ms
+dwm3001-1 > [0] Sent 896
+dwm3001-8 > [7] Val 896 (NIT: 456)
+dwm3001-1 > [0] Sent 897
+dwm3001-8 > [7] Val 897 (NIT: 456)
+dwm3001-1 > [0] Sent 898
+dwm3001-8 > [7] No value at PT 911873.1 ms and LT 907650 ms
+dwm3001-8 > [WARN] Tardy at PT 911888.4 ms and LT 907650 ms
+dwm3001-1 > [0] Sent 899
+dwm3001-8 > [7] No value at PT 912876.5 ms and LT 908650 ms
+dwm3001-8 > [WARN] Tardy at PT 912915.7 ms and LT 908650 ms
+dwm3001-1 > [0] Sent 900
+dwm3001-8 > [7] Val 900 (NIT: 458)
+dwm3001-1 > [0] Sent 901
+dwm3001-8 > [7] No value at PT 914873.1 ms and LT 910650 ms
+dwm3001-8 > [WARN] Tardy at PT 914905.8 ms and LT 910650 ms
+dwm3001-1 > [0] Sent 902
+dwm3001-8 > [7] Val 902 (NIT: 459)
+dwm3001-1 > [0] Sent 903
+dwm3001-8 > [7] No value at PT 916871.9 ms and LT 912650 ms
+dwm3001-8 > [WARN] Tardy at PT 916947.1 ms and LT 912650 ms
+dwm3001-1 > [0] Sent 904
+dwm3001-8 > [7] Val 904 (NIT: 460)
+dwm3001-1 > [0] Sent 905
+dwm3001-8 > [7] Val 905 (NIT: 460)
+dwm3001-1 > [0] Sent 906
+dwm3001-3 > (918624000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 88 duplicates
+dwm3001-8 > [7] Val 906 (NIT: 460)
+dwm3001-1 > [0] Sent 907
+dwm3001-8 > [7] Val 907 (NIT: 460)
+dwm3001-1 > [0] Sent 908
+dwm3001-8 > [7] Val 908 (NIT: 460)
+dwm3001-1 > [0] Sent 909
+dwm3001-8 > [7] Val 909 (NIT: 460)
+dwm3001-1 > [0] Sent 910
+dwm3001-8 > [7] Val 910 (NIT: 460)
+dwm3001-1 > [0] Sent 911
+dwm3001-8 > [7] Val 911 (NIT: 460)
+dwm3001-1 > [0] Sent 912
+dwm3001-8 > [7] Val 912 (NIT: 460)
+dwm3001-1 > [0] Sent 913
+dwm3001-8 > [7] Val 913 (NIT: 460)
+dwm3001-1 > [0] Sent 914
+dwm3001-8 > [7] Val 914 (NIT: 460)
+dwm3001-1 > [0] Sent 915
+dwm3001-4 > (927660000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 93 duplicates
+dwm3001-8 > [7] Val 915 (NIT: 460)
+dwm3001-1 > [0] Sent 916
+dwm3001-8 > [7] Val 916 (NIT: 460)
+dwm3001-1 > [0] Sent 917
+dwm3001-8 > [7] Val 917 (NIT: 460)
+dwm3001-1 > [0] Sent 918
+dwm3001-8 > [7] Val 918 (NIT: 460)
+dwm3001-1 > [0] Sent 919
+dwm3001-8 > [7] Val 919 (NIT: 460)
+dwm3001-1 > [0] Sent 920
+dwm3001-6 > [WARN] Missed deadline for input at LT 929550 ms
+dwm3001-8 > [7] No value at PT 933871.8 ms and LT 929650 ms
+dwm3001-1 > [0] Sent 921
+dwm3001-2 > (933530000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 63 duplicates
+dwm3001-8 > [7] Val 921 (NIT: 461)
+dwm3001-1 > [0] Sent 922
+dwm3001-7 > [WARN] Missed deadline for input at LT 931600 ms
+dwm3001-8 > [7] No value at PT 935871.1 ms and LT 931650 ms
+dwm3001-1 > [0] Sent 923
+dwm3001-8 > [7] No value at PT 936872.1 ms and LT 932650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 932600 ms
+dwm3001-1 > [0] Sent 924
+dwm3001-8 > [7] No value at PT 937871.7 ms and LT 933650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 933600 ms
+dwm3001-8 > [7] No value at PT 938871.3 ms and LT 934650 ms
+dwm3001-1 > [0] Sent 925
+dwm3001-8 > [WARN] Tardy at PT 939284.5 ms and LT 934650 ms
+dwm3001-1 > [0] Sent 926
+dwm3001-8 > [7] No value at PT 939871.7 ms and LT 935650 ms
+dwm3001-8 > [WARN] Tardy at PT 940138.1 ms and LT 935650 ms
+dwm3001-1 > [0] Sent 927
+dwm3001-8 > [7] No value at PT 940871.7 ms and LT 936650 ms
+dwm3001-8 > [WARN] Tardy at PT 940947.7 ms and LT 936650 ms
+dwm3001-1 > [0] Sent 928
+dwm3001-8 > [7] Val 928 (NIT: 467)
+dwm3001-1 > [0] Sent 929
+dwm3001-8 > [7] Val 929 (NIT: 467)
+dwm3001-1 > [0] Sent 930
+dwm3001-8 > [7] Val 930 (NIT: 467)
+dwm3001-1 > [0] Sent 931
+dwm3001-8 > [7] Val 931 (NIT: 467)
+dwm3001-1 > [0] Sent 932
+dwm3001-8 > [7] No value at PT 945872.2 ms and LT 941650 ms
+dwm3001-8 > [WARN] Tardy at PT 945938.2 ms and LT 941650 ms
+dwm3001-1 > [0] Sent 933
+dwm3001-8 > [7] No value at PT 946872.1 ms and LT 942650 ms
+dwm3001-8 > [WARN] Tardy at PT 946939.9 ms and LT 942650 ms
+dwm3001-1 > [0] Sent 934
+dwm3001-8 > [7] No value at PT 947871.9 ms and LT 943650 ms
+dwm3001-8 > [WARN] Tardy at PT 947887.3 ms and LT 943650 ms
+dwm3001-1 > [0] Sent 935
+dwm3001-8 > [7] No value at PT 948871.4 ms and LT 944650 ms
+dwm3001-8 > [WARN] Tardy at PT 948991.2 ms and LT 944650 ms
+dwm3001-1 > [0] Sent 936
+dwm3001-8 > [7] Val 936 (NIT: 471)
+dwm3001-1 > [0] Sent 937
+dwm3001-8 > [7] Val 937 (NIT: 471)
+dwm3001-1 > [0] Sent 938
+dwm3001-8 > [7] Val 938 (NIT: 471)
+dwm3001-1 > [0] Sent 939
+dwm3001-8 > [7] No value at PT 952871.7 ms and LT 948650 ms
+dwm3001-8 > [WARN] Tardy at PT 952883.5 ms and LT 948650 ms
+dwm3001-1 > [0] Sent 940
+dwm3001-8 > [7] No value at PT 953872.3 ms and LT 949650 ms
+dwm3001-8 > [WARN] Tardy at PT 953910.2 ms and LT 949650 ms
+dwm3001-1 > [0] Sent 941
+dwm3001-8 > [7] No value at PT 954871.9 ms and LT 950650 ms
+dwm3001-8 > [WARN] Tardy at PT 954902.9 ms and LT 950650 ms
+dwm3001-1 > [0] Sent 942
+dwm3001-8 > [7] Val 942 (NIT: 474)
+dwm3001-1 > [0] Sent 943
+dwm3001-8 > [7] Val 943 (NIT: 474)
+dwm3001-1 > [0] Sent 944
+dwm3001-8 > [7] Val 944 (NIT: 474)
+dwm3001-1 > [0] Sent 945
+dwm3001-8 > [7] Val 945 (NIT: 474)
+dwm3001-1 > [0] Sent 946
+dwm3001-8 > [7] Val 946 (NIT: 474)
+dwm3001-1 > [0] Sent 947
+dwm3001-8 > [7] Val 947 (NIT: 474)
+dwm3001-1 > [0] Sent 948
+dwm3001-8 > [7] Val 948 (NIT: 474)
+dwm3001-1 > [0] Sent 949
+dwm3001-8 > [7] Val 949 (NIT: 474)
+dwm3001-1 > [0] Sent 950
+dwm3001-8 > [7] Val 950 (NIT: 474)
+dwm3001-1 > [0] Sent 951
+dwm3001-8 > [7] Val 951 (NIT: 474)
+dwm3001-1 > [0] Sent 952
+dwm3001-8 > [7] Val 952 (NIT: 474)
+dwm3001-1 > [0] Sent 953
+dwm3001-8 > [7] Val 953 (NIT: 474)
+dwm3001-1 > [0] Sent 954
+dwm3001-8 > [7] Val 954 (NIT: 474)
+dwm3001-1 > [0] Sent 955
+dwm3001-8 > [7] Val 955 (NIT: 474)
+dwm3001-1 > [0] Sent 956
+dwm3001-8 > [7] Val 956 (NIT: 474)
+dwm3001-1 > [0] Sent 957
+dwm3001-8 > [7] Val 957 (NIT: 474)
+dwm3001-1 > [0] Sent 958
+dwm3001-8 > [7] Val 958 (NIT: 474)
+dwm3001-1 > [0] Sent 959
+dwm3001-8 > [7] Val 959 (NIT: 474)
+dwm3001-1 > [0] Sent 960
+dwm3001-8 > [7] Val 960 (NIT: 474)
+dwm3001-1 > [0] Sent 961
+dwm3001-8 > [7] Val 961 (NIT: 474)
+dwm3001-1 > [0] Sent 962
+dwm3001-8 > [7] Val 962 (NIT: 474)
+dwm3001-1 > [0] Sent 963
+dwm3001-8 > [7] Val 963 (NIT: 474)
+dwm3001-1 > [0] Sent 964
+dwm3001-8 > [7] Val 964 (NIT: 474)
+dwm3001-1 > [0] Sent 965
+dwm3001-8 > [7] Val 965 (NIT: 474)
+dwm3001-1 > [0] Sent 966
+dwm3001-8 > [7] Val 966 (NIT: 474)
+dwm3001-1 > [0] Sent 967
+dwm3001-8 > [7] Val 967 (NIT: 474)
+dwm3001-1 > [0] Sent 968
+dwm3001-8 > [7] Val 968 (NIT: 474)
+dwm3001-1 > [0] Sent 969
+dwm3001-8 > [7] Val 969 (NIT: 474)
+dwm3001-1 > [0] Sent 970
+dwm3001-8 > [7] Val 970 (NIT: 474)
+dwm3001-1 > [0] Sent 971
+dwm3001-8 > [7] Val 971 (NIT: 474)
+dwm3001-1 > [0] Sent 972
+dwm3001-8 > [7] Val 972 (NIT: 474)
+dwm3001-1 > [0] Sent 973
+dwm3001-8 > [7] Val 973 (NIT: 474)
+dwm3001-1 > [0] Sent 974
+dwm3001-8 > [7] Val 974 (NIT: 474)
+dwm3001-1 > [0] Sent 975
+dwm3001-8 > [7] Val 975 (NIT: 474)
+dwm3001-1 > [0] Sent 976
+dwm3001-8 > [7] Val 976 (NIT: 474)
+dwm3001-1 > [0] Sent 977
+dwm3001-8 > [7] Val 977 (NIT: 474)
+dwm3001-1 > [0] Sent 978
+dwm3001-8 > [7] Val 978 (NIT: 474)
+dwm3001-1 > [0] Sent 979
+dwm3001-8 > [7] Val 979 (NIT: 474)
+dwm3001-1 > [0] Sent 980
+dwm3001-8 > [7] Val 980 (NIT: 474)
+dwm3001-1 > [0] Sent 981
+dwm3001-8 > [7] Val 981 (NIT: 474)
+dwm3001-1 > [0] Sent 982
+dwm3001-8 > [7] Val 982 (NIT: 474)
+dwm3001-1 > [0] Sent 983
+dwm3001-8 > [7] Val 983 (NIT: 474)
+dwm3001-1 > [0] Sent 984
+dwm3001-8 > [7] Val 984 (NIT: 474)
+dwm3001-1 > [0] Sent 985
+dwm3001-8 > [7] Val 985 (NIT: 474)
+dwm3001-1 > [0] Sent 986
+dwm3001-8 > [7] Val 986 (NIT: 474)
+dwm3001-1 > [0] Sent 987
+dwm3001-8 > [7] Val 987 (NIT: 474)
+dwm3001-1 > [0] Sent 988
+dwm3001-8 > [7] Val 988 (NIT: 474)
+dwm3001-1 > [0] Sent 989
+dwm3001-8 > [7] Val 989 (NIT: 474)
+dwm3001-1 > [0] Sent 990
+dwm3001-8 > [7] Val 990 (NIT: 474)
+dwm3001-1 > [0] Sent 991
+dwm3001-8 > [7] Val 991 (NIT: 474)
+dwm3001-1 > [0] Sent 992
+dwm3001-8 > [7] Val 992 (NIT: 474)
+dwm3001-1 > [0] Sent 993
+dwm3001-8 > [7] Val 993 (NIT: 474)
+dwm3001-1 > [0] Sent 994
+dwm3001-5 > (1006666000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 54 duplicates
+dwm3001-8 > [7] Val 994 (NIT: 474)
+dwm3001-1 > [0] Sent 995
+dwm3001-8 > [7] Val 995 (NIT: 474)
+dwm3001-1 > [0] Sent 996
+dwm3001-6 > (1008771000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 154 retransmissions
+dwm3001-8 > [7] Val 996 (NIT: 474)
+dwm3001-1 > [0] Sent 997
+dwm3001-8 > [7] Val 997 (NIT: 474)
+dwm3001-1 > [0] Sent 998
+dwm3001-8 > [7] Val 998 (NIT: 474)
+dwm3001-1 > [0] Sent 999
+dwm3001-8 > [7] Val 999 (NIT: 474)
+dwm3001-1 > [0] Sent 1000
+dwm3001-5 > (1012707000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 91 retransmissions
+dwm3001-8 > [7] Val 1000 (NIT: 474)
+dwm3001-1 > [0] Sent 1001
+dwm3001-8 > [7] Val 1001 (NIT: 474)
+dwm3001-1 > [0] Sent 1002
+dwm3001-8 > [7] Val 1002 (NIT: 474)
+dwm3001-1 > [0] Sent 1003
+dwm3001-8 > [7] Val 1003 (NIT: 474)
+dwm3001-1 > [0] Sent 1004
+dwm3001-8 > [7] Val 1004 (NIT: 474)
+dwm3001-1 > [0] Sent 1005
+dwm3001-8 > [7] Val 1005 (NIT: 474)
+dwm3001-1 > [0] Sent 1006
+dwm3001-8 > [7] Val 1006 (NIT: 474)
+dwm3001-1 > [0] Sent 1007
+dwm3001-8 > [7] No value at PT 1020872.2 ms and LT 1016650 ms
+dwm3001-8 > [WARN] Tardy at PT 1020901.3 ms and LT 1016650 ms
+dwm3001-1 > [0] Sent 1008
+dwm3001-8 > [7] Val 1008 (NIT: 475)
+dwm3001-1 > [0] Sent 1009
+dwm3001-8 > [7] Val 1009 (NIT: 475)
+dwm3001-1 > [0] Sent 1010
+dwm3001-8 > [7] Val 1010 (NIT: 475)
+dwm3001-1 > [0] Sent 1011
+dwm3001-8 > [7] Val 1011 (NIT: 475)
+dwm3001-1 > [0] Sent 1012
+dwm3001-8 > [7] Val 1012 (NIT: 475)
+dwm3001-1 > [0] Sent 1013
+dwm3001-8 > [7] Val 1013 (NIT: 475)
+dwm3001-1 > [0] Sent 1014
+dwm3001-6 > [WARN] Missed deadline for input at LT 1023550 ms
+dwm3001-8 > [7] No value at PT 1027872.3 ms and LT 1023650 ms
+dwm3001-1 > [0] Sent 1015
+dwm3001-8 > [7] Val 1015 (NIT: 476)
+dwm3001-1 > [0] Sent 1016
+dwm3001-8 > [7] No value at PT 1029871.6 ms and LT 1025650 ms
+dwm3001-8 > [WARN] Tardy at PT 1029996.2 ms and LT 1025650 ms
+dwm3001-1 > [0] Sent 1017
+dwm3001-8 > [7] No value at PT 1030872.9 ms and LT 1026650 ms
+dwm3001-8 > [WARN] Tardy at PT 1030965.6 ms and LT 1026650 ms
+dwm3001-1 > [0] Sent 1018
+dwm3001-8 > [7] No value at PT 1031872.3 ms and LT 1027650 ms
+dwm3001-8 > [WARN] Tardy at PT 1031937.7 ms and LT 1027650 ms
+dwm3001-1 > [0] Sent 1019
+dwm3001-8 > [7] Val 1019 (NIT: 479)
+dwm3001-1 > [0] Sent 1020
+dwm3001-8 > [7] Val 1020 (NIT: 479)
+dwm3001-1 > [0] Sent 1021
+dwm3001-8 > [7] Val 1021 (NIT: 479)
+dwm3001-1 > [0] Sent 1022
+dwm3001-8 > [7] No value at PT 1035871.1 ms and LT 1031650 ms
+dwm3001-8 > [WARN] Tardy at PT 1035898.0 ms and LT 1031650 ms
+dwm3001-1 > [0] Sent 1023
+dwm3001-8 > [7] No value at PT 1036871.9 ms and LT 1032650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 1032600 ms
+dwm3001-1 > [0] Sent 1024
+dwm3001-8 > [7] No value at PT 1037871.8 ms and LT 1033650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 1033500 ms
+dwm3001-1 > [0] Sent 1025
+dwm3001-8 > [7] No value at PT 1038872.3 ms and LT 1034650 ms
+dwm3001-8 > [WARN] Tardy at PT 1038918.2 ms and LT 1034650 ms
+dwm3001-1 > [0] Sent 1026
+dwm3001-8 > [7] Val 1026 (NIT: 483)
+dwm3001-1 > [0] Sent 1027
+dwm3001-8 > [7] Val 1027 (NIT: 483)
+dwm3001-1 > [0] Sent 1028
+dwm3001-8 > [7] Val 1028 (NIT: 483)
+dwm3001-1 > [0] Sent 1029
+dwm3001-8 > [7] Val 1029 (NIT: 483)
+dwm3001-1 > [0] Sent 1030
+dwm3001-8 > [7] Val 1030 (NIT: 483)
+dwm3001-1 > [0] Sent 1031
+dwm3001-8 > [7] No value at PT 1044872.2 ms and LT 1040650 ms
+dwm3001-8 > [WARN] Tardy at PT 1044984.5 ms and LT 1040650 ms
+dwm3001-1 > [0] Sent 1032
+dwm3001-8 > [7] No value at PT 1045871.7 ms and LT 1041650 ms
+dwm3001-8 > [WARN] Tardy at PT 1045956.0 ms and LT 1041650 ms
+dwm3001-1 > [0] Sent 1033
+dwm3001-8 > [7] No value at PT 1046871.6 ms and LT 1042650 ms
+dwm3001-8 > [WARN] Tardy at PT 1046974.6 ms and LT 1042650 ms
+dwm3001-1 > [0] Sent 1034
+dwm3001-8 > [7] No value at PT 1047871.7 ms and LT 1043650 ms
+dwm3001-8 > [WARN] Tardy at PT 1047887.8 ms and LT 1043650 ms
+dwm3001-1 > [0] Sent 1035
+dwm3001-8 > [7] Val 1035 (NIT: 487)
+dwm3001-1 > [0] Sent 1036
+dwm3001-8 > [7] Val 1036 (NIT: 487)
+dwm3001-1 > [0] Sent 1037
+dwm3001-8 > [7] Val 1037 (NIT: 487)
+dwm3001-1 > [0] Sent 1038
+dwm3001-8 > [7] Val 1038 (NIT: 487)
+dwm3001-1 > [0] Sent 1039
+dwm3001-8 > [7] Val 1039 (NIT: 487)
+dwm3001-1 > [0] Sent 1040
+dwm3001-8 > [7] Val 1040 (NIT: 487)
+dwm3001-1 > [0] Sent 1041
+dwm3001-8 > [7] Val 1041 (NIT: 487)
+dwm3001-1 > [0] Sent 1042
+dwm3001-8 > [7] Val 1042 (NIT: 487)
+dwm3001-1 > [0] Sent 1043
+dwm3001-8 > [7] Val 1043 (NIT: 487)
+dwm3001-1 > [0] Sent 1044
+dwm3001-8 > [7] Val 1044 (NIT: 487)
+dwm3001-1 > [0] Sent 1045
+dwm3001-8 > [7] Val 1045 (NIT: 487)
+dwm3001-1 > [0] Sent 1046
+dwm3001-8 > [7] Val 1046 (NIT: 487)
+dwm3001-1 > [0] Sent 1047
+dwm3001-8 > [7] Val 1047 (NIT: 487)
+dwm3001-1 > [0] Sent 1048
+dwm3001-8 > [7] Val 1048 (NIT: 487)
+dwm3001-1 > [0] Sent 1049
+dwm3001-8 > [7] Val 1049 (NIT: 487)
+dwm3001-1 > [0] Sent 1050
+dwm3001-8 > [7] Val 1050 (NIT: 487)
+dwm3001-1 > [0] Sent 1051
+dwm3001-8 > [7] Val 1051 (NIT: 487)
+dwm3001-1 > [0] Sent 1052
+dwm3001-8 > [7] Val 1052 (NIT: 487)
+dwm3001-1 > [0] Sent 1053
+dwm3001-2 > [WARN] Missed deadline for input at LT 1062350 ms
+dwm3001-8 > [7] No value at PT 1066872.8 ms and LT 1062650 ms
+dwm3001-1 > [0] Sent 1054
+dwm3001-8 > [7] No value at PT 1067871.7 ms and LT 1063650 ms
+dwm3001-8 > [WARN] Tardy at PT 1067913.8 ms and LT 1063650 ms
+dwm3001-1 > [0] Sent 1055
+dwm3001-8 > [7] Val 1055 (NIT: 489)
+dwm3001-1 > [0] Sent 1056
+dwm3001-8 > [7] Val 1056 (NIT: 489)
+dwm3001-1 > [0] Sent 1057
+dwm3001-8 > [7] No value at PT 1070871.6 ms and LT 1066650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 1066550 ms
+dwm3001-1 > [0] Sent 1058
+dwm3001-8 > [7] Val 1058 (NIT: 490)
+dwm3001-1 > [0] Sent 1059
+dwm3001-6 > (1071743000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 34 duplicates
+dwm3001-8 > [7] Val 1059 (NIT: 490)
+dwm3001-1 > [0] Sent 1060
+dwm3001-8 > [7] Val 1060 (NIT: 490)
+dwm3001-1 > [0] Sent 1061
+dwm3001-8 > [7] No value at PT 1074872.7 ms and LT 1070650 ms
+dwm3001-8 > [WARN] Tardy at PT 1074892.8 ms and LT 1070650 ms
+dwm3001-1 > [0] Sent 1062
+dwm3001-3 > [WARN] Missed deadline for input at LT 1071400 ms
+dwm3001-8 > [7] No value at PT 1075871.8 ms and LT 1071650 ms
+dwm3001-1 > [0] Sent 1063
+dwm3001-4 > [WARN] Missed deadline for input at LT 1072450 ms
+dwm3001-8 > [7] No value at PT 1076872.4 ms and LT 1072650 ms
+dwm3001-1 > [0] Sent 1064
+dwm3001-8 > [7] Val 1064 (NIT: 493)
+dwm3001-1 > [0] Sent 1065
+dwm3001-8 > [7] No value at PT 1078872.2 ms and LT 1074650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 1074550 ms
+dwm3001-1 > [0] Sent 1066
+dwm3001-8 > [7] Val 1066 (NIT: 494)
+dwm3001-1 > [0] Sent 1067
+dwm3001-8 > [7] Val 1067 (NIT: 494)
+dwm3001-1 > [0] Sent 1068
+dwm3001-8 > [7] Val 1068 (NIT: 494)
+dwm3001-1 > [0] Sent 1069
+dwm3001-8 > [7] Val 1069 (NIT: 494)
+dwm3001-1 > [0] Sent 1070
+dwm3001-8 > [7] Val 1070 (NIT: 494)
+dwm3001-1 > [0] Sent 1071
+dwm3001-8 > [7] Val 1071 (NIT: 494)
+dwm3001-1 > [0] Sent 1072
+dwm3001-8 > [7] Val 1072 (NIT: 494)
+dwm3001-1 > [0] Sent 1073
+dwm3001-8 > [7] Val 1073 (NIT: 494)
+dwm3001-1 > [0] Sent 1074
+dwm3001-8 > [7] Val 1074 (NIT: 494)
+dwm3001-1 > [0] Sent 1075
+dwm3001-8 > [7] Val 1075 (NIT: 494)
+dwm3001-1 > [0] Sent 1076
+dwm3001-8 > [7] Val 1076 (NIT: 494)
+dwm3001-1 > [0] Sent 1077
+dwm3001-8 > [7] Val 1077 (NIT: 494)
+dwm3001-1 > [0] Sent 1078
+dwm3001-8 > [7] Val 1078 (NIT: 494)
+dwm3001-1 > [0] Sent 1079
+dwm3001-8 > [7] Val 1079 (NIT: 494)
+dwm3001-1 > [0] Sent 1080
+dwm3001-8 > [7] Val 1080 (NIT: 494)
+dwm3001-1 > [0] Sent 1081
+dwm3001-8 > [7] Val 1081 (NIT: 494)
+dwm3001-1 > [0] Sent 1082
+dwm3001-8 > [7] No value at PT 1095872.4 ms and LT 1091650 ms
+dwm3001-8 > [WARN] Tardy at PT 1095934.7 ms and LT 1091650 ms
+dwm3001-1 > [0] Sent 1083
+dwm3001-8 > [7] Val 1083 (NIT: 495)
+dwm3001-1 > [0] Sent 1084
+dwm3001-8 > [7] Val 1084 (NIT: 495)
+dwm3001-1 > [0] Sent 1085
+dwm3001-8 > [7] Val 1085 (NIT: 495)
+dwm3001-1 > [0] Sent 1086
+dwm3001-8 > [7] Val 1086 (NIT: 495)
+dwm3001-1 > [0] Sent 1087
+dwm3001-8 > [7] Val 1087 (NIT: 495)
+dwm3001-1 > [0] Sent 1088
+dwm3001-8 > [7] No value at PT 1101871.8 ms and LT 1097650 ms
+dwm3001-8 > [WARN] Tardy at PT 1101893.0 ms and LT 1097650 ms
+dwm3001-1 > [0] Sent 1089
+dwm3001-8 > [7] Val 1089 (NIT: 496)
+dwm3001-1 > [0] Sent 1090
+dwm3001-8 > [7] Val 1090 (NIT: 496)
+dwm3001-1 > [0] Sent 1091
+dwm3001-8 > [7] Val 1091 (NIT: 496)
+dwm3001-1 > [0] Sent 1092
+dwm3001-8 > [7] Val 1092 (NIT: 496)
+dwm3001-1 > [0] Sent 1093
+dwm3001-5 > [WARN] Missed deadline for input at LT 1102500 ms
+dwm3001-8 > [7] No value at PT 1106872.0 ms and LT 1102650 ms
+dwm3001-1 > [0] Sent 1094
+dwm3001-5 > [WARN] Missed deadline for input at LT 1103500 ms
+dwm3001-8 > [7] No value at PT 1107872.2 ms and LT 1103650 ms
+dwm3001-1 > [0] Sent 1095
+dwm3001-8 > [7] No value at PT 1108872.2 ms and LT 1104650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 1104500 ms
+dwm3001-1 > [0] Sent 1096
+dwm3001-8 > [7] No value at PT 1109872.2 ms and LT 1105650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 1105550 ms
+dwm3001-8 > [7] No value at PT 1110872.9 ms and LT 1106650 ms
+dwm3001-1 > [0] Sent 1097
+dwm3001-6 > [WARN] Missed deadline for input at LT 1106550 ms
+dwm3001-8 > [7] No value at PT 1111872.2 ms and LT 1107650 ms
+dwm3001-1 > [0] Sent 1098
+dwm3001-7 > [WARN] Missed deadline for input at LT 1107600 ms
+dwm3001-8 > [7] No value at PT 1112871.9 ms and LT 1108650 ms
+dwm3001-1 > [0] Sent 1099
+dwm3001-7 > [WARN] Missed deadline for input at LT 1108600 ms
+dwm3001-1 > [0] Sent 1100
+dwm3001-8 > [7] No value at PT 1113871.4 ms and LT 1109650 ms
+dwm3001-8 > [WARN] Tardy at PT 1114113.8 ms and LT 1109650 ms
+dwm3001-1 > [0] Sent 1101
+dwm3001-8 > [7] No value at PT 1114872.2 ms and LT 1110650 ms
+dwm3001-8 > [WARN] Tardy at PT 1114993.0 ms and LT 1110650 ms
+dwm3001-1 > [0] Sent 1102
+dwm3001-8 > [7] Val 1102 (NIT: 505)
+dwm3001-1 > [0] Sent 1103
+dwm3001-8 > [7] Val 1103 (NIT: 505)
+dwm3001-1 > [0] Sent 1104
+dwm3001-8 > [7] Val 1104 (NIT: 505)
+dwm3001-1 > [0] Sent 1105
+dwm3001-8 > [7] Val 1105 (NIT: 505)
+dwm3001-1 > [0] Sent 1106
+dwm3001-8 > [7] Val 1106 (NIT: 505)
+dwm3001-1 > [0] Sent 1107
+dwm3001-8 > [7] Val 1107 (NIT: 505)
+dwm3001-1 > [0] Sent 1108
+dwm3001-8 > [7] Val 1108 (NIT: 505)
+dwm3001-1 > [0] Sent 1109
+dwm3001-8 > [7] No value at PT 1122876.9 ms and LT 1118650 ms
+dwm3001-8 > [WARN] Tardy at PT 1122897.3 ms and LT 1118650 ms
+dwm3001-1 > [0] Sent 1110
+dwm3001-8 > [7] Val 1110 (NIT: 506)
+dwm3001-1 > [0] Sent 1111
+dwm3001-8 > [7] No value at PT 1124875.1 ms and LT 1120650 ms
+dwm3001-8 > [WARN] Tardy at PT 1124945.1 ms and LT 1120650 ms
+dwm3001-1 > [0] Sent 1112
+dwm3001-8 > [7] No value at PT 1125871.3 ms and LT 1121650 ms
+dwm3001-8 > [WARN] Tardy at PT 1125908.2 ms and LT 1121650 ms
+dwm3001-1 > [0] Sent 1113
+dwm3001-8 > [7] Val 1113 (NIT: 508)
+dwm3001-1 > [0] Sent 1114
+dwm3001-8 > [7] Val 1114 (NIT: 508)
+dwm3001-1 > [0] Sent 1115
+dwm3001-8 > [7] Val 1115 (NIT: 508)
+dwm3001-1 > [0] Sent 1116
+dwm3001-8 > [7] Val 1116 (NIT: 508)
+dwm3001-1 > [0] Sent 1117
+dwm3001-8 > [7] No value at PT 1130872.3 ms and LT 1126650 ms
+dwm3001-8 > [WARN] Tardy at PT 1130898.1 ms and LT 1126650 ms
+dwm3001-1 > [0] Sent 1118
+dwm3001-8 > [7] No value at PT 1131872.0 ms and LT 1127650 ms
+dwm3001-8 > [WARN] Tardy at PT 1131903.8 ms and LT 1127650 ms
+dwm3001-1 > [0] Sent 1119
+dwm3001-8 > [7] Val 1119 (NIT: 510)
+dwm3001-1 > [0] Sent 1120
+dwm3001-8 > [7] No value at PT 1133872.1 ms and LT 1129650 ms
+dwm3001-8 > [WARN] Tardy at PT 1133897.2 ms and LT 1129650 ms
+dwm3001-1 > [0] Sent 1121
+dwm3001-7 > (1133762000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 41 duplicates
+dwm3001-8 > [7] Val 1121 (NIT: 511)
+dwm3001-1 > [0] Sent 1122
+dwm3001-8 > [7] Val 1122 (NIT: 511)
+dwm3001-1 > [0] Sent 1123
+dwm3001-8 > [7] Val 1123 (NIT: 511)
+dwm3001-1 > [0] Sent 1124
+dwm3001-8 > [7] Val 1124 (NIT: 511)
+dwm3001-1 > [0] Sent 1125
+dwm3001-8 > [7] Val 1125 (NIT: 511)
+dwm3001-1 > [0] Sent 1126
+dwm3001-8 > [7] No value at PT 1139872.4 ms and LT 1135650 ms
+dwm3001-8 > [WARN] Tardy at PT 1139902.9 ms and LT 1135650 ms
+dwm3001-1 > [0] Sent 1127
+dwm3001-8 > [7] No value at PT 1140871.8 ms and LT 1136650 ms
+dwm3001-8 > [WARN] Tardy at PT 1140924.6 ms and LT 1136650 ms
+dwm3001-1 > [0] Sent 1128
+dwm3001-8 > [7] No value at PT 1141872.2 ms and LT 1137650 ms
+dwm3001-8 > [WARN] Tardy at PT 1141901.8 ms and LT 1137650 ms
+dwm3001-1 > [0] Sent 1129
+dwm3001-8 > [7] Val 1129 (NIT: 514)
+dwm3001-1 > [0] Sent 1130
+dwm3001-8 > [7] No value at PT 1143872.3 ms and LT 1139650 ms
+dwm3001-8 > [WARN] Tardy at PT 1143900.2 ms and LT 1139650 ms
+dwm3001-1 > [0] Sent 1131
+dwm3001-8 > [7] Val 1131 (NIT: 515)
+dwm3001-1 > [0] Sent 1132
+dwm3001-8 > [7] Val 1132 (NIT: 515)
+dwm3001-1 > [0] Sent 1133
+dwm3001-7 > [WARN] Missed deadline for input at LT 1142600 ms
+dwm3001-8 > [7] No value at PT 1146872.1 ms and LT 1142650 ms
+dwm3001-1 > [0] Sent 1134
+dwm3001-8 > [7] No value at PT 1147871.7 ms and LT 1143650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 1143600 ms
+dwm3001-1 > [0] Sent 1135
+dwm3001-8 > [7] No value at PT 1148871.9 ms and LT 1144650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 1144600 ms
+dwm3001-1 > [0] Sent 1136
+dwm3001-8 > [7] No value at PT 1149871.4 ms and LT 1145650 ms
+dwm3001-8 > [WARN] Tardy at PT 1150092.2 ms and LT 1145650 ms
+dwm3001-1 > [0] Sent 1137
+dwm3001-8 > [7] No value at PT 1150871.4 ms and LT 1146650 ms
+dwm3001-8 > [WARN] Tardy at PT 1150955.8 ms and LT 1146650 ms
+dwm3001-1 > [0] Sent 1138
+dwm3001-8 > [7] Val 1138 (NIT: 520)
+dwm3001-1 > [0] Sent 1139
+dwm3001-8 > [7] Val 1139 (NIT: 520)
+dwm3001-1 > [0] Sent 1140
+dwm3001-8 > [7] Val 1140 (NIT: 520)
+dwm3001-1 > [0] Sent 1141
+dwm3001-8 > [7] Val 1141 (NIT: 520)
+dwm3001-1 > [0] Sent 1142
+dwm3001-8 > [7] Val 1142 (NIT: 520)
+dwm3001-1 > [0] Sent 1143
+dwm3001-8 > [7] Val 1143 (NIT: 520)
+dwm3001-1 > [0] Sent 1144
+dwm3001-8 > [7] Val 1144 (NIT: 520)
+dwm3001-1 > [0] Sent 1145
+dwm3001-8 > [7] Val 1145 (NIT: 520)
+dwm3001-1 > [0] Sent 1146
+dwm3001-7 > (1158812000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 103 retransmissions
+dwm3001-8 > [7] Val 1146 (NIT: 520)
+dwm3001-1 > [0] Sent 1147
+dwm3001-8 > [7] Val 1147 (NIT: 520)
+dwm3001-1 > [0] Sent 1148
+dwm3001-8 > [7] Val 1148 (NIT: 520)
+dwm3001-1 > [0] Sent 1149
+dwm3001-8 > [7] Val 1149 (NIT: 520)
+dwm3001-1 > [0] Sent 1150
+dwm3001-8 > [7] Val 1150 (NIT: 520)
+dwm3001-1 > [0] Sent 1151
+dwm3001-8 > [7] Val 1151 (NIT: 520)
+dwm3001-1 > [0] Sent 1152
+dwm3001-8 > [7] Val 1152 (NIT: 520)
+dwm3001-1 > [0] Sent 1153
+dwm3001-8 > [7] Val 1153 (NIT: 520)
+dwm3001-1 > [0] Sent 1154
+dwm3001-8 > [7] Val 1154 (NIT: 520)
+dwm3001-1 > [0] Sent 1155
+dwm3001-8 > [7] Val 1155 (NIT: 520)
+dwm3001-1 > [0] Sent 1156
+dwm3001-8 > [7] Val 1156 (NIT: 520)
+dwm3001-1 > [0] Sent 1157
+dwm3001-8 > [7] Val 1157 (NIT: 520)
+dwm3001-1 > [0] Sent 1158
+dwm3001-8 > [7] Val 1158 (NIT: 520)
+dwm3001-1 > [0] Sent 1159
+dwm3001-8 > [7] Val 1159 (NIT: 520)
+dwm3001-1 > [0] Sent 1160
+dwm3001-8 > [7] Val 1160 (NIT: 520)
+dwm3001-1 > [0] Sent 1161
+dwm3001-8 > [7] Val 1161 (NIT: 520)
+dwm3001-1 > [0] Sent 1162
+dwm3001-8 > [7] Val 1162 (NIT: 520)
+dwm3001-1 > [0] Sent 1163
+dwm3001-8 > [7] Val 1163 (NIT: 520)
+dwm3001-1 > [0] Sent 1164
+dwm3001-8 > [7] Val 1164 (NIT: 520)
+dwm3001-1 > [0] Sent 1165
+dwm3001-8 > [7] Val 1165 (NIT: 520)
+dwm3001-1 > [0] Sent 1166
+dwm3001-8 > [7] Val 1166 (NIT: 520)
+dwm3001-1 > [0] Sent 1167
+dwm3001-8 > [7] Val 1167 (NIT: 520)
+dwm3001-1 > [0] Sent 1168
+dwm3001-8 > [7] Val 1168 (NIT: 520)
+dwm3001-1 > [0] Sent 1169
+dwm3001-8 > [7] Val 1169 (NIT: 520)
+dwm3001-1 > [0] Sent 1170
+dwm3001-8 > [7] Val 1170 (NIT: 520)
+dwm3001-1 > [0] Sent 1171
+dwm3001-8 > [7] Val 1171 (NIT: 520)
+dwm3001-1 > [0] Sent 1172
+dwm3001-8 > [7] Val 1172 (NIT: 520)
+dwm3001-1 > [0] Sent 1173
+dwm3001-8 > [7] Val 1173 (NIT: 520)
+dwm3001-1 > [0] Sent 1174
+dwm3001-8 > [7] Val 1174 (NIT: 520)
+dwm3001-1 > [0] Sent 1175
+dwm3001-8 > [7] No value at PT 1188872.1 ms and LT 1184650 ms
+dwm3001-8 > [WARN] Tardy at PT 1188892.0 ms and LT 1184650 ms
+dwm3001-1 > [0] Sent 1176
+dwm3001-8 > [7] Val 1176 (NIT: 521)
+dwm3001-1 > [0] Sent 1177
+dwm3001-8 > [7] Val 1177 (NIT: 521)
+dwm3001-1 > [0] Sent 1178
+dwm3001-8 > [7] Val 1178 (NIT: 521)
+dwm3001-1 > [0] Sent 1179
+dwm3001-8 > [7] Val 1179 (NIT: 521)
+dwm3001-1 > [0] Sent 1180
+dwm3001-8 > [7] Val 1180 (NIT: 521)
+dwm3001-1 > [0] Sent 1181
+dwm3001-8 > [7] Val 1181 (NIT: 521)
+dwm3001-1 > [0] Sent 1182
+dwm3001-8 > [7] Val 1182 (NIT: 521)
+dwm3001-1 > [0] Sent 1183
+dwm3001-8 > [7] Val 1183 (NIT: 521)
+dwm3001-1 > [0] Sent 1184
+dwm3001-8 > [7] Val 1184 (NIT: 521)
+dwm3001-1 > [0] Sent 1185
+dwm3001-8 > [7] Val 1185 (NIT: 521)
+dwm3001-1 > [0] Sent 1186
+dwm3001-8 > [7] Val 1186 (NIT: 521)
+dwm3001-1 > [0] Sent 1187
+dwm3001-8 > [7] Val 1187 (NIT: 521)
+dwm3001-1 > [0] Sent 1188
+dwm3001-8 > [7] Val 1188 (NIT: 521)
+dwm3001-1 > [0] Sent 1189
+dwm3001-8 > [7] Val 1189 (NIT: 521)
+dwm3001-1 > [0] Sent 1190
+dwm3001-8 > [7] Val 1190 (NIT: 521)
+dwm3001-1 > [0] Sent 1191
+dwm3001-8 > [7] Val 1191 (NIT: 521)
+dwm3001-1 > [0] Sent 1192
+dwm3001-8 > [7] Val 1192 (NIT: 521)
+dwm3001-1 > [0] Sent 1193
+dwm3001-8 > [7] Val 1193 (NIT: 521)
+dwm3001-1 > [0] Sent 1194
+dwm3001-8 > [7] No value at PT 1207872.6 ms and LT 1203650 ms
+dwm3001-8 > [WARN] Tardy at PT 1207883.9 ms and LT 1203650 ms
+dwm3001-1 > [0] Sent 1195
+dwm3001-8 > [7] Val 1195 (NIT: 522)
+dwm3001-1 > [0] Sent 1196
+dwm3001-8 > [7] Val 1196 (NIT: 522)
+dwm3001-1 > [0] Sent 1197
+dwm3001-8 > [7] Val 1197 (NIT: 522)
+dwm3001-1 > [0] Sent 1198
+dwm3001-8 > [7] Val 1198 (NIT: 522)
+dwm3001-1 > [0] Sent 1199
+dwm3001-8 > [7] Val 1199 (NIT: 522)
+dwm3001-1 > [0] Sent 1200
+dwm3001-8 > [7] Val 1200 (NIT: 522)
+dwm3001-1 > [0] Sent 1201
+dwm3001-8 > [7] Val 1201 (NIT: 522)
+dwm3001-1 > [0] Sent 1202
+dwm3001-8 > [7] Val 1202 (NIT: 522)
+dwm3001-1 > [0] Sent 1203
+dwm3001-8 > [7] Val 1203 (NIT: 522)
+dwm3001-1 > [0] Sent 1204
+dwm3001-8 > [7] Val 1204 (NIT: 522)
+dwm3001-1 > [0] Sent 1205
+dwm3001-8 > [7] No value at PT 1218872.4 ms and LT 1214650 ms
+dwm3001-8 > [WARN] Tardy at PT 1218891.3 ms and LT 1214650 ms
+dwm3001-1 > [0] Sent 1206
+dwm3001-8 > [7] Val 1206 (NIT: 523)
+dwm3001-1 > [0] Sent 1207
+dwm3001-8 > [7] Val 1207 (NIT: 523)
+dwm3001-1 > [0] Sent 1208
+dwm3001-8 > [7] Val 1208 (NIT: 523)
+dwm3001-1 > [0] Sent 1209
+dwm3001-8 > [7] Val 1209 (NIT: 523)
+dwm3001-1 > [0] Sent 1210
+dwm3001-8 > [7] Val 1210 (NIT: 523)
+dwm3001-1 > [0] Sent 1211
+dwm3001-8 > [7] Val 1211 (NIT: 523)
+dwm3001-1 > [0] Sent 1212
+dwm3001-8 > [7] Val 1212 (NIT: 523)
+dwm3001-1 > [0] Sent 1213
+dwm3001-8 > [7] Val 1213 (NIT: 523)
+dwm3001-1 > [0] Sent 1214
+dwm3001-8 > [7] Val 1214 (NIT: 523)
+dwm3001-1 > [0] Sent 1215
+dwm3001-8 > [7] Val 1215 (NIT: 523)
+dwm3001-1 > [0] Sent 1216
+dwm3001-8 > [7] Val 1216 (NIT: 523)
+dwm3001-1 > [0] Sent 1217
+dwm3001-8 > [7] Val 1217 (NIT: 523)
+dwm3001-1 > [0] Sent 1218
+dwm3001-8 > [7] Val 1218 (NIT: 523)
+dwm3001-1 > [0] Sent 1219
+dwm3001-8 > [7] Val 1219 (NIT: 523)
+dwm3001-1 > [0] Sent 1220
+dwm3001-8 > [7] Val 1220 (NIT: 523)
+dwm3001-1 > [0] Sent 1221
+dwm3001-8 > [7] Val 1221 (NIT: 523)
+dwm3001-1 > [0] Sent 1222
+dwm3001-8 > [7] Val 1222 (NIT: 523)
+dwm3001-1 > [0] Sent 1223
+dwm3001-8 > (1235823000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 35 duplicates
+dwm3001-8 > [7] Val 1223 (NIT: 523)
+dwm3001-1 > [0] Sent 1224
+dwm3001-8 > [7] Val 1224 (NIT: 523)
+dwm3001-1 > [0] Sent 1225
+dwm3001-8 > [7] Val 1225 (NIT: 523)
+dwm3001-1 > [0] Sent 1226
+dwm3001-8 > [7] Val 1226 (NIT: 523)
+dwm3001-1 > [0] Sent 1227
+dwm3001-8 > [7] No value at PT 1240872.6 ms and LT 1236650 ms
+dwm3001-8 > [WARN] Tardy at PT 1240906.5 ms and LT 1236650 ms
+dwm3001-1 > [0] Sent 1228
+dwm3001-8 > [7] No value at PT 1241872.2 ms and LT 1237650 ms
+dwm3001-8 > [WARN] Tardy at PT 1241917.0 ms and LT 1237650 ms
+dwm3001-1 > [0] Sent 1229
+dwm3001-8 > [7] Val 1229 (NIT: 525)
+dwm3001-1 > [0] Sent 1230
+dwm3001-3 > [WARN] Missed deadline for input at LT 1239400 ms
+dwm3001-8 > [7] No value at PT 1243872.0 ms and LT 1239650 ms
+dwm3001-1 > [0] Sent 1231
+dwm3001-4 > [WARN] Missed deadline for input at LT 1240450 ms
+dwm3001-8 > [7] No value at PT 1244872.2 ms and LT 1240650 ms
+dwm3001-1 > [0] Sent 1232
+dwm3001-8 > [7] Val 1232 (NIT: 527)
+dwm3001-1 > [0] Sent 1233
+dwm3001-8 > [7] Val 1233 (NIT: 527)
+dwm3001-1 > [0] Sent 1234
+dwm3001-8 > [7] No value at PT 1247872.2 ms and LT 1243650 ms
+dwm3001-8 > [WARN] Tardy at PT 1247892.2 ms and LT 1243650 ms
+dwm3001-1 > [0] Sent 1235
+dwm3001-8 > [7] Val 1235 (NIT: 528)
+dwm3001-1 > [0] Sent 1236
+dwm3001-8 > [7] Val 1236 (NIT: 528)
+dwm3001-1 > [0] Sent 1237
+dwm3001-8 > [7] Val 1237 (NIT: 528)
+dwm3001-1 > [0] Sent 1238
+dwm3001-8 > [7] Val 1238 (NIT: 528)
+dwm3001-1 > [0] Sent 1239
+dwm3001-8 > [7] Val 1239 (NIT: 528)
+dwm3001-1 > [0] Sent 1240
+dwm3001-8 > [7] Val 1240 (NIT: 528)
+dwm3001-1 > [0] Sent 1241
+dwm3001-8 > [7] Val 1241 (NIT: 528)
+dwm3001-1 > [0] Sent 1242
+dwm3001-8 > [7] Val 1242 (NIT: 528)
+dwm3001-1 > [0] Sent 1243
+dwm3001-8 > [7] No value at PT 1256871.6 ms and LT 1252650 ms
+dwm3001-3 > [WARN] Missed deadline for input at LT 1252400 ms
+dwm3001-1 > [0] Sent 1244
+dwm3001-8 > [7] Val 1244 (NIT: 529)
+dwm3001-1 > [0] Sent 1245
+dwm3001-6 > [WARN] Missed deadline for input at LT 1254550 ms
+dwm3001-8 > [7] No value at PT 1258872.2 ms and LT 1254650 ms
+dwm3001-1 > [0] Sent 1246
+dwm3001-8 > [7] Val 1246 (NIT: 530)
+dwm3001-1 > [0] Sent 1247
+dwm3001-8 > [7] Val 1247 (NIT: 530)
+dwm3001-1 > [0] Sent 1248
+dwm3001-8 > [7] No value at PT 1261872.2 ms and LT 1257650 ms
+dwm3001-8 > [WARN] Tardy at PT 1261882.9 ms and LT 1257650 ms
+dwm3001-1 > [0] Sent 1249
+dwm3001-8 > [7] No value at PT 1262872.0 ms and LT 1258650 ms
+dwm3001-8 > [WARN] Tardy at PT 1262966.0 ms and LT 1258650 ms
+dwm3001-1 > [0] Sent 1250
+dwm3001-8 > [7] No value at PT 1263872.5 ms and LT 1259650 ms
+dwm3001-8 > [WARN] Tardy at PT 1263905.6 ms and LT 1259650 ms
+dwm3001-1 > [0] Sent 1251
+dwm3001-8 > [7] No value at PT 1264871.7 ms and LT 1260650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 1260600 ms
+dwm3001-1 > [0] Sent 1252
+dwm3001-8 > [7] Val 1252 (NIT: 534)
+dwm3001-1 > [0] Sent 1253
+dwm3001-4 > [WARN] Missed deadline for input at LT 1262450 ms
+dwm3001-8 > [7] No value at PT 1266872.5 ms and LT 1262650 ms
+dwm3001-1 > [0] Sent 1254
+dwm3001-8 > [7] Val 1254 (NIT: 535)
+dwm3001-1 > [0] Sent 1255
+dwm3001-8 > [7] Val 1255 (NIT: 535)
+dwm3001-1 > [0] Sent 1256
+dwm3001-8 > [7] Val 1256 (NIT: 535)
+dwm3001-1 > [0] Sent 1257
+dwm3001-8 > [7] Val 1257 (NIT: 535)
+dwm3001-1 > [0] Sent 1258
+dwm3001-8 > [7] Val 1258 (NIT: 535)
+dwm3001-1 > [0] Sent 1259
+dwm3001-8 > [7] Val 1259 (NIT: 535)
+dwm3001-1 > [0] Sent 1260
+dwm3001-8 > [7] Val 1260 (NIT: 535)
+dwm3001-1 > [0] Sent 1261
+dwm3001-8 > [7] Val 1261 (NIT: 535)
+dwm3001-1 > [0] Sent 1262
+dwm3001-8 > [7] Val 1262 (NIT: 535)
+dwm3001-1 > [0] Sent 1263
+dwm3001-8 > [7] No value at PT 1276872.9 ms and LT 1272650 ms
+dwm3001-8 > [WARN] Tardy at PT 1276885.0 ms and LT 1272650 ms
+dwm3001-1 > [0] Sent 1264
+dwm3001-8 > [7] No value at PT 1277872.7 ms and LT 1273650 ms
+dwm3001-8 > [WARN] Tardy at PT 1277930.6 ms and LT 1273650 ms
+dwm3001-1 > [0] Sent 1265
+dwm3001-8 > [7] No value at PT 1278872.0 ms and LT 1274650 ms
+dwm3001-8 > [WARN] Tardy at PT 1278916.1 ms and LT 1274650 ms
+dwm3001-1 > [0] Sent 1266
+dwm3001-8 > [7] Val 1266 (NIT: 538)
+dwm3001-1 > [0] Sent 1267
+dwm3001-8 > [7] Val 1267 (NIT: 538)
+dwm3001-1 > [0] Sent 1268
+dwm3001-8 > [7] Val 1268 (NIT: 538)
+dwm3001-1 > [0] Sent 1269
+dwm3001-8 > [7] No value at PT 1282872.4 ms and LT 1278650 ms
+dwm3001-8 > [WARN] Tardy at PT 1282877.3 ms and LT 1278650 ms
+dwm3001-1 > [0] Sent 1270
+dwm3001-8 > [7] Val 1270 (NIT: 539)
+dwm3001-1 > [0] Sent 1271
+dwm3001-8 > [7] Val 1271 (NIT: 539)
+dwm3001-1 > [0] Sent 1272
+dwm3001-8 > [7] Val 1272 (NIT: 539)
+dwm3001-1 > [0] Sent 1273
+dwm3001-8 > [7] Val 1273 (NIT: 539)
+dwm3001-1 > [0] Sent 1274
+dwm3001-8 > [7] Val 1274 (NIT: 539)
+dwm3001-1 > [0] Sent 1275
+dwm3001-8 > [7] Val 1275 (NIT: 539)
+dwm3001-1 > [0] Sent 1276
+dwm3001-8 > [7] No value at PT 1289872.8 ms and LT 1285650 ms
+dwm3001-8 > [WARN] Tardy at PT 1289886.9 ms and LT 1285650 ms
+dwm3001-1 > [0] Sent 1277
+dwm3001-8 > [7] Val 1277 (NIT: 540)
+dwm3001-1 > [0] Sent 1278
+dwm3001-8 > [7] Val 1278 (NIT: 540)
+dwm3001-1 > [0] Sent 1279
+dwm3001-8 > [7] Val 1279 (NIT: 540)
+dwm3001-1 > [0] Sent 1280
+dwm3001-8 > [7] Val 1280 (NIT: 540)
+dwm3001-1 > [0] Sent 1281
+dwm3001-8 > [7] Val 1281 (NIT: 540)
+dwm3001-1 > [0] Sent 1282
+dwm3001-8 > [7] Val 1282 (NIT: 540)
+dwm3001-1 > [0] Sent 1283
+dwm3001-8 > [7] Val 1283 (NIT: 540)
+dwm3001-1 > [0] Sent 1284
+dwm3001-8 > [7] No value at PT 1297872.7 ms and LT 1293650 ms
+dwm3001-8 > [WARN] Tardy at PT 1297919.6 ms and LT 1293650 ms
+dwm3001-1 > [0] Sent 1285
+dwm3001-8 > [7] Val 1285 (NIT: 541)
+dwm3001-1 > [0] Sent 1286
+dwm3001-8 > [7] No value at PT 1299872.0 ms and LT 1295650 ms
+dwm3001-8 > [WARN] Tardy at PT 1299885.0 ms and LT 1295650 ms
+dwm3001-1 > [0] Sent 1287
+dwm3001-8 > [7] Val 1287 (NIT: 542)
+dwm3001-1 > [0] Sent 1288
+dwm3001-8 > [7] Val 1288 (NIT: 542)
+dwm3001-1 > [0] Sent 1289
+dwm3001-8 > [7] No value at PT 1302871.6 ms and LT 1298650 ms
+dwm3001-8 > [WARN] Tardy at PT 1302890.6 ms and LT 1298650 ms
+dwm3001-1 > [0] Sent 1290
+dwm3001-8 > [7] Val 1290 (NIT: 543)
+dwm3001-1 > [0] Sent 1291
+dwm3001-8 > [7] Val 1291 (NIT: 543)
+dwm3001-1 > [0] Sent 1292
+dwm3001-8 > [7] Val 1292 (NIT: 543)
+dwm3001-1 > [0] Sent 1293
+dwm3001-8 > [7] Val 1293 (NIT: 543)
+dwm3001-1 > [0] Sent 1294
+dwm3001-8 > [7] No value at PT 1307872.4 ms and LT 1303650 ms
+dwm3001-8 > [WARN] Tardy at PT 1307881.4 ms and LT 1303650 ms
+dwm3001-1 > [0] Sent 1295
+dwm3001-8 > [7] No value at PT 1308871.8 ms and LT 1304650 ms
+dwm3001-8 > [WARN] Tardy at PT 1308907.6 ms and LT 1304650 ms
+dwm3001-1 > [0] Sent 1296
+dwm3001-8 > [7] No value at PT 1309872.3 ms and LT 1305650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 1305600 ms
+dwm3001-1 > [0] Sent 1297
+dwm3001-8 > [7] No value at PT 1310872.5 ms and LT 1306650 ms
+dwm3001-8 > [WARN] Tardy at PT 1310919.4 ms and LT 1306650 ms
+dwm3001-1 > [0] Sent 1298
+dwm3001-8 > [7] Val 1298 (NIT: 547)
+dwm3001-1 > [0] Sent 1299
+dwm3001-8 > [7] Val 1299 (NIT: 547)
+dwm3001-1 > [0] Sent 1300
+dwm3001-8 > [7] No value at PT 1313872.6 ms and LT 1309650 ms
+dwm3001-8 > [WARN] Tardy at PT 1313899.5 ms and LT 1309650 ms
+dwm3001-1 > [0] Sent 1301
+dwm3001-8 > [7] No value at PT 1314871.7 ms and LT 1310650 ms
+dwm3001-8 > [WARN] Tardy at PT 1314910.5 ms and LT 1310650 ms
+dwm3001-1 > [0] Sent 1302
+dwm3001-8 > [7] Val 1302 (NIT: 549)
+dwm3001-1 > [0] Sent 1303
+dwm3001-8 > [7] Val 1303 (NIT: 549)
+dwm3001-1 > [0] Sent 1304
+dwm3001-8 > [7] Val 1304 (NIT: 549)
+dwm3001-1 > [0] Sent 1305
+dwm3001-8 > [7] Val 1305 (NIT: 549)
+dwm3001-1 > [0] Sent 1306
+dwm3001-8 > [7] Val 1306 (NIT: 549)
+dwm3001-1 > [0] Sent 1307
+dwm3001-8 > [7] Val 1307 (NIT: 549)
+dwm3001-1 > [0] Sent 1308
+dwm3001-8 > [7] Val 1308 (NIT: 549)
+dwm3001-1 > [0] Sent 1309
+dwm3001-8 > [7] Val 1309 (NIT: 549)
+dwm3001-1 > [0] Sent 1310
+dwm3001-8 > [7] Val 1310 (NIT: 549)
+dwm3001-1 > [0] Sent 1311
+dwm3001-8 > [7] Val 1311 (NIT: 549)
+dwm3001-1 > [0] Sent 1312
+dwm3001-8 > [7] Val 1312 (NIT: 549)
+dwm3001-1 > [0] Sent 1313
+dwm3001-8 > [7] Val 1313 (NIT: 549)
+dwm3001-1 > [0] Sent 1314
+dwm3001-8 > [7] Val 1314 (NIT: 549)
+dwm3001-1 > [0] Sent 1315
+dwm3001-8 > [7] Val 1315 (NIT: 549)
+dwm3001-1 > [0] Sent 1316
+dwm3001-8 > [7] Val 1316 (NIT: 549)
+dwm3001-1 > [0] Sent 1317
+dwm3001-8 > [7] Val 1317 (NIT: 549)
+dwm3001-1 > [0] Sent 1318
+dwm3001-8 > [7] Val 1318 (NIT: 549)
+dwm3001-1 > [0] Sent 1319
+dwm3001-8 > [7] Val 1319 (NIT: 549)
+dwm3001-1 > [0] Sent 1320
+dwm3001-8 > [7] Val 1320 (NIT: 549)
+dwm3001-1 > [0] Sent 1321
+dwm3001-8 > [7] No value at PT 1334872.1 ms and LT 1330650 ms
+dwm3001-8 > [WARN] Tardy at PT 1334888.0 ms and LT 1330650 ms
+dwm3001-1 > [0] Sent 1322
+dwm3001-8 > [7] No value at PT 1335872.0 ms and LT 1331650 ms
+dwm3001-8 > [WARN] Tardy at PT 1335895.9 ms and LT 1331650 ms
+dwm3001-1 > [0] Sent 1323
+dwm3001-8 > [7] Val 1323 (NIT: 551)
+dwm3001-1 > [0] Sent 1324
+dwm3001-8 > [7] No value at PT 1337872.4 ms and LT 1333650 ms
+dwm3001-8 > [WARN] Tardy at PT 1337882.6 ms and LT 1333650 ms
+dwm3001-1 > [0] Sent 1325
+dwm3001-8 > [7] Val 1325 (NIT: 552)
+dwm3001-1 > [0] Sent 1326
+dwm3001-8 > [7] Val 1326 (NIT: 552)
+dwm3001-1 > [0] Sent 1327
+dwm3001-8 > [7] Val 1327 (NIT: 552)
+dwm3001-1 > [0] Sent 1328
+dwm3001-8 > [7] Val 1328 (NIT: 552)
+dwm3001-1 > [0] Sent 1329
+dwm3001-8 > [7] Val 1329 (NIT: 552)
+dwm3001-1 > [0] Sent 1330
+dwm3001-8 > [7] Val 1330 (NIT: 552)
+dwm3001-1 > [0] Sent 1331
+dwm3001-8 > [7] Val 1331 (NIT: 552)
+dwm3001-1 > [0] Sent 1332
+dwm3001-8 > [7] Val 1332 (NIT: 552)
+dwm3001-1 > [0] Sent 1333
+dwm3001-8 > [7] Val 1333 (NIT: 552)
+dwm3001-1 > [0] Sent 1334
+dwm3001-8 > [7] Val 1334 (NIT: 552)
+dwm3001-1 > [0] Sent 1335
+dwm3001-8 > [7] Val 1335 (NIT: 552)
+dwm3001-1 > [0] Sent 1336
+dwm3001-8 > [7] Val 1336 (NIT: 552)
+dwm3001-1 > [0] Sent 1337
+dwm3001-8 > [7] Val 1337 (NIT: 552)
+dwm3001-1 > [0] Sent 1338
+dwm3001-8 > [7] Val 1338 (NIT: 552)
+dwm3001-1 > [0] Sent 1339
+dwm3001-8 > [7] Val 1339 (NIT: 552)
+dwm3001-1 > [0] Sent 1340
+dwm3001-8 > [7] Val 1340 (NIT: 552)
+dwm3001-1 > [0] Sent 1341
+dwm3001-8 > [7] Val 1341 (NIT: 552)
+dwm3001-1 > [0] Sent 1342
+dwm3001-8 > [7] Val 1342 (NIT: 552)
+dwm3001-1 > [0] Sent 1343
+dwm3001-8 > [7] Val 1343 (NIT: 552)
+dwm3001-1 > [0] Sent 1344
+dwm3001-8 > [7] Val 1344 (NIT: 552)
+dwm3001-1 > [0] Sent 1345
+dwm3001-8 > [7] Val 1345 (NIT: 552)
+dwm3001-1 > [0] Sent 1346
+dwm3001-8 > [7] Val 1346 (NIT: 552)
+dwm3001-1 > [0] Sent 1347
+dwm3001-8 > [7] Val 1347 (NIT: 552)
+dwm3001-1 > [0] Sent 1348
+dwm3001-8 > [7] Val 1348 (NIT: 552)
+dwm3001-1 > [0] Sent 1349
+dwm3001-8 > [7] Val 1349 (NIT: 552)
+dwm3001-1 > [0] Sent 1350
+dwm3001-8 > [7] Val 1350 (NIT: 552)
+dwm3001-1 > [0] Sent 1351
+dwm3001-8 > [7] Val 1351 (NIT: 552)
+dwm3001-1 > [0] Sent 1352
+dwm3001-8 > [7] Val 1352 (NIT: 552)
+dwm3001-1 > [0] Sent 1353
+dwm3001-8 > [7] Val 1353 (NIT: 552)
+dwm3001-1 > [0] Sent 1354
+dwm3001-8 > [7] Val 1354 (NIT: 552)
+dwm3001-1 > [0] Sent 1355
+dwm3001-8 > [7] Val 1355 (NIT: 552)
+dwm3001-1 > [0] Sent 1356
+dwm3001-8 > [7] Val 1356 (NIT: 552)
+dwm3001-1 > [0] Sent 1357
+dwm3001-8 > [7] Val 1357 (NIT: 552)
+dwm3001-1 > [0] Sent 1358
+dwm3001-8 > [7] Val 1358 (NIT: 552)
+dwm3001-1 > [0] Sent 1359
+dwm3001-8 > [7] Val 1359 (NIT: 552)
+dwm3001-1 > [0] Sent 1360
+dwm3001-8 > [7] Val 1360 (NIT: 552)
+dwm3001-1 > [0] Sent 1361
+dwm3001-8 > [7] Val 1361 (NIT: 552)
+dwm3001-1 > [0] Sent 1362
+dwm3001-8 > [7] Val 1362 (NIT: 552)
+dwm3001-1 > [0] Sent 1363
+dwm3001-8 > [7] Val 1363 (NIT: 552)
+dwm3001-1 > [0] Sent 1364
+dwm3001-8 > [7] Val 1364 (NIT: 552)
+dwm3001-1 > [0] Sent 1365
+dwm3001-8 > [7] Val 1365 (NIT: 552)
+dwm3001-1 > [0] Sent 1366
+dwm3001-8 > [7] Val 1366 (NIT: 552)
+dwm3001-1 > [0] Sent 1367
+dwm3001-8 > [7] Val 1367 (NIT: 552)
+dwm3001-1 > [0] Sent 1368
+dwm3001-8 > [7] Val 1368 (NIT: 552)
+dwm3001-1 > [0] Sent 1369
+dwm3001-8 > [7] Val 1369 (NIT: 552)
+dwm3001-1 > [0] Sent 1370
+dwm3001-8 > [7] Val 1370 (NIT: 552)
+dwm3001-1 > [0] Sent 1371
+dwm3001-8 > [7] Val 1371 (NIT: 552)
+dwm3001-1 > [0] Sent 1372
+dwm3001-8 > [7] Val 1372 (NIT: 552)
+dwm3001-1 > [0] Sent 1373
+dwm3001-8 > [7] Val 1373 (NIT: 552)
+dwm3001-1 > [0] Sent 1374
+dwm3001-8 > [7] Val 1374 (NIT: 552)
+dwm3001-1 > [0] Sent 1375
+dwm3001-8 > [7] Val 1375 (NIT: 552)
+dwm3001-1 > [0] Sent 1376
+dwm3001-8 > [7] Val 1376 (NIT: 552)
+dwm3001-1 > [0] Sent 1377
+dwm3001-8 > [7] Val 1377 (NIT: 552)
+dwm3001-1 > [0] Sent 1378
+dwm3001-8 > [7] Val 1378 (NIT: 552)
+dwm3001-1 > [0] Sent 1379
+dwm3001-8 > [7] Val 1379 (NIT: 552)
+dwm3001-1 > [0] Sent 1380
+dwm3001-8 > [7] Val 1380 (NIT: 552)
+dwm3001-1 > [0] Sent 1381
+dwm3001-8 > [7] Val 1381 (NIT: 552)
+dwm3001-1 > [0] Sent 1382
+dwm3001-8 > [7] Val 1382 (NIT: 552)
+dwm3001-1 > [0] Sent 1383
+dwm3001-8 > [7] Val 1383 (NIT: 552)
+dwm3001-1 > [0] Sent 1384
+dwm3001-8 > [7] Val 1384 (NIT: 552)
+dwm3001-1 > [0] Sent 1385
+dwm3001-8 > [7] No value at PT 1398872.2 ms and LT 1394650 ms
+dwm3001-8 > [WARN] Tardy at PT 1398898.0 ms and LT 1394650 ms
+dwm3001-1 > [0] Sent 1386
+dwm3001-8 > [7] Val 1386 (NIT: 553)
+dwm3001-1 > [0] Sent 1387
+dwm3001-8 > [7] Val 1387 (NIT: 553)
+dwm3001-1 > [0] Sent 1388
+dwm3001-8 > [7] Val 1388 (NIT: 553)
+dwm3001-1 > [0] Sent 1389
+dwm3001-8 > [7] Val 1389 (NIT: 553)
+dwm3001-1 > [0] Sent 1390
+dwm3001-8 > [7] Val 1390 (NIT: 553)
+dwm3001-1 > [0] Sent 1391
+dwm3001-8 > [7] Val 1391 (NIT: 553)
+dwm3001-1 > [0] Sent 1392
+dwm3001-8 > [7] Val 1392 (NIT: 553)
+dwm3001-1 > [0] Sent 1393
+dwm3001-8 > [7] Val 1393 (NIT: 553)
+dwm3001-1 > [0] Sent 1394
+dwm3001-8 > [7] Val 1394 (NIT: 553)
+dwm3001-1 > [0] Sent 1395
+dwm3001-8 > [7] Val 1395 (NIT: 553)
+dwm3001-1 > [0] Sent 1396
+dwm3001-8 > [7] Val 1396 (NIT: 553)
+dwm3001-1 > [0] Sent 1397
+dwm3001-8 > [7] Val 1397 (NIT: 553)
+dwm3001-1 > [0] Sent 1398
+dwm3001-8 > [7] Val 1398 (NIT: 553)
+dwm3001-1 > [0] Sent 1399
+dwm3001-8 > [7] Val 1399 (NIT: 553)
+dwm3001-1 > [0] Sent 1400
+dwm3001-8 > [7] Val 1400 (NIT: 553)
+dwm3001-1 > [0] Sent 1401
+dwm3001-8 > [7] Val 1401 (NIT: 553)
+dwm3001-1 > [0] Sent 1402
+dwm3001-8 > [7] Val 1402 (NIT: 553)
+dwm3001-1 > [0] Sent 1403
+dwm3001-8 > [7] Val 1403 (NIT: 553)
+dwm3001-1 > [0] Sent 1404
+dwm3001-8 > [7] Val 1404 (NIT: 553)
+dwm3001-1 > [0] Sent 1405
+dwm3001-8 > [7] Val 1405 (NIT: 553)
+dwm3001-1 > [0] Sent 1406
+dwm3001-8 > [7] Val 1406 (NIT: 553)
+dwm3001-1 > [0] Sent 1407
+dwm3001-8 > [7] No value at PT 1420872.5 ms and LT 1416650 ms
+dwm3001-8 > [WARN] Tardy at PT 1420897.4 ms and LT 1416650 ms
+dwm3001-1 > [0] Sent 1408
+dwm3001-8 > [7] Val 1408 (NIT: 554)
+dwm3001-1 > [0] Sent 1409
+dwm3001-4 > [WARN] Missed deadline for input at LT 1418450 ms
+dwm3001-8 > [7] No value at PT 1422872.3 ms and LT 1418650 ms
+dwm3001-1 > [0] Sent 1410
+dwm3001-8 > [7] Val 1410 (NIT: 555)
+dwm3001-1 > [0] Sent 1411
+dwm3001-8 > [7] Val 1411 (NIT: 555)
+dwm3001-1 > [0] Sent 1412
+dwm3001-8 > [7] Val 1412 (NIT: 555)
+dwm3001-1 > [0] Sent 1413
+dwm3001-8 > [7] Val 1413 (NIT: 555)
+dwm3001-1 > [0] Sent 1414
+dwm3001-8 > [7] Val 1414 (NIT: 555)
+dwm3001-1 > [0] Sent 1415
+dwm3001-8 > [7] Val 1415 (NIT: 555)
+dwm3001-1 > [0] Sent 1416
+dwm3001-8 > [7] Val 1416 (NIT: 555)
+dwm3001-1 > [0] Sent 1417
+dwm3001-8 > [7] Val 1417 (NIT: 555)
+dwm3001-1 > [0] Sent 1418
+dwm3001-8 > [7] Val 1418 (NIT: 555)
+dwm3001-1 > [0] Sent 1419
+dwm3001-5 > [WARN] Missed deadline for input at LT 1428500 ms
+dwm3001-8 > [7] No value at PT 1432872.3 ms and LT 1428650 ms
+dwm3001-1 > [0] Sent 1420
+dwm3001-8 > [7] Val 1420 (NIT: 556)
+dwm3001-1 > [0] Sent 1421
+dwm3001-8 > [7] Val 1421 (NIT: 556)
+dwm3001-1 > [0] Sent 1422
+dwm3001-8 > [7] Val 1422 (NIT: 556)
+dwm3001-1 > [0] Sent 1423
+dwm3001-8 > [7] Val 1423 (NIT: 556)
+dwm3001-1 > [0] Sent 1424
+dwm3001-8 > [7] Val 1424 (NIT: 556)
+dwm3001-1 > [0] Sent 1425
+dwm3001-8 > [7] Val 1425 (NIT: 556)
+dwm3001-1 > [0] Sent 1426
+dwm3001-8 > [7] Val 1426 (NIT: 556)
+dwm3001-1 > [0] Sent 1427
+dwm3001-8 > [7] Val 1427 (NIT: 556)
+dwm3001-1 > [0] Sent 1428
+dwm3001-8 > [7] Val 1428 (NIT: 556)
+dwm3001-1 > [0] Sent 1429
+dwm3001-8 > [7] Val 1429 (NIT: 556)
+dwm3001-1 > [0] Sent 1430
+dwm3001-8 > [7] Val 1430 (NIT: 556)
+dwm3001-1 > [0] Sent 1431
+dwm3001-8 > [7] Val 1431 (NIT: 556)
+dwm3001-1 > [0] Sent 1432
+dwm3001-8 > [7] Val 1432 (NIT: 556)
+dwm3001-1 > [0] Sent 1433
+dwm3001-8 > [7] No value at PT 1446872.5 ms and LT 1442650 ms
+dwm3001-8 > [WARN] Tardy at PT 1446885.1 ms and LT 1442650 ms
+dwm3001-1 > [0] Sent 1434
+dwm3001-8 > [7] No value at PT 1447872.0 ms and LT 1443650 ms
+dwm3001-8 > [WARN] Tardy at PT 1447883.8 ms and LT 1443650 ms
+dwm3001-1 > [0] Sent 1435
+dwm3001-8 > [7] No value at PT 1448872.1 ms and LT 1444650 ms
+dwm3001-8 > [WARN] Tardy at PT 1448896.1 ms and LT 1444650 ms
+dwm3001-1 > [0] Sent 1436
+dwm3001-8 > [7] Val 1436 (NIT: 559)
+dwm3001-1 > [0] Sent 1437
+dwm3001-8 > [7] Val 1437 (NIT: 559)
+dwm3001-1 > [0] Sent 1438
+dwm3001-5 > [WARN] Missed deadline for input at LT 1447500 ms
+dwm3001-8 > [7] No value at PT 1451872.7 ms and LT 1447650 ms
+dwm3001-1 > [0] Sent 1439
+dwm3001-4 > [WARN] Missed deadline for input at LT 1448450 ms
+dwm3001-8 > [7] No value at PT 1452871.8 ms and LT 1448650 ms
+dwm3001-1 > [0] Sent 1440
+dwm3001-8 > [7] Val 1440 (NIT: 561)
+dwm3001-1 > [0] Sent 1441
+dwm3001-8 > [7] No value at PT 1454872.7 ms and LT 1450650 ms
+dwm3001-8 > [WARN] Tardy at PT 1454881.5 ms and LT 1450650 ms
+dwm3001-1 > [0] Sent 1442
+dwm3001-8 > [7] Val 1442 (NIT: 562)
+dwm3001-1 > [0] Sent 1443
+dwm3001-8 > [7] Val 1443 (NIT: 562)
+dwm3001-1 > [0] Sent 1444
+dwm3001-8 > [7] Val 1444 (NIT: 562)
+dwm3001-1 > [0] Sent 1445
+dwm3001-8 > [7] Val 1445 (NIT: 562)
+dwm3001-1 > [0] Sent 1446
+dwm3001-8 > [7] No value at PT 1459871.9 ms and LT 1455650 ms
+dwm3001-8 > [WARN] Tardy at PT 1459946.7 ms and LT 1455650 ms
+dwm3001-1 > [0] Sent 1447
+dwm3001-8 > [7] No value at PT 1460872.4 ms and LT 1456650 ms
+dwm3001-8 > [WARN] Tardy at PT 1460893.0 ms and LT 1456650 ms
+dwm3001-1 > [0] Sent 1448
+dwm3001-8 > [7] Val 1448 (NIT: 564)
+dwm3001-1 > [0] Sent 1449
+dwm3001-8 > [7] Val 1449 (NIT: 564)
+dwm3001-1 > [0] Sent 1450
+dwm3001-8 > [7] Val 1450 (NIT: 564)
+dwm3001-1 > [0] Sent 1451
+dwm3001-8 > [7] No value at PT 1464872.1 ms and LT 1460650 ms
+dwm3001-8 > [WARN] Tardy at PT 1464877.4 ms and LT 1460650 ms
+dwm3001-1 > [0] Sent 1452
+dwm3001-8 > [7] No value at PT 1465872.3 ms and LT 1461650 ms
+dwm3001-8 > [WARN] Tardy at PT 1465880.2 ms and LT 1461650 ms
+dwm3001-1 > [0] Sent 1453
+dwm3001-8 > [7] No value at PT 1466872.3 ms and LT 1462650 ms
+dwm3001-8 > [WARN] Tardy at PT 1466904.9 ms and LT 1462650 ms
+dwm3001-1 > [0] Sent 1454
+dwm3001-8 > [7] Val 1454 (NIT: 567)
+dwm3001-1 > [0] Sent 1455
+dwm3001-8 > [7] Val 1455 (NIT: 567)
+dwm3001-1 > [0] Sent 1456
+dwm3001-8 > [7] Val 1456 (NIT: 567)
+dwm3001-1 > [0] Sent 1457
+dwm3001-3 > [WARN] Missed deadline for input at LT 1466400 ms
+dwm3001-8 > [7] No value at PT 1470872.7 ms and LT 1466650 ms
+dwm3001-1 > [0] Sent 1458
+dwm3001-8 > [7] No value at PT 1471872.0 ms and LT 1467650 ms
+dwm3001-8 > [WARN] Tardy at PT 1471877.0 ms and LT 1467650 ms
+dwm3001-1 > [0] Sent 1459
+dwm3001-8 > [7] Val 1459 (NIT: 569)
+dwm3001-1 > [0] Sent 1460
+dwm3001-8 > [7] No value at PT 1473872.7 ms and LT 1469650 ms
+dwm3001-8 > [WARN] Tardy at PT 1473893.7 ms and LT 1469650 ms
+dwm3001-1 > [0] Sent 1461
+dwm3001-8 > [7] Val 1461 (NIT: 570)
+dwm3001-1 > [0] Sent 1462
+dwm3001-8 > [7] Val 1462 (NIT: 570)
+dwm3001-1 > [0] Sent 1463
+dwm3001-8 > [7] Val 1463 (NIT: 570)
+dwm3001-1 > [0] Sent 1464
+dwm3001-8 > [7] Val 1464 (NIT: 570)
+dwm3001-1 > [0] Sent 1465
+dwm3001-8 > [7] No value at PT 1478871.8 ms and LT 1474650 ms
+dwm3001-8 > [WARN] Tardy at PT 1478906.6 ms and LT 1474650 ms
+dwm3001-1 > [0] Sent 1466
+dwm3001-8 > [7] No value at PT 1479871.4 ms and LT 1475650 ms
+dwm3001-8 > [WARN] Tardy at PT 1479914.3 ms and LT 1475650 ms
+dwm3001-1 > [0] Sent 1467
+dwm3001-8 > [7] Val 1467 (NIT: 572)
+dwm3001-1 > [0] Sent 1468
+dwm3001-8 > [7] Val 1468 (NIT: 572)
+dwm3001-1 > [0] Sent 1469
+dwm3001-8 > [7] Val 1469 (NIT: 572)
+dwm3001-1 > [0] Sent 1470
+dwm3001-7 > [WARN] Missed deadline for input at LT 1479600 ms
+dwm3001-8 > [7] No value at PT 1483872.6 ms and LT 1479650 ms
+dwm3001-1 > [0] Sent 1471
+dwm3001-8 > [7] No value at PT 1484872.2 ms and LT 1480650 ms
+dwm3001-8 > [WARN] Tardy at PT 1484884.2 ms and LT 1480650 ms
+dwm3001-1 > [0] Sent 1472
+dwm3001-8 > [7] No value at PT 1485872.6 ms and LT 1481650 ms
+dwm3001-8 > [WARN] Tardy at PT 1486193.4 ms and LT 1481650 ms
+dwm3001-1 > [0] Sent 1473
+dwm3001-8 > [7] No value at PT 1486871.9 ms and LT 1482650 ms
+dwm3001-8 > [WARN] Tardy at PT 1487235.9 ms and LT 1482650 ms
+dwm3001-1 > [0] Sent 1474
+dwm3001-3 > (1486614000000) [ERROR] [NET] RUdpIpChannel: 2001 packets sent, 539 retransmissions
+dwm3001-8 > [7] No value at PT 1487871.9 ms and LT 1483650 ms
+dwm3001-8 > [WARN] Tardy at PT 1487903.1 ms and LT 1483650 ms
+dwm3001-1 > [0] Sent 1475
+dwm3001-8 > [7] Val 1475 (NIT: 577)
+dwm3001-1 > [0] Sent 1476
+dwm3001-8 > [7] Val 1476 (NIT: 577)
+dwm3001-1 > [0] Sent 1477
+dwm3001-7 > [WARN] Missed deadline for input at LT 1486600 ms
+dwm3001-8 > [7] No value at PT 1490871.9 ms and LT 1486650 ms
+dwm3001-1 > [0] Sent 1478
+dwm3001-8 > [7] No value at PT 1491871.5 ms and LT 1487650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 1487600 ms
+dwm3001-1 > [0] Sent 1479
+dwm3001-8 > [7] No value at PT 1492872.3 ms and LT 1488650 ms
+dwm3001-2 > [WARN] Missed deadline for input at LT 1488350 ms
+dwm3001-8 > [7] No value at PT 1493872.5 ms and LT 1489650 ms
+dwm3001-1 > [0] Sent 1480
+dwm3001-7 > [WARN] Missed deadline for input at LT 1489600 ms
+dwm3001-8 > [7] No value at PT 1494872.7 ms and LT 1490650 ms
+dwm3001-1 > [0] Sent 1481
+dwm3001-7 > [WARN] Missed deadline for input at LT 1490600 ms
+dwm3001-8 > [7] No value at PT 1495872.5 ms and LT 1491650 ms
+dwm3001-1 > [0] Sent 1482
+dwm3001-8 > [WARN] Tardy at PT 1496163.0 ms and LT 1491650 ms
+dwm3001-1 > [0] Sent 1483
+dwm3001-8 > [7] No value at PT 1496871.3 ms and LT 1492650 ms
+dwm3001-8 > [WARN] Tardy at PT 1497012.1 ms and LT 1492650 ms
+dwm3001-1 > [0] Sent 1484
+dwm3001-8 > [7] No value at PT 1497871.7 ms and LT 1493650 ms
+dwm3001-8 > [WARN] Tardy at PT 1497956.2 ms and LT 1493650 ms
+dwm3001-1 > [0] Sent 1485
+dwm3001-8 > [7] No value at PT 1498872.1 ms and LT 1494650 ms
+dwm3001-8 > [WARN] Tardy at PT 1498909.0 ms and LT 1494650 ms
+dwm3001-1 > [0] Sent 1486
+dwm3001-8 > [7] No value at PT 1499872.0 ms and LT 1495650 ms
+dwm3001-8 > [WARN] Tardy at PT 1499894.7 ms and LT 1495650 ms
+dwm3001-1 > [0] Sent 1487
+dwm3001-8 > [7] No value at PT 1500871.5 ms and LT 1496650 ms
+dwm3001-8 > [WARN] Tardy at PT 1500895.2 ms and LT 1496650 ms
+dwm3001-1 > [0] Sent 1488
+dwm3001-8 > [7] No value at PT 1501871.9 ms and LT 1497650 ms
+dwm3001-8 > [WARN] Tardy at PT 1501889.7 ms and LT 1497650 ms
+dwm3001-1 > [0] Sent 1489
+dwm3001-8 > [7] Val 1489 (NIT: 589)
+dwm3001-1 > [0] Sent 1490
+dwm3001-8 > [7] Val 1490 (NIT: 589)
+dwm3001-1 > [0] Sent 1491
+dwm3001-8 > [7] Val 1491 (NIT: 589)
+dwm3001-1 > [0] Sent 1492
+dwm3001-8 > [7] Val 1492 (NIT: 589)
+dwm3001-1 > [0] Sent 1493
+dwm3001-8 > [7] No value at PT 1506871.7 ms and LT 1502650 ms
+dwm3001-8 > [WARN] Tardy at PT 1506951.7 ms and LT 1502650 ms
+dwm3001-1 > [0] Sent 1494
+dwm3001-8 > [7] Val 1494 (NIT: 590)
+dwm3001-1 > [0] Sent 1495
+dwm3001-8 > [7] Val 1495 (NIT: 590)
+dwm3001-1 > [0] Sent 1496
+dwm3001-8 > [7] Val 1496 (NIT: 590)
+dwm3001-1 > [0] Sent 1497
+dwm3001-8 > [7] No value at PT 1510871.5 ms and LT 1506650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 1506550 ms
+dwm3001-1 > [0] Sent 1498
+dwm3001-8 > [7] Val 1498 (NIT: 591)
+dwm3001-1 > [0] Sent 1499
+dwm3001-8 > [7] Val 1499 (NIT: 591)
+dwm3001-1 > [0] Sent 1500
+dwm3001-8 > [7] Val 1500 (NIT: 591)
+dwm3001-1 > [0] Sent 1501
+dwm3001-8 > [7] Val 1501 (NIT: 591)
+dwm3001-1 > [0] Sent 1502
+dwm3001-8 > [7] Val 1502 (NIT: 591)
+dwm3001-1 > [0] Sent 1503
+dwm3001-8 > [7] No value at PT 1516871.4 ms and LT 1512650 ms
+dwm3001-8 > [WARN] Tardy at PT 1516921.8 ms and LT 1512650 ms
+dwm3001-1 > [0] Sent 1504
+dwm3001-8 > [7] Val 1504 (NIT: 592)
+dwm3001-1 > [0] Sent 1505
+dwm3001-8 > [7] No value at PT 1518872.3 ms and LT 1514650 ms
+dwm3001-8 > [WARN] Tardy at PT 1518890.4 ms and LT 1514650 ms
+dwm3001-1 > [0] Sent 1506
+dwm3001-8 > [7] No value at PT 1519871.4 ms and LT 1515650 ms
+dwm3001-8 > [WARN] Tardy at PT 1519960.4 ms and LT 1515650 ms
+dwm3001-1 > [0] Sent 1507
+dwm3001-8 > [7] Val 1507 (NIT: 594)
+dwm3001-1 > [0] Sent 1508
+dwm3001-8 > [7] Val 1508 (NIT: 594)
+dwm3001-1 > [0] Sent 1509
+dwm3001-8 > [7] Val 1509 (NIT: 594)
+dwm3001-1 > [0] Sent 1510
+dwm3001-8 > [7] No value at PT 1523872.1 ms and LT 1519650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 1519600 ms
+dwm3001-1 > [0] Sent 1511
+dwm3001-8 > [7] No value at PT 1524872.3 ms and LT 1520650 ms
+dwm3001-8 > [WARN] Tardy at PT 1524905.5 ms and LT 1520650 ms
+dwm3001-1 > [0] Sent 1512
+dwm3001-8 > [7] No value at PT 1525871.7 ms and LT 1521650 ms
+dwm3001-8 > [WARN] Tardy at PT 1526008.1 ms and LT 1521650 ms
+dwm3001-1 > [0] Sent 1513
+dwm3001-8 > [7] No value at PT 1526872.1 ms and LT 1522650 ms
+dwm3001-8 > [WARN] Tardy at PT 1526919.7 ms and LT 1522650 ms
+dwm3001-1 > [0] Sent 1514
+dwm3001-8 > [7] Val 1514 (NIT: 598)
+dwm3001-1 > [0] Sent 1515
+dwm3001-8 > [7] Val 1515 (NIT: 598)
+dwm3001-1 > [0] Sent 1516
+dwm3001-8 > [7] Val 1516 (NIT: 598)
+dwm3001-1 > [0] Sent 1517
+dwm3001-8 > [7] Val 1517 (NIT: 598)
+dwm3001-1 > [0] Sent 1518
+dwm3001-8 > [7] No value at PT 1531872.0 ms and LT 1527650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 1527550 ms
+dwm3001-1 > [0] Sent 1519
+dwm3001-8 > [7] No value at PT 1532876.9 ms and LT 1528650 ms
+dwm3001-8 > [WARN] Tardy at PT 1532896.1 ms and LT 1528650 ms
+dwm3001-1 > [0] Sent 1520
+dwm3001-8 > [7] Val 1520 (NIT: 600)
+dwm3001-1 > [0] Sent 1521
+dwm3001-8 > [7] Val 1521 (NIT: 600)
+dwm3001-1 > [0] Sent 1522
+dwm3001-8 > [7] Val 1522 (NIT: 600)
+dwm3001-1 > [0] Sent 1523
+dwm3001-8 > [7] Val 1523 (NIT: 600)
+dwm3001-1 > [0] Sent 1524
+dwm3001-8 > [7] Val 1524 (NIT: 600)
+dwm3001-1 > [0] Sent 1525
+dwm3001-8 > [7] Val 1525 (NIT: 600)
+dwm3001-1 > [0] Sent 1526
+dwm3001-8 > [7] Val 1526 (NIT: 600)
+dwm3001-1 > [0] Sent 1527
+dwm3001-8 > [7] Val 1527 (NIT: 600)
+dwm3001-1 > [0] Sent 1528
+dwm3001-8 > [7] Val 1528 (NIT: 600)
+dwm3001-1 > [0] Sent 1529
+dwm3001-8 > [7] Val 1529 (NIT: 600)
+dwm3001-1 > [0] Sent 1530
+dwm3001-8 > [7] Val 1530 (NIT: 600)
+dwm3001-1 > [0] Sent 1531
+dwm3001-8 > [7] Val 1531 (NIT: 600)
+dwm3001-1 > [0] Sent 1532
+dwm3001-8 > [7] Val 1532 (NIT: 600)
+dwm3001-1 > [0] Sent 1533
+dwm3001-8 > [7] Val 1533 (NIT: 600)
+dwm3001-1 > [0] Sent 1534
+dwm3001-8 > [7] Val 1534 (NIT: 600)
+dwm3001-1 > [0] Sent 1535
+dwm3001-8 > [7] Val 1535 (NIT: 600)
+dwm3001-1 > [0] Sent 1536
+dwm3001-8 > [7] No value at PT 1549872.5 ms and LT 1545650 ms
+dwm3001-8 > [WARN] Tardy at PT 1549898.5 ms and LT 1545650 ms
+dwm3001-1 > [0] Sent 1537
+dwm3001-8 > [7] No value at PT 1550872.1 ms and LT 1546650 ms
+dwm3001-8 > [WARN] Tardy at PT 1551009.3 ms and LT 1546650 ms
+dwm3001-1 > [0] Sent 1538
+dwm3001-8 > [7] Val 1538 (NIT: 602)
+dwm3001-1 > [0] Sent 1539
+dwm3001-8 > [7] Val 1539 (NIT: 602)
+dwm3001-1 > [0] Sent 1540
+dwm3001-8 > [7] Val 1540 (NIT: 602)
+dwm3001-1 > [0] Sent 1541
+dwm3001-8 > [7] Val 1541 (NIT: 602)
+dwm3001-1 > [0] Sent 1542
+dwm3001-8 > [7] Val 1542 (NIT: 602)
+dwm3001-1 > [0] Sent 1543
+dwm3001-8 > [7] Val 1543 (NIT: 602)
+dwm3001-1 > [0] Sent 1544
+dwm3001-8 > [7] Val 1544 (NIT: 602)
+dwm3001-1 > [0] Sent 1545
+dwm3001-8 > [7] Val 1545 (NIT: 602)
+dwm3001-1 > [0] Sent 1546
+dwm3001-8 > [7] Val 1546 (NIT: 602)
+dwm3001-1 > [0] Sent 1547
+dwm3001-8 > [7] Val 1547 (NIT: 602)
+dwm3001-1 > [0] Sent 1548
+dwm3001-8 > [7] Val 1548 (NIT: 602)
+dwm3001-1 > [0] Sent 1549
+dwm3001-8 > [7] Val 1549 (NIT: 602)
+dwm3001-1 > [0] Sent 1550
+dwm3001-8 > [7] Val 1550 (NIT: 602)
+dwm3001-1 > [0] Sent 1551
+dwm3001-8 > [7] Val 1551 (NIT: 602)
+dwm3001-1 > [0] Sent 1552
+dwm3001-8 > [7] Val 1552 (NIT: 602)
+dwm3001-1 > [0] Sent 1553
+dwm3001-8 > [7] Val 1553 (NIT: 602)
+dwm3001-1 > [0] Sent 1554
+dwm3001-8 > [7] Val 1554 (NIT: 602)
+dwm3001-1 > [0] Sent 1555
+dwm3001-8 > [7] Val 1555 (NIT: 602)
+dwm3001-1 > [0] Sent 1556
+dwm3001-8 > [7] Val 1556 (NIT: 602)
+dwm3001-1 > [0] Sent 1557
+dwm3001-8 > [7] Val 1557 (NIT: 602)
+dwm3001-1 > [0] Sent 1558
+dwm3001-8 > [7] Val 1558 (NIT: 602)
+dwm3001-1 > [0] Sent 1559
+dwm3001-8 > [7] Val 1559 (NIT: 602)
+dwm3001-1 > [0] Sent 1560
+dwm3001-8 > [7] Val 1560 (NIT: 602)
+dwm3001-1 > [0] Sent 1561
+dwm3001-8 > [7] Val 1561 (NIT: 602)
+dwm3001-1 > [0] Sent 1562
+dwm3001-8 > [7] Val 1562 (NIT: 602)
+dwm3001-1 > [0] Sent 1563
+dwm3001-8 > [7] Val 1563 (NIT: 602)
+dwm3001-1 > [0] Sent 1564
+dwm3001-8 > [7] Val 1564 (NIT: 602)
+dwm3001-1 > [0] Sent 1565
+dwm3001-8 > [7] Val 1565 (NIT: 602)
+dwm3001-1 > [0] Sent 1566
+dwm3001-8 > [7] Val 1566 (NIT: 602)
+dwm3001-1 > [0] Sent 1567
+dwm3001-8 > [7] Val 1567 (NIT: 602)
+dwm3001-1 > [0] Sent 1568
+dwm3001-8 > [7] Val 1568 (NIT: 602)
+dwm3001-1 > [0] Sent 1569
+dwm3001-8 > [7] Val 1569 (NIT: 602)
+dwm3001-1 > [0] Sent 1570
+dwm3001-8 > [7] Val 1570 (NIT: 602)
+dwm3001-1 > [0] Sent 1571
+dwm3001-8 > [7] Val 1571 (NIT: 602)
+dwm3001-1 > [0] Sent 1572
+dwm3001-8 > [7] Val 1572 (NIT: 602)
+dwm3001-1 > [0] Sent 1573
+dwm3001-8 > [7] Val 1573 (NIT: 602)
+dwm3001-1 > [0] Sent 1574
+dwm3001-8 > [7] Val 1574 (NIT: 602)
+dwm3001-1 > [0] Sent 1575
+dwm3001-8 > [7] Val 1575 (NIT: 602)
+dwm3001-1 > [0] Sent 1576
+dwm3001-8 > [7] Val 1576 (NIT: 602)
+dwm3001-1 > [0] Sent 1577
+dwm3001-8 > [7] Val 1577 (NIT: 602)
+dwm3001-1 > [0] Sent 1578
+dwm3001-8 > [7] Val 1578 (NIT: 602)
+dwm3001-1 > [0] Sent 1579
+dwm3001-8 > [7] Val 1579 (NIT: 602)
+dwm3001-1 > [0] Sent 1580
+dwm3001-5 > [WARN] Missed deadline for input at LT 1589500 ms
+dwm3001-8 > [7] No value at PT 1593872.3 ms and LT 1589650 ms
+dwm3001-1 > [0] Sent 1581
+dwm3001-8 > [7] Val 1581 (NIT: 603)
+dwm3001-1 > [0] Sent 1582
+dwm3001-8 > [7] Val 1582 (NIT: 603)
+dwm3001-1 > [0] Sent 1583
+dwm3001-8 > [7] Val 1583 (NIT: 603)
+dwm3001-1 > [0] Sent 1584
+dwm3001-8 > [7] Val 1584 (NIT: 603)
+dwm3001-1 > [0] Sent 1585
+dwm3001-8 > [7] Val 1585 (NIT: 603)
+dwm3001-1 > [0] Sent 1586
+dwm3001-8 > [7] Val 1586 (NIT: 603)
+dwm3001-1 > [0] Sent 1587
+dwm3001-8 > [7] Val 1587 (NIT: 603)
+dwm3001-1 > [0] Sent 1588
+dwm3001-8 > [7] Val 1588 (NIT: 603)
+dwm3001-1 > [0] Sent 1589
+dwm3001-8 > [7] Val 1589 (NIT: 603)
+dwm3001-1 > [0] Sent 1590
+dwm3001-8 > [7] Val 1590 (NIT: 603)
+dwm3001-1 > [0] Sent 1591
+dwm3001-8 > [7] Val 1591 (NIT: 603)
+dwm3001-1 > [0] Sent 1592
+dwm3001-8 > [7] Val 1592 (NIT: 603)
+dwm3001-1 > [0] Sent 1593
+dwm3001-8 > [7] Val 1593 (NIT: 603)
+dwm3001-1 > [0] Sent 1594
+dwm3001-8 > [7] Val 1594 (NIT: 603)
+dwm3001-1 > [0] Sent 1595
+dwm3001-8 > [7] Val 1595 (NIT: 603)
+dwm3001-1 > [0] Sent 1596
+dwm3001-8 > [7] Val 1596 (NIT: 603)
+dwm3001-1 > [0] Sent 1597
+dwm3001-8 > [7] Val 1597 (NIT: 603)
+dwm3001-1 > [0] Sent 1598
+dwm3001-8 > [7] Val 1598 (NIT: 603)
+dwm3001-1 > [0] Sent 1599
+dwm3001-8 > [7] Val 1599 (NIT: 603)
+dwm3001-1 > [0] Sent 1600
+dwm3001-8 > [7] Val 1600 (NIT: 603)
+dwm3001-1 > [0] Sent 1601
+dwm3001-8 > [7] Val 1601 (NIT: 603)
+dwm3001-1 > [0] Sent 1602
+dwm3001-8 > [7] Val 1602 (NIT: 603)
+dwm3001-1 > [0] Sent 1603
+dwm3001-2 > [WARN] Missed deadline for input at LT 1612350 ms
+dwm3001-8 > [7] No value at PT 1616871.2 ms and LT 1612650 ms
+dwm3001-1 > [0] Sent 1604
+dwm3001-8 > [7] Val 1604 (NIT: 604)
+dwm3001-1 > [0] Sent 1605
+dwm3001-8 > [7] Val 1605 (NIT: 604)
+dwm3001-1 > [0] Sent 1606
+dwm3001-8 > [7] Val 1606 (NIT: 604)
+dwm3001-1 > [0] Sent 1607
+dwm3001-8 > [7] Val 1607 (NIT: 604)
+dwm3001-1 > [0] Sent 1608
+dwm3001-8 > [7] Val 1608 (NIT: 604)
+dwm3001-1 > [0] Sent 1609
+dwm3001-8 > [7] Val 1609 (NIT: 604)
+dwm3001-1 > [0] Sent 1610
+dwm3001-8 > [7] Val 1610 (NIT: 604)
+dwm3001-1 > [0] Sent 1611
+dwm3001-8 > [7] Val 1611 (NIT: 604)
+dwm3001-1 > [0] Sent 1612
+dwm3001-8 > [7] Val 1612 (NIT: 604)
+dwm3001-1 > [0] Sent 1613
+dwm3001-3 > [WARN] Missed deadline for input at LT 1622400 ms
+dwm3001-8 > [7] No value at PT 1626872.5 ms and LT 1622650 ms
+dwm3001-1 > [0] Sent 1614
+dwm3001-8 > [7] Val 1614 (NIT: 605)
+dwm3001-1 > [0] Sent 1615
+dwm3001-8 > [7] Val 1615 (NIT: 605)
+dwm3001-1 > [0] Sent 1616
+dwm3001-2 > [WARN] Missed deadline for input at LT 1625350 ms
+dwm3001-8 > [7] No value at PT 1629872.5 ms and LT 1625650 ms
+dwm3001-1 > [0] Sent 1617
+dwm3001-8 > [7] Val 1617 (NIT: 606)
+dwm3001-1 > [0] Sent 1618
+dwm3001-8 > [7] Val 1618 (NIT: 606)
+dwm3001-1 > [0] Sent 1619
+dwm3001-8 > [7] Val 1619 (NIT: 606)
+dwm3001-1 > [0] Sent 1620
+dwm3001-8 > [7] Val 1620 (NIT: 606)
+dwm3001-1 > [0] Sent 1621
+dwm3001-8 > [7] Val 1621 (NIT: 606)
+dwm3001-1 > [0] Sent 1622
+dwm3001-8 > [7] No value at PT 1635871.4 ms and LT 1631650 ms
+dwm3001-8 > [WARN] Tardy at PT 1635915.1 ms and LT 1631650 ms
+dwm3001-1 > [0] Sent 1623
+dwm3001-8 > [7] No value at PT 1636872.0 ms and LT 1632650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 1632500 ms
+dwm3001-1 > [0] Sent 1624
+dwm3001-8 > [7] No value at PT 1637871.4 ms and LT 1633650 ms
+dwm3001-8 > [WARN] Tardy at PT 1637890.2 ms and LT 1633650 ms
+dwm3001-1 > [0] Sent 1625
+dwm3001-8 > [7] Val 1625 (NIT: 609)
+dwm3001-1 > [0] Sent 1626
+dwm3001-8 > [7] Val 1626 (NIT: 609)

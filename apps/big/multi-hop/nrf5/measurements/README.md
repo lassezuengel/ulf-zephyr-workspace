@@ -1,0 +1,3 @@
+- `nit`: Ratio of NIT vs total
+- `retransPeak`: Ratio of retransmissions vs total (peak node `X`)
+- `duplicates`: Ratio of duplicates vs total (for connection `X->Y`)

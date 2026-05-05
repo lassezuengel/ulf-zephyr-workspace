@@ -63,13 +63,13 @@ preamble {=
 
     state counter: int = 0;
 
-    timer t(0, 100 msec);
+    timer t(0, 40 msec);
     reaction(t) -> out {=
         self->counter++;
 
         interval_t Ts = lf_time_physical_elapsed();
 
-        if(self->counter % 5 == 0) {
+        if(self->counter % 20 == 0) {
             printf("[Source] Counter: %d\n (physical time: %lu ms)", self->counter, (unsigned long)Ts / 1000000);
         }
 
@@ -145,7 +145,7 @@ preamble {=
         }
 
         interval_t Ts = lf_time_physical_elapsed();
-        if(in->value % 5 == 0) {
+        if(in->value % 20 == 0) {
             printf("[Sink] Counter: %d\n (physical time: %lu ms)", in->value, (unsigned long)Ts / 1000000);
         }
     =}

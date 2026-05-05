@@ -1,0 +1,19 @@
+# Evaluates late packets and breaking determinism for RUDP and TCP
+# with RUDP retransmission delay of 50ms, TCP as low as possible (100ms-ish)
+
+nitRUDP,nitTCP
+0.000,0.06
+0.002,0.1
+0.000,0.04
+0.000,0.04
+0.004,0.06
+0.000,0.06
+0.000,0.05
+0.000,0.02
+0.002,0.09
+     ,0.05
+     ,0.11
+     ,0.00
+     ,0.06
+     ,
+     ,

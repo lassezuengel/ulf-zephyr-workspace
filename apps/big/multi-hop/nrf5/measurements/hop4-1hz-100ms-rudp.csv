@@ -1,0 +1,6 @@
+# Run of 500 packets
+
+nit,retransPeak,duplicates
+0.017,0.282,0.185
+0.007,0.274,0.186
+0.070,0.344,0.200

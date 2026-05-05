@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: Apache-2.0
+
+description: Decawave DW3000 802.15.4 UWB transceiver
+
+compatible: "decawave,dw3000"
+
+include: spi-device.yaml
+
+properties:
+  int-gpios:
+    type: phandle-array
+    required: true
+    description: |
+      Interrupt pin (active high).
+
+  reset-gpios:
+    type: phandle-array
+    required: true
+    description: |
+      Reset pin (active low).
+
+  wakeup-gpios:
+    type: phandle-array
+    required: false
+    description: Optional WAKEUP pin.
+
+  spi-pol-gpios:
+    type: phandle-array
+    required: false
+    description: Optional GPIO-controlled SPI polarity selection.
+
+  spi-pha-gpios:
+    type: phandle-array
+    required: false
+    description: Optional GPIO-controlled SPI phase selection.

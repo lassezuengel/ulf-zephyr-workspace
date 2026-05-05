@@ -19,7 +19,10 @@
 
 #include "dw3000.h"
 
-LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_WRN);
+LOG_MODULE_REGISTER(ieee802154_dw3000, CONFIG_IEEE802154_DW3000_LOG_LEVEL);
+
+#define LOG_SPARSITY_INF 1
+#define LOG_SPARSITY_WARN 1
 
 #define DW3000_FCS_LEN 2U
 #define DW3000_MAX_PHY_PACKET_SIZE 127U
@@ -504,7 +507,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 			rx_capture = dw3000_rx_capture_locked(dev, &ack_handled, &pkt_len);
 		} else if (status & (SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)) {
 			data->rx_err_cnt++;
-			if ((data->rx_err_cnt % 64U) == 0U) {
+			if ((data->rx_err_cnt % LOG_SPARSITY_INF) == 0U) {
 				LOG_INF("RX errors/timeouts=%u lo=0x%08x hi=0x%08x tx_entry=%u tx_attempt=%u tx_ok=%u tx_err=%u",
 					data->rx_err_cnt, status, dwt_readsysstatushi(),
 					data->tx_entry_cnt, data->tx_attempt_cnt,
@@ -535,8 +538,8 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 
     if (dw3000_rx_is_duplicate(data, data->rx_stage, pkt_len, false)) {
 			data->rx_dup_drop_cnt++;
-			if ((data->rx_dup_drop_cnt % 32U) == 0U) {
-				LOG_WRN("RX duplicate drops=%u submit=%u capture=%u", data->rx_dup_drop_cnt,
+			if ((data->rx_dup_drop_cnt % LOG_SPARSITY_INF) == 0U) {
+				LOG_INF("RX duplicate drops=%u submit=%u capture=%u", data->rx_dup_drop_cnt,
 					data->rx_submit_cnt, data->rx_capture_cnt);
 			}
 			continue;
@@ -552,7 +555,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 				(int32_t)data->rx_pkt_unref_cnt - (int32_t)data->rx_ok_cnt;
 
 			data->rx_nobuf_cnt++;
-			if ((data->rx_nobuf_cnt % 8U) == 0U) {
+			if ((data->rx_nobuf_cnt % LOG_SPARSITY_WARN) == 0U) {
 				uint64_t now_ts = k_uptime_get();
 				LOG_WRN("RX dropped (no net_pkt): cnt=%u len=%u alloc=%u rx_ok=%u unref=%u held=%d fastack=%u",
 					data->rx_nobuf_cnt, pkt_len, data->rx_pkt_alloc_cnt,
@@ -584,7 +587,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 
 			if (payload_hash == data->rx_last_payload_hash && pkt_len == data->rx_last_payload_len) {
 				data->rx_same_payload_submit_cnt++;
-				if ((data->rx_same_payload_submit_cnt % 32U) == 0U) {
+				if ((data->rx_same_payload_submit_cnt % LOG_SPARSITY_WARN) == 0U) {
 					LOG_WRN("RX repeated payload submits=%u capture=%u submit=%u len=%u",
 						data->rx_same_payload_submit_cnt,
 						data->rx_capture_cnt,
@@ -603,7 +606,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 		} else {
 			(void)dw3000_rx_is_duplicate(data, data->rx_stage, pkt_len, true);
 			data->rx_ok_cnt++;
-			if ((data->rx_ok_cnt % 16U) == 0U) {
+			if ((data->rx_ok_cnt % LOG_SPARSITY_INF) == 0U) {
 				LOG_INF("RX packets=%u capture=%u submit=%u", data->rx_ok_cnt,
 					data->rx_capture_cnt, data->rx_submit_cnt);
 			}
@@ -655,7 +658,7 @@ static int dw3000_set_channel(const struct device *dev, uint16_t channel)
 		return -EIO;
 	}
 
-	LOG_WRN("Channel set to %u", channel);
+	LOG_INF("Channel set to %u", channel);
 	k_mutex_unlock(&data->lock);
 
 	return 0;
@@ -727,7 +730,7 @@ static int dw3000_tx(const struct device *dev,
 	ARG_UNUSED(pkt);
 
 	data->tx_entry_cnt++;
-	if (data->tx_entry_cnt <= 4U || (data->tx_entry_cnt % 256U) == 0U) {
+	if (data->tx_entry_cnt <= 4U || (data->tx_entry_cnt % (4 * LOG_SPARSITY_INF)) == 0U) {
 		LOG_INF("TX entry=%u mode=%d frag=%p len=%u started=%ld",
 			data->tx_entry_cnt, mode, frag,
 			frag ? frag->len : 0U, atomic_get(&data->started));
@@ -762,7 +765,7 @@ static int dw3000_tx(const struct device *dev,
 	}
 
 	data->tx_attempt_cnt++;
-	if (data->tx_attempt_cnt <= 8U || (data->tx_attempt_cnt % 64U) == 0U) {
+	if (data->tx_attempt_cnt <= 8U || (data->tx_attempt_cnt % LOG_SPARSITY_INF) == 0U) {
 		LOG_INF("TX attempt=%u len=%u mode=%d", data->tx_attempt_cnt, frag->len, mode);
 	}
 
@@ -800,7 +803,7 @@ static int dw3000_tx(const struct device *dev,
 				ret = dwt_starttx(start_mode);
 			}
 		} else {
-			if (data->tx_entry_cnt <= 4U || (data->tx_entry_cnt % 256U) == 0U) {
+			if (data->tx_entry_cnt <= 4U || (data->tx_entry_cnt % (8 * LOG_SPARSITY_INF)) == 0U) {
 				LOG_WRN("TX using legacy direct dwt_* path");
 			}
 			ret = dwt_writetxdata((uint16_t)frag->len, frag->data, 0);
@@ -838,7 +841,7 @@ static int dw3000_tx(const struct device *dev,
 			if (status_lo & DWT_INT_TXFRS_BIT_MASK) {
 				dwt_writesysstatuslo(DWT_INT_TXFRS_BIT_MASK);
 				data->tx_ok_cnt++;
-				if ((data->tx_ok_cnt % 16U) == 0U) {
+				if ((data->tx_ok_cnt % LOG_SPARSITY_INF) == 0U) {
 					LOG_INF("TX packets=%u", data->tx_ok_cnt);
 				}
 				dw3000_reenable_rx_locked();

@@ -1,0 +1,74 @@
+target uC {
+  platform: {
+    name: Zephyr,
+    board: decawave_dwm3001cdk
+  },
+  net-interface: sicslowpan,
+  logging: warn,
+  clock-sync: on
+}
+
+preamble {=
+  #include "reactor-uc/reactor-c.h"
+=}
+
+reactor Source(bank_index: int = 0) {
+  output out: int
+
+  state counter: int = 0
+  timer t(10 sec, 100 msec)
+
+  reaction(t) -> out {=
+    k_msleep(self->bank_index * 25);
+
+    self->counter++;
+
+    lf_set(out, self->counter);
+
+    interval_t ts = lf_time_logical_elapsed();
+
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+  =}
+} /* Source */
+
+reactor Sink(in_width: int = 10) {
+  input[in_width] in: int
+
+  state count: int = 0
+
+  reaction(in) {=
+    interval_t ts = lf_time_logical_elapsed();
+    interval_t Ts = lf_time_physical_elapsed();
+
+    self->count++;
+
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+
+    if(self->count % 10 == 0) {
+      for (int i = 0; i < self->in_width; i++) {
+        if(lf_is_present(in[i])) {
+          printf("%d, ", in[i]->value);
+        } else {
+          printf("_, ");
+        }
+      }
+      printf("\n");
+    }
+  =} tardy {=
+    printf("[INFO] Tardy input received\n");
+  =}
+} /* Sink */
+
+federated reactor(n: int = 3) {
+  @interface_rudp()
+  src = new[n] Source();
+  @interface_rudp()
+  @grandmaster
+  snk = new Sink(in_width=n);
+
+  @buffer(20)
+  @max_pending_events(10)
+  src.out -> snk.in after 100 msec;
+}

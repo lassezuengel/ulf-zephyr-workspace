@@ -19,7 +19,7 @@
 #include <zephyr/sys/byteorder.h>
 #include <math.h>
 
-LOG_MODULE_REGISTER(uwb_driver_dw3000, LOG_LEVEL_INF);
+LOG_MODULE_REGISTER(uwb_driver_dw3000, CONFIG_IEEE802154_DW3000_LOG_LEVEL);
 
 // DW3000 IRQ states matching DW1000
 #define DW3000_IRQ_NONE 0
@@ -218,7 +218,7 @@ static void dw3000_irq_work_handler(struct k_work *item)
         } else {
             // No buffer has valid data - use default
             ctx->current_rx_buffer = DW3000_BUFFER_ACCESS_DEFAULT;
-            printk("DW3000_ISR_WARNING: No RXFCG bits set (RDB_STATUS=0x%02x), using default\n", rdb_status);
+            LOG_WRN("DW3000_ISR_WARNING: No RXFCG bits set (RDB_STATUS=0x%02x), using default\n", rdb_status);
         }
 
         // Clear RX good interrupt in main SYS_STATUS register
@@ -400,7 +400,7 @@ static void dw3000_read_rx_frame(const struct device *dev, uint8_t *frame_buffer
             dwt_readfromdevice(INDIRECT_POINTER_A_ID, 0U, frame_length, frame_buffer);
         }
     } else {
-        printk("DW3000_RX_FRAME_ERROR: Invalid read parameters (offset=%d + length=%d > 2048)\n",
+        LOG_ERR("DW3000_RX_FRAME_ERROR: Invalid read parameters (offset=%d + length=%d > 2048)\n",
                offset, frame_length);
     }
 }

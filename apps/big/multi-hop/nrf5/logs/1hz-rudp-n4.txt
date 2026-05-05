@@ -1,0 +1,325 @@
+dwm3001-4 > [3] No value at PT 13526.3 ms and LT 10450 ms
+dwm3001-4 > [WARN] Tardy at PT 13544.8 ms and LT 10450 ms
+dwm3001-4 > [3] No value at PT 14526.4 ms and LT 11450 ms
+dwm3001-4 > [WARN] Tardy at PT 14603.6 ms and LT 11450 ms
+dwm3001-4 > [3] No value at PT 15526.1 ms and LT 12450 ms
+dwm3001-4 > [WARN] Tardy at PT 15579.3 ms and LT 12450 ms
+dwm3001-2 > (17493000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=11.3 ms abs max=14.0 ms offset avg=-0.0 ms abs max=30.2 ms
+dwm3001-4 > (18541000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.8 ms abs max=12.3 ms offset avg=6.6 ms abs max=120.4 ms
+dwm3001-3 > (19527000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=11.8 ms offset avg=2.0 ms abs max=113.5 ms
+dwm3001-1 > [0] Sent 10
+dwm3001-4 > [3] Val 10 (NIT: 3)
+dwm3001-4 > [3] No value at PT 23527.7 ms and LT 20450 ms
+dwm3001-4 > [WARN] Tardy at PT 23582.5 ms and LT 20450 ms
+dwm3001-1 > [0] Sent 20
+dwm3001-4 > [3] Val 20 (NIT: 4)
+dwm3001-3 > (32609000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=12.0 ms offset avg=-2.1 ms abs max=11.5 ms
+dwm3001-4 > (33587000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.7 ms abs max=13.9 ms offset avg=-6.2 ms abs max=24.5 ms
+dwm3001-2 > (36578000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=12.0 ms offset avg=0.1 ms abs max=2.7 ms
+dwm3001-1 > [0] Sent 30
+dwm3001-4 > [3] Val 30 (NIT: 4)
+dwm3001-4 > (43644000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=11.0 ms offset avg=-0.3 ms abs max=4.1 ms
+dwm3001-3 > (44673000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.6 ms abs max=12.0 ms offset avg=0.3 ms abs max=2.5 ms
+dwm3001-2 > (48639000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.6 ms abs max=12.0 ms offset avg=-0.0 ms abs max=2.2 ms
+dwm3001-1 > [0] Sent 40
+dwm3001-4 > [3] Val 40 (NIT: 4)
+dwm3001-4 > (53688000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.8 ms abs max=11.0 ms offset avg=-0.1 ms abs max=3.0 ms
+dwm3001-4 > [3] No value at PT 55526.7 ms and LT 52450 ms
+dwm3001-4 > [WARN] Tardy at PT 55545.7 ms and LT 52450 ms
+dwm3001-3 > (54723000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.0 ms abs max=11.0 ms offset avg=-0.3 ms abs max=1.7 ms
+dwm3001-2 > (60694000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.5 ms abs max=12.0 ms offset avg=0.0 ms abs max=2.1 ms
+dwm3001-1 > [0] Sent 50
+dwm3001-4 > [3] Val 50 (NIT: 5)
+dwm3001-4 > (63732000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.1 ms abs max=11.0 ms offset avg=0.1 ms abs max=1.1 ms
+dwm3001-3 > (64765000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.2 ms abs max=10.0 ms offset avg=0.1 ms abs max=1.1 ms
+dwm3001-2 > (70743000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.4 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.5 ms
+dwm3001-1 > [0] Sent 60
+dwm3001-4 > [3] Val 60 (NIT: 5)
+dwm3001-4 > (73785000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.1 ms abs max=12.0 ms offset avg=-0.1 ms abs max=2.7 ms
+dwm3001-3 > (75825000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=11.0 ms offset avg=-0.2 ms abs max=1.9 ms
+dwm3001-2 > (80795000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.7 ms abs max=12.0 ms offset avg=0.2 ms abs max=2.0 ms
+dwm3001-1 > [0] Sent 70
+dwm3001-4 > [3] Val 70 (NIT: 5)
+dwm3001-4 > (83832000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.1 ms abs max=12.0 ms offset avg=0.1 ms abs max=2.3 ms
+dwm3001-3 > (85871000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.7 ms abs max=11.0 ms offset avg=0.1 ms abs max=2.0 ms
+dwm3001-2 > (90847000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=12.0 ms offset avg=-0.2 ms abs max=1.4 ms
+dwm3001-1 > [0] Sent 80
+dwm3001-4 > [3] Val 80 (NIT: 5)
+dwm3001-4 > (93882000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.9 ms abs max=11.0 ms offset avg=-0.3 ms abs max=4.0 ms
+dwm3001-3 > (95919000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.9 ms abs max=11.0 ms offset avg=0.1 ms abs max=1.6 ms
+dwm3001-1 > [0] Sent 90
+dwm3001-4 > [3] Val 90 (NIT: 5)
+dwm3001-2 > (102907000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.4 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.6 ms
+dwm3001-4 > (103927000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=12.0 ms offset avg=-0.1 ms abs max=3.3 ms
+dwm3001-3 > (105969000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.8 ms abs max=11.0 ms offset avg=-0.0 ms abs max=2.6 ms
+dwm3001-1 > [0] Sent 100
+dwm3001-4 > [3] Val 100 (NIT: 5)
+dwm3001-2 > (112949000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=13.0 ms offset avg=0.1 ms abs max=2.0 ms
+dwm3001-4 > (113974000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.9 ms abs max=12.0 ms offset avg=0.3 ms abs max=2.6 ms
+dwm3001-3 > (119032000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=11.0 ms offset avg=0.2 ms abs max=2.4 ms
+dwm3001-1 > [0] Sent 110
+dwm3001-4 > [3] Val 110 (NIT: 5)
+dwm3001-2 > (124001000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.9 ms abs max=12.0 ms offset avg=0.0 ms abs max=2.4 ms
+dwm3001-4 > (125035000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.9 ms abs max=12.0 ms offset avg=0.1 ms abs max=2.8 ms
+dwm3001-3 > (131092000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=12.0 ms offset avg=0.2 ms abs max=3.3 ms
+dwm3001-1 > [0] Sent 120
+dwm3001-4 > [3] Val 120 (NIT: 5)
+dwm3001-2 > (134049000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.0 ms abs max=12.0 ms offset avg=-0.0 ms abs max=1.8 ms
+dwm3001-4 > [3] No value at PT 138526.2 ms and LT 135450 ms
+dwm3001-4 > [WARN] Tardy at PT 138550.2 ms and LT 135450 ms
+dwm3001-4 > (138085000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=13.0 ms offset avg=-0.2 ms abs max=6.0 ms
+dwm3001-1 > [0] Sent 130
+dwm3001-4 > [3] Val 130 (NIT: 6)
+dwm3001-3 > (142149000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.4 ms abs max=12.0 ms offset avg=-0.4 ms abs max=2.2 ms
+dwm3001-2 > (144094000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.9 ms abs max=12.0 ms offset avg=0.0 ms abs max=1.0 ms
+dwm3001-4 > (148143000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.1 ms abs max=13.0 ms offset avg=0.2 ms abs max=2.6 ms
+dwm3001-1 > [0] Sent 140
+dwm3001-4 > [3] Val 140 (NIT: 6)
+dwm3001-3 > (153200000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.0 ms abs max=13.0 ms offset avg=0.1 ms abs max=2.0 ms
+dwm3001-2 > (155148000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.8 ms abs max=13.0 ms offset avg=-0.1 ms abs max=1.2 ms
+dwm3001-4 > (160198000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=11.2 ms abs max=21.0 ms offset avg=0.2 ms abs max=3.9 ms
+dwm3001-1 > [0] Sent 150
+dwm3001-4 > [3] Val 150 (NIT: 6)
+dwm3001-3 > (163250000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.7 ms abs max=12.0 ms offset avg=0.0 ms abs max=2.3 ms
+dwm3001-2 > (166202000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=12.0 ms offset avg=0.0 ms abs max=2.4 ms
+dwm3001-4 > (171253000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.9 ms abs max=11.0 ms offset avg=0.1 ms abs max=3.3 ms
+dwm3001-1 > [0] Sent 160
+dwm3001-4 > [3] Val 160 (NIT: 6)
+dwm3001-3 > (173291000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.1 ms abs max=12.0 ms offset avg=-0.1 ms abs max=2.5 ms
+dwm3001-2 > (176245000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.5 ms abs max=12.0 ms offset avg=0.1 ms abs max=1.8 ms
+dwm3001-4 > (181298000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.5 ms abs max=13.0 ms offset avg=-0.3 ms abs max=4.7 ms
+dwm3001-1 > [0] Sent 170
+dwm3001-4 > [3] Val 170 (NIT: 6)
+dwm3001-3 > (183340000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.4 ms abs max=11.0 ms offset avg=0.1 ms abs max=3.8 ms
+dwm3001-2 > (186299000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.5 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.9 ms
+dwm3001-1 > [0] Sent 180
+dwm3001-4 > [3] Val 180 (NIT: 6)
+dwm3001-4 > [3] No value at PT 193526.7 ms and LT 190450 ms
+dwm3001-4 > [WARN] Tardy at PT 193549.8 ms and LT 190450 ms
+dwm3001-3 > (193384000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.4 ms abs max=12.0 ms offset avg=-0.1 ms abs max=2.8 ms
+dwm3001-4 > (195362000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.0 ms abs max=13.0 ms offset avg=0.0 ms abs max=1.9 ms
+dwm3001-2 > (196345000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.6 ms abs max=12.0 ms offset avg=0.2 ms abs max=1.8 ms
+dwm3001-4 > [3] No value at PT 198526.1 ms and LT 195450 ms
+dwm3001-4 > [WARN] Tardy at PT 198536.1 ms and LT 195450 ms
+dwm3001-4 > [3] No value at PT 200526.1 ms and LT 197450 ms
+dwm3001-4 > [WARN] Tardy at PT 200551.2 ms and LT 197450 ms
+dwm3001-1 > [0] Sent 190
+dwm3001-4 > [3] Val 190 (NIT: 9)
+dwm3001-4 > [3] No value at PT 207526.6 ms and LT 204450 ms
+dwm3001-4 > [WARN] Tardy at PT 207543.8 ms and LT 204450 ms
+dwm3001-2 > (207407000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.6 ms abs max=16.0 ms offset avg=-0.2 ms abs max=1.5 ms
+dwm3001-3 > (209468000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.5 ms abs max=13.0 ms offset avg=-0.0 ms abs max=6.8 ms
+dwm3001-4 > [3] No value at PT 210526.0 ms and LT 207450 ms
+dwm3001-2 > [WARN] Missed deadline for input at LT 207350 ms
+dwm3001-1 > [0] Sent 200
+dwm3001-4 > [3] Val 200 (NIT: 11)
+dwm3001-4 > [3] No value at PT 216526.0 ms and LT 213450 ms
+dwm3001-4 > [WARN] Tardy at PT 216575.2 ms and LT 213450 ms
+dwm3001-4 > [3] No value at PT 217525.7 ms and LT 214450 ms
+dwm3001-4 > [WARN] Tardy at PT 217578.8 ms and LT 214450 ms
+dwm3001-4 > (217493000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=12.0 ms offset avg=-3.9 ms abs max=37.5 ms
+dwm3001-4 > [3] No value at PT 220526.2 ms and LT 217450 ms
+dwm3001-4 > [WARN] Tardy at PT 220544.7 ms and LT 217450 ms
+dwm3001-1 > [0] Sent 210
+dwm3001-4 > [3] No value at PT 222526.7 ms and LT 219450 ms
+dwm3001-4 > [WARN] Tardy at PT 222554.5 ms and LT 219450 ms
+dwm3001-2 > (223482000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=12.1 ms abs max=16.0 ms offset avg=0.2 ms abs max=14.5 ms
+dwm3001-3 > (225565000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.1 ms abs max=12.0 ms offset avg=-0.8 ms abs max=51.5 ms
+dwm3001-4 > [3] No value at PT 227526.1 ms and LT 224450 ms
+dwm3001-4 > [WARN] Tardy at PT 227546.2 ms and LT 224450 ms
+dwm3001-4 > [3] No value at PT 228525.8 ms and LT 225450 ms
+dwm3001-4 > [WARN] Tardy at PT 228562.0 ms and LT 225450 ms
+dwm3001-1 > [0] Sent 220
+dwm3001-4 > [3] Val 220 (NIT: 17)
+dwm3001-4 > (232538000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.8 ms abs max=16.0 ms offset avg=3.9 ms abs max=73.9 ms
+dwm3001-3 > (235607000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.8 ms abs max=17.0 ms offset avg=0.9 ms abs max=5.7 ms
+dwm3001-2 > (236545000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.4 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.7 ms
+dwm3001-1 > [0] Sent 230
+dwm3001-4 > [3] Val 230 (NIT: 17)
+dwm3001-4 > (245600000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.6 ms abs max=11.0 ms offset avg=0.4 ms abs max=4.5 ms
+dwm3001-3 > (245653000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.1 ms abs max=12.0 ms offset avg=0.0 ms abs max=4.5 ms
+dwm3001-2 > (247594000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=12.0 ms offset avg=-0.1 ms abs max=2.7 ms
+dwm3001-1 > [0] Sent 240
+dwm3001-4 > [3] Val 240 (NIT: 17)
+dwm3001-3 > (255700000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.6 ms abs max=11.0 ms offset avg=-0.1 ms abs max=1.0 ms
+dwm3001-1 > [0] Sent 250
+dwm3001-4 > [3] Val 250 (NIT: 17)
+dwm3001-2 > (263680000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.7 ms abs max=11.0 ms offset avg=0.1 ms abs max=1.9 ms
+dwm3001-4 > (264690000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.8 ms abs max=11.0 ms offset avg=-0.8 ms abs max=4.2 ms
+dwm3001-4 > [3] No value at PT 266525.4 ms and LT 263450 ms
+dwm3001-4 > [WARN] Tardy at PT 266545.3 ms and LT 263450 ms
+dwm3001-3 > (267757000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.7 ms abs max=11.0 ms offset avg=-0.0 ms abs max=1.9 ms
+dwm3001-1 > [0] Sent 260
+dwm3001-4 > [3] Val 260 (NIT: 18)
+dwm3001-2 > (273727000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.4 ms abs max=11.0 ms offset avg=-0.2 ms abs max=2.1 ms
+dwm3001-4 > (276754000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=12.0 ms offset avg=0.1 ms abs max=3.0 ms
+dwm3001-3 > (278807000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.9 ms abs max=12.0 ms offset avg=0.3 ms abs max=3.2 ms
+dwm3001-1 > [0] Sent 270
+dwm3001-4 > [3] Val 270 (NIT: 18)
+dwm3001-4 > [3] No value at PT 286526.4 ms and LT 283450 ms
+dwm3001-4 > [WARN] Tardy at PT 286550.5 ms and LT 283450 ms
+dwm3001-3 > (288853000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.7 ms abs max=11.0 ms offset avg=-0.0 ms abs max=2.9 ms
+dwm3001-2 > (289801000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.1 ms abs max=12.0 ms offset avg=-0.1 ms abs max=3.6 ms
+dwm3001-1 > [0] Sent 280
+dwm3001-4 > [3] Val 280 (NIT: 19)
+dwm3001-4 > (294840000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.5 ms abs max=12.0 ms offset avg=0.3 ms abs max=3.4 ms
+dwm3001-4 > [3] No value at PT 299525.8 ms and LT 296450 ms
+dwm3001-4 > [WARN] Tardy at PT 299559.9 ms and LT 296450 ms
+dwm3001-3 > (298902000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.7 ms abs max=12.0 ms offset avg=-0.2 ms abs max=4.1 ms
+dwm3001-1 > [0] Sent 290
+dwm3001-4 > [3] Val 290 (NIT: 20)
+dwm3001-2 > (303870000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.2 ms abs max=11.0 ms offset avg=0.2 ms abs max=2.2 ms
+dwm3001-3 > (308952000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.7 ms abs max=12.0 ms offset avg=0.0 ms abs max=1.8 ms
+dwm3001-4 > (309917000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.8 ms abs max=11.0 ms offset avg=-0.1 ms abs max=6.3 ms
+dwm3001-1 > [0] Sent 300
+dwm3001-4 > [3] Val 300 (NIT: 20)
+dwm3001-2 > (313919000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.1 ms abs max=13.0 ms offset avg=-0.1 ms abs max=1.7 ms
+dwm3001-4 > [3] No value at PT 318525.7 ms and LT 315450 ms
+dwm3001-4 > [WARN] Tardy at PT 318546.7 ms and LT 315450 ms
+dwm3001-3 > (318999000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=12.0 ms offset avg=-0.3 ms abs max=2.9 ms
+dwm3001-4 > [3] No value at PT 320526.4 ms and LT 317450 ms
+dwm3001-4 > [WARN] Tardy at PT 320560.4 ms and LT 317450 ms
+dwm3001-1 > [0] Sent 310
+dwm3001-4 > [3] No value at PT 322526.2 ms and LT 319450 ms
+dwm3001-4 > [WARN] Tardy at PT 322547.2 ms and LT 319450 ms
+dwm3001-4 > (323987000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.9 ms abs max=12.0 ms offset avg=-0.0 ms abs max=7.8 ms
+dwm3001-2 > (324976000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.7 ms abs max=12.0 ms offset avg=0.2 ms abs max=2.6 ms
+dwm3001-3 > (329044000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.8 ms abs max=13.0 ms offset avg=0.3 ms abs max=3.5 ms
+dwm3001-1 > [0] Sent 320
+dwm3001-4 > [3] Val 320 (NIT: 23)
+dwm3001-2 > (338039000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.1 ms abs max=11.0 ms offset avg=0.0 ms abs max=3.1 ms
+dwm3001-3 > (339089000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=12.0 ms offset avg=0.4 ms abs max=2.6 ms
+dwm3001-4 > (340066000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.1 ms abs max=12.0 ms offset avg=0.3 ms abs max=12.3 ms
+dwm3001-1 > [0] Sent 330
+dwm3001-4 > [3] Val 330 (NIT: 23)
+dwm3001-3 > (349133000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.8 ms abs max=12.0 ms offset avg=-0.2 ms abs max=2.2 ms
+dwm3001-1 > [0] Sent 340
+dwm3001-4 > [3] Val 340 (NIT: 23)
+dwm3001-2 > (352103000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=12.0 ms offset avg=0.0 ms abs max=3.7 ms
+dwm3001-4 > (352122000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.7 ms abs max=13.0 ms offset avg=-0.7 ms abs max=3.2 ms
+dwm3001-3 > (359185000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.7 ms abs max=12.0 ms offset avg=-0.1 ms abs max=3.1 ms
+dwm3001-4 > [3] No value at PT 360525.3 ms and LT 357450 ms
+dwm3001-4 > [WARN] Tardy at PT 361203.8 ms and LT 357450 ms
+dwm3001-1 > [0] Sent 350
+dwm3001-4 > [3] Val 350 (NIT: 24)
+dwm3001-4 > (363176000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=11.1 ms abs max=19.0 ms offset avg=0.5 ms abs max=4.1 ms
+dwm3001-2 > (364157000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.7 ms abs max=11.0 ms offset avg=-0.2 ms abs max=1.6 ms
+dwm3001-3 > (370241000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.2 ms abs max=11.0 ms offset avg=0.1 ms abs max=2.5 ms
+dwm3001-1 > [0] Sent 360
+dwm3001-4 > [3] No value at PT 372525.6 ms and LT 369450 ms
+dwm3001-4 > [WARN] Tardy at PT 372549.6 ms and LT 369450 ms
+dwm3001-4 > (374230000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.0 ms abs max=11.9 ms offset avg=-0.1 ms abs max=8.3 ms
+dwm3001-2 > (377214000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.4 ms abs max=11.0 ms offset avg=-0.0 ms abs max=0.8 ms
+dwm3001-3 > (380293000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=11.3 ms abs max=22.0 ms offset avg=-0.4 ms abs max=7.5 ms
+dwm3001-1 > [0] Sent 370
+dwm3001-4 > [3] Val 370 (NIT: 25)
+dwm3001-2 > (387259000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.4 ms abs max=12.0 ms offset avg=0.0 ms abs max=1.4 ms
+dwm3001-3 > (390340000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.0 ms abs max=12.0 ms offset avg=0.1 ms abs max=1.7 ms
+dwm3001-1 > [0] Sent 380
+dwm3001-4 > [3] Val 380 (NIT: 25)
+dwm3001-4 > (393324000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=11.3 ms abs max=22.0 ms offset avg=-0.5 ms abs max=6.4 ms
+dwm3001-2 > (400324000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.7 ms abs max=17.0 ms offset avg=0.0 ms abs max=1.6 ms
+dwm3001-3 > (400389000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.9 ms abs max=12.0 ms offset avg=0.3 ms abs max=2.5 ms
+dwm3001-1 > [0] Sent 390
+dwm3001-4 > [3] Val 390 (NIT: 25)
+dwm3001-4 > (404372000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.6 ms abs max=12.0 ms offset avg=0.4 ms abs max=5.1 ms
+dwm3001-1 > [0] Sent 400
+dwm3001-4 > [3] Val 400 (NIT: 25)
+dwm3001-2 > (412383000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.8 ms
+dwm3001-3 > (417496000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=12.0 ms offset avg=-0.6 ms abs max=7.6 ms
+dwm3001-4 > [3] No value at PT 418526.1 ms and LT 415450 ms
+dwm3001-2 > [WARN] Missed deadline for input at LT 415350 ms
+dwm3001-4 > [3] No value at PT 419526.3 ms and LT 416450 ms
+dwm3001-4 > [WARN] Tardy at PT 419550.3 ms and LT 416450 ms
+dwm3001-1 > [0] Sent 410
+dwm3001-4 > [3] Val 410 (NIT: 27)
+dwm3001-4 > (423473000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=11.9 ms abs max=20.0 ms offset avg=-2.5 ms abs max=36.4 ms
+dwm3001-4 > [3] No value at PT 425525.2 ms and LT 422450 ms
+dwm3001-4 > [WARN] Tardy at PT 425534.4 ms and LT 422450 ms
+dwm3001-4 > [3] No value at PT 426526.3 ms and LT 423450 ms
+dwm3001-4 > [WARN] Tardy at PT 426531.5 ms and LT 423450 ms
+dwm3001-2 > (427473000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=11.6 ms abs max=21.0 ms offset avg=0.9 ms abs max=7.4 ms
+dwm3001-4 > [3] No value at PT 428526.0 ms and LT 425450 ms
+dwm3001-4 > [WARN] Tardy at PT 428534.0 ms and LT 425450 ms
+dwm3001-1 > [0] Sent 420
+dwm3001-4 > [3] No value at PT 432525.6 ms and LT 429450 ms
+dwm3001-4 > [WARN] Tardy at PT 432583.3 ms and LT 429450 ms
+dwm3001-4 > [3] No value at PT 433526.3 ms and LT 430450 ms
+dwm3001-4 > [WARN] Tardy at PT 433666.0 ms and LT 430450 ms
+dwm3001-4 > [3] No value at PT 434526.1 ms and LT 431450 ms
+dwm3001-4 > [WARN] Tardy at PT 434577.7 ms and LT 431450 ms
+dwm3001-4 > [3] No value at PT 435526.8 ms and LT 432450 ms
+dwm3001-4 > [WARN] Tardy at PT 435563.2 ms and LT 432450 ms
+dwm3001-4 > [3] No value at PT 436526.5 ms and LT 433450 ms
+dwm3001-4 > [WARN] Tardy at PT 436549.8 ms and LT 433450 ms
+dwm3001-3 > (435594000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.8 ms abs max=14.1 ms offset avg=4.0 ms abs max=40.3 ms
+dwm3001-4 > [3] No value at PT 437526.3 ms and LT 434450 ms
+dwm3001-4 > [WARN] Tardy at PT 437622.1 ms and LT 434450 ms
+dwm3001-3 > (437464000000) [ERROR] [NET] RUdpIpChannel: 501 packets sent, 67 retransmissions
+dwm3001-1 > [0] Sent 430
+dwm3001-4 > [3] Val 430 (NIT: 36)
+dwm3001-4 > [3] No value at PT 443526.2 ms and LT 440450 ms
+dwm3001-4 > [WARN] Tardy at PT 443636.1 ms and LT 440450 ms
+dwm3001-4 > [3] No value at PT 444526.8 ms and LT 441450 ms
+dwm3001-4 > [WARN] Tardy at PT 444558.0 ms and LT 441450 ms
+dwm3001-4 > (444633000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=14.0 ms offset avg=-4.5 ms abs max=49.9 ms
+dwm3001-2 > (446554000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.7 ms abs max=12.0 ms offset avg=-0.3 ms abs max=41.5 ms
+dwm3001-4 > [3] No value at PT 449525.9 ms and LT 446450 ms
+dwm3001-4 > [WARN] Tardy at PT 449613.1 ms and LT 446450 ms
+dwm3001-3 > (449646000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.5 ms abs max=12.1 ms offset avg=-3.6 ms abs max=52.7 ms
+dwm3001-1 > [0] Sent 440
+dwm3001-4 > [3] Val 440 (NIT: 39)
+dwm3001-4 > (457647000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.4 ms abs max=12.0 ms offset avg=7.3 ms abs max=120.5 ms
+dwm3001-2 > (459621000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.0 ms abs max=12.0 ms offset avg=-0.4 ms abs max=2.9 ms
+dwm3001-1 > [0] Sent 450
+dwm3001-4 > [3] Val 450 (NIT: 39)
+dwm3001-3 > (462721000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=12.0 ms offset avg=-0.1 ms abs max=4.1 ms
+dwm3001-2 > (463450000000) [ERROR] [NET] RUdpIpChannel: 501 packets sent, 41 retransmissions
+dwm3001-1 > (464383000000) [ERROR] [NET] RUdpIpChannel: 501 packets sent, 43 retransmissions
+dwm3001-4 > (468698000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.9 ms abs max=11.0 ms offset avg=0.0 ms abs max=4.0 ms
+dwm3001-2 > (469675000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.8 ms abs max=11.0 ms offset avg=0.0 ms abs max=1.2 ms
+dwm3001-1 > [0] Sent 460
+dwm3001-4 > [3] Val 460 (NIT: 39)
+dwm3001-3 > (475793000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.6 ms abs max=12.0 ms offset avg=-0.1 ms abs max=4.5 ms
+dwm3001-4 > (477493000000) [ERROR] [NET] RUdpIpChannel: 501 packets received, 32 duplicates
+dwm3001-4 > (478744000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.1 ms abs max=12.0 ms offset avg=-0.2 ms abs max=4.5 ms
+dwm3001-2 > (480725000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.3 ms abs max=11.0 ms offset avg=-0.0 ms abs max=3.5 ms
+dwm3001-1 > [0] Sent 470
+dwm3001-4 > [3] Val 470 (NIT: 39)
+dwm3001-4 > [3] No value at PT 483526.3 ms and LT 480450 ms
+dwm3001-4 > [WARN] Tardy at PT 483569.4 ms and LT 480450 ms
+dwm3001-3 > (485843000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=12.0 ms offset avg=0.2 ms abs max=1.8 ms
+dwm3001-2 > (488398000000) [ERROR] [NET] RUdpIpChannel: 501 packets received, 14 duplicates
+dwm3001-3 > (488444000000) [ERROR] [NET] RUdpIpChannel: 501 packets received, 16 duplicates
+dwm3001-4 > (488789000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=12.0 ms offset avg=0.0 ms abs max=2.2 ms
+dwm3001-1 > [0] Sent 480
+dwm3001-4 > [3] Val 480 (NIT: 40)
+dwm3001-2 > (491774000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=11.0 ms offset avg=-0.1 ms abs max=1.7 ms
+dwm3001-3 > (495894000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=12.0 ms offset avg=-0.2 ms abs max=2.9 ms
+dwm3001-4 > (498845000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.5 ms abs max=11.0 ms offset avg=0.1 ms abs max=3.6 ms
+dwm3001-1 > [0] Sent 490
+dwm3001-4 > [3] Val 490 (NIT: 40)
+dwm3001-2 > (503836000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=13.0 ms offset avg=-0.1 ms abs max=2.2 ms
+dwm3001-3 > (505938000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.4 ms abs max=12.0 ms offset avg=0.3 ms abs max=2.9 ms
+dwm3001-4 > (508891000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.0 ms abs max=11.0 ms offset avg=-0.2 ms abs max=2.1 ms
+dwm3001-1 > [0] Sent 500
+dwm3001-4 > [3] Val 500 (NIT: 40)
+dwm3001-4 > [3] No value at PT 513526.2 ms and LT 510450 ms
+dwm3001-4 > [WARN] Tardy at PT 513561.1 ms and LT 510450 ms
+dwm3001-2 > (515896000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=12.0 ms offset avg=0.1 ms abs max=2.1 ms
+dwm3001-3 > (517992000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.3 ms abs max=12.0 ms offset avg=0.0 ms abs max=3.0 ms
+dwm3001-4 > (519942000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.7 ms abs max=11.0 ms offset avg=0.3 ms abs max=4.1 ms
+dwm3001-1 > [0] Sent 510
+dwm3001-4 > [3] Val 510 (NIT: 41)
+dwm3001-2 > (526949000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.8 ms abs max=12.0 ms offset avg=-0.0 ms abs max=0.7 ms
+dwm3001-3 > (530053000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.2 ms abs max=11.0 ms offset avg=-0.2 ms abs max=3.4 ms
+dwm3001-4 > (530998000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.0 ms abs max=11.0 ms offset avg=-0.4 ms abs max=4.0 ms
+dwm3001-1 > [0] Sent 520
+dwm3001-4 > [3] Val 520 (NIT: 41)
+dwm3001-2 > (536993000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.7 ms abs max=13.0 ms offset avg=-0.0 ms abs max=1.4 ms
+dwm3001-4 > [3] No value at PT 539525.6 ms and LT 536450 ms
+dwm3001-4 > [WARN] Tardy at PT 539549.6 ms and LT 536450 ms
+dwm3001-3 > (541106000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.1 ms abs max=12.0 ms offset avg=-0.0 ms abs max=2.2 ms
+dwm3001-1 > [0] Sent 530
+dwm3001-4 > [3] No value at PT 542525.5 ms and LT 539450 ms
+dwm3001-4 > [WARN] Tardy at PT 542559.4 ms and LT 539450 ms

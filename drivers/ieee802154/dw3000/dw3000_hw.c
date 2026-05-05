@@ -32,16 +32,16 @@ static const struct dw3000_config conf = {
 
 int dw3000_hw_init(void)
 {
-	printk("[DEBUG] dw3000_hw_init: Entry point\n");
+	LOG_DBG("dw3000_hw_init: entry");
 	/* Reset */
 	if (conf.gpio_reset.port) {
-		printk("[DEBUG] dw3000_hw_init: Configuring RESET pin\n");
+		LOG_DBG("dw3000_hw_init: configuring RESET pin");
 		gpio_pin_configure_dt(&conf.gpio_reset, GPIO_INPUT);
 		LOG_INF("RESET on %s pin %d", conf.gpio_reset.port->name,
 				conf.gpio_reset.pin);
-		printk("[DEBUG] dw3000_hw_init: RESET pin configured\n");
+		LOG_DBG("dw3000_hw_init: RESET pin configured");
 	} else {
-		printk("[DEBUG] dw3000_hw_init: No RESET pin configured\n");
+		LOG_DBG("dw3000_hw_init: no RESET pin configured");
 	}
 
 	/* Wakeup (optional) */
@@ -60,13 +60,13 @@ int dw3000_hw_init(void)
 
 	/* SPI Phase (optional) */
 	if (conf.gpio_spi_pha.port) {
-		printk("[DEBUG] dw3000_hw_init: Configuring SPI_PHA pin\n");
+		LOG_DBG("dw3000_hw_init: configuring SPI_PHA pin");
 		gpio_pin_configure_dt(&conf.gpio_spi_pha, GPIO_OUTPUT_INACTIVE);
 		LOG_INF("SPI_PHA on %s pin %d", conf.gpio_spi_pha.port->name,
 				conf.gpio_spi_pha.pin);
 	}
 
-	printk("[DEBUG] dw3000_hw_init: Completed successfully\n");
+	LOG_DBG("dw3000_hw_init: done");
 	return 0;
 }
 
@@ -89,9 +89,9 @@ static void dw3000_hw_isr(const struct device* dev, struct gpio_callback* cb,
 
 int dw3000_hw_init_interrupt(void)
 {
-	printk("[DEBUG] dw3000_hw_init_interrupt: Entry point\n");
+	LOG_DBG("dw3000_hw_init_interrupt: entry");
 	if (conf.gpio_irq.port) {
-		printk("[DEBUG] dw3000_hw_init_interrupt: Setting up IRQ pin\n");
+		LOG_DBG("dw3000_hw_init_interrupt: setting up IRQ pin");
 
 		gpio_pin_configure_dt(&conf.gpio_irq, GPIO_INPUT);
 		gpio_init_callback(&gpio_cb, dw3000_hw_isr, BIT(conf.gpio_irq.pin));
@@ -101,10 +101,10 @@ int dw3000_hw_init_interrupt(void)
 
 		LOG_INF("IRQ on %s pin %d (disabled until handler set)", conf.gpio_irq.port->name,
 				conf.gpio_irq.pin);
-		printk("[DEBUG] dw3000_hw_init_interrupt: IRQ setup complete (disabled)\n");
+		LOG_DBG("dw3000_hw_init_interrupt: IRQ setup complete (disabled)");
 		return 0;
 	} else {
-		printk("[DEBUG] dw3000_hw_init_interrupt: No IRQ pin configured\n");
+		LOG_DBG("dw3000_hw_init_interrupt: no IRQ pin configured");
 		LOG_ERR("IRQ pin not configured");
 		return -ENOENT;
 	}
@@ -148,40 +148,40 @@ void dw3000_hw_fini(void)
 
 void dw3000_hw_reset()
 {
-	printk("[DEBUG] dw3000_hw_reset: Entry point\n");
+	LOG_DBG("dw3000_hw_reset: entry");
 	if (!conf.gpio_reset.port) {
-		printk("[DEBUG] dw3000_hw_reset: No reset pin configured\n");
+		LOG_DBG("dw3000_hw_reset: no reset pin configured");
 		LOG_ERR("No HW reset configured");
 		return;
 	}
 
-	printk("[DEBUG] dw3000_hw_reset: Performing reset sequence\n");
+	LOG_DBG("dw3000_hw_reset: performing reset sequence");
 	gpio_pin_configure_dt(&conf.gpio_reset, GPIO_OUTPUT_ACTIVE);
 	k_msleep(1); // 10 us?
 	gpio_pin_configure_dt(&conf.gpio_reset, GPIO_INPUT);
 	k_msleep(2);
-	printk("[DEBUG] dw3000_hw_reset: Reset sequence completed\n");
+	LOG_DBG("dw3000_hw_reset: reset sequence completed");
 }
 
 /** wakeup either using the WAKEUP pin or SPI CS */
 void dw3000_hw_wakeup(void)
 {
-	printk("[DEBUG] dw3000_hw_wakeup: Entry point\n");
+	LOG_DBG("dw3000_hw_wakeup: entry");
 	if (conf.gpio_wakeup.port) {
 		/* Use WAKEUP pin if available */
-		printk("[DEBUG] dw3000_hw_wakeup: Using WAKEUP pin\n");
+		LOG_DBG("dw3000_hw_wakeup: using WAKEUP pin");
 		LOG_INF("WAKEUP PIN");
 		gpio_pin_set_dt(&conf.gpio_wakeup, 1);
 		k_msleep(1);
 		gpio_pin_set_dt(&conf.gpio_wakeup, 0);
-		printk("[DEBUG] dw3000_hw_wakeup: WAKEUP pin sequence completed\n");
+		LOG_DBG("dw3000_hw_wakeup: WAKEUP pin sequence completed");
 
 	} else {
 		/* Use SPI CS pin */
-		printk("[DEBUG] dw3000_hw_wakeup: Using SPI CS wakeup\n");
+		LOG_DBG("dw3000_hw_wakeup: using SPI CS wakeup");
 		LOG_INF("WAKEUP CS");
 		dw3000_spi_wakeup();
-		printk("[DEBUG] dw3000_hw_wakeup: SPI CS wakeup completed\n");
+		LOG_DBG("dw3000_hw_wakeup: SPI CS wakeup completed");
 	}
 }
 

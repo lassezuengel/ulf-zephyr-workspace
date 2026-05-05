@@ -1,0 +1,1265 @@
+[SSH] 1777468775.592699;Aggregator started
+[SSH] 1777468826.974371;Aggregator started
+[SSH] 1777468864.289907;Aggregator started
+[SSH] 1777469013.527670;Aggregator started
+[SSH] 1777469243.137901;Aggregator started
+dwm3001-1 > Hello from FedMultiHop4_srcFed build -172139441\n!Waiting for network connection....
+dwm3001-1 > Setting up IPv6 address for SICSLOWPAN...
+dwm3001-1 > Network ready, continuing.
+dwm3001-2 > Hello from FedMultiHop4_intFed1 build -576763701\n!Waiting for network connection....
+dwm3001-2 > Setting up IPv6 address for SICSLOWPAN...
+dwm3001-2 > Network ready, continuing.
+dwm3001-3 > Hello from FedMultiHop4_intFed2 build -1685666738\n!Waiting for network connection....
+dwm3001-3 > Setting up IPv6 address for SICSLOWPAN...
+dwm3001-3 > Network ready, continuing.
+dwm3001-8 > Hello from FedMultiHop4_snkFed build 974540919\n!Waiting for network connection....
+dwm3001-8 > Setting up IPv6 address for SICSLOWPAN...
+dwm3001-8 > Network ready, continuing.
+dwm3001-1 > [00:00:00.303,527] <wrn> ieee802154_dw3000: DW3000 IEEE802154 init channel=5 (kconfig=5)[0] Sent 18
+dwm3001-8 > [00:00:00.297,729] <wrn> ieee802154_dw3000: DW3000 IEEE802154 init channel=5 (kconfig=5[3] StT avg[3] Val 18 (NIT: 0)
+dwm3001-1 > [0] Sent 19
+dwm3001-8 > =7.4 ms abs max=8[3] Val 19 (NIT: 0)
+dwm3001-1 > [0] Sent 20
+dwm3001-8 > .0 ms offset avg=[3] Val 20 (NIT: 0)
+dwm3001-1 > [0] Sent 21
+dwm3001-8 > -1.9 ms abs max=1[3] Val 21 (NIT: 0)
+dwm3001-8 > 8.0 ms
+dwm3001-1 > [0] Sent 22
+dwm3001-8 > (32177000000) [INFO[3] Val 22 (NIT: 0)
+dwm3001-1 > [0] Sent 23
+dwm3001-8 > ] [CLOCK_SYNC] Clock sync s[3] Val 23 (NIT: 0)
+dwm3001-1 > [0] Sent 24
+dwm3001-8 > tats over 10 sampl[3] Val 24 (NIT: 0)
+dwm3001-3 > [00:00:00.300,781] <wrn> ieee802154_dw3000: DW3000 IEEE802154 init channel=5 (kconfig=5)[(31111000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.8 ms abs max=8.0 ms offset avg=-0.1 ms abs max=1.7 ms
+dwm3001-1 > [0] Sent 25
+dwm3001-2 > [00:00:00.299,346] <wrn> ieee802154_dw3000: DW3000 IEEE802154 init channel=5 (kconfig=5)[0(31493000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.1 ms abs max=11.0 ms offset avg=-0.1 ms abs max=1.7 ms
+dwm3001-8 > es: RTT avg=7.8 ms abs [3] Val 25 (NIT: 0)
+dwm3001-1 > [0] Sent 26
+dwm3001-8 > max=11.0 ms offse[3] Val 26 (NIT: 0)
+dwm3001-1 > [0] Sent 27
+dwm3001-8 > t avg=-0.1 ms abs[3] Val 27 (NIT: 0)
+dwm3001-1 > [0] Sent 28
+dwm3001-8 > max=2.4 ms
+dwm3001-8 > [3] Val 28 (NIT: 0)
+dwm3001-1 > [0] Sent 29
+dwm3001-8 > [3] Val 29 (NIT: 0)
+dwm3001-1 > [0] Sent 30
+dwm3001-8 > [3] Val 30 (NIT: 0)
+dwm3001-1 > [0] Sent 31
+dwm3001-8 > [3] Val 31 (NIT: 0)
+dwm3001-1 > [0] Sent 32
+dwm3001-8 > (4221[3] Val 32 (NIT: 0)
+dwm3001-1 > [0] Sent 33
+dwm3001-8 > 5000000) [INFO] [C[3] Val 33 (NIT: 0)
+dwm3001-1 > [0] Sent 34
+dwm3001-8 > LOCK_SYNC] Clock s[3] Val 34 (NIT: 0)
+dwm3001-1 > [0] Sent 35
+dwm3001-3 > (41149000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.9 ms abs max=13.0 ms offset avg=0.2 ms abs max=3.6 ms
+dwm3001-2 > (41527000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.5 ms abs max=8.0 ms offset avg=0.1 ms abs max=1.3 ms
+dwm3001-8 > ync stats over 10 [3] Val 35 (NIT: 0)
+dwm3001-1 > [0] Sent 36
+dwm3001-8 > samples: RTT avg=7[3] Val 36 (NIT: 0)
+dwm3001-1 > [0] Sent 37
+dwm3001-8 > .5 ms abs max=8.0[3] Val 37 (NIT: 0)
+dwm3001-1 > [0] Sent 38
+dwm3001-8 >  ms offset avg=-0.[3] Val 38 (NIT: 0)
+dwm3001-1 > [0] Sent 39
+dwm3001-8 > 0 ms abs max=2.2 [3] Val 39 (NIT: 0)
+dwm3001-8 > ms
+dwm3001-1 > [0] Sent 40
+dwm3001-8 > [3] Val 40 (NIT: 0)
+dwm3001-1 > [0] Sent 41
+dwm3001-8 > [3] Val 41 (NIT: 0)
+dwm3001-1 > [0] Sent 42
+dwm3001-8 > (522[3] Val 42 (NIT: 0)
+dwm3001-1 > [0] Sent 43
+dwm3001-8 > 44000000) [INFO] [C[3] Val 43 (NIT: 0)
+dwm3001-1 > [0] Sent 44
+dwm3001-8 > LOCK_SYNC] Clock syn[3] Val 44 (NIT: 0)
+dwm3001-1 > [0] Sent 45
+dwm3001-8 > c stats over 10 samples: [3] Val 45 (NIT: 0)
+dwm3001-3 > (51182000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.8 ms abs max=9.0 ms offset avg=-0.1 ms abs max=2.7 ms
+dwm3001-2 > (51565000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.7 ms abs max=10.0 ms offset avg=-0.1 ms abs max=1.0 ms
+dwm3001-1 > [0] Sent 46
+dwm3001-8 > RTT avg=7.7 ms abs [3] Val 46 (NIT: 0)
+dwm3001-1 > [0] Sent 47
+dwm3001-8 > max=10.0 ms offse[3] Val 47 (NIT: 0)
+dwm3001-1 > [0] Sent 48
+dwm3001-8 > t avg=0.2 ms abs [3] Val 48 (NIT: 0)
+dwm3001-1 > [0] Sent 49
+dwm3001-8 > max=2.8 ms
+dwm3001-8 > [3] Val 49 (NIT: 0)
+dwm3001-1 > [0] Sent 50
+dwm3001-8 > [3] Val 50 (NIT: 0)
+dwm3001-1 > [0] Sent 51
+dwm3001-8 > [3] Val 51 (NIT: 0)
+dwm3001-1 > [0] Sent 52
+dwm3001-8 > (622[3] Val 52 (NIT: 0)
+dwm3001-1 > [0] Sent 53
+dwm3001-8 > 78000000) [INFO] [[3] Val 53 (NIT: 0)
+dwm3001-1 > [0] Sent 54
+dwm3001-8 > CLOCK_SYNC] Clock s[3] Val 54 (NIT: 0)
+dwm3001-1 > [0] Sent 55
+dwm3001-8 > ync stats over 10 [3] Val 55 (NIT: 0)
+dwm3001-3 > (61216000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.8 ms abs max=8.0 ms offset avg=-0.1 ms abs max=1.2 ms
+dwm3001-2 > (61604000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.5 ms abs max=8.0 ms offset avg=0.0 ms abs max=1.2 ms
+dwm3001-1 > [0] Sent 56
+dwm3001-8 > samples: RTT avg=[3] Val 56 (NIT: 0)
+dwm3001-1 > [0] Sent 57
+dwm3001-8 > 7.5 ms abs max=8.0[3] Val 57 (NIT: 0)
+dwm3001-1 > [0] Sent 58
+dwm3001-8 >  ms offset avg=-0.[3] Val 58 (NIT: 0)
+dwm3001-1 > [0] Sent 59
+dwm3001-8 > [3] Val 59 (NIT: 0)
+dwm3001-8 >
+dwm3001-1 > [0] Sent 60
+dwm3001-8 > [3] Val 60 (NIT: 0)
+dwm3001-1 > [0] Sent 61
+dwm3001-8 > [3] Val 61 (NIT: 0)
+dwm3001-1 > [0] Sent 62
+dwm3001-8 > (723[3] Val 62 (NIT: 0)
+dwm3001-1 > [0] Sent 63
+dwm3001-8 > 10000000) [INFO] [C[3] Val 63 (NIT: 0)
+dwm3001-1 > [0] Sent 64
+dwm3001-8 > LOCK_SYNC] Clock sync sta[3] Val 64 (NIT: 0)
+dwm3001-1 > [0] Sent 65
+dwm3001-3 > (71251000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.8 ms abs max=8.0 ms offset avg=0.1 ms abs max=1.3 ms
+dwm3001-8 > ts over 10 samples[3] Val 65 (NIT: 0)
+dwm3001-2 > (71641000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.2 ms abs max=8.0 ms offset avg=0.1 ms abs max=0.7 ms
+dwm3001-1 > [0] Sent 66
+dwm3001-8 > : RTT avg=7.7 ms a[3] Val 66 (NIT: 0)
+dwm3001-1 > [0] Sent 67
+dwm3001-8 > bs max=8.0 ms off[3] Val 67 (NIT: 0)
+dwm3001-1 > [0] Sent 68
+dwm3001-8 > set avg=-0.0 ms abs[3] Val 68 (NIT: 0)
+dwm3001-1 > [0] Sent 69
+dwm3001-8 >  max=1.4 ms
+dwm3001-8 > [3] Val 69 (NIT: 0)
+dwm3001-1 > [0] Sent 70
+dwm3001-8 > [3] Val 70 (NIT: 0)
+dwm3001-1 > [0] Sent 71
+dwm3001-8 > [3] Val 71 (NIT: 0)
+dwm3001-1 > [0] Sent 72
+dwm3001-8 > ([3] Val 72 (NIT: 0)
+dwm3001-1 > [0] Sent 73
+dwm3001-8 > 82347000000) [INFO] [CLO[3] Val 73 (NIT: 0)
+dwm3001-1 > [0] Sent 74
+dwm3001-8 > CK_SYNC] Clock syn[3] Val 74 (NIT: 0)
+dwm3001-1 > [0] Sent 75
+dwm3001-8 > c stats over 10 sa[3] Val 75 (NIT: 0)
+dwm3001-3 > (81287000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.7 ms abs max=8.0 ms offset avg=0.1 ms abs max=1.4 ms
+dwm3001-2 > (81674000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.3 ms abs max=8.0 ms offset avg=-0.1 ms abs max=0.6 ms
+dwm3001-1 > [0] Sent 76
+dwm3001-8 > mples: RTT avg=7.8[3] Val 76 (NIT: 0)
+dwm3001-1 > [0] Sent 77
+dwm3001-8 >  ms abs max=10.0 m[3] Val 77 (NIT: 0)
+dwm3001-1 > [0] Sent 78
+dwm3001-8 > s offset avg=0.3 [3] Val 78 (NIT: 0)
+dwm3001-1 > [0] Sent 79
+dwm3001-8 > ms abs max=1.5 ms[3] Val 79 (NIT: 0)
+dwm3001-8 >
+dwm3001-1 > [0] Sent 80
+dwm3001-8 > [3] Val 80 (NIT: 0)
+dwm3001-1 > [0] Sent 81
+dwm3001-8 > [3] Val 81 (NIT: 0)
+dwm3001-1 > [0] Sent 82
+dwm3001-8 > (923[3] Val 82 (NIT: 0)
+dwm3001-1 > [0] Sent 83
+dwm3001-8 > 79000000) [INFO] [[3] Val 83 (NIT: 0)
+dwm3001-1 > [0] Sent 84
+dwm3001-8 > CLOCK_SYNC] Clock s[3] Val 84 (NIT: 0)
+dwm3001-1 > [0] Sent 85
+dwm3001-2 > (91710000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.2 ms abs max=8.0 ms offset avg=0.1 ms abs max=0.6 ms
+dwm3001-3 > (91324000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.8 ms abs max=10.0 ms offset avg=-0.1 ms abs max=1.3 ms
+dwm3001-8 > ync stats over 10 s[3] Val 85 (NIT: 0)
+dwm3001-1 > [0] Sent 86
+dwm3001-8 > amples: RTT avg=7[3] Val 86 (NIT: 0)
+dwm3001-1 > [0] Sent 87
+dwm3001-8 > .3 ms abs max=8.0[3] Val 87 (NIT: 0)
+dwm3001-1 > [0] Sent 88
+dwm3001-8 >  ms offset avg=-0[3] Val 88 (NIT: 0)
+dwm3001-1 > [0] Sent 89
+dwm3001-8 > .2 ms abs max=1.7[3] Val 89 (NIT: 0)
+dwm3001-8 >  ms
+dwm3001-1 > [0] Sent 90
+dwm3001-8 > [3] Val 90 (NIT: 0)
+dwm3001-1 > [0] Sent 91
+dwm3001-8 > [3] Val 91 (NIT: 0)
+dwm3001-1 > [0] Sent 92
+dwm3001-8 > (102[3] Val 92 (NIT: 0)
+dwm3001-1 > [0] Sent 93
+dwm3001-8 > 419000000) [INFO] [3] Val 93 (NIT: 0)
+dwm3001-1 > [0] Sent 94
+dwm3001-8 > [CLOCK_SYNC] Clock sync [3] Val 94 (NIT: 0)
+dwm3001-1 > [0] Sent 95
+dwm3001-3 > (101359000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.3 ms abs max=8.0 ms offset avg=0.1 ms abs max=0.8 ms
+dwm3001-8 > stats over 10 sampl[3] Val 95 (NIT: 0)
+dwm3001-2 > (101743000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.4 ms abs max=8.0 ms offset avg=0.0 ms abs max=0.6 ms
+dwm3001-1 > [0] Sent 96
+dwm3001-8 > es: RTT avg=7.4 m[3] Val 96 (NIT: 0)
+dwm3001-1 > [0] Sent 97
+dwm3001-8 > s abs max=8.0 ms [3] Val 97 (NIT: 0)
+dwm3001-1 > [0] Sent 98
+dwm3001-8 > offset avg=0.0 ms [3] Val 98 (NIT: 0)
+dwm3001-1 > [0] Sent 99
+dwm3001-8 > abs max=0.9 ms
+dwm3001-8 > [3] Val 99 (NIT: 0)
+dwm3001-1 > [0] Sent 100
+dwm3001-8 > [3] Val 100 (NIT: 0)
+dwm3001-1 > [0] Sent 101
+dwm3001-8 > [3] Val 101 (NIT: 0)
+dwm3001-1 > [0] Sent 102
+dwm3001-8 > (112[3] Val 102 (NIT: 0)
+dwm3001-1 > [0] Sent 103
+dwm3001-8 > 452000000) [INFO] [[3] Val 103 (NIT: 0)
+dwm3001-1 > [0] Sent 104
+dwm3001-8 > CLOCK_SYNC] Clock sync s[3] Val 104 (NIT: 0)
+dwm3001-1 > [0] Sent 105
+dwm3001-3 > (111392000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.7 ms abs max=10.0 ms offset avg=-0.0 ms abs max=3.2 ms
+dwm3001-8 > tats over 10 sample[3] Val 105 (NIT: 0)
+dwm3001-2 > (111776000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.4 ms abs max=9.0 ms offset avg=-0.0 ms abs max=1.6 ms
+dwm3001-1 > [0] Sent 106
+dwm3001-8 > s: RTT avg=7.6 ms[3] Val 106 (NIT: 0)
+dwm3001-1 > [0] Sent 107
+dwm3001-8 >  abs max=9.0 ms o[3] Val 107 (NIT: 0)
+dwm3001-1 > [0] Sent 108
+dwm3001-8 > ffset avg=0.1 ms ab[3] Val 108 (NIT: 0)
+dwm3001-1 > [0] Sent 109
+dwm3001-8 > s max=2.5 ms
+dwm3001-8 > [3] Val 109 (NIT: 0)
+dwm3001-1 > [0] Sent 110
+dwm3001-8 > [3] Val 110 (NIT: 0)
+dwm3001-1 > [0] Sent 111
+dwm3001-8 > [3] Val 111 (NIT: 0)
+dwm3001-1 > [0] Sent 112
+dwm3001-8 > (122[3] Val 112 (NIT: 0)
+dwm3001-1 > [0] Sent 113
+dwm3001-8 > 490000000) [INFO] [3] Val 113 (NIT: 0)
+dwm3001-1 > [0] Sent 114
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 114 (NIT: 0)
+dwm3001-1 > [0] Sent 115
+dwm3001-3 > (121433000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.2 ms abs max=14.0 ms offset avg=0.0 ms abs max=2.9 ms
+dwm3001-8 >  sync stats over 1[3] Val 115 (NIT: 0)
+dwm3001-2 > (121809000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.0 ms abs max=8.0 ms offset avg=-0.0 ms abs max=1.2 ms
+dwm3001-1 > [0] Sent 116
+dwm3001-8 > 0 samples: RTT avg[3] Val 116 (NIT: 0)
+dwm3001-1 > [0] Sent 117
+dwm3001-8 > =7.7 ms abs max=8[3] Val 117 (NIT: 0)
+dwm3001-1 > [0] Sent 118
+dwm3001-8 > .0 ms offset avg=[3] Val 118 (NIT: 0)
+dwm3001-1 > [0] Sent 119
+dwm3001-8 > -0.2 ms abs max=2.[3] Val 119 (NIT: 0)
+dwm3001-1 > [0] Sent 120
+dwm3001-8 > 1 ms
+dwm3001-8 > [3] Val 120 (NIT: 0)
+dwm3001-1 > [0] Sent 121
+dwm3001-8 > [3] Val 121 (NIT: 0)
+dwm3001-1 > [0] Sent 122
+dwm3001-8 > (132[3] Val 122 (NIT: 0)
+dwm3001-1 > [0] Sent 123
+dwm3001-8 > 525000000) [INFO] [3] Val 123 (NIT: 0)
+dwm3001-1 > [0] Sent 124
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 124 (NIT: 0)
+dwm3001-1 > [0] Sent 125
+dwm3001-8 >  sync stats over 10 s[3] Val 125 (NIT: 0)
+dwm3001-2 > (131846000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.4 ms abs max=8.0 ms offset avg=-0.1 ms abs max=0.5 ms
+dwm3001-3 > (131468000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.4 ms abs max=8.0 ms offset avg=-0.1 ms abs max=0.6 ms
+dwm3001-1 > [0] Sent 126
+dwm3001-8 > amples: RTT avg=8[3] Val 126 (NIT: 0)
+dwm3001-1 > [0] Sent 127
+dwm3001-8 > .8 ms abs max=19.[3] Val 127 (NIT: 0)
+dwm3001-1 > [0] Sent 128
+dwm3001-8 > 0 ms offset avg=-0.0 [3] Val 128 (NIT: 0)
+dwm3001-1 > [0] Sent 129
+dwm3001-8 > ms abs max=5.8 ms
+dwm3001-8 > [3] Val 129 (NIT: 0)
+dwm3001-1 > [0] Sent 130
+dwm3001-8 > [3] Val 130 (NIT: 0)
+dwm3001-1 > [0] Sent 131
+dwm3001-8 > [3] Val 131 (NIT: 0)
+dwm3001-1 > [0] Sent 132
+dwm3001-8 > (142566[3] Val 132 (NIT: 0)
+dwm3001-1 > [0] Sent 133
+dwm3001-8 > 000000) [INFO] [CL[3] Val 133 (NIT: 0)
+dwm3001-1 > [0] Sent 134
+dwm3001-8 > OCK_SYNC] Clock sync stats over 10 samples[3] Val 134 (NIT: 0)
+dwm3001-1 > [0] Sent 135
+dwm3001-3 > (141505000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=9.0 ms offset avg=-0.1 ms abs max=1.2 ms
+dwm3001-8 > : RTT avg=11.1 ms abs max[3] No value at PT 146501.2 ms and LT 144450 ms
+dwm3001-8 > =30.0 [WARN] Tardy at PT 146550.4 ms and LT 144450 ms
+dwm3001-2 > (141880000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.8 ms abs max=10.0 ms offset avg=0.0 ms abs max=1.1 ms
+dwm3001-1 > [0] Sent 136
+dwm3001-8 > ms offs[3] Val 136 (NIT: 1)
+dwm3001-1 > [0] Sent 137
+dwm3001-8 > et avg=-0.3 ms ab[3] Val 137 (NIT: 1)
+dwm3001-1 > [0] Sent 138
+dwm3001-8 > s max=11.6 ms[3] Val 138 (NIT: 1)
+dwm3001-8 >
+dwm3001-1 > [0] Sent 139
+dwm3001-8 > [3] Val 139 (NIT: 1)
+dwm3001-1 > [0] Sent 140
+dwm3001-8 > [3] Val 140 (NIT: 1)
+dwm3001-1 > [0] Sent 141
+dwm3001-8 > [3] Val 141 (NIT: 1)
+dwm3001-1 > [0] Sent 142
+dwm3001-8 > [3] Val 142 (NIT: 1)
+dwm3001-1 > [0] Sent 143
+dwm3001-8 > (152[3] Val 143 (NIT: 1)
+dwm3001-1 > [0] Sent 144
+dwm3001-8 > 772000000) [INFO] [3] Val 144 (NIT: 1)
+dwm3001-1 > [0] Sent 145
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 145 (NIT: 1)
+dwm3001-2 > (151912000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.1 ms abs max=16.0 ms offset avg=-0.1 ms abs max=4.3 ms
+dwm3001-1 > [0] Sent 146
+dwm3001-3 > (151540000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=0.4 ms abs max=3.5 ms
+dwm3001-8 >  sync stats over 10[3] Val 146 (NIT: 1)
+dwm3001-1 > [0] Sent 147
+dwm3001-8 >  samples: RTT avg[3] Val 147 (NIT: 1)
+dwm3001-1 > [0] Sent 148
+dwm3001-8 > =8.9 ms abs max=18[3] Val 148 (NIT: 1)
+dwm3001-1 > [0] Sent 149
+dwm3001-8 > .0 ms offset avg=[3] Val 149 (NIT: 1)
+dwm3001-1 > [0] Sent 150
+dwm3001-8 > 0.5 ms abs max=5.[3] Val 150 (NIT: 1)
+dwm3001-8 > 0 ms
+dwm3001-1 > [0] Sent 151
+dwm3001-8 > [3] Val 151 (NIT: 1)
+dwm3001-1 > [0] Sent 152
+dwm3001-8 > [3] Val 152 (NIT: 1)
+dwm3001-1 > [0] Sent 153
+dwm3001-8 > (162[3] Val 153 (NIT: 1)
+dwm3001-1 > [0] Sent 154
+dwm3001-8 > 810000000) [INFO] [3] Val 154 (NIT: 1)
+dwm3001-1 > [0] Sent 155
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 155 (NIT: 1)
+dwm3001-3 > (161574000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.9 ms abs max=11.0 ms offset avg=-0.4 ms abs max=3.1 ms
+dwm3001-2 > (161955000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.8 ms abs max=9.0 ms offset avg=0.1 ms abs max=1.3 ms
+dwm3001-1 > [0] Sent 156
+dwm3001-8 >  sync stats over 1[3] Val 156 (NIT: 1)
+dwm3001-1 > [0] Sent 157
+dwm3001-8 > 0 samples: RTT avg=7[3] Val 157 (NIT: 1)
+dwm3001-1 > [0] Sent 158
+dwm3001-8 > .5 ms abs max=8.0[3] Val 158 (NIT: 1)
+dwm3001-1 > [0] Sent 159
+dwm3001-8 >  ms offset avg=-[3] Val 159 (NIT: 1)
+dwm3001-1 > [0] Sent 160
+dwm3001-8 > 0.2 ms abs max=1.[3] Val 160 (NIT: 1)
+dwm3001-8 > 9 ms
+dwm3001-1 > [0] Sent 161
+dwm3001-8 > [3] Val 161 (NIT: 1)
+dwm3001-1 > [0] Sent 162
+dwm3001-8 > [3] Val 162 (NIT: 1)
+dwm3001-1 > [0] Sent 163
+dwm3001-8 > (1728[3] Val 163 (NIT: 1)
+dwm3001-1 > [0] Sent 164
+dwm3001-8 > 43000000) [INFO] [CLOCK_[3] Val 164 (NIT: 1)
+dwm3001-1 > [0] Sent 165
+dwm3001-2 > (171991000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=-0.0 ms abs max=0.7 ms
+dwm3001-3 > (171606000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.5 ms abs max=8.0 ms offset avg=0.0 ms abs max=1.4 ms
+dwm3001-8 > SYNC] Clock sync s[3] Val 165 (NIT: 1)
+dwm3001-1 > [0] Sent 166
+dwm3001-8 > tats over 10 sampl[3] Val 166 (NIT: 1)
+dwm3001-1 > [0] Sent 167
+dwm3001-8 > es: RTT avg=7.3 m[3] Val 167 (NIT: 1)
+dwm3001-1 > [0] Sent 168
+dwm3001-8 > s abs max=8.0 ms [3] Val 168 (NIT: 1)
+dwm3001-1 > [0] Sent 169
+dwm3001-8 > offset avg=0.1 ms abs m[3] Val 169 (NIT: 1)
+dwm3001-1 > [0] Sent 170
+dwm3001-8 > ax=1.8 ms
+dwm3001-8 > [3] Val 170 (NIT: 1)
+dwm3001-1 > [0] Sent 171
+dwm3001-8 > [3] Val 171 (NIT: 1)
+dwm3001-1 > [0] Sent 172
+dwm3001-8 > [3] Val 172 (NIT: 1)
+dwm3001-1 > [0] Sent 173
+dwm3001-8 > (182[3] Val 173 (NIT: 1)
+dwm3001-1 > [0] Sent 174
+dwm3001-8 > 879000000) [INFO] [CLOCK_[3] Val 174 (NIT: 1)
+dwm3001-1 > [0] Sent 175
+dwm3001-8 > SYNC] Clock sync s[3] Val 175 (NIT: 1)
+dwm3001-3 > (181640000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.9 ms abs max=9.0 ms offset avg=0.1 ms abs max=1.8 ms
+dwm3001-2 > (182024000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=-0.0 ms abs max=1.0 ms
+dwm3001-1 > [0] Sent 176
+dwm3001-8 > tats over 10 sample[3] Val 176 (NIT: 1)
+dwm3001-1 > [0] Sent 177
+dwm3001-8 > s: RTT avg=7.4 ms[3] Val 177 (NIT: 1)
+dwm3001-1 > [0] Sent 178
+dwm3001-8 >  abs max=10.0 ms [3] Val 178 (NIT: 1)
+dwm3001-1 > [0] Sent 179
+dwm3001-8 > offset avg=0.0 ms [3] Val 179 (NIT: 1)
+dwm3001-1 > [0] Sent 180
+dwm3001-8 > abs max=2.5 ms[0[3] Val 180 (NIT: 1)
+dwm3001-8 > m
+dwm3001-1 > [0] Sent 181
+dwm3001-8 > [3] Val 181 (NIT: 1)
+dwm3001-1 > [0] Sent 182
+dwm3001-8 > [3] Val 182 (NIT: 1)
+dwm3001-1 > [0] Sent 183
+dwm3001-8 > (192[3] Val 183 (NIT: 1)
+dwm3001-1 > [0] Sent 184
+dwm3001-8 > 910000000) [INFO] [[3] Val 184 (NIT: 1)
+dwm3001-1 > [0] Sent 185
+dwm3001-8 > CLOCK_SYNC] Clock syn[3] Val 185 (NIT: 1)
+dwm3001-3 > (191674000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.3 ms abs max=8.0 ms offset avg=-0.1 ms abs max=0.9 ms
+dwm3001-2 > (192066000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=0.0 ms abs max=0.6 ms
+dwm3001-1 > [0] Sent 186
+dwm3001-8 > c stats over 10 sam[3] Val 186 (NIT: 1)
+dwm3001-1 > [0] Sent 187
+dwm3001-8 > ples: RTT avg=8.0[3] Val 187 (NIT: 1)
+dwm3001-1 > [0] Sent 188
+dwm3001-8 >  ms abs max=10.0 m[3] Val 188 (NIT: 1)
+dwm3001-1 > [0] Sent 189
+dwm3001-8 > s offset avg=-0.1 [3] Val 189 (NIT: 1)
+dwm3001-1 > [0] Sent 190
+dwm3001-8 > ms abs max=1.7 ms[3] Val 190 (NIT: 1)
+dwm3001-8 >
+dwm3001-1 > [0] Sent 191
+dwm3001-8 > [3] Val 191 (NIT: 1)
+dwm3001-1 > [0] Sent 192
+dwm3001-8 > [3] Val 192 (NIT: 1)
+dwm3001-1 > [0] Sent 193
+dwm3001-8 > (202[3] Val 193 (NIT: 1)
+dwm3001-1 > [0] Sent 194
+dwm3001-8 > 945000000) [INFO] [[3] Val 194 (NIT: 1)
+dwm3001-1 > [0] Sent 195
+dwm3001-8 > CLOCK_SYNC] Clock [3] Val 195 (NIT: 1)
+dwm3001-3 > (201708000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=-0.2 ms abs max=2.2 ms
+dwm3001-2 > (202101000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.6 ms abs max=11.0 ms offset avg=-0.1 ms abs max=1.9 ms
+dwm3001-1 > [0] Sent 196
+dwm3001-8 > sync stats over 10[3] Val 196 (NIT: 1)
+dwm3001-1 > [0] Sent 197
+dwm3001-8 >  samples: RTT avg[3] Val 197 (NIT: 1)
+dwm3001-1 > [0] Sent 198
+dwm3001-8 > =7.5 ms abs max=8.0 ms o[3] Val 198 (NIT: 1)
+dwm3001-1 > [0] Sent 199
+dwm3001-8 > ffset avg=-0.1 ms[3] Val 199 (NIT: 1)
+dwm3001-1 > [0] Sent 200
+dwm3001-8 >  abs max=2.1 ms[[3] Val 200 (NIT: 1)
+dwm3001-8 > 0m
+dwm3001-1 > [0] Sent 201
+dwm3001-8 > [3] Val 201 (NIT: 1)
+dwm3001-1 > [0] Sent 202
+dwm3001-8 > [3] Val 202 (NIT: 1)
+dwm3001-1 > [0] Sent 203
+dwm3001-8 > (2129790000[3] Val 203 (NIT: 1)
+dwm3001-1 > [0] Sent 204
+dwm3001-8 > 00) [INFO] [CLOCK_[3] Val 204 (NIT: 1)
+dwm3001-1 > [0] Sent 205
+dwm3001-8 > SYNC] Clock sync s[3] Val 205 (NIT: 1)
+dwm3001-3 > (211743000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.4 ms abs max=8.0 ms offset avg=0.2 ms abs max=2.0 ms
+dwm3001-2 > (212134000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.4 ms abs max=14.0 ms offset avg=-0.1 ms abs max=2.7 ms
+dwm3001-1 > [0] Sent 206
+dwm3001-8 > tats over 10 sampl[3] Val 206 (NIT: 1)
+dwm3001-1 > [0] Sent 207
+dwm3001-8 > es: RTT avg=7.5 m[3] Val 207 (NIT: 1)
+dwm3001-1 > [0] Sent 208
+dwm3001-8 > s abs max=8.0 ms offset[3] Val 208 (NIT: 1)
+dwm3001-1 > [0] Sent 209
+dwm3001-8 >  avg=0.1 ms abs m[3] Val 209 (NIT: 1)
+dwm3001-1 > [0] Sent 210
+dwm3001-8 > ax=1.7 ms
+dwm3001-8 > [3] Val 210 (NIT: 1)
+dwm3001-1 > [0] Sent 211
+dwm3001-8 > [3] Val 211 (NIT: 1)
+dwm3001-1 > [0] Sent 212
+dwm3001-8 > [3] Val 212 (NIT: 1)
+dwm3001-1 > [0] Sent 213
+dwm3001-8 > (2230150[3] Val 213 (NIT: 1)
+dwm3001-1 > [0] Sent 214
+dwm3001-8 > 00000) [INFO] [CLOC[3] Val 214 (NIT: 1)
+dwm3001-1 > [0] Sent 215
+dwm3001-8 > K_SYNC] Clock sync[3] Val 215 (NIT: 1)
+dwm3001-3 > (221780000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.4 ms abs max=8.0 ms offset avg=-0.1 ms abs max=1.4 ms
+dwm3001-2 > (222169000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=0.1 ms abs max=1.1 ms
+dwm3001-1 > [0] Sent 216
+dwm3001-8 >  stats over 10 sam[3] Val 216 (NIT: 1)
+dwm3001-1 > [0] Sent 217
+dwm3001-8 > ples: RTT avg=7.4[3] Val 217 (NIT: 1)
+dwm3001-1 > [0] Sent 218
+dwm3001-8 >  ms abs max=8.0 ms[3] Val 218 (NIT: 1)
+dwm3001-1 > [0] Sent 219
+dwm3001-8 >  offset avg=-0.0 [3] Val 219 (NIT: 1)
+dwm3001-1 > [0] Sent 220
+dwm3001-8 > ms abs max=1.4 ms[3] Val 220 (NIT: 1)
+dwm3001-8 >
+dwm3001-1 > [0] Sent 221
+dwm3001-8 > [3] Val 221 (NIT: 1)
+dwm3001-1 > [0] Sent 222
+dwm3001-8 > [3] Val 222 (NIT: 1)
+dwm3001-1 > [0] Sent 223
+dwm3001-8 > (233[3] Val 223 (NIT: 1)
+dwm3001-1 > [0] Sent 224
+dwm3001-8 > 050000000) [INFO] [3] Val 224 (NIT: 1)
+dwm3001-1 > [0] Sent 225
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 225 (NIT: 1)
+dwm3001-3 > (231814000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.5 ms abs max=8.0 ms offset avg=0.0 ms abs max=1.1 ms
+dwm3001-2 > (232206000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=9.0 ms offset avg=0.1 ms abs max=1.1 ms
+dwm3001-1 > [0] Sent 226
+dwm3001-8 >  sync stats over 1[3] Val 226 (NIT: 1)
+dwm3001-1 > [0] Sent 227
+dwm3001-8 > 0 samples: RTT avg[3] Val 227 (NIT: 1)
+dwm3001-1 > [0] Sent 228
+dwm3001-8 > =7.3 ms abs max=[3] Val 228 (NIT: 1)
+dwm3001-1 > [0] Sent 229
+dwm3001-8 > 8.0 ms offset avg=[3] Val 229 (NIT: 1)
+dwm3001-1 > [0] Sent 230
+dwm3001-8 > 0.0 ms abs max=1.[3] Val 230 (NIT: 1)
+dwm3001-8 > 0 ms
+dwm3001-1 > [0] Sent 231
+dwm3001-8 > [3] Val 231 (NIT: 1)
+dwm3001-1 > [0] Sent 232
+dwm3001-8 > [3] Val 232 (NIT: 1)
+dwm3001-1 > [0] Sent 233
+dwm3001-8 > (2430[3] Val 233 (NIT: 1)
+dwm3001-1 > [0] Sent 234
+dwm3001-8 > 78000000) [INFO] [C[3] Val 234 (NIT: 1)
+dwm3001-1 > [0] Sent 235
+dwm3001-8 > LOCK_SYNC] Clock s[3] Val 235 (NIT: 1)
+dwm3001-3 > (241841000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.4 ms abs max=8.0 ms offset avg=-0.0 ms abs max=6.0 ms
+dwm3001-1 > [0] Sent 236
+dwm3001-2 > (242250000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.8 ms abs max=19.0 ms offset avg=-0.3 ms abs max=6.1 ms
+dwm3001-8 > ync stats over 10 [3] Val 236 (NIT: 1)
+dwm3001-1 > [0] Sent 237
+dwm3001-8 > samples: RTT avg=[3] Val 237 (NIT: 1)
+dwm3001-1 > [0] Sent 238
+dwm3001-8 > 8.0 ms abs max=11.0 ms [3] Val 238 (NIT: 1)
+dwm3001-1 > [0] Sent 239
+dwm3001-8 > offset avg=0.1 ms[3] Val 239 (NIT: 1)
+dwm3001-1 > [0] Sent 240
+dwm3001-8 >  abs max=4.5 ms[[3] Val 240 (NIT: 1)
+dwm3001-8 > 0m
+dwm3001-1 > [0] Sent 241
+dwm3001-8 > [3] Val 241 (NIT: 1)
+dwm3001-1 > [0] Sent 242
+dwm3001-8 > [3] Val 242 (NIT: 1)
+dwm3001-1 > [0] Sent 243
+dwm3001-8 > (253124000000) [INFO[3] Val 243 (NIT: 1)
+dwm3001-1 > [0] Sent 244
+dwm3001-8 > ] [CLOCK_SYNC] Clo[3] Val 244 (NIT: 1)
+dwm3001-3 > (251885000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=-0.7 ms abs max=5.1 ms
+dwm3001-1 > [0] Sent 245
+dwm3001-8 > ck sync stats over[3] Val 245 (NIT: 1)
+dwm3001-1 > [0] Sent 246
+dwm3001-2 > (252304000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=11.6 ms abs max=19.0 ms offset avg=-0.1 ms abs max=5.3 ms
+dwm3001-8 >  10 samples: RTT av[3] Val 246 (NIT: 1)
+dwm3001-1 > [0] Sent 247
+dwm3001-8 > g=7.6 ms abs max[3] Val 247 (NIT: 1)
+dwm3001-1 > [0] Sent 248
+dwm3001-8 > =10.0 ms offset av[3] Val 248 (NIT: 1)
+dwm3001-1 > [0] Sent 249
+dwm3001-8 > g=-0.8 ms abs max[3] Val 249 (NIT: 1)
+dwm3001-1 > [0] Sent 250
+dwm3001-8 > =4.9 ms
+dwm3001-8 > [3] Val 250 (NIT: 1)
+dwm3001-1 > [0] Sent 251
+dwm3001-8 > [3] Val 251 (NIT: 1)
+dwm3001-1 > [0] Sent 252
+dwm3001-8 > [3] Val 252 (NIT: 1)
+dwm3001-1 > [0] Sent 253
+dwm3001-8 > (263[3] Val 253 (NIT: 1)
+dwm3001-1 > [0] Sent 254
+dwm3001-8 > 199000000) [INFO] [[3] Val 254 (NIT: 1)
+dwm3001-1 > [0] Sent 255
+dwm3001-2 > (262361000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.2 ms abs max=11.0 ms offset avg=0.3 ms abs max=10.0 ms
+dwm3001-8 > CLOCK_SYNC] Clock s[3] Val 255 (NIT: 1)
+dwm3001-1 > [0] Sent 256
+dwm3001-3 > (261914000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.8 ms abs max=12.0 ms offset avg=0.8 ms abs max=10.0 ms
+dwm3001-8 > ync stats over 10 [3] Val 256 (NIT: 1)
+dwm3001-1 > [0] Sent 257
+dwm3001-8 > samples: RTT avg=1[3] Val 257 (NIT: 1)
+dwm3001-1 > [0] Sent 258
+dwm3001-8 > 2.2 ms abs max=51.[3] Val 258 (NIT: 1)
+dwm3001-1 > [0] Sent 259
+dwm3001-8 > 0 ms offset avg=0[3] Val 259 (NIT: 1)
+dwm3001-1 > [0] Sent 260
+dwm3001-8 > .7 ms abs max=31.[3] Val 260 (NIT: 1)
+dwm3001-8 > 4 ms
+dwm3001-1 > [0] Sent 261
+dwm3001-8 > [3] Val 261 (NIT: 1)
+dwm3001-1 > [0] Sent 262
+dwm3001-8 > [3] Val 262 (NIT: 1)
+dwm3001-1 > [0] Sent 263
+dwm3001-8 > (273232000[3] Val 263 (NIT: 1)
+dwm3001-1 > [0] Sent 264
+dwm3001-8 > 000) [INFO] [CLOCK[3] Val 264 (NIT: 1)
+dwm3001-1 > [0] Sent 265
+dwm3001-8 > _SYNC] Clock sync [3] Val 265 (NIT: 1)
+dwm3001-1 > [0] Sent 266
+dwm3001-3 > (271956000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=13.1 ms abs max=48.0 ms offset avg=-0.6 ms abs max=17.8 ms
+dwm3001-2 > (272397000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=9.0 ms offset avg=0.1 ms abs max=1.7 ms
+dwm3001-8 > stats over 10 samp[3] Val 266 (NIT: 1)
+dwm3001-1 > [0] Sent 267
+dwm3001-8 > les: RTT avg=7.3 ms abs[3] Val 267 (NIT: 1)
+dwm3001-1 > [0] Sent 268
+dwm3001-8 >  max=8.1 ms offse[3] Val 268 (NIT: 1)
+dwm3001-1 > [0] Sent 269
+dwm3001-8 > t avg=-0.8 ms abs max=[3] Val 269 (NIT: 1)
+dwm3001-1 > [0] Sent 270
+dwm3001-8 > 10.7 ms
+dwm3001-8 > [3] Val 270 (NIT: 1)
+dwm3001-1 > [0] Sent 271
+dwm3001-8 > [3] Val 271 (NIT: 1)
+dwm3001-1 > [0] Sent 272
+dwm3001-8 > [3] Val 272 (NIT: 1)
+dwm3001-1 > [0] Sent 273
+dwm3001-8 > (283[3] Val 273 (NIT: 1)
+dwm3001-1 > [0] Sent 274
+dwm3001-8 > 268000000) [INFO] [3] Val 274 (NIT: 1)
+dwm3001-1 > [0] Sent 275
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 275 (NIT: 1)
+dwm3001-1 > [0] Sent 276
+dwm3001-3 > (281998000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=12.6 ms abs max=19.0 ms offset avg=0.6 ms abs max=6.4 ms
+dwm3001-2 > (282430000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.2 ms abs max=9.0 ms offset avg=0.0 ms abs max=0.6 ms
+dwm3001-8 >  sync stats over 1[3] Val 276 (NIT: 1)
+dwm3001-1 > [0] Sent 277
+dwm3001-8 > 0 samples: RTT avg=7.5 ms[3] Val 277 (NIT: 1)
+dwm3001-1 > [0] Sent 278
+dwm3001-8 >  abs max=8.0 ms [3] Val 278 (NIT: 1)
+dwm3001-1 > [0] Sent 279
+dwm3001-8 > offset avg=0.7 ms[3] Val 279 (NIT: 1)
+dwm3001-1 > [0] Sent 280
+dwm3001-8 >  abs max=6.6 ms[[3] Val 280 (NIT: 1)
+dwm3001-8 > 0m
+dwm3001-1 > [0] Sent 281
+dwm3001-8 > [3] Val 281 (NIT: 1)
+dwm3001-1 > [0] Sent 282
+dwm3001-8 > [3] Val 282 (NIT: 1)
+dwm3001-1 > [0] Sent 283
+dwm3001-8 > (293[3] Val 283 (NIT: 1)
+dwm3001-1 > [0] Sent 284
+dwm3001-8 > 308000000) [INFO] [CLOCK_SYN[3] Val 284 (NIT: 1)
+dwm3001-1 > [0] Sent 285
+dwm3001-8 > C] Clock sync stat[3] Val 285 (NIT: 1)
+dwm3001-1 > [0] Sent 286
+dwm3001-3 > (292035000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.4 ms abs max=8.0 ms offset avg=-0.1 ms abs max=4.3 ms
+dwm3001-8 > s over 10 samples:[3] Val 286 (NIT: 1)
+dwm3001-2 > (292466000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.2 ms abs max=11.0 ms offset avg=-0.1 ms abs max=1.6 ms
+dwm3001-1 > [0] Sent 287
+dwm3001-8 >  RTT avg=7.8 ms ab[3] Val 287 (NIT: 1)
+dwm3001-1 > [0] Sent 288
+dwm3001-8 > s max=9.0 ms offse[3] Val 288 (NIT: 1)
+dwm3001-1 > [0] Sent 289
+dwm3001-8 > t avg=0.2 ms abs[3] Val 289 (NIT: 1)
+dwm3001-1 > [0] Sent 290
+dwm3001-8 >  max=3.3 ms
+dwm3001-8 > [3] Val 290 (NIT: 1)
+dwm3001-1 > [0] Sent 291
+dwm3001-8 > [3] Val 291 (NIT: 1)
+dwm3001-1 > [0] Sent 292
+dwm3001-8 > [3] Val 292 (NIT: 1)
+dwm3001-1 > [0] Sent 293
+dwm3001-8 > (303[3] Val 293 (NIT: 1)
+dwm3001-1 > [0] Sent 294
+dwm3001-8 > 340000000) [INFO] [[3] Val 294 (NIT: 1)
+dwm3001-1 > [0] Sent 295
+dwm3001-8 > CLOCK_SYNC] Clock [3] Val 295 (NIT: 1)
+dwm3001-1 > [0] Sent 296
+dwm3001-2 > (302499000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=10.0 ms offset avg=0.1 ms abs max=1.4 ms
+dwm3001-3 > (302065000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.3 ms abs max=19.0 ms offset avg=-0.1 ms abs max=7.0 ms
+dwm3001-8 > sync stats over 10[3] Val 296 (NIT: 1)
+dwm3001-1 > [0] Sent 297
+dwm3001-8 >  samples: RTT avg=7.3 m[3] Val 297 (NIT: 1)
+dwm3001-1 > [0] Sent 298
+dwm3001-8 > s abs max=8.0 ms [3] Val 298 (NIT: 1)
+dwm3001-1 > [0] Sent 299
+dwm3001-8 > offset avg=-0.1 m[3] Val 299 (NIT: 1)
+dwm3001-1 > [0] Sent 300
+dwm3001-8 > s abs max=5.1 ms[3] Val 300 (NIT: 1)
+dwm3001-8 > [0m
+dwm3001-1 > [0] Sent 301
+dwm3001-8 > [3] Val 301 (NIT: 1)
+dwm3001-1 > [0] Sent 302
+dwm3001-8 > [3] No value at PT 313500.2 ms and LT 311450 ms
+dwm3001-8 > [WARN] Tardy at PT 313505.2 ms and LT 311450 ms
+dwm3001-1 > [0] Sent 303
+dwm3001-8 > (313[3] Val 303 (NIT: 2)
+dwm3001-1 > [0] Sent 304
+dwm3001-8 > 375000000) [INFO] [3] Val 304 (NIT: 2)
+dwm3001-1 > [0] Sent 305
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 305 (NIT: 2)
+dwm3001-1 > [0] Sent 306
+dwm3001-3 > (312099000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.4 ms abs max=8.0 ms offset avg=0.0 ms abs max=1.9 ms
+dwm3001-8 >  sync stats over 10[3] Val 306 (NIT: 2)
+dwm3001-2 > (312538000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.6 ms abs max=12.0 ms offset avg=-0.1 ms abs max=2.5 ms
+dwm3001-1 > [0] Sent 307
+dwm3001-8 >  samples: RTT avg=7.2 m[3] Val 307 (NIT: 2)
+dwm3001-1 > [0] Sent 308
+dwm3001-8 > s abs max=8.0 ms of[3] Val 308 (NIT: 2)
+dwm3001-1 > [0] Sent 309
+dwm3001-8 > fset avg=-0.1 ms a[3] Val 309 (NIT: 2)
+dwm3001-1 > [0] Sent 310
+dwm3001-8 > bs max=1.1 ms[3] Val 310 (NIT: 2)
+dwm3001-8 >
+dwm3001-1 > [0] Sent 311
+dwm3001-8 > [3] Val 311 (NIT: 2)
+dwm3001-1 > [0] Sent 312
+dwm3001-8 > [3] Val 312 (NIT: 2)
+dwm3001-1 > [0] Sent 313
+dwm3001-8 > (323[3] Val 313 (NIT: 2)
+dwm3001-1 > [0] Sent 314
+dwm3001-8 > 408000000) [INFO] [[3] Val 314 (NIT: 2)
+dwm3001-1 > [0] Sent 315
+dwm3001-8 > CLOCK_SYNC] Clock [3] Val 315 (NIT: 2)
+dwm3001-1 > [0] Sent 316
+dwm3001-3 > (322134000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.9 ms abs max=9.0 ms offset avg=0.0 ms abs max=1.2 ms
+dwm3001-8 > sync stats over 10[3] Val 316 (NIT: 2)
+dwm3001-2 > (322570000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=0.1 ms abs max=1.1 ms
+dwm3001-1 > [0] Sent 317
+dwm3001-8 >  samples: RTT avg[3] Val 317 (NIT: 2)
+dwm3001-1 > [0] Sent 318
+dwm3001-8 > =7.8 ms abs max=8[3] Val 318 (NIT: 2)
+dwm3001-1 > [0] Sent 319
+dwm3001-8 > .0 ms offset avg=[3] Val 319 (NIT: 2)
+dwm3001-1 > [0] Sent 320
+dwm3001-8 > 0.1 ms abs max=1.[3] Val 320 (NIT: 2)
+dwm3001-8 > 3 ms
+dwm3001-1 > [0] Sent 321
+dwm3001-8 > [3] Val 321 (NIT: 2)
+dwm3001-1 > [0] Sent 322
+dwm3001-8 > [3] Val 322 (NIT: 2)
+dwm3001-1 > [0] Sent 323
+dwm3001-8 > (333[3] Val 323 (NIT: 2)
+dwm3001-1 > [0] Sent 324
+dwm3001-8 > 444000000) [INFO] [3] Val 324 (NIT: 2)
+dwm3001-1 > [0] Sent 325
+dwm3001-8 > [CLOCK_SYNC] Clock sync [3] Val 325 (NIT: 2)
+dwm3001-1 > [0] Sent 326
+dwm3001-8 > stats over 10 samp[3] Val 326 (NIT: 2)
+dwm3001-3 > (332166000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=0.1 ms abs max=0.8 ms
+dwm3001-2 > (332604000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.5 ms abs max=8.0 ms offset avg=0.0 ms abs max=0.6 ms
+dwm3001-1 > [0] Sent 327
+dwm3001-8 > les: RTT avg=7.4 [3] Val 327 (NIT: 2)
+dwm3001-1 > [0] Sent 328
+dwm3001-8 > ms abs max=8.0 ms[3] Val 328 (NIT: 2)
+dwm3001-1 > [0] Sent 329
+dwm3001-8 >  offset avg=0.1 m[3] Val 329 (NIT: 2)
+dwm3001-1 > [0] Sent 330
+dwm3001-8 > s abs max=1.0 ms[3] Val 330 (NIT: 2)
+dwm3001-8 > [0m
+dwm3001-1 > [0] Sent 331
+dwm3001-8 > [3] Val 331 (NIT: 2)
+dwm3001-1 > [0] Sent 332
+dwm3001-8 > [3] Val 332 (NIT: 2)
+dwm3001-1 > [0] Sent 333
+dwm3001-8 > (343[3] Val 333 (NIT: 2)
+dwm3001-1 > [0] Sent 334
+dwm3001-8 > 476000000) [INFO] [[3] Val 334 (NIT: 2)
+dwm3001-1 > [0] Sent 335
+dwm3001-8 > CLOCK_SYNC] Clock [3] Val 335 (NIT: 2)
+dwm3001-1 > [0] Sent 336
+dwm3001-3 > (342197000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.5 ms abs max=8.0 ms offset avg=-0.1 ms abs max=0.5 ms
+dwm3001-8 > sync stats over 10 sampl[3] Val 336 (NIT: 2)
+dwm3001-2 > (342645000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.0 ms abs max=10.0 ms offset avg=0.1 ms abs max=1.5 ms
+dwm3001-1 > [0] Sent 337
+dwm3001-8 > s: RTT avg=7.4 ms[3] Val 337 (NIT: 2)
+dwm3001-1 > [0] Sent 338
+dwm3001-8 >  abs max=8.0 ms o[3] Val 338 (NIT: 2)
+dwm3001-1 > [0] Sent 339
+dwm3001-8 > ffset avg=-0.1 ms abs[3] Val 339 (NIT: 2)
+dwm3001-1 > [0] Sent 340
+dwm3001-8 >  max=0.9 ms
+dwm3001-8 > [3] Val 340 (NIT: 2)
+dwm3001-1 > [0] Sent 341
+dwm3001-8 > [3] Val 341 (NIT: 2)
+dwm3001-1 > [0] Sent 342
+dwm3001-8 > [3] Val 342 (NIT: 2)
+dwm3001-1 > [0] Sent 343
+dwm3001-8 > (353[3] Val 343 (NIT: 2)
+dwm3001-1 > [0] Sent 344
+dwm3001-8 > 522000000) [INFO] [3] Val 344 (NIT: 2)
+dwm3001-1 > [0] Sent 345
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 345 (NIT: 2)
+dwm3001-1 > [0] Sent 346
+dwm3001-8 >  sync stats over 10 samp[3] Val 346 (NIT: 2)
+dwm3001-3 > (352231000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.5 ms abs max=8.0 ms offset avg=0.0 ms abs max=1.1 ms
+dwm3001-2 > (352677000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.3 ms abs max=8.0 ms offset avg=-0.1 ms abs max=1.9 ms
+dwm3001-1 > [0] Sent 347
+dwm3001-8 > les: RTT avg=7.6 ms[3] Val 347 (NIT: 2)
+dwm3001-1 > [0] Sent 348
+dwm3001-8 >  abs max=8.0 ms of[3] Val 348 (NIT: 2)
+dwm3001-1 > [0] Sent 349
+dwm3001-8 > fset avg=0.0 ms a[3] Val 349 (NIT: 2)
+dwm3001-1 > [0] Sent 350
+dwm3001-8 > bs max=1.8 ms[3] Val 350 (NIT: 2)
+dwm3001-1 > [0] Sent 351
+dwm3001-8 >
+dwm3001-8 > [3] Val 351 (NIT: 2)
+dwm3001-1 > [0] Sent 352
+dwm3001-8 > [3] Val 352 (NIT: 2)
+dwm3001-1 > [0] Sent 353
+dwm3001-8 > [3] Val 353 (NIT: 2)
+dwm3001-1 > [0] Sent 354
+dwm3001-8 > (363606000000[3] Val 354 (NIT: 2)
+dwm3001-1 > [0] Sent 355
+dwm3001-8 > ) [INFO] [CLOCK_SY[3] Val 355 (NIT: 2)
+dwm3001-1 > [0] Sent 356
+dwm3001-8 > NC] Clock sync sta[3] Val 356 (NIT: 2)
+dwm3001-3 > (362265000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.4 ms abs max=8.0 ms offset avg=-0.0 ms abs max=2.1 ms
+dwm3001-2 > (362711000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.8 ms abs max=10.0 ms offset avg=0.0 ms abs max=2.1 ms
+dwm3001-1 > [0] Sent 357
+dwm3001-8 > ts over 10 samples[3] Val 357 (NIT: 2)
+dwm3001-1 > [0] Sent 358
+dwm3001-8 > : RTT avg=20.6 ms[3] Val 358 (NIT: 2)
+dwm3001-1 > [0] Sent 359
+dwm3001-8 >  abs max=56.0 ms [3] Val 359 (NIT: 2)
+dwm3001-1 > [0] Sent 360
+dwm3001-8 > offset avg=-2.3 m[3] Val 360 (NIT: 2)
+dwm3001-1 > [0] Sent 361
+dwm3001-8 > s abs max=20.2 ms[0[3] Val 361 (NIT: 2)
+dwm3001-1 > [0] Sent 362
+dwm3001-8 > m
+dwm3001-8 > [3] Val 362 (NIT: 2)
+dwm3001-1 > [0] Sent 363
+dwm3001-8 > (373602[3] Val 363 (NIT: 2)
+dwm3001-1 > [0] Sent 364
+dwm3001-8 > 000000) [INFO] [CLOCK_[3] Val 364 (NIT: 2)
+dwm3001-1 > [0] Sent 365
+dwm3001-8 > SYNC] Clock sync stats over [3] Val 365 (NIT: 2)
+dwm3001-2 > (372745000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.7 ms abs max=8.0 ms offset avg=0.1 ms abs max=1.1 ms
+dwm3001-1 > [0] Sent 366
+dwm3001-3 > (372300000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.2 ms abs max=8.0 ms offset avg=0.1 ms abs max=1.1 ms
+dwm3001-8 > 10 samples: RTT avg[3] Val 366 (NIT: 2)
+dwm3001-1 > [0] Sent 367
+dwm3001-8 > =7.7 ms abs max=1[3] Val 367 (NIT: 2)
+dwm3001-1 > [0] Sent 368
+dwm3001-8 > 0.0 ms offset avg=2[3] Val 368 (NIT: 2)
+dwm3001-1 > [0] Sent 369
+dwm3001-8 > .5 ms abs max=16.[3] Val 369 (NIT: 2)
+dwm3001-1 > [0] Sent 370
+dwm3001-8 > 4 ms
+dwm3001-8 > [3] Val 370 (NIT: 2)
+dwm3001-1 > [0] Sent 371
+dwm3001-8 > [3] Val 371 (NIT: 2)
+dwm3001-1 > [0] Sent 372
+dwm3001-8 > [3] Val 372 (NIT: 2)
+dwm3001-1 > [0] Sent 373
+dwm3001-8 > [3] Val 373 (NIT: 2)
+dwm3001-1 > [0] Sent 374
+dwm3001-8 > (383[3] Val 374 (NIT: 2)
+dwm3001-1 > [0] Sent 375
+dwm3001-8 > 646000000) [INFO] [[3] Val 375 (NIT: 2)
+dwm3001-1 > [0] Sent 376
+dwm3001-8 > CLOCK_SYNC] Clock sync s[3] Val 376 (NIT: 2)
+dwm3001-3 > (382332000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.8 ms abs max=10.0 ms offset avg=-0.1 ms abs max=1.6 ms
+dwm3001-2 > (382781000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=0.0 ms abs max=0.9 ms
+dwm3001-1 > [0] Sent 377
+dwm3001-8 > tats over 10 sampl[3] Val 377 (NIT: 2)
+dwm3001-1 > [0] Sent 378
+dwm3001-8 > es: RTT avg=11.3 [3] Val 378 (NIT: 2)
+dwm3001-1 > [0] Sent 379
+dwm3001-8 > ms abs max=22.0 m[3] Val 379 (NIT: 2)
+dwm3001-1 > [0] Sent 380
+dwm3001-8 > s offset avg=-0.2[3] Val 380 (NIT: 2)
+dwm3001-1 > [0] Sent 381
+dwm3001-8 > [3] Val 381 (NIT: 2)
+dwm3001-8 >
+dwm3001-1 > [0] Sent 382
+dwm3001-8 > [3] Val 382 (NIT: 2)
+dwm3001-1 > [0] Sent 383
+dwm3001-8 > [3] Val 383 (NIT: 2)
+dwm3001-1 > [0] Sent 384
+dwm3001-8 > (393[3] Val 384 (NIT: 2)
+dwm3001-1 > [0] Sent 385
+dwm3001-8 > 782000000) [INFO] [3] Val 385 (NIT: 2)
+dwm3001-1 > [0] Sent 386
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 386 (NIT: 2)
+dwm3001-3 > (392366000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.5 ms abs max=8.0 ms offset avg=0.0 ms abs max=1.0 ms
+dwm3001-2 > (392815000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.0 ms abs max=10.0 ms offset avg=-0.1 ms abs max=1.4 ms
+dwm3001-1 > [0] Sent 387
+dwm3001-8 >  sync stats over 1[3] Val 387 (NIT: 2)
+dwm3001-1 > [0] Sent 388
+dwm3001-8 > 0 samples: RTT avg[3] Val 388 (NIT: 2)
+dwm3001-1 > [0] Sent 389
+dwm3001-8 > =7.4 ms abs max=[3] Val 389 (NIT: 2)
+dwm3001-1 > [0] Sent 390
+dwm3001-8 > 8.0 ms offset avg[3] Val 390 (NIT: 2)
+dwm3001-1 > [0] Sent 391
+dwm3001-8 > =-0.1 ms abs max=[3] Val 391 (NIT: 2)
+dwm3001-8 > 1.6 ms
+dwm3001-1 > [0] Sent 392
+dwm3001-8 > [3] Val 392 (NIT: 2)
+dwm3001-1 > [0] Sent 393
+dwm3001-8 > [3] Val 393 (NIT: 2)
+dwm3001-1 > [0] Sent 394
+dwm3001-8 > (403[3] Val 394 (NIT: 2)
+dwm3001-1 > [0] Sent 395
+dwm3001-8 > 819000000) [INFO] [3] Val 395 (NIT: 2)
+dwm3001-1 > [0] Sent 396
+dwm3001-2 > (402856000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.5 ms abs max=13.0 ms offset avg=0.3 ms abs max=2.7 ms
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 396 (NIT: 2)
+dwm3001-3 > (402399000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=0.0 ms abs max=1.7 ms
+dwm3001-1 > [0] Sent 397
+dwm3001-8 >  sync stats over 1[3] Val 397 (NIT: 2)
+dwm3001-1 > [0] Sent 398
+dwm3001-8 > 0 samples: RTT avg[3] Val 398 (NIT: 2)
+dwm3001-1 > [0] Sent 399
+dwm3001-8 > =7.5 ms abs max=[3] Val 399 (NIT: 2)
+dwm3001-1 > [0] Sent 400
+dwm3001-8 > 8.0 ms offset avg[3] Val 400 (NIT: 2)
+dwm3001-1 > [0] Sent 401
+dwm3001-8 > =0.1 ms abs max=1[3] Val 401 (NIT: 2)
+dwm3001-8 > .3 ms
+dwm3001-1 > [0] Sent 402
+dwm3001-8 > [3] Val 402 (NIT: 2)
+dwm3001-1 > [0] Sent 403
+dwm3001-8 > [3] Val 403 (NIT: 2)
+dwm3001-1 > [0] Sent 404
+dwm3001-8 > (4138[3] Val 404 (NIT: 2)
+dwm3001-1 > [0] Sent 405
+dwm3001-8 > 50000000) [INFO] [[3] Val 405 (NIT: 2)
+dwm3001-1 > [0] Sent 406
+dwm3001-8 > CLOCK_SYNC] Clock sync s[3] Val 406 (NIT: 2)
+dwm3001-3 > (412430000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.1 ms abs max=8.0 ms offset avg=-0.2 ms abs max=2.4 ms
+dwm3001-2 > (412886000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.4 ms abs max=11.0 ms offset avg=-0.4 ms abs max=3.5 ms
+dwm3001-1 > [0] Sent 407
+dwm3001-8 > tats over 10 sample[3] Val 407 (NIT: 2)
+dwm3001-1 > [0] Sent 408
+dwm3001-8 > s: RTT avg=7.5 ms[3] Val 408 (NIT: 2)
+dwm3001-1 > [0] Sent 409
+dwm3001-8 >  abs max=9.0 ms offset avg[3] Val 409 (NIT: 2)
+dwm3001-1 > [0] Sent 410
+dwm3001-8 > =-0.1 ms abs max=[3] Val 410 (NIT: 2)
+dwm3001-8 > 3.5 ms
+dwm3001-1 > [0] Sent 411
+dwm3001-8 > [3] Val 411 (NIT: 2)
+dwm3001-1 > [0] Sent 412
+dwm3001-8 > [3] Val 412 (NIT: 2)
+dwm3001-1 > [0] Sent 413
+dwm3001-8 > [3] Val 413 (NIT: 2)
+dwm3001-1 > [0] Sent 414
+dwm3001-8 > (423[3] Val 414 (NIT: 2)
+dwm3001-1 > [0] Sent 415
+dwm3001-8 > 883000000) [INFO] [[3] Val 415 (NIT: 2)
+dwm3001-1 > [0] Sent 416
+dwm3001-8 > CLOCK_SYNC] Clock sync st[3] Val 416 (NIT: 2)
+dwm3001-3 > (422472000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.1 ms abs max=11.0 ms offset avg=0.1 ms abs max=1.3 ms
+dwm3001-2 > (422921000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.3 ms abs max=8.0 ms offset avg=0.1 ms abs max=0.8 ms
+dwm3001-1 > [0] Sent 417
+dwm3001-8 > ats over 10 sample[3] Val 417 (NIT: 2)
+dwm3001-1 > [0] Sent 418
+dwm3001-8 > s: RTT avg=7.6 ms [3] Val 418 (NIT: 2)
+dwm3001-1 > [0] Sent 419
+dwm3001-8 > abs max=8.0 ms of[3] Val 419 (NIT: 2)
+dwm3001-1 > [0] Sent 420
+dwm3001-8 > fset avg=0.1 ms a[3] Val 420 (NIT: 2)
+dwm3001-1 > [0] Sent 421
+dwm3001-8 > bs max=1.5 ms[3] Val 421 (NIT: 2)
+dwm3001-8 >
+dwm3001-1 > [0] Sent 422
+dwm3001-8 > [3] Val 422 (NIT: 2)
+dwm3001-1 > [0] Sent 423
+dwm3001-8 > [3] Val 423 (NIT: 2)
+dwm3001-1 > [0] Sent 424
+dwm3001-8 > (433[3] Val 424 (NIT: 2)
+dwm3001-1 > [0] Sent 425
+dwm3001-8 > 914000000) [INFO] [3] Val 425 (NIT: 2)
+dwm3001-1 > [0] Sent 426
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 426 (NIT: 2)
+dwm3001-3 > (432506000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=-0.1 ms abs max=1.0 ms
+dwm3001-2 > (432956000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.4 ms abs max=8.0 ms offset avg=0.0 ms abs max=0.6 ms
+dwm3001-1 > [0] Sent 427
+dwm3001-8 >  sync stats over 1[3] Val 427 (NIT: 2)
+dwm3001-1 > [0] Sent 428
+dwm3001-8 > 0 samples: RTT avg[3] Val 428 (NIT: 2)
+dwm3001-1 > [0] Sent 429
+dwm3001-8 > =7.5 ms abs max=8[3] Val 429 (NIT: 2)
+dwm3001-1 > [0] Sent 430
+dwm3001-8 > .0 ms offset avg=[3] Val 430 (NIT: 2)
+dwm3001-1 > [0] Sent 431
+dwm3001-8 > -0.1 ms abs max=1[3] Val 431 (NIT: 2)
+dwm3001-8 > .4 ms
+dwm3001-1 > [0] Sent 432
+dwm3001-8 > [3] Val 432 (NIT: 2)
+dwm3001-1 > [0] Sent 433
+dwm3001-8 > [3] Val 433 (NIT: 2)
+dwm3001-1 > [0] Sent 434
+dwm3001-8 > (443[3] Val 434 (NIT: 2)
+dwm3001-1 > [0] Sent 435
+dwm3001-8 > 952000000) [INFO] [[3] Val 435 (NIT: 2)
+dwm3001-1 > [0] Sent 436
+dwm3001-8 > CLOCK_SYNC] Clock [3] Val 436 (NIT: 2)
+dwm3001-3 > (442547000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.3 ms abs max=8.0 ms offset avg=0.0 ms abs max=1.1 ms
+dwm3001-2 > (442992000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=10.0 ms offset avg=-0.1 ms abs max=1.1 ms
+dwm3001-1 > [0] Sent 437
+dwm3001-8 > sync stats over 10 samples[3] Val 437 (NIT: 2)
+dwm3001-1 > [0] Sent 438
+dwm3001-8 > : RTT avg=7.4 ms [3] Val 438 (NIT: 2)
+dwm3001-1 > [0] Sent 439
+dwm3001-8 > abs max=8.0 ms of[3] Val 439 (NIT: 2)
+dwm3001-1 > [0] Sent 440
+dwm3001-8 > fset avg=-0.0 ms abs ma[3] Val 440 (NIT: 2)
+dwm3001-1 > [0] Sent 441
+dwm3001-8 > x=1.0 ms
+dwm3001-8 > [3] Val 441 (NIT: 2)
+dwm3001-1 > [0] Sent 442
+dwm3001-8 > [3] Val 442 (NIT: 2)
+dwm3001-1 > [0] Sent 443
+dwm3001-8 > [3] Val 443 (NIT: 2)
+dwm3001-1 > [0] Sent 444
+dwm3001-8 > (45[3] Val 444 (NIT: 2)
+dwm3001-1 > [0] Sent 445
+dwm3001-8 > 3987000000) [INFO] [CLOC[3] Val 445 (NIT: 2)
+dwm3001-1 > [0] Sent 446
+dwm3001-8 > K_SYNC] Clock sync [3] Val 446 (NIT: 2)
+dwm3001-3 > (452579000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=0.1 ms abs max=2.4 ms
+dwm3001-2 > (453028000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.5 ms abs max=11.0 ms offset avg=-0.0 ms abs max=2.9 ms
+dwm3001-1 > [0] Sent 447
+dwm3001-8 > stats over 10 sample[3] Val 447 (NIT: 2)
+dwm3001-1 > [0] Sent 448
+dwm3001-8 > s: RTT avg=7.4 ms[3] Val 448 (NIT: 2)
+dwm3001-1 > [0] Sent 449
+dwm3001-8 >  abs max=9.0 ms o[3] Val 449 (NIT: 2)
+dwm3001-1 > [0] Sent 450
+dwm3001-8 > ffset avg=0.2 ms abs ma[3] Val 450 (NIT: 2)
+dwm3001-1 > [0] Sent 451
+dwm3001-8 > x=1.4 ms
+dwm3001-8 > [3] Val 451 (NIT: 2)
+dwm3001-1 > [0] Sent 452
+dwm3001-8 > [3] Val 452 (NIT: 2)
+dwm3001-1 > [0] Sent 453
+dwm3001-8 > [3] Val 453 (NIT: 2)
+dwm3001-1 > [0] Sent 454
+dwm3001-8 > (464[3] Val 454 (NIT: 2)
+dwm3001-1 > [0] Sent 455
+dwm3001-8 > 022000000) [INFO] [3] Val 455 (NIT: 2)
+dwm3001-1 > [0] Sent 456
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 456 (NIT: 2)
+dwm3001-3 > (462613000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.9 ms abs max=8.0 ms offset avg=-0.2 ms abs max=1.8 ms
+dwm3001-2 > (463061000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=10.0 ms offset avg=-0.0 ms abs max=1.1 ms
+dwm3001-1 > [0] Sent 457
+dwm3001-8 >  sync stats over 1[3] Val 457 (NIT: 2)
+dwm3001-1 > [0] Sent 458
+dwm3001-8 > 0 samples: RTT avg[3] Val 458 (NIT: 2)
+dwm3001-1 > [0] Sent 459
+dwm3001-8 > =7.4 ms abs max=[3] Val 459 (NIT: 2)
+dwm3001-1 > [0] Sent 460
+dwm3001-8 > 8.0 ms offset avg=[3] Val 460 (NIT: 2)
+dwm3001-1 > [0] Sent 461
+dwm3001-8 > -0.3 ms abs max=2[3] Val 461 (NIT: 2)
+dwm3001-8 > .0 ms
+dwm3001-1 > [0] Sent 462
+dwm3001-8 > [3] Val 462 (NIT: 2)
+dwm3001-1 > [0] Sent 463
+dwm3001-8 > [3] Val 463 (NIT: 2)
+dwm3001-1 > [0] Sent 464
+dwm3001-8 > (474[3] Val 464 (NIT: 2)
+dwm3001-1 > [0] Sent 465
+dwm3001-8 > 060000000) [INFO] [CL[3] Val 465 (NIT: 2)
+dwm3001-1 > [0] Sent 466
+dwm3001-8 > OCK_SYNC] Clock syn[3] Val 466 (NIT: 2)
+dwm3001-3 > (472648000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.7 ms abs max=10.0 ms offset avg=0.1 ms abs max=1.6 ms
+dwm3001-2 > (473097000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.2 ms abs max=8.0 ms offset avg=0.0 ms abs max=1.5 ms
+dwm3001-1 > [0] Sent 467
+dwm3001-8 > c stats over 10 sam[3] Val 467 (NIT: 2)
+dwm3001-1 > [0] Sent 468
+dwm3001-8 > ples: RTT avg=7.5[3] Val 468 (NIT: 2)
+dwm3001-1 > [0] Sent 469
+dwm3001-8 >  ms abs max=8.0 m[3] Val 469 (NIT: 2)
+dwm3001-1 > [0] Sent 470
+dwm3001-8 > s offset avg=0.1 [3] Val 470 (NIT: 2)
+dwm3001-1 > [0] Sent 471
+dwm3001-8 > ms abs max=1.9 ms[3] Val 471 (NIT: 2)
+dwm3001-8 >
+dwm3001-1 > [0] Sent 472
+dwm3001-8 > [3] Val 472 (NIT: 2)
+dwm3001-1 > [0] Sent 473
+dwm3001-8 > [3] Val 473 (NIT: 2)
+dwm3001-1 > [0] Sent 474
+dwm3001-8 > (484[3] Val 474 (NIT: 2)
+dwm3001-1 > [0] Sent 475
+dwm3001-8 > 093000000) [INFO] [CLOCK[3] Val 475 (NIT: 2)
+dwm3001-1 > [0] Sent 476
+dwm3001-8 > _SYNC] Clock sync [3] Val 476 (NIT: 2)
+dwm3001-3 > (482685000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.7 ms abs max=8.0 ms offset avg=-0.2 ms abs max=2.7 ms
+dwm3001-2 > (483130000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.1 ms abs max=14.0 ms offset avg=-0.1 ms abs max=3.6 ms
+dwm3001-1 > [0] Sent 477
+dwm3001-8 > stats over 10 samp[3] Val 477 (NIT: 2)
+dwm3001-1 > [0] Sent 478
+dwm3001-8 > les: RTT avg=7.8 [3] Val 478 (NIT: 2)
+dwm3001-1 > [0] Sent 479
+dwm3001-8 > ms abs max=11.0 m[3] Val 479 (NIT: 2)
+dwm3001-1 > [0] Sent 480
+dwm3001-8 > s offset avg=-0.2 ms ab[3] Val 480 (NIT: 2)
+dwm3001-1 > [0] Sent 481
+dwm3001-8 > [3] Val 481 (NIT: 2)
+dwm3001-8 >
+dwm3001-1 > [0] Sent 482
+dwm3001-8 > [3] Val 482 (NIT: 2)
+dwm3001-1 > [0] Sent 483
+dwm3001-8 > [3] Val 483 (NIT: 2)
+dwm3001-1 > [0] Sent 484
+dwm3001-8 > (494[3] Val 484 (NIT: 2)
+dwm3001-1 > [0] Sent 485
+dwm3001-8 > 128000000) [INFO] [CLOCK[3] Val 485 (NIT: 2)
+dwm3001-1 > [0] Sent 486
+dwm3001-8 > _SYNC] Clock sync s[3] Val 486 (NIT: 2)
+dwm3001-3 > (492722000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.8 ms abs max=8.0 ms offset avg=-0.0 ms abs max=2.6 ms
+dwm3001-2 > (493165000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.5 ms abs max=13.0 ms offset avg=0.0 ms abs max=3.1 ms
+dwm3001-1 > [0] Sent 487
+dwm3001-8 > tats over 10 sample[3] Val 487 (NIT: 2)
+dwm3001-1 > [0] Sent 488
+dwm3001-8 > s: RTT avg=7.8 ms [3] Val 488 (NIT: 2)
+dwm3001-1 > [0] Sent 489
+dwm3001-8 > abs max=10.0 ms o[3] Val 489 (NIT: 2)
+dwm3001-1 > [0] Sent 490
+dwm3001-2 > (498221000000) [ERROR] [NET] RUdpIpChannel: 501 packets received, 3 duplicates
+dwm3001-8 > ffset avg=0.1 ms [3] Val 490 (NIT: 2)
+dwm3001-1 > [0] Sent 491
+dwm3001-8 > abs max=2.4 ms[0[3] Val 491 (NIT: 2)
+dwm3001-8 > m
+dwm3001-3 > (499020000000) [ERROR] [NET] RUdpIpChannel: 501 packets sent, 2 retransmissions
+dwm3001-1 > [0] Sent 492
+dwm3001-8 > [3] Val 492 (NIT: 2)
+dwm3001-2 > (501269000000) [ERROR] [NET] RUdpIpChannel: 501 packets sent, 0 retransmissions
+dwm3001-1 > [0] Sent 493
+dwm3001-8 > [3] Val 493 (NIT: 2)
+dwm3001-3 > (500971000000) [ERROR] [NET] RUdpIpChannel: 501 packets received, 0 duplicates
+dwm3001-1 > [0] Sent 494
+dwm3001-8 > (504[3] Val 494 (NIT: 2)
+dwm3001-1 > [0] Sent 495
+dwm3001-8 > 164000000) [INFO] [3] Val 495 (NIT: 2)
+dwm3001-1 > (50535500000[0] Sent 496
+dwm3001-8 > [CLOCK_SYNC] Clock [3] Val 496 (NIT: 2)
+dwm3001-2 > (503202000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.4 ms abs max=8.0 ms offset avg=0.1 ms abs max=0.8 ms
+dwm3001-1 > 0) [ERROR] [NET[0] Sent 497
+dwm3001-8 > sync stats over 10[3] Val 497 (NIT: 2)
+dwm3001-3 > (502756000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=0.1 ms abs max=1.3 ms
+dwm3001-1 > ] RUdpIpChannel: 5[0] Sent 498
+dwm3001-8 >  samples: RTT avg[3] Val 498 (NIT: 2)
+dwm3001-1 > 01 packets se[0] Sent 499
+dwm3001-8 > =7.5 ms abs max=8[3] Val 499 (NIT: 2)
+dwm3001-1 > [0] Sent 500
+dwm3001-1 >
+dwm3001-8 > .0 ms offset avg=[3] Val 500 (NIT: 2)
+dwm3001-1 > [0] Sent 501
+dwm3001-8 > 0.1 ms abs max=1.[3] Val 501 (NIT: 2)
+dwm3001-8 > 1 ms
+dwm3001-1 > [0] Sent 502
+dwm3001-8 > (50[3] Val 502 (NIT: 2)
+dwm3001-1 > [0] Sent 503
+dwm3001-8 > 6585000000) [ERROR][3] Val 503 (NIT: 2)
+dwm3001-1 > [0] Sent 504
+dwm3001-8 >  [NET] RUdpIpChanne[3] Val 504 (NIT: 2)
+dwm3001-1 > [0] Sent 505
+dwm3001-8 > l: 501 packets rece[3] Val 505 (NIT: 2)
+dwm3001-1 > [0] Sent 506
+dwm3001-8 > ived, 0 duplicates[3] Val 506 (NIT: 2)
+dwm3001-8 >
+dwm3001-3 > (512786000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.5 ms abs max=8.0 ms offset avg=0.5 ms abs max=2.1 ms
+dwm3001-1 > [0] Sent 507
+dwm3001-2 > (513243000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=10.5 ms abs max=18.0 ms offset avg=-0.1 ms abs max=5.3 ms
+dwm3001-8 > (514195[3] Val 507 (NIT: 2)
+dwm3001-1 > [0] Sent 508
+dwm3001-8 > 000000) [INFO] [CL[3] Val 508 (NIT: 2)
+dwm3001-1 > [0] Sent 509
+dwm3001-8 > OCK_SYNC] Clock sync stats over 10 [3] Val 509 (NIT: 2)
+dwm3001-1 > [0] Sent 510
+dwm3001-8 > samples: RTT avg=[3] Val 510 (NIT: 2)
+dwm3001-1 > [0] Sent 511
+dwm3001-8 > 7.8 ms abs max=10.[3] Val 511 (NIT: 2)
+dwm3001-1 > [0] Sent 512
+dwm3001-8 > 0 ms offset avg=0.[3] Val 512 (NIT: 2)
+dwm3001-1 > [0] Sent 513
+dwm3001-8 > 7 ms abs max=2.7 [3] Val 513 (NIT: 2)
+dwm3001-8 > ms
+dwm3001-1 > [0] Sent 514
+dwm3001-8 > (524234000000) [IN[3] Val 514 (NIT: 2)
+dwm3001-1 > [0] Sent 515
+dwm3001-8 > FO] [CLOCK_SYNC] C[3] Val 515 (NIT: 2)
+dwm3001-1 > [0] Sent 516
+dwm3001-8 > lock sync stats ove[3] Val 516 (NIT: 2)
+dwm3001-3 > (522828000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.8 ms abs max=10.0 ms offset avg=-0.9 ms abs max=6.5 ms
+dwm3001-1 > [0] Sent 517
+dwm3001-2 > (523304000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=9.0 ms abs max=19.0 ms offset avg=0.3 ms abs max=7.0 ms
+dwm3001-8 > r 10 samples: RTT [3] Val 517 (NIT: 2)
+dwm3001-1 > [0] Sent 518
+dwm3001-8 > avg=8.2 ms abs ma[3] Val 518 (NIT: 2)
+dwm3001-1 > [0] Sent 519
+dwm3001-8 > x=10.0 ms offset avg=-[3] Val 519 (NIT: 2)
+dwm3001-1 > [0] Sent 520
+dwm3001-8 > 1.2 ms abs max=7.1 m[3] Val 520 (NIT: 2)
+dwm3001-8 > s
+dwm3001-1 > [0] Sent 521
+dwm3001-8 > [3] Val 521 (NIT: 2)
+dwm3001-1 > [0] Sent 522
+dwm3001-8 > [3] No value at PT 533500.0 ms and LT 531450 ms
+dwm3001-8 > [WARN] Tardy at PT 533506.0 ms and LT 531450 ms
+dwm3001-1 > [0] Sent 523
+dwm3001-8 > [3] Val 523 (NIT: 3)
+dwm3001-1 > [0] Sent 524
+dwm3001-8 > (5342[3] Val 524 (NIT: 3)
+dwm3001-1 > [0] Sent 525
+dwm3001-8 > 68000000) [INFO] [[3] Val 525 (NIT: 3)
+dwm3001-1 > [0] Sent 526
+dwm3001-8 > CLOCK_SYNC] Clock s[3] Val 526 (NIT: 3)
+dwm3001-3 > (532853000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.2 ms abs max=12.0 ms offset avg=0.4 ms abs max=4.1 ms
+dwm3001-1 > [0] Sent 527
+dwm3001-2 > (533332000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.5 ms abs max=9.0 ms offset avg=-0.2 ms abs max=1.1 ms
+dwm3001-8 > ync stats over 10 s[3] Val 527 (NIT: 3)
+dwm3001-1 > [0] Sent 528
+dwm3001-8 > amples: RTT avg=8[3] Val 528 (NIT: 3)
+dwm3001-1 > [0] Sent 529
+dwm3001-8 > .1 ms abs max=11.0[3] Val 529 (NIT: 3)
+dwm3001-1 > [0] Sent 530
+dwm3001-8 >  ms offset avg=0.4[3] Val 530 (NIT: 3)
+dwm3001-1 > [0] Sent 531
+dwm3001-8 >  ms abs max=5.0 m[3] Val 531 (NIT: 3)
+dwm3001-8 > s
+dwm3001-1 > [0] Sent 532
+dwm3001-8 > [3] Val 532 (NIT: 3)
+dwm3001-1 > [0] Sent 533
+dwm3001-8 > [3] Val 533 (NIT: 3)
+dwm3001-1 > [0] Sent 534
+dwm3001-8 > (544[3] Val 534 (NIT: 3)
+dwm3001-1 > [0] Sent 535
+dwm3001-8 > 304000000) [INFO] [3] Val 535 (NIT: 3)
+dwm3001-1 > [0] Sent 536
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 536 (NIT: 3)
+dwm3001-3 > (542886000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=8.3 ms abs max=11.0 ms offset avg=0.0 ms abs max=1.5 ms
+dwm3001-1 > [0] Sent 537
+dwm3001-2 > (543371000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=0.0 ms abs max=1.0 ms
+dwm3001-8 >  sync stats over 1[3] Val 537 (NIT: 3)
+dwm3001-1 > [0] Sent 538
+dwm3001-8 > 0 samples: RTT avg[3] Val 538 (NIT: 3)
+dwm3001-1 > [0] Sent 539
+dwm3001-8 > =8.1 ms abs max=[3] Val 539 (NIT: 3)
+dwm3001-1 > [0] Sent 540
+dwm3001-8 > 10.0 ms offset avg[3] Val 540 (NIT: 3)
+dwm3001-1 > [0] Sent 541
+dwm3001-8 > =0.2 ms abs max=[3] Val 541 (NIT: 3)
+dwm3001-8 > 1.6 ms
+dwm3001-1 > [0] Sent 542
+dwm3001-8 > [3] Val 542 (NIT: 3)
+dwm3001-1 > [0] Sent 543
+dwm3001-8 > [3] Val 543 (NIT: 3)
+dwm3001-1 > [0] Sent 544
+dwm3001-8 > (554[3] Val 544 (NIT: 3)
+dwm3001-1 > [0] Sent 545
+dwm3001-8 > 337000000) [INFO] [[3] Val 545 (NIT: 3)
+dwm3001-1 > [0] Sent 546
+dwm3001-8 > CLOCK_SYNC] [3] No value at PT 557500.4 ms and LT 555450 ms
+dwm3001-2 > (553404000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.6 ms abs max=8.0 ms offset avg=0.1 ms [WARN] Missed deadline for input at LT 555350 ms
+dwm3001-1 > [0] Sent 547
+dwm3001-2 > abs max=1.1 ms
+dwm3001-3 > (552920000000) [INFO] [CLOCK_SYNC] Clock sync stats over 10 samples: RTT avg=7.5 ms abs max=8.0 ms offset avg=-0.1 ms abs max=1.6 ms
+dwm3001-8 > Clock sync stats o[3] Val 547 (NIT: 4)
+dwm3001-1 > [0] Sent 548
+dwm3001-8 > ver 10 samples: RT[3] Val 548 (NIT: 4)
+dwm3001-1 > [0] Sent 549
+dwm3001-8 > T avg=7.5 ms abs max=9.0 ms o[3] Val 549 (NIT: 4)
+dwm3001-1 > [0] Sent 550
+dwm3001-8 > ffset avg=-0.2 ms [3] Val 550 (NIT: 4)
+dwm3001-1 > [0] Sent 551
+dwm3001-8 > abs max=1.9 ms[0[3] Val 551 (NIT: 4)
+dwm3001-8 > m
+dwm3001-1 > [0] Sent 552
+dwm3001-8 > [3] Val 552 (NIT: 4)
+dwm3001-1 > [0] Sent 553
+dwm3001-8 > [3] Val 553 (NIT: 4)
+dwm3001-1 > [0] Sent 554
+dwm3001-8 > (564[3] Val 554 (NIT: 4)
+dwm3001-1 > [0] Sent 555
+dwm3001-8 > 369000000) [INFO] [3] Val 555 (NIT: 4)
+dwm3001-1 > [0] Sent 556
+dwm3001-8 > [CLOCK_SYNC] Clock[3] Val 556 (NIT: 4)

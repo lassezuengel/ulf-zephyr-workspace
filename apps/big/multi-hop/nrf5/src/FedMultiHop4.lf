@@ -1,0 +1,176 @@
+target uC {
+    platform: {
+        name: Zephyr,
+        board: decawave_dwm3001cdk
+    },
+    net-interface: sicslowpan,
+    logging: error,
+    clock-sync: on
+}
+
+preamble {=
+  #include "reactor-uc/reactor-c.h"
+=}
+
+/*
+ * Toggles an onboard LED (`led0`) every time it receives an input.
+ */
+reactor LedToggler {
+  preamble {=
+    #include <zephyr/kernel.h>
+    #include <zephyr/drivers/gpio.h>
+    #include <assert.h>
+    #define LED0_NODE DT_PATH(leds, led_0)
+    static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+  =}
+
+  input in: int
+
+  reaction(startup) {=
+    assert(device_is_ready(led.port));
+    gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+  =}
+
+  reaction(in) {=
+    gpio_pin_toggle_dt(&led);
+  =}
+} /* LedToggler */
+
+reactor Source {
+  led = new LedToggler()
+  output out: int
+
+  state counter: int = 0
+  timer t(10300 msec, 1000 msec)
+
+  reaction(startup) {=
+    printf("[0] Starting up\n");
+  =}
+
+  reaction(t) -> out, led.in {=
+    self->counter++;
+    lf_set(out, self->counter);
+
+    interval_t ts = lf_time_logical_elapsed();
+
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+
+    if(self->counter % 10 == 0) {
+      printf(
+          "[0] Sent %d\n",
+          self->counter
+      );
+    }
+
+    lf_set(led.in, 1);
+  =} tardy {=
+      printf("[WARN] Tardy for timer at LT %lld ms\n", lf_time_logical_elapsed() / 1000000);
+  =} deadline (100 msec) {=
+      printf("[WARN] Missed deadline for timer at LT %lld ms\n", lf_time_logical_elapsed() / 1000000);
+  =}
+} /* Source */
+
+reactor Intermediate(id: int = 1) {
+  led = new LedToggler()
+  input in: int
+  output out: int
+
+  reaction(startup) {=
+    printf("[%d] Starting up\n", self->id);
+  =}
+
+  reaction(in) -> out, led.in {=
+    lf_set(out, in->value);
+
+    interval_t ts = lf_time_logical_elapsed();
+
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+
+    // printf(
+    //   "[%d] Value %d at PT %lld.%01lld ms and LT %lld ms\n",
+    //   self->id,
+    //   in->value,
+    //   t_physclock / 1000000,
+    //   (t_physclock % 1000000) / 100000,
+    //   ts / 1000000
+    // );
+
+    lf_set(led.in, 1);
+  =} tardy {=
+      printf("[WARN] Tardy for input at LT %lld ms\n", lf_time_logical_elapsed() / 1000000);
+  =} deadline (100 msec) {=
+      printf("[WARN] Missed deadline for input at LT %lld ms\n", lf_time_logical_elapsed() / 1000000);
+  =}
+} /* Intermediate */
+
+reactor Sink(id: int = 2) {
+  led = new LedToggler()
+  input in: int
+
+  state notInTimeCounter: int = 0
+
+  timer t(10450 msec, 1000 msec)
+
+  reaction(startup) {=
+    printf("[%d] Starting up\n", self->id);
+  =}
+
+  reaction(t, in) -> led.in {=
+    interval_t ts = lf_time_logical_elapsed();
+    interval_t Ts = lf_time_physical_elapsed();
+
+    FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+    interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+
+    if (lf_is_present(in)) {
+      if(in->value % 10 == 0) {
+        printf(
+            "[%d] Val %d (NIT: %d)\n",
+            self->id,
+            in->value,
+            self->notInTimeCounter
+        );
+      }
+    } else {
+      self->notInTimeCounter++;
+      printf(
+          "[%d] No value at PT %lld.%01lld ms and LT %lld ms\n",
+          self->id,
+          t_physclock / 1000000,
+          (t_physclock % 1000000) / 100000,
+          ts / 1000000
+      );
+    }
+
+    lf_set(led.in, 1);
+  =} tardy {=
+      interval_t ts = lf_time_logical_elapsed();
+      FederatedEnvironment* envFed = (FederatedEnvironment*)env;
+      interval_t t_physclock = envFed->clock.get_time(&envFed->clock);
+      printf("[WARN] Tardy at PT %lld.%01lld ms and LT %lld ms\n", t_physclock / 1000000, (t_physclock % 1000000) / 100000, ts / 1000000);
+  =} deadline (100 msec) {=
+      printf("[WARN] Missed deadline for input at LT %lld ms\n", lf_time_logical_elapsed() / 1000000);
+  =}
+} /* Sink */
+
+federated reactor {
+  @interface_rudp()
+  srcFed = new Source()
+
+  @interface_rudp()
+  intFed1 = new Intermediate(id=1)
+  @interface_rudp()
+  intFed2 = new Intermediate(id=2)
+
+  @interface_rudp()
+  snkFed = new Sink(id=3)
+
+  @buffer(20)
+  srcFed.out -> intFed1.in after 50 msec
+  @buffer(20)
+  intFed1.out -> intFed2.in after 50 msec
+  @buffer(20)
+  intFed2.out -> snkFed.in after 50 msec
+}

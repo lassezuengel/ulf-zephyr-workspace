@@ -1,0 +1,2430 @@
+dwm3001-8 > [7] No value at PT 179968.0 ms and LT 175650 ms
+dwm3001-8 > [7] No value at PT 180968.0 ms and LT 176650 ms
+dwm3001-8 > [7] No value at PT 181968.0 ms and LT 177650 ms
+dwm3001-8 > [7] No value at PT 182968.0 ms and LT 178650 ms
+dwm3001-8 > [7] No value at PT 183969.0 ms and LT 179650 ms
+dwm3001-1 > [0] [0] Starting up
+dwm3001-2 > (210505000000) [INFO] [CLOCK_[1] Starting up
+dwm3001-8 > [7] No valu[7] Starting up
+dwm3001-7 > [00:00:00.252,716] [6] Starting up
+dwm3001-6 > [00:00:00.251,434] [5] Starting up
+dwm3001-4 > (178759000000) [ERROR] [NET] RUdpIpChannel: RUDP channel lost connection, re[3] Starting up
+dwm3001-5 > [00:00:00.252,838[4] Starting up
+dwm3001-3 > (203416000000) [INFO] [CLOCK_SY[2] Starting up
+dwm3001-6 > [00:00:04.999,481] <err> ieee802154_nrf5: Cannot send frame
+dwm3001-1 > [0] Sent 1
+dwm3001-8 > [7] Val 1 (NIT: 0)
+dwm3001-1 > [0] Sent 2
+dwm3001-8 > [7] Val 2 (NIT: 0)
+dwm3001-1 > [0] Sent 3
+dwm3001-2 > (14525000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.0 ms
+dwm3001-8 > [7] Val 3 (NIT: 0)
+dwm3001-1 > [0] Sent 4
+dwm3001-8 > [7] Val 4 (NIT: 0)
+dwm3001-1 > [0] Sent 5
+dwm3001-8 > [7] Val 5 (NIT: 0)
+dwm3001-1 > [0] Sent 6
+dwm3001-8 > [7] Val 6 (NIT: 0)
+dwm3001-1 > [0] Sent 7
+dwm3001-8 > [7] Val 7 (NIT: 0)
+dwm3001-3 > (19500000000) [INFO] [CLOCK_SYNC] RTT avg=10.8 ms abs max=14.0 ms offset avg=-0.1 ms abs max=5.8 ms
+dwm3001-1 > [0] Sent 8
+dwm3001-8 > [7] Val 8 (NIT: 0)
+dwm3001-1 > [0] Sent 9
+dwm3001-8 > [7] Val 9 (NIT: 0)
+dwm3001-1 > [0] Sent 10
+dwm3001-8 > [7] Val 10 (NIT: 0)
+dwm3001-1 > [0] Sent 11
+dwm3001-8 > [7] Val 11 (NIT: 0)
+dwm3001-1 > [0] Sent 12
+dwm3001-8 > [7] Val 12 (NIT: 0)
+dwm3001-1 > [0] Sent 13
+dwm3001-8 > [7] Val 13 (NIT: 0)
+dwm3001-1 > [0] Sent 14
+dwm3001-4 > (25548000000) [INFO] [CLOCK_SYNC] RTT avg=9.5 ms abs max=11.0 ms offset avg=5.1 ms abs max=73.5 ms
+dwm3001-8 > [7] Val 14 (NIT: 0)
+dwm3001-1 > [0] Sent 15
+dwm3001-8 > [7] Val 15 (NIT: 0)
+dwm3001-1 > [0] Sent 16
+dwm3001-8 > [7] Val 16 (NIT: 0)
+dwm3001-1 > [0] Sent 17
+dwm3001-8 > [7] Val 17 (NIT: 0)
+dwm3001-1 > [0] Sent 18
+dwm3001-8 > [7] Val 18 (NIT: 0)
+dwm3001-1 > [0] Sent 19
+dwm3001-8 > [7] Val 19 (NIT: 0)
+dwm3001-1 > [0] Sent 20
+dwm3001-8 > [7] Val 20 (NIT: 0)
+dwm3001-1 > [0] Sent 21
+dwm3001-2 > (32618000000) [INFO] [CLOCK_SYNC] RTT avg=10.7 ms abs max=13.0 ms offset avg=0.4 ms abs max=6.9 ms
+dwm3001-8 > [7] Val 21 (NIT: 0)
+dwm3001-1 > [0] Sent 22
+dwm3001-8 > [7] Val 22 (NIT: 0)
+dwm3001-1 > [0] Sent 23
+dwm3001-8 > [7] Val 23 (NIT: 0)
+dwm3001-1 > [0] Sent 24
+dwm3001-8 > [7] Val 24 (NIT: 0)
+dwm3001-1 > [0] Sent 25
+dwm3001-4 > [WARN] Missed deadline for input at LT 34450 ms
+dwm3001-8 > [7] No value at PT 37873.0 ms and LT 34650 ms
+dwm3001-1 > [0] Sent 26
+dwm3001-8 > [7] Val 26 (NIT: 1)
+dwm3001-1 > [0] Sent 27
+dwm3001-8 > [7] Val 27 (NIT: 1)
+dwm3001-1 > [0] Sent 28
+dwm3001-8 > [7] Val 28 (NIT: 1)
+dwm3001-1 > [0] Sent 29
+dwm3001-3 > (40605000000) [INFO] [CLOCK_SYNC] RTT avg=10.9 ms abs max=17.0 ms offset avg=0.6 ms abs max=31.9 ms
+dwm3001-8 > [7] Val 29 (NIT: 1)
+dwm3001-1 > [0] Sent 30
+dwm3001-8 > [7] Val 30 (NIT: 1)
+dwm3001-1 > [0] Sent 31
+dwm3001-8 > [7] Val 31 (NIT: 1)
+dwm3001-1 > [0] Sent 32
+dwm3001-8 > [7] Val 32 (NIT: 1)
+dwm3001-1 > [0] Sent 33
+dwm3001-8 > [7] Val 33 (NIT: 1)
+dwm3001-1 > [0] Sent 34
+dwm3001-8 > [7] No value at PT 46873.0 ms and LT 43650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 43500 ms
+dwm3001-1 > [0] Sent 35
+dwm3001-8 > [7] No value at PT 47873.0 ms and LT 44650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 44550 ms
+dwm3001-1 > [0] Sent 36
+dwm3001-8 > [7] Val 36 (NIT: 3)
+dwm3001-1 > [0] Sent 37
+dwm3001-8 > [7] Val 37 (NIT: 3)
+dwm3001-1 > [0] Sent 38
+dwm3001-2 > (49715000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=-0.4 ms abs max=2.7 ms
+dwm3001-8 > [7] Val 38 (NIT: 3)
+dwm3001-1 > [0] Sent 39
+dwm3001-8 > [7] No value at PT 51873.0 ms and LT 48650 ms
+dwm3001-8 > [WARN] Tardy at PT 51892.0 ms and LT 48650 ms
+dwm3001-1 > [0] Sent 40
+dwm3001-8 > [7] Val 40 (NIT: 4)
+dwm3001-1 > [0] Sent 41
+dwm3001-8 > [7] Val 41 (NIT: 4)
+dwm3001-1 > [0] Sent 42
+dwm3001-8 > [7] Val 42 (NIT: 4)
+dwm3001-1 > [0] Sent 43
+dwm3001-8 > [7] Val 43 (NIT: 4)
+dwm3001-1 > [0] Sent 44
+dwm3001-8 > [7] Val 44 (NIT: 4)
+dwm3001-1 > [0] Sent 45
+dwm3001-8 > [7] No value at PT 57873.0 ms and LT 54650 ms
+dwm3001-8 > [WARN] Tardy at PT 57907.0 ms and LT 54650 ms
+dwm3001-1 > [0] Sent 46
+dwm3001-8 > [7] No value at PT 58873.0 ms and LT 55650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 55550 ms
+dwm3001-1 > [0] Sent 47
+dwm3001-3 > (58702000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=13.0 ms offset avg=-0.7 ms abs max=4.6 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 56500 ms
+dwm3001-8 > [7] No value at PT 59873.0 ms and LT 56650 ms
+dwm3001-1 > [0] Sent 48
+dwm3001-4 > (59837000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=11.0 ms offset avg=20.5 ms abs max=256.5 ms
+dwm3001-8 > [7] Val 48 (NIT: 7)
+dwm3001-1 > [0] Sent 49
+dwm3001-4 > [WARN] Missed deadline for input at LT 58450 ms
+dwm3001-8 > [7] No value at PT 61873.0 ms and LT 58650 ms
+dwm3001-1 > [0] Sent 50
+dwm3001-8 > [7] Val 50 (NIT: 8)
+dwm3001-1 > [0] Sent 51
+dwm3001-8 > [7] Val 51 (NIT: 8)
+dwm3001-1 > [0] Sent 52
+dwm3001-8 > [7] Val 52 (NIT: 8)
+dwm3001-1 > [0] Sent 53
+dwm3001-8 > [7] Val 53 (NIT: 8)
+dwm3001-1 > [0] Sent 54
+dwm3001-8 > [7] Val 54 (NIT: 8)
+dwm3001-1 > [0] Sent 55
+dwm3001-2 > (66794000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=12.0 ms offset avg=-0.1 ms abs max=2.9 ms
+dwm3001-8 > [7] Val 55 (NIT: 8)
+dwm3001-1 > [0] Sent 56
+dwm3001-8 > [7] Val 56 (NIT: 8)
+dwm3001-1 > [0] Sent 57
+dwm3001-8 > [7] Val 57 (NIT: 8)
+dwm3001-1 > [0] Sent 58
+dwm3001-8 > [7] No value at PT 70874.0 ms and LT 67650 ms
+dwm3001-8 > [WARN] Tardy at PT 70942.0 ms and LT 67650 ms
+dwm3001-1 > [0] Sent 59
+dwm3001-8 > [7] Val 59 (NIT: 9)
+dwm3001-1 > [0] Sent 60
+dwm3001-8 > [7] Val 60 (NIT: 9)
+dwm3001-1 > [0] Sent 61
+dwm3001-8 > [7] Val 61 (NIT: 9)
+dwm3001-1 > [0] Sent 62
+dwm3001-8 > [7] No value at PT 74873.0 ms and LT 71650 ms
+dwm3001-8 > [WARN] Tardy at PT 74881.0 ms and LT 71650 ms
+dwm3001-1 > [0] Sent 63
+dwm3001-8 > [7] No value at PT 75873.0 ms and LT 72650 ms
+dwm3001-8 > [WARN] Tardy at PT 75893.0 ms and LT 72650 ms
+dwm3001-1 > [0] Sent 64
+dwm3001-8 > [7] Val 64 (NIT: 11)
+dwm3001-1 > [0] Sent 65
+dwm3001-8 > [7] Val 65 (NIT: 11)
+dwm3001-1 > [0] Sent 66
+dwm3001-3 > (77809000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=12.0 ms offset avg=-0.1 ms abs max=5.7 ms
+dwm3001-8 > [7] Val 66 (NIT: 11)
+dwm3001-1 > [0] Sent 67
+dwm3001-4 > [WARN] Missed deadline for input at LT 76450 ms
+dwm3001-2 > (78854000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=12.0 ms offset avg=0.0 ms abs max=1.3 ms
+dwm3001-8 > [7] No value at PT 79873.0 ms and LT 76650 ms
+dwm3001-1 > [0] Sent 68
+dwm3001-8 > [7] No value at PT 80873.0 ms and LT 77650 ms
+dwm3001-8 > [WARN] Tardy at PT 80897.0 ms and LT 77650 ms
+dwm3001-1 > [0] Sent 69
+dwm3001-5 > [WARN] Missed deadline for input at LT 78500 ms
+dwm3001-8 > [7] No value at PT 81873.0 ms and LT 78650 ms
+dwm3001-1 > [0] Sent 70
+dwm3001-8 > [7] No value at PT 82873.0 ms and LT 79650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 79500 ms
+dwm3001-1 > [0] Sent 71
+dwm3001-8 > [7] No value at PT 83873.0 ms and LT 80650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 80500 ms
+dwm3001-4 > (83176000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=12.0 ms offset avg=1.2 ms abs max=355.3 ms
+dwm3001-1 > [0] Sent 72
+dwm3001-8 > [7] No value at PT 84873.0 ms and LT 81650 ms
+dwm3001-8 > [WARN] Tardy at PT 84916.0 ms and LT 81650 ms
+dwm3001-1 > [0] Sent 73
+dwm3001-8 > [7] Val 73 (NIT: 17)
+dwm3001-1 > [0] Sent 74
+dwm3001-8 > [7] Val 74 (NIT: 17)
+dwm3001-1 > [0] Sent 75
+dwm3001-8 > [7] Val 75 (NIT: 17)
+dwm3001-1 > [0] Sent 76
+dwm3001-8 > [7] Val 76 (NIT: 17)
+dwm3001-1 > [0] Sent 77
+dwm3001-8 > [7] Val 77 (NIT: 17)
+dwm3001-1 > [0] Sent 78
+dwm3001-8 > [7] Val 78 (NIT: 17)
+dwm3001-2 > (89907000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=12.0 ms offset avg=0.1 ms abs max=1.7 ms
+dwm3001-1 > [0] Sent 79
+dwm3001-8 > [7] Val 79 (NIT: 17)
+dwm3001-1 > [0] Sent 80
+dwm3001-8 > [7] Val 80 (NIT: 17)
+dwm3001-1 > [0] Sent 81
+dwm3001-8 > [7] Val 81 (NIT: 17)
+dwm3001-3 > (92879000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=0.1 ms abs max=4.3 ms
+dwm3001-1 > [0] Sent 82
+dwm3001-8 > [7] Val 82 (NIT: 17)
+dwm3001-1 > [0] Sent 83
+dwm3001-8 > [7] Val 83 (NIT: 17)
+dwm3001-1 > [0] Sent 84
+dwm3001-8 > [7] Val 84 (NIT: 17)
+dwm3001-1 > [0] Sent 85
+dwm3001-8 > [7] Val 85 (NIT: 17)
+dwm3001-1 > [0] Sent 86
+dwm3001-8 > [7] Val 86 (NIT: 17)
+dwm3001-1 > [0] Sent 87
+dwm3001-8 > [7] Val 87 (NIT: 17)
+dwm3001-1 > [0] Sent 88
+dwm3001-8 > [7] Val 88 (NIT: 17)
+dwm3001-1 > [0] Sent 89
+dwm3001-8 > [7] Val 89 (NIT: 17)
+dwm3001-1 > [0] Sent 90
+dwm3001-8 > [7] Val 90 (NIT: 17)
+dwm3001-1 > [0] Sent 91
+dwm3001-8 > [7] Val 91 (NIT: 17)
+dwm3001-2 > (102970000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=12.0 ms offset avg=-0.0 ms abs max=0.7 ms
+dwm3001-1 > [0] Sent 92
+dwm3001-8 > [7] Val 92 (NIT: 17)
+dwm3001-1 > [0] Sent 93
+dwm3001-8 > [7] Val 93 (NIT: 17)
+dwm3001-1 > [0] Sent 94
+dwm3001-8 > [7] Val 94 (NIT: 17)
+dwm3001-3 > (105946000000) [INFO] [CLOCK_SYNC] RTT avg=11.5 ms abs max=15.0 ms offset avg=-0.1 ms abs max=2.0 ms
+dwm3001-1 > [0] Sent 95
+dwm3001-8 > [7] Val 95 (NIT: 17)
+dwm3001-1 > [0] Sent 96
+dwm3001-8 > [7] Val 96 (NIT: 17)
+dwm3001-4 > (108047000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=12.0 ms offset avg=-18.7 ms abs max=141.4 ms
+dwm3001-1 > [0] Sent 97
+dwm3001-8 > [7] Val 97 (NIT: 17)
+dwm3001-1 > [0] Sent 98
+dwm3001-8 > [7] Val 98 (NIT: 17)
+dwm3001-1 > [0] Sent 99
+dwm3001-8 > [7] Val 99 (NIT: 17)
+dwm3001-1 > [0] Sent 100
+dwm3001-8 > [7] Val 100 (NIT: 17)
+dwm3001-1 > [0] Sent 101
+dwm3001-8 > [7] Val 101 (NIT: 17)
+dwm3001-2 > (113021000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=11.0 ms offset avg=-0.1 ms abs max=1.6 ms
+dwm3001-1 > [0] Sent 102
+dwm3001-8 > [7] Val 102 (NIT: 17)
+dwm3001-1 > [0] Sent 103
+dwm3001-8 > [7] Val 103 (NIT: 17)
+dwm3001-1 > [0] Sent 104
+dwm3001-8 > [7] Val 104 (NIT: 17)
+dwm3001-1 > [0] Sent 105
+dwm3001-8 > [7] Val 105 (NIT: 17)
+dwm3001-3 > (116996000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=13.0 ms offset avg=0.2 ms abs max=2.0 ms
+dwm3001-1 > [0] Sent 106
+dwm3001-8 > [7] Val 106 (NIT: 17)
+dwm3001-1 > [0] Sent 107
+dwm3001-8 > [7] Val 107 (NIT: 17)
+dwm3001-1 > [0] Sent 108
+dwm3001-8 > [7] Val 108 (NIT: 17)
+dwm3001-1 > [0] Sent 109
+dwm3001-8 > [7] Val 109 (NIT: 17)
+dwm3001-1 > [0] Sent 110
+dwm3001-8 > [7] Val 110 (NIT: 17)
+dwm3001-1 > [0] Sent 111
+dwm3001-8 > [7] Val 111 (NIT: 17)
+dwm3001-1 > [0] Sent 112
+dwm3001-8 > [7] Val 112 (NIT: 17)
+dwm3001-1 > [0] Sent 113
+dwm3001-8 > [7] Val 113 (NIT: 17)
+dwm3001-1 > [0] Sent 114
+dwm3001-8 > [7] Val 114 (NIT: 17)
+dwm3001-1 > [0] Sent 115
+dwm3001-8 > [7] Val 115 (NIT: 17)
+dwm3001-2 > (127090000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=12.0 ms offset avg=0.2 ms abs max=1.8 ms
+dwm3001-1 > [0] Sent 116
+dwm3001-8 > [7] Val 116 (NIT: 17)
+dwm3001-1 > [0] Sent 117
+dwm3001-8 > [7] Val 117 (NIT: 17)
+dwm3001-3 > (129058000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=11.0 ms offset avg=0.1 ms abs max=3.5 ms
+dwm3001-1 > [0] Sent 118
+dwm3001-8 > [7] Val 118 (NIT: 17)
+dwm3001-1 > [0] Sent 119
+dwm3001-8 > [7] Val 119 (NIT: 17)
+dwm3001-4 > (131134000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=12.0 ms offset avg=-2.4 ms abs max=75.3 ms
+dwm3001-1 > [0] Sent 120
+dwm3001-8 > [7] Val 120 (NIT: 17)
+dwm3001-1 > [0] Sent 121
+dwm3001-8 > [7] Val 121 (NIT: 17)
+dwm3001-1 > [0] Sent 122
+dwm3001-8 > [7] Val 122 (NIT: 17)
+dwm3001-1 > [0] Sent 123
+dwm3001-8 > [7] Val 123 (NIT: 17)
+dwm3001-1 > [0] Sent 124
+dwm3001-8 > [7] Val 124 (NIT: 17)
+dwm3001-1 > [0] Sent 125
+dwm3001-8 > [7] Val 125 (NIT: 17)
+dwm3001-1 > [0] Sent 126
+dwm3001-8 > [7] No value at PT 138873.0 ms and LT 135650 ms
+dwm3001-8 > [WARN] Tardy at PT 138896.0 ms and LT 135650 ms
+dwm3001-1 > [0] Sent 127
+dwm3001-8 > [7] Val 127 (NIT: 18)
+dwm3001-1 > [0] Sent 128
+dwm3001-8 > [7] Val 128 (NIT: 18)
+dwm3001-1 > [0] Sent 129
+dwm3001-8 > [7] Val 129 (NIT: 18)
+dwm3001-2 > (141157000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=-0.2 ms abs max=2.2 ms
+dwm3001-1 > [0] Sent 130
+dwm3001-8 > [7] Val 130 (NIT: 18)
+dwm3001-1 > [0] Sent 131
+dwm3001-8 > [7] Val 131 (NIT: 18)
+dwm3001-1 > [0] Sent 132
+dwm3001-8 > [7] Val 132 (NIT: 18)
+dwm3001-1 > [0] Sent 133
+dwm3001-8 > [7] Val 133 (NIT: 18)
+dwm3001-1 > [0] Sent 134
+dwm3001-8 > [7] Val 134 (NIT: 18)
+dwm3001-3 > (146148000000) [INFO] [CLOCK_SYNC] RTT avg=9.5 ms abs max=11.0 ms offset avg=0.1 ms abs max=5.3 ms
+dwm3001-1 > [0] Sent 135
+dwm3001-8 > [7] Val 135 (NIT: 18)
+dwm3001-1 > [0] Sent 136
+dwm3001-8 > [7] Val 136 (NIT: 18)
+dwm3001-1 > [0] Sent 137
+dwm3001-8 > [7] Val 137 (NIT: 18)
+dwm3001-1 > [0] Sent 138
+dwm3001-8 > [7] Val 138 (NIT: 18)
+dwm3001-1 > [0] Sent 139
+dwm3001-8 > [7] Val 139 (NIT: 18)
+dwm3001-1 > [0] Sent 140
+dwm3001-8 > [7] Val 140 (NIT: 18)
+dwm3001-1 > [0] Sent 141
+dwm3001-8 > [7] Val 141 (NIT: 18)
+dwm3001-2 > (153215000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=12.0 ms offset avg=0.1 ms abs max=1.0 ms
+dwm3001-1 > [0] Sent 142
+dwm3001-8 > [7] Val 142 (NIT: 18)
+dwm3001-1 > [0] Sent 143
+dwm3001-8 > [7] Val 143 (NIT: 18)
+dwm3001-1 > [0] Sent 144
+dwm3001-8 > [7] Val 144 (NIT: 18)
+dwm3001-4 > (156160000000) [INFO] [CLOCK_SYNC] RTT avg=11.0 ms abs max=12.1 ms offset avg=-6.8 ms abs max=77.1 ms
+dwm3001-1 > [0] Sent 145
+dwm3001-8 > [7] Val 145 (NIT: 18)
+dwm3001-1 > [0] Sent 146
+dwm3001-8 > [7] Val 146 (NIT: 18)
+dwm3001-1 > [0] Sent 147
+dwm3001-8 > [7] Val 147 (NIT: 18)
+dwm3001-1 > [0] Sent 148
+dwm3001-8 > [7] Val 148 (NIT: 18)
+dwm3001-1 > [0] Sent 149
+dwm3001-8 > [7] Val 149 (NIT: 18)
+dwm3001-1 > [0] Sent 150
+dwm3001-8 > [7] Val 150 (NIT: 18)
+dwm3001-1 > [0] Sent 151
+dwm3001-8 > [7] Val 151 (NIT: 18)
+dwm3001-1 > [0] Sent 152
+dwm3001-8 > [7] Val 152 (NIT: 18)
+dwm3001-1 > [0] Sent 153
+dwm3001-8 > [7] Val 153 (NIT: 18)
+dwm3001-3 > (165245000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=12.0 ms offset avg=-0.2 ms abs max=5.5 ms
+dwm3001-1 > [0] Sent 154
+dwm3001-8 > [7] No value at PT 166874.0 ms and LT 163650 ms
+dwm3001-8 > [WARN] Tardy at PT 166925.0 ms and LT 163650 ms
+dwm3001-2 > (166273000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=12.0 ms offset avg=0.2 ms abs max=3.7 ms
+dwm3001-1 > [0] Sent 155
+dwm3001-8 > [7] Val 155 (NIT: 19)
+dwm3001-1 > [0] Sent 156
+dwm3001-8 > [7] Val 156 (NIT: 19)
+dwm3001-1 > [0] Sent 157
+dwm3001-8 > [7] Val 157 (NIT: 19)
+dwm3001-1 > [0] Sent 158
+dwm3001-8 > [7] Val 158 (NIT: 19)
+dwm3001-1 > [0] Sent 159
+dwm3001-8 > [7] Val 159 (NIT: 19)
+dwm3001-1 > [0] Sent 160
+dwm3001-8 > [7] Val 160 (NIT: 19)
+dwm3001-1 > [0] Sent 161
+dwm3001-8 > [7] Val 161 (NIT: 19)
+dwm3001-1 > [0] Sent 162
+dwm3001-8 > [7] Val 162 (NIT: 19)
+dwm3001-1 > [0] Sent 163
+dwm3001-8 > [7] Val 163 (NIT: 19)
+dwm3001-1 > [0] Sent 164
+dwm3001-8 > [7] Val 164 (NIT: 19)
+dwm3001-1 > [0] Sent 165
+dwm3001-8 > [7] Val 165 (NIT: 19)
+dwm3001-2 > (177332000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=-0.2 ms abs max=1.4 ms
+dwm3001-1 > [0] Sent 166
+dwm3001-8 > [7] Val 166 (NIT: 19)
+dwm3001-1 > [0] Sent 167
+dwm3001-8 > [7] Val 167 (NIT: 19)
+dwm3001-3 > (179315000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=-0.1 ms abs max=4.5 ms
+dwm3001-1 > [0] Sent 168
+dwm3001-8 > [7] Val 168 (NIT: 19)
+dwm3001-1 > [0] Sent 169
+dwm3001-8 > [7] Val 169 (NIT: 19)
+dwm3001-1 > [0] Sent 170
+dwm3001-8 > [7] Val 170 (NIT: 19)
+dwm3001-1 > [0] Sent 171
+dwm3001-8 > [7] Val 171 (NIT: 19)
+dwm3001-4 > (183368000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=5.3 ms abs max=97.5 ms
+dwm3001-1 > [0] Sent 172
+dwm3001-8 > [7] Val 172 (NIT: 19)
+dwm3001-1 > [0] Sent 173
+dwm3001-8 > [7] Val 173 (NIT: 19)
+dwm3001-1 > [0] Sent 174
+dwm3001-8 > [7] Val 174 (NIT: 19)
+dwm3001-1 > [0] Sent 175
+dwm3001-8 > [7] Val 175 (NIT: 19)
+dwm3001-1 > [0] Sent 176
+dwm3001-8 > [7] Val 176 (NIT: 19)
+dwm3001-2 > (188388000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=12.0 ms offset avg=-0.0 ms abs max=2.4 ms
+dwm3001-1 > [0] Sent 177
+dwm3001-8 > [7] Val 177 (NIT: 19)
+dwm3001-1 > [0] Sent 178
+dwm3001-8 > [7] Val 178 (NIT: 19)
+dwm3001-1 > [0] Sent 179
+dwm3001-8 > [7] Val 179 (NIT: 19)
+dwm3001-1 > [0] Sent 180
+dwm3001-8 > [7] Val 180 (NIT: 19)
+dwm3001-1 > [0] Sent 181
+dwm3001-8 > [7] Val 181 (NIT: 19)
+dwm3001-3 > (193378000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=12.0 ms offset avg=-0.1 ms abs max=2.4 ms
+dwm3001-1 > [0] Sent 182
+dwm3001-8 > [7] Val 182 (NIT: 19)
+dwm3001-1 > [0] Sent 183
+dwm3001-8 > [7] Val 183 (NIT: 19)
+dwm3001-1 > [0] Sent 184
+dwm3001-8 > [7] Val 184 (NIT: 19)
+dwm3001-1 > [0] Sent 185
+dwm3001-8 > [7] Val 185 (NIT: 19)
+dwm3001-1 > [0] Sent 186
+dwm3001-8 > [7] Val 186 (NIT: 19)
+dwm3001-1 > [0] Sent 187
+dwm3001-8 > [7] Val 187 (NIT: 19)
+dwm3001-1 > [0] Sent 188
+dwm3001-8 > [7] Val 188 (NIT: 19)
+dwm3001-1 > [0] Sent 189
+dwm3001-8 > [7] Val 189 (NIT: 19)
+dwm3001-2 > (201445000000) [INFO] [CLOCK_SYNC] RTT avg=11.0 ms abs max=19.0 ms offset avg=0.2 ms abs max=4.9 ms
+dwm3001-1 > [0] Sent 190
+dwm3001-8 > [7] Val 190 (NIT: 19)
+dwm3001-1 > [0] Sent 191
+dwm3001-8 > [7] Val 191 (NIT: 19)
+dwm3001-1 > [0] Sent 192
+dwm3001-8 > [7] No value at PT 204873.0 ms and LT 201650 ms
+dwm3001-8 > [WARN] Tardy at PT 204894.0 ms and LT 201650 ms
+dwm3001-1 > [0] Sent 193
+dwm3001-8 > [7] Val 193 (NIT: 20)
+dwm3001-1 > [0] Sent 194
+dwm3001-8 > [7] Val 194 (NIT: 20)
+dwm3001-1 > [0] Sent 195
+dwm3001-8 > [7] Val 195 (NIT: 20)
+dwm3001-1 > [0] Sent 196
+dwm3001-5 > [WARN] Missed deadline for input at LT 205500 ms
+dwm3001-8 > [7] No value at PT 208873.0 ms and LT 205650 ms
+dwm3001-3 > (208446000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=12.0 ms offset avg=0.5 ms abs max=17.1 ms
+dwm3001-1 > [0] Sent 197
+dwm3001-8 > [7] Val 197 (NIT: 21)
+dwm3001-4 > (209489000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=14.0 ms offset avg=15.1 ms abs max=199.5 ms
+dwm3001-1 > [0] Sent 198
+dwm3001-8 > [7] Val 198 (NIT: 21)
+dwm3001-1 > [0] Sent 199
+dwm3001-4 > [WARN] Missed deadline for input at LT 208450 ms
+dwm3001-8 > [7] No value at PT 211874.0 ms and LT 208650 ms
+dwm3001-1 > [0] Sent 200
+dwm3001-4 > [WARN] Missed deadline for input at LT 209450 ms
+dwm3001-8 > [7] No value at PT 212873.0 ms and LT 209650 ms
+dwm3001-1 > [0] Sent 201
+dwm3001-8 > [7] Val 201 (NIT: 23)
+dwm3001-2 > (213507000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=-0.1 ms abs max=2.4 ms
+dwm3001-1 > [0] Sent 202
+dwm3001-8 > [7] Val 202 (NIT: 23)
+dwm3001-1 > [0] Sent 203
+dwm3001-8 > [7] Val 203 (NIT: 23)
+dwm3001-1 > [0] Sent 204
+dwm3001-8 > [7] Val 204 (NIT: 23)
+dwm3001-1 > [0] Sent 205
+dwm3001-8 > [7] Val 205 (NIT: 23)
+dwm3001-1 > [0] Sent 206
+dwm3001-8 > [7] Val 206 (NIT: 23)
+dwm3001-1 > [0] Sent 207
+dwm3001-8 > [7] Val 207 (NIT: 23)
+dwm3001-1 > [0] Sent 208
+dwm3001-8 > [7] Val 208 (NIT: 23)
+dwm3001-3 > (220511000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=11.0 ms offset avg=-0.7 ms abs max=4.4 ms
+dwm3001-1 > [0] Sent 209
+dwm3001-8 > [7] Val 209 (NIT: 23)
+dwm3001-1 > [0] Sent 210
+dwm3001-8 > [7] Val 210 (NIT: 23)
+dwm3001-1 > [0] Sent 211
+dwm3001-8 > [7] Val 211 (NIT: 23)
+dwm3001-1 > [0] Sent 212
+dwm3001-8 > [7] Val 212 (NIT: 23)
+dwm3001-1 > [0] Sent 213
+dwm3001-8 > [7] Val 213 (NIT: 23)
+dwm3001-1 > [0] Sent 214
+dwm3001-8 > [7] Val 214 (NIT: 23)
+dwm3001-1 > [0] Sent 215
+dwm3001-2 > (226585000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=15.0 ms offset avg=0.0 ms abs max=3.5 ms
+dwm3001-8 > [7] Val 215 (NIT: 23)
+dwm3001-1 > [0] Sent 216
+dwm3001-8 > [7] Val 216 (NIT: 23)
+dwm3001-1 > [0] Sent 217
+dwm3001-8 > [7] Val 217 (NIT: 23)
+dwm3001-1 > [0] Sent 218
+dwm3001-8 > [7] Val 218 (NIT: 23)
+dwm3001-1 > [0] Sent 219
+dwm3001-8 > [7] Val 219 (NIT: 23)
+dwm3001-1 > [0] Sent 220
+dwm3001-8 > [7] Val 220 (NIT: 23)
+dwm3001-1 > [0] Sent 221
+dwm3001-8 > [7] Val 221 (NIT: 23)
+dwm3001-1 > [0] Sent 222
+dwm3001-8 > [7] Val 222 (NIT: 23)
+dwm3001-1 > [0] Sent 223
+dwm3001-4 > [WARN] Missed deadline for input at LT 232450 ms
+dwm3001-8 > [7] No value at PT 235873.0 ms and LT 232650 ms
+dwm3001-1 > [0] Sent 224
+dwm3001-3 > (235607000000) [INFO] [CLOCK_SYNC] RTT avg=12.6 ms abs max=19.0 ms offset avg=0.7 ms abs max=4.1 ms
+dwm3001-3 > [WARN] Missed deadline for input at LT 233400 ms
+dwm3001-8 > [7] No value at PT 236873.0 ms and LT 233650 ms
+dwm3001-4 > (236458000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=13.0 ms offset avg=-24.2 ms abs max=205.7 ms
+dwm3001-1 > [0] Sent 225
+dwm3001-8 > [7] Val 225 (NIT: 25)
+dwm3001-1 > [0] Sent 226
+dwm3001-8 > [7] Val 226 (NIT: 25)
+dwm3001-1 > [0] Sent 227
+dwm3001-8 > [7] No value at PT 239874.0 ms and LT 236650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 236500 ms
+dwm3001-1 > [0] Sent 228
+dwm3001-8 > [7] Val 228 (NIT: 26)
+dwm3001-1 > [0] Sent 229
+dwm3001-8 > [7] Val 229 (NIT: 26)
+dwm3001-1 > [0] Sent 230
+dwm3001-4 > [WARN] Missed deadline for input at LT 239450 ms
+dwm3001-8 > [7] No value at PT 242873.0 ms and LT 239650 ms
+dwm3001-1 > [0] Sent 231
+dwm3001-8 > [7] Val 231 (NIT: 27)
+dwm3001-1 > [0] Sent 232
+dwm3001-8 > [7] Val 232 (NIT: 27)
+dwm3001-1 > [0] Sent 233
+dwm3001-8 > [7] Val 233 (NIT: 27)
+dwm3001-1 > [0] Sent 234
+dwm3001-8 > [7] Val 234 (NIT: 27)
+dwm3001-1 > [0] Sent 235
+dwm3001-8 > [7] Val 235 (NIT: 27)
+dwm3001-1 > [0] Sent 236
+dwm3001-3 > (247674000000) [INFO] [CLOCK_SYNC] RTT avg=11.7 ms abs max=18.0 ms offset avg=-0.3 ms abs max=4.8 ms
+dwm3001-8 > [7] Val 236 (NIT: 27)
+dwm3001-1 > [0] Sent 237
+dwm3001-8 > [7] Val 237 (NIT: 27)
+dwm3001-1 > [0] Sent 238
+dwm3001-8 > [7] Val 238 (NIT: 27)
+dwm3001-1 > [0] Sent 239
+dwm3001-8 > [7] Val 239 (NIT: 27)
+dwm3001-1 > [0] Sent 240
+dwm3001-2 > (251720000000) [INFO] [CLOCK_SYNC] RTT avg=9.6 ms abs max=11.0 ms offset avg=-0.3 ms abs max=5.2 ms
+dwm3001-8 > [7] Val 240 (NIT: 27)
+dwm3001-1 > [0] Sent 241
+dwm3001-8 > [7] Val 241 (NIT: 27)
+dwm3001-1 > [0] Sent 242
+dwm3001-8 > [7] Val 242 (NIT: 27)
+dwm3001-1 > [0] Sent 243
+dwm3001-8 > [7] Val 243 (NIT: 27)
+dwm3001-1 > [0] Sent 244
+dwm3001-5 > [WARN] Missed deadline for input at LT 253500 ms
+dwm3001-8 > [7] No value at PT 256873.0 ms and LT 253650 ms
+dwm3001-1 > [0] Sent 245
+dwm3001-8 > [7] Val 245 (NIT: 28)
+dwm3001-1 > [0] Sent 246
+dwm3001-3 > (257721000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=-0.1 ms abs max=0.9 ms
+dwm3001-8 > [7] Val 246 (NIT: 28)
+dwm3001-1 > [0] Sent 247
+dwm3001-4 > [WARN] Missed deadline for input at LT 256450 ms
+dwm3001-8 > [7] No value at PT 259873.0 ms and LT 256650 ms
+dwm3001-1 > [0] Sent 248
+dwm3001-4 > [WARN] Missed deadline for input at LT 257450 ms
+dwm3001-8 > [7] No value at PT 260873.0 ms and LT 257650 ms
+dwm3001-1 > [0] Sent 249
+dwm3001-4 > [WARN] Missed deadline for input at LT 258450 ms
+dwm3001-8 > [7] No value at PT 261873.0 ms and LT 258650 ms
+dwm3001-1 > [0] Sent 250
+dwm3001-8 > [7] Val 250 (NIT: 31)
+dwm3001-1 > [0] Sent 251
+dwm3001-8 > [7] No value at PT 263873.0 ms and LT 260650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 260500 ms
+dwm3001-1 > [0] Sent 252
+dwm3001-8 > [7] No value at PT 264873.0 ms and LT 261650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 261500 ms
+dwm3001-1 > [0] Sent 253
+dwm3001-2 > (264780000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=11.0 ms offset avg=0.2 ms abs max=1.9 ms
+dwm3001-8 > [7] No value at PT 265873.0 ms and LT 262650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 262500 ms
+dwm3001-1 > [0] Sent 254
+dwm3001-8 > [7] No value at PT 266873.0 ms and LT 263650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 263500 ms
+dwm3001-1 > [0] Sent 255
+dwm3001-8 > [7] No value at PT 267873.0 ms and LT 264650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 264500 ms
+dwm3001-4 > (267194000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=14.9 ms offset avg=78.7 ms abs max=610.7 ms
+dwm3001-1 > [0] Sent 256
+dwm3001-8 > [7] No value at PT 268874.0 ms and LT 265650 ms
+dwm3001-6 > [WARN] Missed deadline for input at LT 265550 ms
+dwm3001-1 > [0] Sent 257
+dwm3001-3 > (268774000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.8 ms
+dwm3001-8 > [7] Val 257 (NIT: 37)
+dwm3001-1 > [0] Sent 258
+dwm3001-4 > [WARN] Missed deadline for input at LT 267450 ms
+dwm3001-8 > [7] No value at PT 270873.0 ms and LT 267650 ms
+dwm3001-1 > [0] Sent 259
+dwm3001-4 > [WARN] Missed deadline for input at LT 268450 ms
+dwm3001-8 > [7] No value at PT 271874.0 ms and LT 268650 ms
+dwm3001-1 > [0] Sent 260
+dwm3001-4 > [WARN] Missed deadline for input at LT 269450 ms
+dwm3001-8 > [7] No value at PT 272873.0 ms and LT 269650 ms
+dwm3001-1 > [0] Sent 261
+dwm3001-4 > [WARN] Missed deadline for input at LT 270450 ms
+dwm3001-8 > [7] No value at PT 273873.0 ms and LT 270650 ms
+dwm3001-1 > [0] Sent 262
+dwm3001-8 > [7] No value at PT 274873.0 ms and LT 271650 ms
+dwm3001-8 > [WARN] Tardy at PT 274896.0 ms and LT 271650 ms
+dwm3001-1 > [0] Sent 263
+dwm3001-8 > [7] No value at PT 275873.0 ms and LT 272650 ms
+dwm3001-8 > [WARN] Tardy at PT 275906.0 ms and LT 272650 ms
+dwm3001-1 > [0] Sent 264
+dwm3001-8 > [7] Val 264 (NIT: 43)
+dwm3001-1 > [0] Sent 265
+dwm3001-8 > [7] No value at PT 277873.0 ms and LT 274650 ms
+dwm3001-8 > [WARN] Tardy at PT 277894.0 ms and LT 274650 ms
+dwm3001-1 > [0] Sent 266
+dwm3001-8 > [7] Val 266 (NIT: 44)
+dwm3001-1 > [0] Sent 267
+dwm3001-8 > [7] No value at PT 279873.0 ms and LT 276650 ms
+dwm3001-8 > [WARN] Tardy at PT 279946.0 ms and LT 276650 ms
+dwm3001-1 > [0] Sent 268
+dwm3001-2 > (279853000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=0.0 ms abs max=1.2 ms
+dwm3001-8 > [7] Val 268 (NIT: 45)
+dwm3001-1 > [0] Sent 269
+dwm3001-8 > [7] Val 269 (NIT: 45)
+dwm3001-1 > [0] Sent 270
+dwm3001-8 > [7] Val 270 (NIT: 45)
+dwm3001-1 > [0] Sent 271
+dwm3001-8 > [7] Val 271 (NIT: 45)
+dwm3001-1 > [0] Sent 272
+dwm3001-8 > [7] Val 272 (NIT: 45)
+dwm3001-1 > [0] Sent 273
+dwm3001-8 > [7] Val 273 (NIT: 45)
+dwm3001-1 > [0] Sent 274
+dwm3001-8 > [7] Val 274 (NIT: 45)
+dwm3001-1 > [0] Sent 275
+dwm3001-4 > [WARN] Missed deadline for input at LT 284450 ms
+dwm3001-8 > [7] No value at PT 287873.0 ms and LT 284650 ms
+dwm3001-1 > [0] Sent 276
+dwm3001-4 > [WARN] Missed deadline for input at LT 285450 ms
+dwm3001-8 > [7] No value at PT 288874.0 ms and LT 285650 ms
+dwm3001-1 > [0] Sent 277
+dwm3001-4 > (288611000000) [INFO] [CLOCK_SYNC] RTT avg=9.6 ms abs max=12.0 ms offset avg=-93.5 ms abs max=286.6 ms
+dwm3001-8 > [7] Val 277 (NIT: 47)
+dwm3001-1 > [0] Sent 278
+dwm3001-8 > [7] Val 278 (NIT: 47)
+dwm3001-1 > [0] Sent 279
+dwm3001-8 > [7] Val 279 (NIT: 47)
+dwm3001-2 > (290909000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=0.1 ms abs max=2.3 ms
+dwm3001-1 > [0] Sent 280
+dwm3001-8 > [7] Val 280 (NIT: 47)
+dwm3001-1 > [0] Sent 281
+dwm3001-8 > [7] Val 281 (NIT: 47)
+dwm3001-1 > [0] Sent 282
+dwm3001-8 > [7] Val 282 (NIT: 47)
+dwm3001-1 > [0] Sent 283
+dwm3001-8 > [7] Val 283 (NIT: 47)
+dwm3001-1 > [0] Sent 284
+dwm3001-8 > [7] Val 284 (NIT: 47)
+dwm3001-3 > (295921000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=14.0 ms offset avg=0.2 ms abs max=4.9 ms
+dwm3001-1 > [0] Sent 285
+dwm3001-8 > [7] Val 285 (NIT: 47)
+dwm3001-1 > [0] Sent 286
+dwm3001-8 > [7] Val 286 (NIT: 47)
+dwm3001-1 > [0] Sent 287
+dwm3001-8 > [7] Val 287 (NIT: 47)
+dwm3001-1 > [0] Sent 288
+dwm3001-8 > [7] Val 288 (NIT: 47)
+dwm3001-1 > [0] Sent 289
+dwm3001-8 > [7] Val 289 (NIT: 47)
+dwm3001-1 > [0] Sent 290
+dwm3001-8 > [7] Val 290 (NIT: 47)
+dwm3001-1 > [0] Sent 291
+dwm3001-8 > [7] Val 291 (NIT: 47)
+dwm3001-1 > [0] Sent 292
+dwm3001-8 > [7] Val 292 (NIT: 47)
+dwm3001-1 > [0] Sent 293
+dwm3001-8 > [7] Val 293 (NIT: 47)
+dwm3001-1 > [0] Sent 294
+dwm3001-8 > [7] Val 294 (NIT: 47)
+dwm3001-4 > (305940000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=18.9 ms abs max=73.1 ms
+dwm3001-3 > (305977000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=-0.1 ms abs max=2.2 ms
+dwm3001-2 > (306000000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=11.0 ms offset avg=-0.1 ms abs max=1.9 ms
+dwm3001-1 > [0] Sent 295
+dwm3001-8 > [7] Val 295 (NIT: 47)
+dwm3001-1 > [0] Sent 296
+dwm3001-8 > [7] Val 296 (NIT: 47)
+dwm3001-1 > [0] Sent 297
+dwm3001-8 > [7] Val 297 (NIT: 47)
+dwm3001-1 > [0] Sent 298
+dwm3001-8 > [7] Val 298 (NIT: 47)
+dwm3001-1 > [0] Sent 299
+dwm3001-8 > [7] Val 299 (NIT: 47)
+dwm3001-1 > [0] Sent 300
+dwm3001-8 > [7] Val 300 (NIT: 47)
+dwm3001-1 > [0] Sent 301
+dwm3001-8 > [7] Val 301 (NIT: 47)
+dwm3001-1 > [0] Sent 302
+dwm3001-8 > [7] Val 302 (NIT: 47)
+dwm3001-1 > [0] Sent 303
+dwm3001-8 > [7] Val 303 (NIT: 47)
+dwm3001-1 > [0] Sent 304
+dwm3001-8 > [7] Val 304 (NIT: 47)
+dwm3001-3 > (316025000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=12.0 ms offset avg=0.1 ms abs max=2.1 ms
+dwm3001-2 > (316057000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=11.0 ms offset avg=-0.0 ms abs max=1.9 ms
+dwm3001-1 > [0] Sent 305
+dwm3001-8 > [7] Val 305 (NIT: 47)
+dwm3001-1 > [0] Sent 306
+dwm3001-8 > [7] Val 306 (NIT: 47)
+dwm3001-4 > (317997000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=11.0 ms offset avg=0.5 ms abs max=4.3 ms
+dwm3001-1 > [0] Sent 307
+dwm3001-8 > [7] Val 307 (NIT: 47)
+dwm3001-1 > [0] Sent 308
+dwm3001-8 > [7] Val 308 (NIT: 47)
+dwm3001-1 > [0] Sent 309
+dwm3001-8 > [7] Val 309 (NIT: 47)
+dwm3001-1 > [0] Sent 310
+dwm3001-8 > [7] Val 310 (NIT: 47)
+dwm3001-1 > [0] Sent 311
+dwm3001-8 > [7] Val 311 (NIT: 47)
+dwm3001-1 > [0] Sent 312
+dwm3001-8 > [7] Val 312 (NIT: 47)
+dwm3001-1 > [0] Sent 313
+dwm3001-8 > [7] Val 313 (NIT: 47)
+dwm3001-1 > [0] Sent 314
+dwm3001-8 > [7] Val 314 (NIT: 47)
+dwm3001-1 > [0] Sent 315
+dwm3001-8 > [7] Val 315 (NIT: 47)
+dwm3001-2 > (327109000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=12.0 ms offset avg=0.1 ms abs max=1.7 ms
+dwm3001-1 > [0] Sent 316
+dwm3001-8 > [7] Val 316 (NIT: 47)
+dwm3001-4 > (328043000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=11.0 ms offset avg=0.3 ms abs max=1.6 ms
+dwm3001-3 > (328081000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=11.0 ms offset avg=0.1 ms abs max=2.8 ms
+dwm3001-1 > [0] Sent 317
+dwm3001-8 > [7] Val 317 (NIT: 47)
+dwm3001-1 > [0] Sent 318
+dwm3001-8 > [7] Val 318 (NIT: 47)
+dwm3001-1 > [0] Sent 319
+dwm3001-8 > [7] Val 319 (NIT: 47)
+dwm3001-1 > [0] Sent 320
+dwm3001-8 > [7] Val 320 (NIT: 47)
+dwm3001-1 > [0] Sent 321
+dwm3001-8 > [7] Val 321 (NIT: 47)
+dwm3001-1 > [0] Sent 322
+dwm3001-8 > [7] Val 322 (NIT: 47)
+dwm3001-1 > [0] Sent 323
+dwm3001-8 > [7] Val 323 (NIT: 47)
+dwm3001-1 > [0] Sent 324
+dwm3001-8 > [7] Val 324 (NIT: 47)
+dwm3001-1 > [0] Sent 325
+dwm3001-8 > [7] Val 325 (NIT: 47)
+dwm3001-1 > [0] Sent 326
+dwm3001-8 > [7] Val 326 (NIT: 47)
+dwm3001-3 > (338131000000) [INFO] [CLOCK_SYNC] RTT avg=11.0 ms abs max=13.0 ms offset avg=-0.2 ms abs max=3.3 ms
+dwm3001-2 > (338167000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=12.0 ms offset avg=-0.0 ms abs max=1.8 ms
+dwm3001-1 > [0] Sent 327
+dwm3001-8 > [7] Val 327 (NIT: 47)
+dwm3001-4 > (339094000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=12.0 ms offset avg=-0.2 ms abs max=4.0 ms
+dwm3001-1 > [0] Sent 328
+dwm3001-8 > [7] Val 328 (NIT: 47)
+dwm3001-1 > [0] Sent 329
+dwm3001-8 > [7] Val 329 (NIT: 47)
+dwm3001-1 > [0] Sent 330
+dwm3001-8 > [7] Val 330 (NIT: 47)
+dwm3001-1 > [0] Sent 331
+dwm3001-8 > [7] Val 331 (NIT: 47)
+dwm3001-1 > [0] Sent 332
+dwm3001-8 > [7] Val 332 (NIT: 47)
+dwm3001-1 > [0] Sent 333
+dwm3001-8 > [7] Val 333 (NIT: 47)
+dwm3001-1 > [0] Sent 334
+dwm3001-8 > [7] Val 334 (NIT: 47)
+dwm3001-1 > [0] Sent 335
+dwm3001-8 > [7] Val 335 (NIT: 47)
+dwm3001-1 > [0] Sent 336
+dwm3001-8 > [7] Val 336 (NIT: 47)
+dwm3001-1 > [0] Sent 337
+dwm3001-8 > [7] Val 337 (NIT: 47)
+dwm3001-3 > (349185000000) [INFO] [CLOCK_SYNC] RTT avg=9.5 ms abs max=10.0 ms offset avg=0.1 ms abs max=2.7 ms
+dwm3001-2 > (349225000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=12.0 ms offset avg=0.0 ms abs max=2.2 ms
+dwm3001-1 > [0] Sent 338
+dwm3001-8 > [7] Val 338 (NIT: 47)
+dwm3001-1 > [0] Sent 339
+dwm3001-8 > [7] Val 339 (NIT: 47)
+dwm3001-4 > (351154000000) [INFO] [CLOCK_SYNC] RTT avg=9.3 ms abs max=11.0 ms offset avg=0.2 ms abs max=5.0 ms
+dwm3001-1 > [0] Sent 340
+dwm3001-8 > [7] Val 340 (NIT: 47)
+dwm3001-1 > [0] Sent 341
+dwm3001-8 > [7] Val 341 (NIT: 47)
+dwm3001-1 > [0] Sent 342
+dwm3001-8 > [7] Val 342 (NIT: 47)
+dwm3001-1 > [0] Sent 343
+dwm3001-8 > [7] Val 343 (NIT: 47)
+dwm3001-1 > [0] Sent 344
+dwm3001-8 > [7] Val 344 (NIT: 47)
+dwm3001-1 > [0] Sent 345
+dwm3001-8 > [7] Val 345 (NIT: 47)
+dwm3001-1 > [0] Sent 346
+dwm3001-8 > [7] Val 346 (NIT: 47)
+dwm3001-1 > [0] Sent 347
+dwm3001-8 > [7] Val 347 (NIT: 47)
+dwm3001-3 > (359232000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.2 ms
+dwm3001-1 > [0] Sent 348
+dwm3001-8 > [7] Val 348 (NIT: 47)
+dwm3001-2 > (360269000000) [INFO] [CLOCK_SYNC] RTT avg=9.6 ms abs max=11.0 ms offset avg=-0.0 ms abs max=1.8 ms
+dwm3001-1 > [0] Sent 349
+dwm3001-8 > [7] Val 349 (NIT: 47)
+dwm3001-1 > [0] Sent 350
+dwm3001-8 > [7] Val 350 (NIT: 47)
+dwm3001-4 > (362210000000) [INFO] [CLOCK_SYNC] RTT avg=9.3 ms abs max=12.0 ms offset avg=-0.1 ms abs max=2.3 ms
+dwm3001-1 > [0] Sent 351
+dwm3001-8 > [7] Val 351 (NIT: 47)
+dwm3001-1 > [0] Sent 352
+dwm3001-8 > [7] Val 352 (NIT: 47)
+dwm3001-1 > [0] Sent 353
+dwm3001-8 > [7] Val 353 (NIT: 47)
+dwm3001-1 > [0] Sent 354
+dwm3001-8 > [7] Val 354 (NIT: 47)
+dwm3001-1 > [0] Sent 355
+dwm3001-8 > [7] Val 355 (NIT: 47)
+dwm3001-1 > [0] Sent 356
+dwm3001-8 > [7] Val 356 (NIT: 47)
+dwm3001-1 > [0] Sent 357
+dwm3001-8 > [7] Val 357 (NIT: 47)
+dwm3001-1 > [0] Sent 358
+dwm3001-8 > [7] Val 358 (NIT: 47)
+dwm3001-2 > (370318000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.8 ms
+dwm3001-1 > [0] Sent 359
+dwm3001-8 > [7] Val 359 (NIT: 47)
+dwm3001-3 > (371287000000) [INFO] [CLOCK_SYNC] RTT avg=9.6 ms abs max=10.0 ms offset avg=0.1 ms abs max=1.6 ms
+dwm3001-1 > [0] Sent 360
+dwm3001-8 > [7] Val 360 (NIT: 47)
+dwm3001-4 > (372257000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=11.0 ms offset avg=0.1 ms abs max=2.4 ms
+dwm3001-1 > [0] Sent 361
+dwm3001-8 > [7] Val 361 (NIT: 47)
+dwm3001-1 > [0] Sent 362
+dwm3001-8 > [7] Val 362 (NIT: 47)
+dwm3001-1 > [0] Sent 363
+dwm3001-8 > [7] Val 363 (NIT: 47)
+dwm3001-1 > [0] Sent 364
+dwm3001-8 > [7] Val 364 (NIT: 47)
+dwm3001-1 > [0] Sent 365
+dwm3001-8 > [7] Val 365 (NIT: 47)
+dwm3001-1 > [0] Sent 366
+dwm3001-8 > [7] No value at PT 378873.0 ms and LT 375650 ms
+dwm3001-8 > [WARN] Tardy at PT 378894.0 ms and LT 375650 ms
+dwm3001-1 > [0] Sent 367
+dwm3001-8 > [7] Val 367 (NIT: 48)
+dwm3001-1 > [0] Sent 368
+dwm3001-8 > [7] Val 368 (NIT: 48)
+dwm3001-2 > (380361000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=0.0 ms abs max=1.6 ms
+dwm3001-1 > [0] Sent 369
+dwm3001-8 > [7] Val 369 (NIT: 48)
+dwm3001-1 > [0] Sent 370
+dwm3001-8 > [7] Val 370 (NIT: 48)
+dwm3001-3 > (382337000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=13.0 ms offset avg=0.0 ms abs max=1.5 ms
+dwm3001-1 > [0] Sent 371
+dwm3001-8 > [7] Val 371 (NIT: 48)
+dwm3001-1 > [0] Sent 372
+dwm3001-8 > [7] Val 372 (NIT: 48)
+dwm3001-1 > [0] Sent 373
+dwm3001-8 > [7] Val 373 (NIT: 48)
+dwm3001-1 > [0] Sent 374
+dwm3001-8 > [7] Val 374 (NIT: 48)
+dwm3001-1 > [0] Sent 375
+dwm3001-8 > [7] Val 375 (NIT: 48)
+dwm3001-1 > [0] Sent 376
+dwm3001-8 > [7] Val 376 (NIT: 48)
+dwm3001-1 > [0] Sent 377
+dwm3001-8 > [7] Val 377 (NIT: 48)
+dwm3001-1 > [0] Sent 378
+dwm3001-8 > [7] Val 378 (NIT: 48)
+dwm3001-2 > (390415000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=-0.0 ms abs max=2.3 ms
+dwm3001-1 > [0] Sent 379
+dwm3001-8 > [7] Val 379 (NIT: 48)
+dwm3001-4 > (391332000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=-0.7 ms abs max=9.6 ms
+dwm3001-1 > [0] Sent 380
+dwm3001-8 > [7] Val 380 (NIT: 48)
+dwm3001-3 > (392387000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=-0.2 ms abs max=2.8 ms
+dwm3001-1 > [0] Sent 381
+dwm3001-8 > [7] Val 381 (NIT: 48)
+dwm3001-1 > [0] Sent 382
+dwm3001-8 > [7] Val 382 (NIT: 48)
+dwm3001-1 > [0] Sent 383
+dwm3001-8 > [7] Val 383 (NIT: 48)
+dwm3001-1 > [0] Sent 384
+dwm3001-8 > [7] Val 384 (NIT: 48)
+dwm3001-1 > [0] Sent 385
+dwm3001-8 > [7] Val 385 (NIT: 48)
+dwm3001-1 > [0] Sent 386
+dwm3001-8 > [7] Val 386 (NIT: 48)
+dwm3001-1 > [0] Sent 387
+dwm3001-8 > [7] Val 387 (NIT: 48)
+dwm3001-1 > [0] Sent 388
+dwm3001-8 > [7] Val 388 (NIT: 48)
+dwm3001-1 > [0] Sent 389
+dwm3001-8 > [7] Val 389 (NIT: 48)
+dwm3001-2 > (401469000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=-0.0 ms abs max=3.4 ms
+dwm3001-1 > [0] Sent 390
+dwm3001-8 > [7] Val 390 (NIT: 48)
+dwm3001-4 > (402397000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=12.0 ms offset avg=0.3 ms abs max=4.0 ms
+dwm3001-3 > (402438000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=11.0 ms offset avg=-0.0 ms abs max=3.3 ms
+dwm3001-1 > [0] Sent 391
+dwm3001-8 > [7] No value at PT 403873.0 ms and LT 400650 ms
+dwm3001-8 > [WARN] Tardy at PT 403895.0 ms and LT 400650 ms
+dwm3001-1 > [0] Sent 392
+dwm3001-8 > [7] Val 392 (NIT: 49)
+dwm3001-1 > [0] Sent 393
+dwm3001-3 > (404628000000) [ERROR] [NET] RUdpIpChannel: 501 packets sent, 92 retransmissions
+dwm3001-8 > [7] No value at PT 405874.0 ms and LT 402650 ms
+dwm3001-8 > [WARN] Tardy at PT 405896.0 ms and LT 402650 ms
+dwm3001-1 > [0] Sent 394
+dwm3001-8 > [7] Val 394 (NIT: 50)
+dwm3001-1 > [0] Sent 395
+dwm3001-8 > [7] Val 395 (NIT: 50)
+dwm3001-1 > [0] Sent 396
+dwm3001-8 > [7] Val 396 (NIT: 50)
+dwm3001-1 > [0] Sent 397
+dwm3001-8 > [7] Val 397 (NIT: 50)
+dwm3001-1 > [0] Sent 398
+dwm3001-8 > [7] Val 398 (NIT: 50)
+dwm3001-1 > [0] Sent 399
+dwm3001-8 > [7] Val 399 (NIT: 50)
+dwm3001-2 > (411515000000) [INFO] [CLOCK_SYNC] RTT avg=9.5 ms abs max=11.0 ms offset avg=0.0 ms abs max=1.8 ms
+dwm3001-1 > [0] Sent 400
+dwm3001-8 > [7] Val 400 (NIT: 50)
+dwm3001-4 > (412441000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=-0.1 ms abs max=2.5 ms
+dwm3001-1 > [0] Sent 401
+dwm3001-8 > [7] Val 401 (NIT: 50)
+dwm3001-1 > [0] Sent 402
+dwm3001-8 > [7] Val 402 (NIT: 50)
+dwm3001-1 > [0] Sent 403
+dwm3001-8 > [7] Val 403 (NIT: 50)
+dwm3001-3 > (415499000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=0.5 ms abs max=6.6 ms
+dwm3001-1 > [0] Sent 404
+dwm3001-8 > [7] Val 404 (NIT: 50)
+dwm3001-1 > [0] Sent 405
+dwm3001-8 > [7] Val 405 (NIT: 50)
+dwm3001-1 > [0] Sent 406
+dwm3001-8 > [7] Val 406 (NIT: 50)
+dwm3001-1 > [0] Sent 407
+dwm3001-8 > [7] Val 407 (NIT: 50)
+dwm3001-1 > [0] Sent 408
+dwm3001-8 > [7] Val 408 (NIT: 50)
+dwm3001-1 > [0] Sent 409
+dwm3001-8 > [7] Val 409 (NIT: 50)
+dwm3001-1 > [0] Sent 410
+dwm3001-8 > [7] Val 410 (NIT: 50)
+dwm3001-1 > [0] Sent 411
+dwm3001-8 > [7] Val 411 (NIT: 50)
+dwm3001-1 > [0] Sent 412
+dwm3001-8 > [7] Val 412 (NIT: 50)
+dwm3001-4 > (424492000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=12.0 ms offset avg=0.6 ms abs max=8.1 ms
+dwm3001-1 > [0] Sent 413
+dwm3001-8 > [7] Val 413 (NIT: 50)
+dwm3001-1 > [0] Sent 414
+dwm3001-2 > (425588000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=13.0 ms offset avg=0.1 ms abs max=2.3 ms
+dwm3001-8 > [7] Val 414 (NIT: 50)
+dwm3001-1 > [0] Sent 415
+dwm3001-8 > [7] Val 415 (NIT: 50)
+dwm3001-1 > [0] Sent 416
+dwm3001-8 > [7] Val 416 (NIT: 50)
+dwm3001-1 > [0] Sent 417
+dwm3001-8 > [7] Val 417 (NIT: 50)
+dwm3001-1 > [0] Sent 418
+dwm3001-3 > (429569000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=13.0 ms offset avg=-0.4 ms abs max=3.1 ms
+dwm3001-8 > [7] Val 418 (NIT: 50)
+dwm3001-1 > [0] Sent 419
+dwm3001-8 > [7] Val 419 (NIT: 50)
+dwm3001-1 > [0] Sent 420
+dwm3001-8 > [7] Val 420 (NIT: 50)
+dwm3001-1 > [0] Sent 421
+dwm3001-8 > [7] Val 421 (NIT: 50)
+dwm3001-1 > [0] Sent 422
+dwm3001-8 > [7] Val 422 (NIT: 50)
+dwm3001-1 > [0] Sent 423
+dwm3001-8 > [7] Val 423 (NIT: 50)
+dwm3001-1 > [0] Sent 424
+dwm3001-2 > (435579000000) [ERROR] [NET] RUdpIpChannel: 501 packets sent, 60 retransmissions
+dwm3001-4 > (435717000000) [ERROR] [NET] RUdpIpChannel: 501 packets sent, 77 retransmissions
+dwm3001-8 > [7] Val 424 (NIT: 50)
+dwm3001-1 > [0] Sent 425
+dwm3001-8 > [7] Val 425 (NIT: 50)
+dwm3001-1 > [0] Sent 426
+dwm3001-2 > (437652000000) [INFO] [CLOCK_SYNC] RTT avg=11.1 ms abs max=16.0 ms offset avg=-0.2 ms abs max=2.4 ms
+dwm3001-8 > [7] Val 426 (NIT: 50)
+dwm3001-1 > [0] Sent 427
+dwm3001-8 > [7] Val 427 (NIT: 50)
+dwm3001-1 > [0] Sent 428
+dwm3001-8 > [7] Val 428 (NIT: 50)
+dwm3001-1 > [0] Sent 429
+dwm3001-8 > [7] Val 429 (NIT: 50)
+dwm3001-1 > [0] Sent 430
+dwm3001-3 > (441633000000) [INFO] [CLOCK_SYNC] RTT avg=11.0 ms abs max=14.0 ms offset avg=-0.1 ms abs max=3.8 ms
+dwm3001-8 > [7] Val 430 (NIT: 50)
+dwm3001-1 > [0] Sent 431
+dwm3001-8 > [7] Val 431 (NIT: 50)
+dwm3001-1 > [0] Sent 432
+dwm3001-8 > [7] Val 432 (NIT: 50)
+dwm3001-1 > [0] Sent 433
+dwm3001-8 > [7] Val 433 (NIT: 50)
+dwm3001-1 > [0] Sent 434
+dwm3001-8 > [7] Val 434 (NIT: 50)
+dwm3001-1 > [0] Sent 435
+dwm3001-8 > [7] Val 435 (NIT: 50)
+dwm3001-1 > [0] Sent 436
+dwm3001-8 > [7] Val 436 (NIT: 50)
+dwm3001-1 > [0] Sent 437
+dwm3001-8 > [7] Val 437 (NIT: 50)
+dwm3001-1 > [0] Sent 438
+dwm3001-8 > [7] Val 438 (NIT: 50)
+dwm3001-1 > [0] Sent 439
+dwm3001-2 > (450711000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=13.0 ms offset avg=0.1 ms abs max=2.2 ms
+dwm3001-8 > [7] Val 439 (NIT: 50)
+dwm3001-1 > [0] Sent 440
+dwm3001-8 > [7] Val 440 (NIT: 50)
+dwm3001-1 > [0] Sent 441
+dwm3001-4 > (452614000000) [INFO] [CLOCK_SYNC] RTT avg=10.9 ms abs max=14.0 ms offset avg=-3.4 ms abs max=51.0 ms
+dwm3001-8 > [7] Val 441 (NIT: 50)
+dwm3001-1 > [0] Sent 442
+dwm3001-8 > [7] Val 442 (NIT: 50)
+dwm3001-1 > [0] Sent 443
+dwm3001-3 > (454698000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=12.0 ms offset avg=0.1 ms abs max=2.5 ms
+dwm3001-8 > [7] Val 443 (NIT: 50)
+dwm3001-1 > [0] Sent 444
+dwm3001-8 > [7] Val 444 (NIT: 50)
+dwm3001-1 > [0] Sent 445
+dwm3001-8 > [7] Val 445 (NIT: 50)
+dwm3001-1 > [0] Sent 446
+dwm3001-8 > [7] Val 446 (NIT: 50)
+dwm3001-1 > [0] Sent 447
+dwm3001-8 > [7] Val 447 (NIT: 50)
+dwm3001-1 > [0] Sent 448
+dwm3001-8 > [7] Val 448 (NIT: 50)
+dwm3001-1 > [0] Sent 449
+dwm3001-1 > (460531000000) [ERROR] [NET] RUdpIpChannel: 501 packets sent, 44 retransmissions
+dwm3001-8 > [7] Val 449 (NIT: 50)
+dwm3001-1 > [0] Sent 450
+dwm3001-8 > [7] Val 450 (NIT: 50)
+dwm3001-1 > [0] Sent 451
+dwm3001-6 > (462779000000) [ERROR] [NET] RUdpIpChannel: 501 packets sent, 66 retransmissions
+dwm3001-8 > [7] No value at PT 463873.0 ms and LT 460650 ms
+dwm3001-8 > [WARN] Tardy at PT 463895.0 ms and LT 460650 ms
+dwm3001-1 > [0] Sent 452
+dwm3001-4 > (464612000000) [ERROR] [NET] RUdpIpChannel: 501 packets received, 32 duplicates
+dwm3001-4 > (464693000000) [INFO] [CLOCK_SYNC] RTT avg=11.3 ms abs max=18.0 ms offset avg=3.6 ms abs max=11.2 ms
+dwm3001-8 > [7] No value at PT 464873.0 ms and LT 461650 ms
+dwm3001-8 > [WARN] Tardy at PT 464878.0 ms and LT 461650 ms
+dwm3001-1 > [0] Sent 453
+dwm3001-8 > [7] No value at PT 465874.0 ms and LT 462650 ms
+dwm3001-8 > [WARN] Tardy at PT 465886.0 ms and LT 462650 ms
+dwm3001-1 > [0] Sent 454
+dwm3001-2 > (465785000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=0.0 ms abs max=3.4 ms
+dwm3001-8 > [7] No value at PT 466874.0 ms and LT 463650 ms
+dwm3001-8 > [WARN] Tardy at PT 466899.0 ms and LT 463650 ms
+dwm3001-1 > [0] Sent 455
+dwm3001-8 > [7] No value at PT 467873.0 ms and LT 464650 ms
+dwm3001-8 > [WARN] Tardy at PT 467919.0 ms and LT 464650 ms
+dwm3001-1 > [0] Sent 456
+dwm3001-8 > [7] No value at PT 468874.0 ms and LT 465650 ms
+dwm3001-8 > [WARN] Tardy at PT 468884.0 ms and LT 465650 ms
+dwm3001-1 > [0] Sent 457
+dwm3001-8 > [7] Val 457 (NIT: 56)
+dwm3001-1 > [0] Sent 458
+dwm3001-3 > (469580000000) [ERROR] [NET] RUdpIpChannel: 501 packets received, 26 duplicates
+dwm3001-8 > [7] Val 458 (NIT: 56)
+dwm3001-1 > [0] Sent 459
+dwm3001-3 > (470773000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=12.0 ms offset avg=-0.5 ms abs max=5.4 ms
+dwm3001-8 > [7] Val 459 (NIT: 56)
+dwm3001-1 > [0] Sent 460
+dwm3001-8 > [7] Val 460 (NIT: 56)
+dwm3001-1 > [0] Sent 461
+dwm3001-8 > [7] Val 461 (NIT: 56)
+dwm3001-1 > [0] Sent 462
+dwm3001-2 > (473533000000) [ERROR] [NET] RUdpIpChannel: 501 packets received, 22 duplicates
+dwm3001-8 > [7] No value at PT 474873.0 ms and LT 471650 ms
+dwm3001-8 > [WARN] Tardy at PT 474882.0 ms and LT 471650 ms
+dwm3001-1 > [0] Sent 463
+dwm3001-5 > (474732000000) [ERROR] [NET] RUdpIpChannel: 501 packets sent, 51 retransmissions
+dwm3001-8 > [7] Val 463 (NIT: 57)
+dwm3001-1 > [0] Sent 464
+dwm3001-8 > [7] Val 464 (NIT: 57)
+dwm3001-1 > [0] Sent 465
+dwm3001-8 > [7] No value at PT 477873.0 ms and LT 474650 ms
+dwm3001-8 > [WARN] Tardy at PT 477929.0 ms and LT 474650 ms
+dwm3001-1 > [0] Sent 466
+dwm3001-8 > [7] No value at PT 478873.0 ms and LT 475650 ms
+dwm3001-8 > [WARN] Tardy at PT 478892.0 ms and LT 475650 ms
+dwm3001-1 > [0] Sent 467
+dwm3001-8 > [7] No value at PT 479873.0 ms and LT 476650 ms
+dwm3001-8 > [WARN] Tardy at PT 479906.0 ms and LT 476650 ms
+dwm3001-1 > [0] Sent 468
+dwm3001-8 > [7] No value at PT 480873.0 ms and LT 477650 ms
+dwm3001-7 > [WARN] Missed deadline for input at LT 477600 ms
+dwm3001-1 > [0] Sent 469
+dwm3001-2 > (480852000000) [INFO] [CLOCK_SYNC] RTT avg=10.8 ms abs max=12.0 ms offset avg=0.1 ms abs max=5.3 ms
+dwm3001-8 > [7] No value at PT 481873.0 ms and LT 478650 ms
+dwm3001-8 > [WARN] Tardy at PT 481923.0 ms and LT 478650 ms
+dwm3001-1 > [0] Sent 470
+dwm3001-8 > [7] Val 470 (NIT: 62)
+dwm3001-1 > [0] Sent 471
+dwm3001-8 > [7] No value at PT 483873.0 ms and LT 480650 ms
+dwm3001-8 > [WARN] Tardy at PT 483947.0 ms and LT 480650 ms
+dwm3001-1 > [0] Sent 472
+dwm3001-8 > [7] Val 472 (NIT: 63)
+dwm3001-1 > [0] Sent 473
+dwm3001-8 > [7] Val 473 (NIT: 63)
+dwm3001-1 > [0] Sent 474
+dwm3001-5 > (485646000000) [ERROR] [NET] RUdpIpChannel: 501 packets received, 27 duplicates
+dwm3001-8 > [7] Val 474 (NIT: 63)
+dwm3001-1 > [0] Sent 475
+dwm3001-8 > [7] Val 475 (NIT: 63)
+dwm3001-1 > [0] Sent 476
+dwm3001-8 > [7] Val 476 (NIT: 63)
+dwm3001-4 > (487955000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=11.0 ms offset avg=3.6 ms abs max=137.0 ms
+dwm3001-1 > [0] Sent 477
+dwm3001-8 > [7] Val 477 (NIT: 63)
+dwm3001-1 > [0] Sent 478
+dwm3001-4 > [WARN] Missed deadline for input at LT 487450 ms
+dwm3001-8 > [7] No value at PT 490873.0 ms and LT 487650 ms
+dwm3001-1 > [0] Sent 479
+dwm3001-8 > [7] Val 479 (NIT: 64)
+dwm3001-1 > [0] Sent 480
+dwm3001-5 > [WARN] Missed deadline for input at LT 489500 ms
+dwm3001-8 > [7] No value at PT 492873.0 ms and LT 489650 ms
+dwm3001-3 > (491870000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=11.0 ms offset avg=0.3 ms abs max=27.7 ms
+dwm3001-1 > [0] Sent 481
+dwm3001-8 > [7] Val 481 (NIT: 65)
+dwm3001-2 > (492906000000) [INFO] [CLOCK_SYNC] RTT avg=10.7 ms abs max=12.0 ms offset avg=-0.0 ms abs max=1.5 ms
+dwm3001-1 > [0] Sent 482
+dwm3001-8 > [7] Val 482 (NIT: 65)
+dwm3001-1 > [0] Sent 483
+dwm3001-8 > [7] Val 483 (NIT: 65)
+dwm3001-1 > [0] Sent 484
+dwm3001-3 > [WARN] Missed deadline for input at LT 493400 ms
+dwm3001-8 > [7] No value at PT 496873.0 ms and LT 493650 ms
+dwm3001-1 > [0] Sent 485
+dwm3001-8 > [7] Val 485 (NIT: 66)
+dwm3001-1 > [0] Sent 486
+dwm3001-7 > (497828000000) [ERROR] [NET] RUdpIpChannel: 501 packets sent, 35 retransmissions
+dwm3001-8 > [7] Val 486 (NIT: 66)
+dwm3001-1 > [0] Sent 487
+dwm3001-8 > [7] Val 487 (NIT: 66)
+dwm3001-1 > [0] Sent 488
+dwm3001-8 > [7] Val 488 (NIT: 66)
+dwm3001-1 > [0] Sent 489
+dwm3001-8 > [7] Val 489 (NIT: 66)
+dwm3001-1 > [0] Sent 490
+dwm3001-8 > [7] No value at PT 502873.0 ms and LT 499650 ms
+dwm3001-8 > [WARN] Tardy at PT 502894.0 ms and LT 499650 ms
+dwm3001-1 > [0] Sent 491
+dwm3001-8 > [7] Val 491 (NIT: 67)
+dwm3001-1 > [0] Sent 492
+dwm3001-8 > [7] Val 492 (NIT: 67)
+dwm3001-1 > [0] Sent 493
+dwm3001-8 > [7] Val 493 (NIT: 67)
+dwm3001-1 > [0] Sent 494
+dwm3001-8 > [7] Val 494 (NIT: 67)
+dwm3001-4 > (505906000000) [INFO] [CLOCK_SYNC] RTT avg=10.9 ms abs max=13.0 ms offset avg=-5.5 ms abs max=173.4 ms
+dwm3001-1 > [0] Sent 495
+dwm3001-7 > (506780000000) [ERROR] [NET] RUdpIpChannel: 501 packets received, 25 duplicates
+dwm3001-8 > [7] Val 495 (NIT: 67)
+dwm3001-1 > [0] Sent 496
+dwm3001-8 > [7] Val 496 (NIT: 67)
+dwm3001-1 > [0] Sent 497
+dwm3001-8 > [7] Val 497 (NIT: 67)
+dwm3001-1 > [0] Sent 498
+dwm3001-8 > [7] Val 498 (NIT: 67)
+dwm3001-3 > (509972000000) [INFO] [CLOCK_SYNC] RTT avg=10.7 ms abs max=13.0 ms offset avg=-3.1 ms abs max=24.1 ms
+dwm3001-1 > [0] Sent 499
+dwm3001-8 > [7] Val 499 (NIT: 67)
+dwm3001-1 > [0] Sent 500
+dwm3001-8 > [7] Val 500 (NIT: 67)
+dwm3001-2 > (512007000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=12.0 ms offset avg=0.6 ms abs max=17.8 ms
+dwm3001-1 > [0] Sent 501
+dwm3001-6 > (512779000000) [ERROR] [NET] RUdpIpChannel: 501 packets received, 16 duplicates
+dwm3001-8 > [7] Val 501 (NIT: 67)
+dwm3001-1 > [0] Sent 502
+dwm3001-8 > [7] Val 502 (NIT: 67)
+dwm3001-1 > [0] Sent 503
+dwm3001-8 > [7] Val 503 (NIT: 67)
+dwm3001-1 > [0] Sent 504
+dwm3001-8 > [7] Val 504 (NIT: 67)
+dwm3001-1 > [0] Sent 505
+dwm3001-8 > [7] Val 505 (NIT: 67)
+dwm3001-1 > [0] Sent 506
+dwm3001-8 > [7] Val 506 (NIT: 67)
+dwm3001-1 > [0] Sent 507
+dwm3001-8 > [7] Val 507 (NIT: 67)
+dwm3001-1 > [0] Sent 508
+dwm3001-8 > [7] Val 508 (NIT: 67)
+dwm3001-1 > [0] Sent 509
+dwm3001-8 > [7] Val 509 (NIT: 67)
+dwm3001-1 > [0] Sent 510
+dwm3001-8 > [7] Val 510 (NIT: 67)
+dwm3001-1 > [0] Sent 511
+dwm3001-8 > [7] Val 511 (NIT: 67)
+dwm3001-2 > (523068000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=12.0 ms offset avg=-0.7 ms abs max=3.6 ms
+dwm3001-1 > [0] Sent 512
+dwm3001-8 > [7] Val 512 (NIT: 67)
+dwm3001-4 > (524003000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=0.7 ms abs max=81.5 ms
+dwm3001-3 > (524047000000) [INFO] [CLOCK_SYNC] RTT avg=11.2 ms abs max=16.0 ms offset avg=3.2 ms abs max=93.1 ms
+dwm3001-1 > [0] Sent 513
+dwm3001-8 > [7] Val 513 (NIT: 67)
+dwm3001-1 > [0] Sent 514
+dwm3001-8 > [7] Val 514 (NIT: 67)
+dwm3001-1 > [0] Sent 515
+dwm3001-8 > [7] Val 515 (NIT: 67)
+dwm3001-1 > [0] Sent 516
+dwm3001-8 > [7] Val 516 (NIT: 67)
+dwm3001-1 > [0] Sent 517
+dwm3001-8 > [7] Val 517 (NIT: 67)
+dwm3001-1 > [0] Sent 518
+dwm3001-8 > [7] Val 518 (NIT: 67)
+dwm3001-1 > [0] Sent 519
+dwm3001-8 > [7] Val 519 (NIT: 67)
+dwm3001-1 > [0] Sent 520
+dwm3001-8 > [7] Val 520 (NIT: 67)
+dwm3001-1 > [0] Sent 521
+dwm3001-8 > (532830000000) [ERROR] [NET] RUdpIpChannel: 501 packets received, 9 duplicates
+dwm3001-8 > [7] Val 521 (NIT: 67)
+dwm3001-1 > [0] Sent 522
+dwm3001-8 > [7] Val 522 (NIT: 67)
+dwm3001-3 > (534092000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=0.1 ms abs max=1.9 ms
+dwm3001-2 > (534118000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=13.0 ms offset avg=0.2 ms abs max=1.2 ms
+dwm3001-1 > [0] Sent 523
+dwm3001-8 > [7] Val 523 (NIT: 67)
+dwm3001-4 > (535054000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=13.0 ms offset avg=0.6 ms abs max=3.5 ms
+dwm3001-1 > [0] Sent 524
+dwm3001-8 > [7] Val 524 (NIT: 67)
+dwm3001-1 > [0] Sent 525
+dwm3001-8 > [7] Val 525 (NIT: 67)
+dwm3001-1 > [0] Sent 526
+dwm3001-8 > [7] Val 526 (NIT: 67)
+dwm3001-1 > [0] Sent 527
+dwm3001-8 > [7] Val 527 (NIT: 67)
+dwm3001-1 > [0] Sent 528
+dwm3001-8 > [7] Val 528 (NIT: 67)
+dwm3001-1 > [0] Sent 529
+dwm3001-8 > [7] Val 529 (NIT: 67)
+dwm3001-1 > [0] Sent 530
+dwm3001-8 > [7] Val 530 (NIT: 67)
+dwm3001-1 > [0] Sent 531
+dwm3001-8 > [7] Val 531 (NIT: 67)
+dwm3001-1 > [0] Sent 532
+dwm3001-8 > [7] Val 532 (NIT: 67)
+dwm3001-3 > (544138000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=0.2 ms abs max=3.1 ms
+dwm3001-2 > (544164000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=12.0 ms offset avg=-0.2 ms abs max=1.5 ms
+dwm3001-1 > [0] Sent 533
+dwm3001-8 > [7] Val 533 (NIT: 67)
+dwm3001-1 > [0] Sent 534
+dwm3001-8 > [7] Val 534 (NIT: 67)
+dwm3001-4 > (546101000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=12.0 ms offset avg=0.2 ms abs max=4.1 ms
+dwm3001-1 > [0] Sent 535
+dwm3001-8 > [7] Val 535 (NIT: 67)
+dwm3001-1 > [0] Sent 536
+dwm3001-8 > [7] Val 536 (NIT: 67)
+dwm3001-1 > [0] Sent 537
+dwm3001-8 > [7] Val 537 (NIT: 67)
+dwm3001-1 > [0] Sent 538
+dwm3001-8 > [7] Val 538 (NIT: 67)
+dwm3001-1 > [0] Sent 539
+dwm3001-8 > [7] Val 539 (NIT: 67)
+dwm3001-1 > [0] Sent 540
+dwm3001-8 > [7] Val 540 (NIT: 67)
+dwm3001-1 > [0] Sent 541
+dwm3001-8 > [7] Val 541 (NIT: 67)
+dwm3001-1 > [0] Sent 542
+dwm3001-8 > [7] Val 542 (NIT: 67)
+dwm3001-3 > (554188000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=11.0 ms offset avg=0.1 ms abs max=1.8 ms
+dwm3001-2 > (554212000000) [INFO] [CLOCK_SYNC] RTT avg=9.7 ms abs max=11.0 ms offset avg=-0.1 ms abs max=1.6 ms
+dwm3001-1 > [0] Sent 543
+dwm3001-8 > [7] Val 543 (NIT: 67)
+dwm3001-1 > [0] Sent 544
+dwm3001-8 > [7] Val 544 (NIT: 67)
+dwm3001-1 > [0] Sent 545
+dwm3001-8 > [7] Val 545 (NIT: 67)
+dwm3001-4 > (557161000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=11.0 ms offset avg=0.1 ms abs max=1.8 ms
+dwm3001-1 > [0] Sent 546
+dwm3001-8 > [7] Val 546 (NIT: 67)
+dwm3001-1 > [0] Sent 547
+dwm3001-8 > [7] Val 547 (NIT: 67)
+dwm3001-1 > [0] Sent 548
+dwm3001-8 > [7] Val 548 (NIT: 67)
+dwm3001-1 > [0] Sent 549
+dwm3001-8 > [7] Val 549 (NIT: 67)
+dwm3001-1 > [0] Sent 550
+dwm3001-8 > [7] Val 550 (NIT: 67)
+dwm3001-1 > [0] Sent 551
+dwm3001-8 > [7] Val 551 (NIT: 67)
+dwm3001-1 > [0] Sent 552
+dwm3001-8 > [7] Val 552 (NIT: 67)
+dwm3001-1 > [0] Sent 553
+dwm3001-8 > [7] Val 553 (NIT: 67)
+dwm3001-2 > (565264000000) [INFO] [CLOCK_SYNC] RTT avg=11.1 ms abs max=13.0 ms offset avg=0.2 ms abs max=2.3 ms
+dwm3001-1 > [0] Sent 554
+dwm3001-8 > [7] Val 554 (NIT: 67)
+dwm3001-1 > [0] Sent 555
+dwm3001-8 > [7] Val 555 (NIT: 67)
+dwm3001-3 > (567244000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=13.0 ms offset avg=-0.6 ms abs max=7.3 ms
+dwm3001-1 > [0] Sent 556
+dwm3001-8 > [7] Val 556 (NIT: 67)
+dwm3001-4 > (568211000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=12.0 ms offset avg=-0.5 ms abs max=5.4 ms
+dwm3001-1 > [0] Sent 557
+dwm3001-8 > [7] Val 557 (NIT: 67)
+dwm3001-1 > [0] Sent 558
+dwm3001-8 > [7] Val 558 (NIT: 67)
+dwm3001-1 > [0] Sent 559
+dwm3001-8 > [7] Val 559 (NIT: 67)
+dwm3001-1 > [0] Sent 560
+dwm3001-8 > [7] Val 560 (NIT: 67)
+dwm3001-1 > [0] Sent 561
+dwm3001-8 > [7] Val 561 (NIT: 67)
+dwm3001-1 > [0] Sent 562
+dwm3001-8 > [7] Val 562 (NIT: 67)
+dwm3001-1 > [0] Sent 563
+dwm3001-8 > [7] Val 563 (NIT: 67)
+dwm3001-2 > (575316000000) [INFO] [CLOCK_SYNC] RTT avg=10.7 ms abs max=20.0 ms offset avg=-0.0 ms abs max=6.4 ms
+dwm3001-1 > [0] Sent 564
+dwm3001-8 > [7] Val 564 (NIT: 67)
+dwm3001-1 > [0] Sent 565
+dwm3001-8 > [7] Val 565 (NIT: 67)
+dwm3001-1 > [0] Sent 566
+dwm3001-8 > [7] Val 566 (NIT: 67)
+dwm3001-3 > (578302000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=11.0 ms offset avg=0.5 ms abs max=2.5 ms
+dwm3001-1 > [0] Sent 567
+dwm3001-8 > [7] Val 567 (NIT: 67)
+dwm3001-4 > (579264000000) [INFO] [CLOCK_SYNC] RTT avg=9.3 ms abs max=12.0 ms offset avg=0.3 ms abs max=4.9 ms
+dwm3001-1 > [0] Sent 568
+dwm3001-8 > [7] Val 568 (NIT: 67)
+dwm3001-1 > [0] Sent 569
+dwm3001-8 > [7] Val 569 (NIT: 67)
+dwm3001-1 > [0] Sent 570
+dwm3001-8 > [7] Val 570 (NIT: 67)
+dwm3001-1 > [0] Sent 571
+dwm3001-8 > [7] Val 571 (NIT: 67)
+dwm3001-1 > [0] Sent 572
+dwm3001-8 > [7] Val 572 (NIT: 67)
+dwm3001-1 > [0] Sent 573
+dwm3001-8 > [7] Val 573 (NIT: 67)
+dwm3001-2 > (585368000000) [INFO] [CLOCK_SYNC] RTT avg=9.5 ms abs max=11.0 ms offset avg=-0.1 ms abs max=1.5 ms
+dwm3001-1 > [0] Sent 574
+dwm3001-8 > [7] Val 574 (NIT: 67)
+dwm3001-1 > [0] Sent 575
+dwm3001-8 > [7] Val 575 (NIT: 67)
+dwm3001-1 > [0] Sent 576
+dwm3001-8 > [7] Val 576 (NIT: 67)
+dwm3001-1 > [0] Sent 577
+dwm3001-8 > [7] Val 577 (NIT: 67)
+dwm3001-1 > [0] Sent 578
+dwm3001-8 > [7] Val 578 (NIT: 67)
+dwm3001-1 > [0] Sent 579
+dwm3001-8 > [7] Val 579 (NIT: 67)
+dwm3001-1 > [0] Sent 580
+dwm3001-8 > [7] Val 580 (NIT: 67)
+dwm3001-4 > (592334000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=0.2 ms abs max=3.8 ms
+dwm3001-3 > (592364000000) [INFO] [CLOCK_SYNC] RTT avg=9.6 ms abs max=13.0 ms offset avg=0.4 ms abs max=3.4 ms
+dwm3001-1 > [0] Sent 581
+dwm3001-8 > [7] Val 581 (NIT: 67)
+dwm3001-1 > [0] Sent 582
+dwm3001-8 > [7] Val 582 (NIT: 67)
+dwm3001-1 > [0] Sent 583
+dwm3001-8 > [7] Val 583 (NIT: 67)
+dwm3001-2 > (595419000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.2 ms
+dwm3001-1 > [0] Sent 584
+dwm3001-8 > [7] Val 584 (NIT: 67)
+dwm3001-1 > [0] Sent 585
+dwm3001-8 > [7] Val 585 (NIT: 67)
+dwm3001-1 > [0] Sent 586
+dwm3001-8 > [7] Val 586 (NIT: 67)
+dwm3001-1 > [0] Sent 587
+dwm3001-8 > [7] Val 587 (NIT: 67)
+dwm3001-1 > [0] Sent 588
+dwm3001-8 > [7] Val 588 (NIT: 67)
+dwm3001-1 > [0] Sent 589
+dwm3001-8 > [7] Val 589 (NIT: 67)
+dwm3001-1 > [0] Sent 590
+dwm3001-8 > [7] Val 590 (NIT: 67)
+dwm3001-4 > (602374000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=11.0 ms offset avg=-0.1 ms abs max=2.8 ms
+dwm3001-1 > [0] Sent 591
+dwm3001-8 > [7] Val 591 (NIT: 67)
+dwm3001-1 > [0] Sent 592
+dwm3001-8 > [7] Val 592 (NIT: 67)
+dwm3001-1 > [0] Sent 593
+dwm3001-8 > [7] Val 593 (NIT: 67)
+dwm3001-3 > (605426000000) [INFO] [CLOCK_SYNC] RTT avg=9.6 ms abs max=11.0 ms offset avg=-0.4 ms abs max=2.6 ms
+dwm3001-2 > (605466000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=12.0 ms offset avg=0.1 ms abs max=1.6 ms
+dwm3001-1 > [0] Sent 594
+dwm3001-8 > [7] Val 594 (NIT: 67)
+dwm3001-1 > [0] Sent 595
+dwm3001-8 > [7] Val 595 (NIT: 67)
+dwm3001-1 > [0] Sent 596
+dwm3001-8 > [7] Val 596 (NIT: 67)
+dwm3001-1 > [0] Sent 597
+dwm3001-8 > [7] Val 597 (NIT: 67)
+dwm3001-1 > [0] Sent 598
+dwm3001-8 > [7] Val 598 (NIT: 67)
+dwm3001-1 > [0] Sent 599
+dwm3001-8 > [7] Val 599 (NIT: 67)
+dwm3001-1 > [0] Sent 600
+dwm3001-8 > [7] Val 600 (NIT: 67)
+dwm3001-1 > [0] Sent 601
+dwm3001-8 > [7] Val 601 (NIT: 67)
+dwm3001-1 > [0] Sent 602
+dwm3001-8 > [7] Val 602 (NIT: 67)
+dwm3001-4 > (614432000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=12.0 ms offset avg=-0.0 ms abs max=6.5 ms
+dwm3001-1 > [0] Sent 603
+dwm3001-8 > [7] Val 603 (NIT: 67)
+dwm3001-3 > (615474000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=12.0 ms offset avg=-0.2 ms abs max=2.1 ms
+dwm3001-1 > [0] Sent 604
+dwm3001-2 > (615520000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=11.0 ms offset avg=0.1 ms abs max=2.1 ms
+dwm3001-8 > [7] Val 604 (NIT: 67)
+dwm3001-1 > [0] Sent 605
+dwm3001-8 > [7] Val 605 (NIT: 67)
+dwm3001-1 > [0] Sent 606
+dwm3001-8 > [7] Val 606 (NIT: 67)
+dwm3001-1 > [0] Sent 607
+dwm3001-8 > [7] Val 607 (NIT: 67)
+dwm3001-1 > [0] Sent 608
+dwm3001-8 > [7] Val 608 (NIT: 67)
+dwm3001-1 > [0] Sent 609
+dwm3001-8 > [7] Val 609 (NIT: 67)
+dwm3001-1 > [0] Sent 610
+dwm3001-8 > [7] Val 610 (NIT: 67)
+dwm3001-1 > [0] Sent 611
+dwm3001-8 > [7] Val 611 (NIT: 67)
+dwm3001-1 > [0] Sent 612
+dwm3001-8 > [7] Val 612 (NIT: 67)
+dwm3001-4 > (624474000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=12.0 ms offset avg=-0.3 ms abs max=2.9 ms
+dwm3001-1 > [0] Sent 613
+dwm3001-8 > [7] Val 613 (NIT: 67)
+dwm3001-1 > [0] Sent 614
+dwm3001-3 > (625524000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=12.0 ms offset avg=-0.1 ms abs max=3.0 ms
+dwm3001-8 > [7] Val 614 (NIT: 67)
+dwm3001-1 > [0] Sent 615
+dwm3001-2 > (626574000000) [INFO] [CLOCK_SYNC] RTT avg=12.1 ms abs max=17.0 ms offset avg=-0.2 ms abs max=3.2 ms
+dwm3001-8 > [7] Val 615 (NIT: 67)
+dwm3001-1 > [0] Sent 616
+dwm3001-8 > [7] Val 616 (NIT: 67)
+dwm3001-1 > [0] Sent 617
+dwm3001-8 > [7] Val 617 (NIT: 67)
+dwm3001-1 > [0] Sent 618
+dwm3001-8 > [7] Val 618 (NIT: 67)
+dwm3001-1 > [0] Sent 619
+dwm3001-8 > [7] Val 619 (NIT: 67)
+dwm3001-1 > [0] Sent 620
+dwm3001-8 > [7] Val 620 (NIT: 67)
+dwm3001-1 > [0] Sent 621
+dwm3001-8 > [7] Val 621 (NIT: 67)
+dwm3001-1 > [0] Sent 622
+dwm3001-8 > [7] Val 622 (NIT: 67)
+dwm3001-1 > [0] Sent 623
+dwm3001-8 > [7] Val 623 (NIT: 67)
+dwm3001-1 > [0] Sent 624
+dwm3001-8 > [7] Val 624 (NIT: 67)
+dwm3001-1 > [0] Sent 625
+dwm3001-8 > [7] Val 625 (NIT: 67)
+dwm3001-1 > [0] Sent 626
+dwm3001-8 > [7] Val 626 (NIT: 67)
+dwm3001-1 > [0] Sent 627
+dwm3001-8 > [7] Val 627 (NIT: 67)
+dwm3001-1 > [0] Sent 628
+dwm3001-8 > [7] Val 628 (NIT: 67)
+dwm3001-1 > [0] Sent 629
+dwm3001-8 > [7] Val 629 (NIT: 67)
+dwm3001-1 > [0] Sent 630
+dwm3001-4 > [WARN] Missed deadline for input at LT 639450 ms
+dwm3001-8 > [7] No value at PT 642873.0 ms and LT 639650 ms
+dwm3001-4 > (642474000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=11.0 ms offset avg=-0.0 ms abs max=106.0 ms
+dwm3001-1 > [0] Sent 631
+dwm3001-8 > [7] Val 631 (NIT: 68)
+dwm3001-1 > [0] Sent 632
+dwm3001-8 > [7] Val 632 (NIT: 68)
+dwm3001-1 > [0] Sent 633
+dwm3001-8 > [7] Val 633 (NIT: 68)
+dwm3001-1 > [0] Sent 634
+dwm3001-3 > (645630000000) [INFO] [CLOCK_SYNC] RTT avg=10.7 ms abs max=12.0 ms offset avg=0.3 ms abs max=19.7 ms
+dwm3001-2 > (645665000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=11.0 ms offset avg=0.2 ms abs max=4.7 ms
+dwm3001-8 > [7] Val 634 (NIT: 68)
+dwm3001-1 > [0] Sent 635
+dwm3001-8 > [7] Val 635 (NIT: 68)
+dwm3001-1 > [0] Sent 636
+dwm3001-8 > [7] Val 636 (NIT: 68)
+dwm3001-1 > [0] Sent 637
+dwm3001-4 > [WARN] Missed deadline for input at LT 646450 ms
+dwm3001-8 > [7] No value at PT 649873.0 ms and LT 646650 ms
+dwm3001-1 > [0] Sent 638
+dwm3001-4 > [WARN] Missed deadline for input at LT 647450 ms
+dwm3001-8 > [7] No value at PT 650873.0 ms and LT 647650 ms
+dwm3001-1 > [0] Sent 639
+dwm3001-4 > [WARN] Missed deadline for input at LT 648450 ms
+dwm3001-8 > [7] No value at PT 651873.0 ms and LT 648650 ms
+dwm3001-1 > [0] Sent 640
+dwm3001-8 > [7] Val 640 (NIT: 71)
+dwm3001-1 > [0] Sent 641
+dwm3001-8 > [7] No value at PT 653873.0 ms and LT 650650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 650500 ms
+dwm3001-1 > [0] Sent 642
+dwm3001-8 > [7] Val 642 (NIT: 72)
+dwm3001-1 > [0] Sent 643
+dwm3001-8 > [7] Val 643 (NIT: 72)
+dwm3001-1 > [0] Sent 644
+dwm3001-8 > [7] Val 644 (NIT: 72)
+dwm3001-1 > [0] Sent 645
+dwm3001-8 > [7] Val 645 (NIT: 72)
+dwm3001-1 > [0] Sent 646
+dwm3001-2 > (657722000000) [INFO] [CLOCK_SYNC] RTT avg=9.7 ms abs max=11.0 ms offset avg=-0.1 ms abs max=1.0 ms
+dwm3001-8 > [7] Val 646 (NIT: 72)
+dwm3001-1 > [0] Sent 647
+dwm3001-3 > (658691000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=13.0 ms offset avg=0.0 ms abs max=4.3 ms
+dwm3001-8 > [7] Val 647 (NIT: 72)
+dwm3001-1 > [0] Sent 648
+dwm3001-8 > [7] Val 648 (NIT: 72)
+dwm3001-1 > [0] Sent 649
+dwm3001-5 > [WARN] Missed deadline for input at LT 658500 ms
+dwm3001-8 > [7] No value at PT 661873.0 ms and LT 658650 ms
+dwm3001-1 > [0] Sent 650
+dwm3001-8 > [7] No value at PT 662873.0 ms and LT 659650 ms
+dwm3001-8 > [WARN] Tardy at PT 662898.0 ms and LT 659650 ms
+dwm3001-1 > [0] Sent 651
+dwm3001-8 > [7] Val 651 (NIT: 74)
+dwm3001-1 > [0] Sent 652
+dwm3001-8 > [7] Val 652 (NIT: 74)
+dwm3001-1 > [0] Sent 653
+dwm3001-4 > (664632000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=1.0 ms abs max=262.0 ms
+dwm3001-8 > [7] Val 653 (NIT: 74)
+dwm3001-1 > [0] Sent 654
+dwm3001-8 > [7] Val 654 (NIT: 74)
+dwm3001-1 > [0] Sent 655
+dwm3001-8 > [7] Val 655 (NIT: 74)
+dwm3001-1 > [0] Sent 656
+dwm3001-8 > [7] Val 656 (NIT: 74)
+dwm3001-1 > [0] Sent 657
+dwm3001-8 > [7] Val 657 (NIT: 74)
+dwm3001-1 > [0] Sent 658
+dwm3001-2 > (669787000000) [INFO] [CLOCK_SYNC] RTT avg=10.8 ms abs max=18.0 ms offset avg=-0.1 ms abs max=2.9 ms
+dwm3001-8 > [7] Val 658 (NIT: 74)
+dwm3001-1 > [0] Sent 659
+dwm3001-8 > [7] Val 659 (NIT: 74)
+dwm3001-1 > [0] Sent 660
+dwm3001-8 > [7] No value at PT 672873.0 ms and LT 669650 ms
+dwm3001-8 > [WARN] Tardy at PT 672921.0 ms and LT 669650 ms
+dwm3001-1 > [0] Sent 661
+dwm3001-5 > [WARN] Missed deadline for input at LT 670500 ms
+dwm3001-8 > [7] No value at PT 673873.0 ms and LT 670650 ms
+dwm3001-1 > [0] Sent 662
+dwm3001-8 > [7] Val 662 (NIT: 76)
+dwm3001-1 > [0] Sent 663
+dwm3001-3 > (674775000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=12.0 ms offset avg=1.0 ms abs max=10.8 ms
+dwm3001-8 > [7] Val 663 (NIT: 76)
+dwm3001-1 > [0] Sent 664
+dwm3001-8 > [7] Val 664 (NIT: 76)
+dwm3001-1 > [0] Sent 665
+dwm3001-8 > [7] Val 665 (NIT: 76)
+dwm3001-1 > [0] Sent 666
+dwm3001-8 > [7] No value at PT 678873.0 ms and LT 675650 ms
+dwm3001-8 > [WARN] Tardy at PT 678884.0 ms and LT 675650 ms
+dwm3001-1 > [0] Sent 667
+dwm3001-8 > [7] Val 667 (NIT: 77)
+dwm3001-1 > [0] Sent 668
+dwm3001-8 > [7] No value at PT 680874.0 ms and LT 677650 ms
+dwm3001-8 > [WARN] Tardy at PT 680946.0 ms and LT 677650 ms
+dwm3001-1 > [0] Sent 669
+dwm3001-8 > [7] No value at PT 681873.0 ms and LT 678650 ms
+dwm3001-8 > [WARN] Tardy at PT 681910.0 ms and LT 678650 ms
+dwm3001-1 > [0] Sent 670
+dwm3001-8 > [7] Val 670 (NIT: 79)
+dwm3001-1 > [0] Sent 671
+dwm3001-8 > [7] Val 671 (NIT: 79)
+dwm3001-1 > [0] Sent 672
+dwm3001-8 > [7] Val 672 (NIT: 79)
+dwm3001-1 > [0] Sent 673
+dwm3001-8 > [7] Val 673 (NIT: 79)
+dwm3001-1 > [0] Sent 674
+dwm3001-8 > [7] No value at PT 686873.0 ms and LT 683650 ms
+dwm3001-8 > [WARN] Tardy at PT 686920.0 ms and LT 683650 ms
+dwm3001-1 > [0] Sent 675
+dwm3001-4 > (686800000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=13.0 ms offset avg=-0.7 ms abs max=120.7 ms
+dwm3001-8 > [7] No value at PT 687874.0 ms and LT 684650 ms
+dwm3001-8 > [WARN] Tardy at PT 687931.0 ms and LT 684650 ms
+dwm3001-1 > [0] Sent 676
+dwm3001-8 > [7] No value at PT 688873.0 ms and LT 685650 ms
+dwm3001-8 > [WARN] Tardy at PT 688894.0 ms and LT 685650 ms
+dwm3001-1 > [0] Sent 677
+dwm3001-8 > [7] Val 677 (NIT: 82)
+dwm3001-2 > (688880000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=11.0 ms offset avg=-0.1 ms abs max=1.0 ms
+dwm3001-1 > [0] Sent 678
+dwm3001-8 > [7] Val 678 (NIT: 82)
+dwm3001-1 > [0] Sent 679
+dwm3001-8 > [7] Val 679 (NIT: 82)
+dwm3001-1 > [0] Sent 680
+dwm3001-8 > [7] Val 680 (NIT: 82)
+dwm3001-1 > [0] Sent 681
+dwm3001-8 > [7] Val 681 (NIT: 82)
+dwm3001-1 > [0] Sent 682
+dwm3001-8 > [7] Val 682 (NIT: 82)
+dwm3001-3 > (693868000000) [INFO] [CLOCK_SYNC] RTT avg=11.6 ms abs max=20.0 ms offset avg=-0.9 ms abs max=10.6 ms
+dwm3001-1 > [0] Sent 683
+dwm3001-8 > [7] Val 683 (NIT: 82)
+dwm3001-1 > [0] Sent 684
+dwm3001-8 > [7] Val 684 (NIT: 82)
+dwm3001-1 > [0] Sent 685
+dwm3001-8 > [7] Val 685 (NIT: 82)
+dwm3001-1 > [0] Sent 686
+dwm3001-8 > [7] Val 686 (NIT: 82)
+dwm3001-1 > [0] Sent 687
+dwm3001-8 > [7] Val 687 (NIT: 82)
+dwm3001-4 > (698855000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=12.0 ms offset avg=-0.1 ms abs max=3.8 ms
+dwm3001-2 > (698926000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=0.0 ms abs max=2.0 ms
+dwm3001-1 > [0] Sent 688
+dwm3001-8 > [7] Val 688 (NIT: 82)
+dwm3001-1 > [0] Sent 689
+dwm3001-8 > [7] Val 689 (NIT: 82)
+dwm3001-1 > [0] Sent 690
+dwm3001-8 > [7] Val 690 (NIT: 82)
+dwm3001-1 > [0] Sent 691
+dwm3001-8 > [7] Val 691 (NIT: 82)
+dwm3001-1 > [0] Sent 692
+dwm3001-8 > [7] Val 692 (NIT: 82)
+dwm3001-1 > [0] Sent 693
+dwm3001-8 > [7] Val 693 (NIT: 82)
+dwm3001-1 > [0] Sent 694
+dwm3001-8 > [7] Val 694 (NIT: 82)
+dwm3001-3 > (705921000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=0.1 ms abs max=2.3 ms
+dwm3001-1 > [0] Sent 695
+dwm3001-8 > [7] Val 695 (NIT: 82)
+dwm3001-1 > [0] Sent 696
+dwm3001-8 > [7] Val 696 (NIT: 82)
+dwm3001-1 > [0] Sent 697
+dwm3001-8 > [7] Val 697 (NIT: 82)
+dwm3001-4 > (708903000000) [INFO] [CLOCK_SYNC] RTT avg=9.7 ms abs max=11.0 ms offset avg=0.1 ms abs max=3.1 ms
+dwm3001-2 > (708974000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.6 ms
+dwm3001-1 > [0] Sent 698
+dwm3001-8 > [7] Val 698 (NIT: 82)
+dwm3001-1 > [0] Sent 699
+dwm3001-8 > [7] Val 699 (NIT: 82)
+dwm3001-1 > [0] Sent 700
+dwm3001-8 > [7] Val 700 (NIT: 82)
+dwm3001-1 > [0] Sent 701
+dwm3001-8 > [7] Val 701 (NIT: 82)
+dwm3001-1 > [0] Sent 702
+dwm3001-8 > [7] Val 702 (NIT: 82)
+dwm3001-1 > [0] Sent 703
+dwm3001-8 > [7] Val 703 (NIT: 82)
+dwm3001-1 > [0] Sent 704
+dwm3001-8 > [7] Val 704 (NIT: 82)
+dwm3001-1 > [0] Sent 705
+dwm3001-8 > [7] Val 705 (NIT: 82)
+dwm3001-3 > (716979000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=11.0 ms offset avg=0.1 ms abs max=3.0 ms
+dwm3001-1 > [0] Sent 706
+dwm3001-8 > [7] Val 706 (NIT: 82)
+dwm3001-1 > [0] Sent 707
+dwm3001-8 > [7] Val 707 (NIT: 82)
+dwm3001-4 > (718955000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=11.0 ms offset avg=0.4 ms abs max=3.0 ms
+dwm3001-1 > [0] Sent 708
+dwm3001-8 > [7] Val 708 (NIT: 82)
+dwm3001-1 > [0] Sent 709
+dwm3001-8 > [7] Val 709 (NIT: 82)
+dwm3001-1 > [0] Sent 710
+dwm3001-8 > [7] Val 710 (NIT: 82)
+dwm3001-2 > (722038000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=11.0 ms offset avg=0.1 ms abs max=2.9 ms
+dwm3001-1 > [0] Sent 711
+dwm3001-8 > [7] Val 711 (NIT: 82)
+dwm3001-1 > [0] Sent 712
+dwm3001-8 > [7] Val 712 (NIT: 82)
+dwm3001-1 > [0] Sent 713
+dwm3001-8 > [7] Val 713 (NIT: 82)
+dwm3001-1 > [0] Sent 714
+dwm3001-8 > [7] Val 714 (NIT: 82)
+dwm3001-1 > [0] Sent 715
+dwm3001-8 > [7] Val 715 (NIT: 82)
+dwm3001-3 > (727032000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=11.0 ms offset avg=-0.3 ms abs max=3.0 ms
+dwm3001-1 > [0] Sent 716
+dwm3001-8 > [7] Val 716 (NIT: 82)
+dwm3001-1 > [0] Sent 717
+dwm3001-8 > [7] Val 717 (NIT: 82)
+dwm3001-4 > (729002000000) [INFO] [CLOCK_SYNC] RTT avg=10.8 ms abs max=12.0 ms offset avg=-0.8 ms abs max=3.6 ms
+dwm3001-1 > [0] Sent 718
+dwm3001-8 > [7] Val 718 (NIT: 82)
+dwm3001-1 > [0] Sent 719
+dwm3001-8 > [7] Val 719 (NIT: 82)
+dwm3001-1 > [0] Sent 720
+dwm3001-8 > [7] Val 720 (NIT: 82)
+dwm3001-2 > (732086000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=13.0 ms offset avg=0.1 ms abs max=1.5 ms
+dwm3001-1 > [0] Sent 721
+dwm3001-8 > [7] Val 721 (NIT: 82)
+dwm3001-1 > [0] Sent 722
+dwm3001-8 > [7] Val 722 (NIT: 82)
+dwm3001-1 > [0] Sent 723
+dwm3001-8 > [7] Val 723 (NIT: 82)
+dwm3001-1 > [0] Sent 724
+dwm3001-8 > [7] Val 724 (NIT: 82)
+dwm3001-1 > [0] Sent 725
+dwm3001-8 > [7] Val 725 (NIT: 82)
+dwm3001-1 > [0] Sent 726
+dwm3001-8 > [7] Val 726 (NIT: 82)
+dwm3001-1 > [0] Sent 727
+dwm3001-8 > [7] Val 727 (NIT: 82)
+dwm3001-4 > (739052000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=13.0 ms offset avg=0.3 ms abs max=2.5 ms
+dwm3001-1 > [0] Sent 728
+dwm3001-8 > [7] Val 728 (NIT: 82)
+dwm3001-3 > (740089000000) [INFO] [CLOCK_SYNC] RTT avg=10.7 ms abs max=13.0 ms offset avg=0.1 ms abs max=2.2 ms
+dwm3001-1 > [0] Sent 729
+dwm3001-8 > [7] Val 729 (NIT: 82)
+dwm3001-1 > [0] Sent 730
+dwm3001-8 > [7] Val 730 (NIT: 82)
+dwm3001-2 > (742133000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=11.0 ms offset avg=-0.0 ms abs max=1.7 ms
+dwm3001-1 > [0] Sent 731
+dwm3001-8 > [7] Val 731 (NIT: 82)
+dwm3001-1 > [0] Sent 732
+dwm3001-8 > [7] Val 732 (NIT: 82)
+dwm3001-1 > [0] Sent 733
+dwm3001-8 > [7] Val 733 (NIT: 82)
+dwm3001-1 > [0] Sent 734
+dwm3001-8 > [7] Val 734 (NIT: 82)
+dwm3001-1 > [0] Sent 735
+dwm3001-8 > [7] Val 735 (NIT: 82)
+dwm3001-1 > [0] Sent 736
+dwm3001-8 > [7] Val 736 (NIT: 82)
+dwm3001-1 > [0] Sent 737
+dwm3001-8 > [7] Val 737 (NIT: 82)
+dwm3001-4 > (749101000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.9 ms
+dwm3001-1 > [0] Sent 738
+dwm3001-8 > [7] Val 738 (NIT: 82)
+dwm3001-3 > (750140000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=13.0 ms offset avg=-0.0 ms abs max=1.2 ms
+dwm3001-1 > [0] Sent 739
+dwm3001-8 > [7] No value at PT 751873.0 ms and LT 748650 ms
+dwm3001-8 > [WARN] Tardy at PT 751897.0 ms and LT 748650 ms
+dwm3001-1 > [0] Sent 740
+dwm3001-8 > [7] Val 740 (NIT: 83)
+dwm3001-1 > [0] Sent 741
+dwm3001-8 > [7] Val 741 (NIT: 83)
+dwm3001-2 > (753184000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=12.0 ms offset avg=-0.0 ms abs max=1.1 ms
+dwm3001-1 > [0] Sent 742
+dwm3001-8 > [7] Val 742 (NIT: 83)
+dwm3001-1 > [0] Sent 743
+dwm3001-8 > [7] Val 743 (NIT: 83)
+dwm3001-1 > [0] Sent 744
+dwm3001-8 > [7] Val 744 (NIT: 83)
+dwm3001-1 > [0] Sent 745
+dwm3001-8 > [7] Val 745 (NIT: 83)
+dwm3001-1 > [0] Sent 746
+dwm3001-8 > [7] Val 746 (NIT: 83)
+dwm3001-1 > [0] Sent 747
+dwm3001-8 > [7] Val 747 (NIT: 83)
+dwm3001-4 > (759154000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=0.4 ms abs max=2.3 ms
+dwm3001-1 > [0] Sent 748
+dwm3001-8 > [7] Val 748 (NIT: 83)
+dwm3001-1 > [0] Sent 749
+dwm3001-8 > [7] Val 749 (NIT: 83)
+dwm3001-1 > [0] Sent 750
+dwm3001-8 > [7] Val 750 (NIT: 83)
+dwm3001-1 > [0] Sent 751
+dwm3001-8 > [7] Val 751 (NIT: 83)
+dwm3001-1 > [0] Sent 752
+dwm3001-8 > [7] Val 752 (NIT: 83)
+dwm3001-3 > (764212000000) [INFO] [CLOCK_SYNC] RTT avg=9.6 ms abs max=12.0 ms offset avg=-0.5 ms abs max=6.2 ms
+dwm3001-2 > (764240000000) [INFO] [CLOCK_SYNC] RTT avg=10.7 ms abs max=13.0 ms offset avg=0.0 ms abs max=1.2 ms
+dwm3001-1 > [0] Sent 753
+dwm3001-8 > [7] Val 753 (NIT: 83)
+dwm3001-1 > [0] Sent 754
+dwm3001-8 > [7] Val 754 (NIT: 83)
+dwm3001-1 > [0] Sent 755
+dwm3001-8 > [7] Val 755 (NIT: 83)
+dwm3001-1 > [0] Sent 756
+dwm3001-8 > [7] Val 756 (NIT: 83)
+dwm3001-1 > [0] Sent 757
+dwm3001-8 > [7] Val 757 (NIT: 83)
+dwm3001-1 > [0] Sent 758
+dwm3001-8 > [7] Val 758 (NIT: 83)
+dwm3001-1 > [0] Sent 759
+dwm3001-8 > [7] Val 759 (NIT: 83)
+dwm3001-1 > [0] Sent 760
+dwm3001-8 > [7] Val 760 (NIT: 83)
+dwm3001-1 > [0] Sent 761
+dwm3001-8 > [7] Val 761 (NIT: 83)
+dwm3001-4 > (773221000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=13.0 ms offset avg=-0.3 ms abs max=8.0 ms
+dwm3001-1 > [0] Sent 762
+dwm3001-8 > [7] Val 762 (NIT: 83)
+dwm3001-3 > (774264000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=0.5 ms abs max=2.4 ms
+dwm3001-2 > (774292000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=0.0 ms abs max=2.1 ms
+dwm3001-1 > [0] Sent 763
+dwm3001-8 > [7] Val 763 (NIT: 83)
+dwm3001-1 > [0] Sent 764
+dwm3001-8 > [7] Val 764 (NIT: 83)
+dwm3001-1 > [0] Sent 765
+dwm3001-8 > [7] Val 765 (NIT: 83)
+dwm3001-1 > [0] Sent 766
+dwm3001-8 > [7] Val 766 (NIT: 83)
+dwm3001-1 > [0] Sent 767
+dwm3001-8 > [7] Val 767 (NIT: 83)
+dwm3001-1 > [0] Sent 768
+dwm3001-8 > [7] Val 768 (NIT: 83)
+dwm3001-1 > [0] Sent 769
+dwm3001-8 > [7] Val 769 (NIT: 83)
+dwm3001-1 > [0] Sent 770
+dwm3001-8 > [7] Val 770 (NIT: 83)
+dwm3001-1 > [0] Sent 771
+dwm3001-8 > [7] Val 771 (NIT: 83)
+dwm3001-1 > [0] Sent 772
+dwm3001-8 > [7] Val 772 (NIT: 83)
+dwm3001-4 > (784277000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=0.1 ms abs max=5.1 ms
+dwm3001-2 > (784341000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=12.0 ms offset avg=0.0 ms abs max=1.7 ms
+dwm3001-1 > [0] Sent 773
+dwm3001-8 > [7] Val 773 (NIT: 83)
+dwm3001-1 > [0] Sent 774
+dwm3001-8 > [7] Val 774 (NIT: 83)
+dwm3001-1 > [0] Sent 775
+dwm3001-8 > [7] Val 775 (NIT: 83)
+dwm3001-3 > (787332000000) [INFO] [CLOCK_SYNC] RTT avg=10.7 ms abs max=12.0 ms offset avg=-0.4 ms abs max=2.5 ms
+dwm3001-1 > [0] Sent 776
+dwm3001-8 > [7] Val 776 (NIT: 83)
+dwm3001-1 > [0] Sent 777
+dwm3001-8 > [7] Val 777 (NIT: 83)
+dwm3001-1 > [0] Sent 778
+dwm3001-8 > [7] Val 778 (NIT: 83)
+dwm3001-1 > [0] Sent 779
+dwm3001-8 > [7] Val 779 (NIT: 83)
+dwm3001-1 > [0] Sent 780
+dwm3001-8 > [7] Val 780 (NIT: 83)
+dwm3001-1 > [0] Sent 781
+dwm3001-8 > [7] Val 781 (NIT: 83)
+dwm3001-1 > [0] Sent 782
+dwm3001-8 > [7] Val 782 (NIT: 83)
+dwm3001-1 > [0] Sent 783
+dwm3001-8 > [7] Val 783 (NIT: 83)
+dwm3001-4 > (795331000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=11.0 ms offset avg=-0.1 ms abs max=7.5 ms
+dwm3001-1 > [0] Sent 784
+dwm3001-8 > [7] Val 784 (NIT: 83)
+dwm3001-2 > (796405000000) [INFO] [CLOCK_SYNC] RTT avg=11.9 ms abs max=22.0 ms offset avg=-0.3 ms abs max=7.0 ms
+dwm3001-1 > [0] Sent 785
+dwm3001-8 > [7] Val 785 (NIT: 83)
+dwm3001-1 > [0] Sent 786
+dwm3001-8 > [7] Val 786 (NIT: 83)
+dwm3001-3 > (798380000000) [INFO] [CLOCK_SYNC] RTT avg=9.7 ms abs max=13.0 ms offset avg=0.2 ms abs max=7.4 ms
+dwm3001-1 > [0] Sent 787
+dwm3001-8 > [7] Val 787 (NIT: 83)
+dwm3001-1 > [0] Sent 788
+dwm3001-8 > [7] Val 788 (NIT: 83)
+dwm3001-1 > [0] Sent 789
+dwm3001-8 > [7] No value at PT 801873.0 ms and LT 798650 ms
+dwm3001-8 > [WARN] Tardy at PT 801896.0 ms and LT 798650 ms
+dwm3001-1 > [0] Sent 790
+dwm3001-8 > [7] Val 790 (NIT: 84)
+dwm3001-1 > [0] Sent 791
+dwm3001-8 > [7] Val 791 (NIT: 84)
+dwm3001-1 > [0] Sent 792
+dwm3001-8 > [7] Val 792 (NIT: 84)
+dwm3001-1 > [0] Sent 793
+dwm3001-8 > [7] Val 793 (NIT: 84)
+dwm3001-1 > [0] Sent 794
+dwm3001-8 > [7] Val 794 (NIT: 84)
+dwm3001-2 > (806459000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=12.0 ms offset avg=0.2 ms abs max=1.9 ms
+dwm3001-1 > [0] Sent 795
+dwm3001-8 > [7] Val 795 (NIT: 84)
+dwm3001-1 > [0] Sent 796
+dwm3001-8 > [7] Val 796 (NIT: 84)
+dwm3001-3 > (808433000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=12.0 ms offset avg=0.2 ms abs max=2.0 ms
+dwm3001-1 > [0] Sent 797
+dwm3001-8 > [7] Val 797 (NIT: 84)
+dwm3001-1 > [0] Sent 798
+dwm3001-8 > [7] Val 798 (NIT: 84)
+dwm3001-4 > (810404000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=12.0 ms offset avg=0.0 ms abs max=4.6 ms
+dwm3001-1 > [0] Sent 799
+dwm3001-8 > [7] Val 799 (NIT: 84)
+dwm3001-1 > [0] Sent 800
+dwm3001-8 > [7] Val 800 (NIT: 84)
+dwm3001-1 > [0] Sent 801
+dwm3001-8 > [7] Val 801 (NIT: 84)
+dwm3001-1 > [0] Sent 802
+dwm3001-8 > [7] Val 802 (NIT: 84)
+dwm3001-1 > [0] Sent 803
+dwm3001-8 > [7] Val 803 (NIT: 84)
+dwm3001-1 > [0] Sent 804
+dwm3001-8 > [7] Val 804 (NIT: 84)
+dwm3001-1 > [0] Sent 805
+dwm3001-8 > [7] Val 805 (NIT: 84)
+dwm3001-2 > (817508000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.2 ms
+dwm3001-1 > [0] Sent 806
+dwm3001-8 > [7] Val 806 (NIT: 84)
+dwm3001-1 > [0] Sent 807
+dwm3001-8 > [7] Val 807 (NIT: 84)
+dwm3001-1 > [0] Sent 808
+dwm3001-8 > [7] Val 808 (NIT: 84)
+dwm3001-4 > (820447000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=-0.1 ms abs max=2.8 ms
+dwm3001-1 > [0] Sent 809
+dwm3001-8 > [7] Val 809 (NIT: 84)
+dwm3001-1 > [0] Sent 810
+dwm3001-8 > [7] Val 810 (NIT: 84)
+dwm3001-3 > (822498000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=12.0 ms offset avg=-0.2 ms abs max=3.3 ms
+dwm3001-1 > [0] Sent 811
+dwm3001-8 > [7] Val 811 (NIT: 84)
+dwm3001-1 > [0] Sent 812
+dwm3001-8 > [7] Val 812 (NIT: 84)
+dwm3001-1 > [0] Sent 813
+dwm3001-8 > [7] Val 813 (NIT: 84)
+dwm3001-1 > [0] Sent 814
+dwm3001-8 > [7] Val 814 (NIT: 84)
+dwm3001-1 > [0] Sent 815
+dwm3001-8 > [7] Val 815 (NIT: 84)
+dwm3001-1 > [0] Sent 816
+dwm3001-8 > [7] Val 816 (NIT: 84)
+dwm3001-1 > [0] Sent 817
+dwm3001-8 > [7] Val 817 (NIT: 84)
+dwm3001-1 > [0] Sent 818
+dwm3001-8 > [7] Val 818 (NIT: 84)
+dwm3001-1 > [0] Sent 819
+dwm3001-8 > [7] Val 819 (NIT: 84)
+dwm3001-1 > [0] Sent 820
+dwm3001-8 > [7] Val 820 (NIT: 84)
+dwm3001-1 > [0] Sent 821
+dwm3001-8 > [7] Val 821 (NIT: 84)
+dwm3001-1 > [0] Sent 822
+dwm3001-4 > (833542000000) [INFO] [CLOCK_SYNC] RTT avg=10.8 ms abs max=17.1 ms offset avg=-4.0 ms abs max=35.7 ms
+dwm3001-3 > (833581000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=23.1 ms offset avg=0.5 ms abs max=32.9 ms
+dwm3001-8 > [7] Val 822 (NIT: 84)
+dwm3001-1 > [0] Sent 823
+dwm3001-2 > (834617000000) [INFO] [CLOCK_SYNC] RTT avg=12.5 ms abs max=20.0 ms offset avg=0.0 ms abs max=30.0 ms
+dwm3001-8 > [7] Val 823 (NIT: 84)
+dwm3001-1 > [0] Sent 824
+dwm3001-8 > [7] Val 824 (NIT: 84)
+dwm3001-1 > [0] Sent 825
+dwm3001-8 > [7] Val 825 (NIT: 84)
+dwm3001-1 > [0] Sent 826
+dwm3001-8 > [7] No value at PT 838873.0 ms and LT 835650 ms
+dwm3001-8 > [WARN] Tardy at PT 838896.0 ms and LT 835650 ms
+dwm3001-1 > [0] Sent 827
+dwm3001-8 > [7] Val 827 (NIT: 85)
+dwm3001-1 > [0] Sent 828
+dwm3001-8 > [7] Val 828 (NIT: 85)
+dwm3001-1 > [0] Sent 829
+dwm3001-8 > [7] Val 829 (NIT: 85)
+dwm3001-1 > [0] Sent 830
+dwm3001-8 > [7] Val 830 (NIT: 85)
+dwm3001-1 > [0] Sent 831
+dwm3001-8 > [7] Val 831 (NIT: 85)
+dwm3001-1 > [0] Sent 832
+dwm3001-8 > [7] Val 832 (NIT: 85)
+dwm3001-1 > [0] Sent 833
+dwm3001-8 > [7] Val 833 (NIT: 85)
+dwm3001-1 > [0] Sent 834
+dwm3001-8 > [7] Val 834 (NIT: 85)
+dwm3001-1 > [0] Sent 835
+dwm3001-8 > [7] Val 835 (NIT: 85)
+dwm3001-1 > [0] Sent 836
+dwm3001-8 > [7] Val 836 (NIT: 85)
+dwm3001-1 > [0] Sent 837
+dwm3001-3 > (848648000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=12.1 ms offset avg=-0.2 ms abs max=11.2 ms
+dwm3001-8 > [7] Val 837 (NIT: 85)
+dwm3001-1 > [0] Sent 838
+dwm3001-8 > [7] Val 838 (NIT: 85)
+dwm3001-1 > [0] Sent 839
+dwm3001-8 > [7] Val 839 (NIT: 85)
+dwm3001-1 > [0] Sent 840
+dwm3001-8 > [7] Val 840 (NIT: 85)
+dwm3001-1 > [0] Sent 841
+dwm3001-2 > (852703000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=13.0 ms offset avg=-0.0 ms abs max=2.9 ms
+dwm3001-8 > [7] Val 841 (NIT: 85)
+dwm3001-1 > [0] Sent 842
+dwm3001-4 > (853615000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=11.0 ms offset avg=4.1 ms abs max=94.5 ms
+dwm3001-8 > [7] Val 842 (NIT: 85)
+dwm3001-1 > [0] Sent 843
+dwm3001-3 > (854798000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 143 retransmissions
+dwm3001-8 > [7] No value at PT 855874.0 ms and LT 852650 ms
+dwm3001-8 > [WARN] Tardy at PT 855883.0 ms and LT 852650 ms
+dwm3001-1 > [0] Sent 844
+dwm3001-8 > [7] Val 844 (NIT: 86)
+dwm3001-1 > [0] Sent 845
+dwm3001-8 > [7] Val 845 (NIT: 86)
+dwm3001-1 > [0] Sent 846
+dwm3001-8 > [7] Val 846 (NIT: 86)
+dwm3001-1 > [0] Sent 847
+dwm3001-8 > [7] Val 847 (NIT: 86)
+dwm3001-1 > [0] Sent 848
+dwm3001-8 > [7] Val 848 (NIT: 86)
+dwm3001-1 > [0] Sent 849
+dwm3001-3 > (860709000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=13.0 ms offset avg=-0.3 ms abs max=2.4 ms
+dwm3001-8 > [7] Val 849 (NIT: 86)
+dwm3001-1 > [0] Sent 850
+dwm3001-8 > [7] Val 850 (NIT: 86)
+dwm3001-1 > [0] Sent 851
+dwm3001-8 > [7] Val 851 (NIT: 86)
+dwm3001-1 > [0] Sent 852
+dwm3001-8 > [7] Val 852 (NIT: 86)
+dwm3001-1 > [0] Sent 853
+dwm3001-8 > [7] Val 853 (NIT: 86)
+dwm3001-1 > [0] Sent 854
+dwm3001-8 > [7] Val 854 (NIT: 86)
+dwm3001-1 > [0] Sent 855
+dwm3001-8 > [7] Val 855 (NIT: 86)
+dwm3001-1 > [0] Sent 856
+dwm3001-8 > [7] Val 856 (NIT: 86)
+dwm3001-1 > [0] Sent 857
+dwm3001-8 > [7] Val 857 (NIT: 86)
+dwm3001-1 > [0] Sent 858
+dwm3001-2 > (869779000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=11.0 ms offset avg=-0.0 ms abs max=1.9 ms
+dwm3001-8 > [7] Val 858 (NIT: 86)
+dwm3001-1 > [0] Sent 859
+dwm3001-8 > [7] Val 859 (NIT: 86)
+dwm3001-1 > [0] Sent 860
+dwm3001-8 > [7] Val 860 (NIT: 86)
+dwm3001-1 > [0] Sent 861
+dwm3001-4 > (872710000000) [INFO] [CLOCK_SYNC] RTT avg=11.0 ms abs max=15.0 ms offset avg=0.3 ms abs max=12.6 ms
+dwm3001-8 > [7] Val 861 (NIT: 86)
+dwm3001-1 > [0] Sent 862
+dwm3001-8 > [7] No value at PT 874873.0 ms and LT 871650 ms
+dwm3001-8 > [WARN] Tardy at PT 874896.0 ms and LT 871650 ms
+dwm3001-1 > [0] Sent 863
+dwm3001-8 > [7] Val 863 (NIT: 87)
+dwm3001-1 > [0] Sent 864
+dwm3001-8 > [7] Val 864 (NIT: 87)
+dwm3001-1 > [0] Sent 865
+dwm3001-8 > [7] No value at PT 877873.0 ms and LT 874650 ms
+dwm3001-8 > [WARN] Tardy at PT 877884.0 ms and LT 874650 ms
+dwm3001-1 > [0] Sent 866
+dwm3001-8 > [7] No value at PT 878873.0 ms and LT 875650 ms
+dwm3001-8 > [WARN] Tardy at PT 878892.0 ms and LT 875650 ms
+dwm3001-1 > [0] Sent 867
+dwm3001-8 > [7] No value at PT 879873.0 ms and LT 876650 ms
+dwm3001-8 > [WARN] Tardy at PT 879901.0 ms and LT 876650 ms
+dwm3001-1 > [0] Sent 868
+dwm3001-3 > (879788000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=12.0 ms offset avg=-0.6 ms abs max=10.6 ms
+dwm3001-8 > [7] No value at PT 880873.0 ms and LT 877650 ms
+dwm3001-8 > [WARN] Tardy at PT 880913.0 ms and LT 877650 ms
+dwm3001-1 > [0] Sent 869
+dwm3001-8 > [7] No value at PT 881874.0 ms and LT 878650 ms
+dwm3001-8 > [WARN] Tardy at PT 881923.0 ms and LT 878650 ms
+dwm3001-1 > [0] Sent 870
+dwm3001-8 > [7] No value at PT 882874.0 ms and LT 879650 ms
+dwm3001-8 > [WARN] Tardy at PT 882917.0 ms and LT 879650 ms
+dwm3001-1 > [0] Sent 871
+dwm3001-8 > [7] Val 871 (NIT: 93)
+dwm3001-1 > [0] Sent 872
+dwm3001-8 > [7] No value at PT 884873.0 ms and LT 881650 ms
+dwm3001-8 > [WARN] Tardy at PT 884914.0 ms and LT 881650 ms
+dwm3001-1 > [0] Sent 873
+dwm3001-8 > [7] No value at PT 885873.0 ms and LT 882650 ms
+dwm3001-8 > [WARN] Tardy at PT 885925.0 ms and LT 882650 ms
+dwm3001-1 > [0] Sent 874
+dwm3001-8 > [7] Val 874 (NIT: 95)
+dwm3001-1 > [0] Sent 875
+dwm3001-2 > (886868000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=12.0 ms offset avg=0.1 ms abs max=2.2 ms
+dwm3001-8 > [7] Val 875 (NIT: 95)
+dwm3001-1 > [0] Sent 876
+dwm3001-4 > (887712000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 131 retransmissions
+dwm3001-8 > [7] No value at PT 888873.0 ms and LT 885650 ms
+dwm3001-5 > [WARN] Missed deadline for input at LT 885500 ms
+dwm3001-1 > [0] Sent 877
+dwm3001-8 > [7] Val 877 (NIT: 96)
+dwm3001-1 > [0] Sent 878
+dwm3001-8 > [7] Val 878 (NIT: 96)
+dwm3001-1 > [0] Sent 879
+dwm3001-8 > [7] Val 879 (NIT: 96)
+dwm3001-1 > [0] Sent 880
+dwm3001-8 > [7] Val 880 (NIT: 96)
+dwm3001-1 > [0] Sent 881
+dwm3001-8 > [7] Val 881 (NIT: 96)
+dwm3001-1 > [0] Sent 882
+dwm3001-8 > [7] Val 882 (NIT: 96)
+dwm3001-1 > [0] Sent 883
+dwm3001-8 > [7] Val 883 (NIT: 96)
+dwm3001-3 > (894884000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=15.0 ms offset avg=0.7 ms abs max=4.0 ms
+dwm3001-1 > [0] Sent 884
+dwm3001-8 > [7] Val 884 (NIT: 96)
+dwm3001-1 > [0] Sent 885
+dwm3001-8 > [7] Val 885 (NIT: 96)
+dwm3001-1 > [0] Sent 886
+dwm3001-2 > (897926000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=0.0 ms abs max=1.1 ms
+dwm3001-2 > (898582000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 97 retransmissions
+dwm3001-8 > [7] Val 886 (NIT: 96)
+dwm3001-1 > [0] Sent 887
+dwm3001-8 > [7] Val 887 (NIT: 96)
+dwm3001-4 > (898865000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=11.0 ms offset avg=8.2 ms abs max=88.7 ms
+dwm3001-1 > [0] Sent 888
+dwm3001-8 > [7] Val 888 (NIT: 96)
+dwm3001-1 > [0] Sent 889
+dwm3001-8 > [7] Val 889 (NIT: 96)
+dwm3001-1 > [0] Sent 890
+dwm3001-8 > [7] Val 890 (NIT: 96)
+dwm3001-1 > [0] Sent 891
+dwm3001-8 > [7] Val 891 (NIT: 96)
+dwm3001-1 > [0] Sent 892
+dwm3001-8 > [7] Val 892 (NIT: 96)
+dwm3001-1 > [0] Sent 893
+dwm3001-6 > (904779000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 135 retransmissions
+dwm3001-8 > [7] Val 893 (NIT: 96)
+dwm3001-1 > [0] Sent 894
+dwm3001-8 > [7] Val 894 (NIT: 96)
+dwm3001-1 > [0] Sent 895
+dwm3001-8 > [7] Val 895 (NIT: 96)
+dwm3001-1 > [0] Sent 896
+dwm3001-8 > [7] Val 896 (NIT: 96)
+dwm3001-3 > (907941000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=13.0 ms offset avg=0.2 ms abs max=1.9 ms
+dwm3001-2 > (907977000000) [INFO] [CLOCK_SYNC] RTT avg=10.4 ms abs max=13.0 ms offset avg=-0.1 ms abs max=1.5 ms
+dwm3001-1 > [0] Sent 897
+dwm3001-8 > [7] No value at PT 909873.0 ms and LT 906650 ms
+dwm3001-8 > [WARN] Tardy at PT 909899.0 ms and LT 906650 ms
+dwm3001-1 > [0] Sent 898
+dwm3001-8 > [7] Val 898 (NIT: 97)
+dwm3001-1 > [0] Sent 899
+dwm3001-8 > [7] Val 899 (NIT: 97)
+dwm3001-1 > [0] Sent 900
+dwm3001-8 > [7] Val 900 (NIT: 97)
+dwm3001-1 > [0] Sent 901
+dwm3001-8 > [7] Val 901 (NIT: 97)
+dwm3001-1 > [0] Sent 902
+dwm3001-8 > [7] Val 902 (NIT: 97)
+dwm3001-1 > [0] Sent 903
+dwm3001-8 > [7] Val 903 (NIT: 97)
+dwm3001-1 > [0] Sent 904
+dwm3001-8 > [7] Val 904 (NIT: 97)
+dwm3001-4 > (915941000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=-8.5 ms abs max=117.1 ms
+dwm3001-1 > [0] Sent 905
+dwm3001-1 > (916531000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 88 retransmissions
+dwm3001-8 > [7] Val 905 (NIT: 97)
+dwm3001-1 > [0] Sent 906
+dwm3001-8 > [7] Val 906 (NIT: 97)
+dwm3001-2 > (918024000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=13.0 ms offset avg=0.1 ms abs max=1.3 ms
+dwm3001-1 > [0] Sent 907
+dwm3001-8 > [7] Val 907 (NIT: 97)
+dwm3001-1 > [0] Sent 908
+dwm3001-8 > [7] Val 908 (NIT: 97)
+dwm3001-1 > [0] Sent 909
+dwm3001-8 > [7] Val 909 (NIT: 97)
+dwm3001-1 > [0] Sent 910
+dwm3001-8 > [7] Val 910 (NIT: 97)
+dwm3001-3 > (922008000000) [INFO] [CLOCK_SYNC] RTT avg=10.9 ms abs max=12.0 ms offset avg=-0.3 ms abs max=2.9 ms
+dwm3001-1 > [0] Sent 911
+dwm3001-8 > [7] Val 911 (NIT: 97)
+dwm3001-1 > [0] Sent 912
+dwm3001-8 > [7] Val 912 (NIT: 97)
+dwm3001-1 > [0] Sent 913
+dwm3001-8 > [7] Val 913 (NIT: 97)
+dwm3001-1 > [0] Sent 914
+dwm3001-8 > [7] Val 914 (NIT: 97)
+dwm3001-4 > (925990000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=11.0 ms offset avg=0.2 ms abs max=3.1 ms
+dwm3001-1 > [0] Sent 915
+dwm3001-8 > [7] Val 915 (NIT: 97)
+dwm3001-1 > [0] Sent 916
+dwm3001-8 > [7] Val 916 (NIT: 97)
+dwm3001-2 > (928072000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=-0.1 ms abs max=2.3 ms
+dwm3001-1 > [0] Sent 917
+dwm3001-8 > [7] Val 917 (NIT: 97)
+dwm3001-1 > [0] Sent 918
+dwm3001-8 > [7] Val 918 (NIT: 97)
+dwm3001-1 > [0] Sent 919
+dwm3001-8 > [7] Val 919 (NIT: 97)
+dwm3001-1 > [0] Sent 920
+dwm3001-8 > [7] Val 920 (NIT: 97)
+dwm3001-3 > (932061000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=0.1 ms abs max=2.8 ms
+dwm3001-1 > [0] Sent 921
+dwm3001-8 > [7] Val 921 (NIT: 97)
+dwm3001-1 > [0] Sent 922
+dwm3001-8 > [7] Val 922 (NIT: 97)
+dwm3001-1 > [0] Sent 923
+dwm3001-8 > [7] Val 923 (NIT: 97)
+dwm3001-1 > [0] Sent 924
+dwm3001-8 > [7] Val 924 (NIT: 97)
+dwm3001-4 > (936037000000) [INFO] [CLOCK_SYNC] RTT avg=10.7 ms abs max=12.0 ms offset avg=-0.0 ms abs max=3.0 ms
+dwm3001-1 > [0] Sent 925
+dwm3001-8 > [7] Val 925 (NIT: 97)
+dwm3001-1 > [0] Sent 926
+dwm3001-8 > [7] Val 926 (NIT: 97)
+dwm3001-2 > (938121000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=12.0 ms offset avg=0.2 ms abs max=1.1 ms
+dwm3001-1 > [0] Sent 927
+dwm3001-8 > [7] Val 927 (NIT: 97)
+dwm3001-1 > [0] Sent 928
+dwm3001-4 > (939613000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 58 duplicates
+dwm3001-8 > [7] Val 928 (NIT: 97)
+dwm3001-1 > [0] Sent 929
+dwm3001-8 > [7] Val 929 (NIT: 97)
+dwm3001-1 > [0] Sent 930
+dwm3001-8 > [7] Val 930 (NIT: 97)
+dwm3001-3 > (942106000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=12.0 ms offset avg=-0.1 ms abs max=5.6 ms
+dwm3001-1 > [0] Sent 931
+dwm3001-8 > [7] Val 931 (NIT: 97)
+dwm3001-1 > [0] Sent 932
+dwm3001-8 > [7] Val 932 (NIT: 97)
+dwm3001-1 > [0] Sent 933
+dwm3001-8 > [7] Val 933 (NIT: 97)
+dwm3001-1 > [0] Sent 934
+dwm3001-8 > [7] Val 934 (NIT: 97)
+dwm3001-4 > (946091000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=13.0 ms offset avg=-0.2 ms abs max=6.7 ms
+dwm3001-1 > [0] Sent 935
+dwm3001-8 > [7] Val 935 (NIT: 97)
+dwm3001-1 > [0] Sent 936
+dwm3001-8 > [7] Val 936 (NIT: 97)
+dwm3001-1 > [0] Sent 937
+dwm3001-2 > (949178000000) [INFO] [CLOCK_SYNC] RTT avg=10.6 ms abs max=13.0 ms offset avg=-0.1 ms abs max=3.5 ms
+dwm3001-2 > (949535000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 46 duplicates
+dwm3001-8 > [7] No value at PT 949873.0 ms and LT 946650 ms
+dwm3001-8 > [WARN] Tardy at PT 949896.0 ms and LT 946650 ms
+dwm3001-1 > [0] Sent 938
+dwm3001-8 > [7] Val 938 (NIT: 98)
+dwm3001-1 > [0] Sent 939
+dwm3001-8 > [7] Val 939 (NIT: 98)
+dwm3001-1 > [0] Sent 940
+dwm3001-8 > [7] Val 940 (NIT: 98)
+dwm3001-1 > [0] Sent 941
+dwm3001-5 > (952729000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 84 retransmissions
+dwm3001-8 > [7] Val 941 (NIT: 98)
+dwm3001-1 > [0] Sent 942
+dwm3001-8 > [7] Val 942 (NIT: 98)
+dwm3001-1 > [0] Sent 943
+dwm3001-8 > [7] Val 943 (NIT: 98)
+dwm3001-1 > [0] Sent 944
+dwm3001-8 > [7] Val 944 (NIT: 98)
+dwm3001-4 > (956134000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=13.0 ms offset avg=-0.0 ms abs max=3.3 ms
+dwm3001-1 > [0] Sent 945
+dwm3001-8 > [7] Val 945 (NIT: 98)
+dwm3001-1 > [0] Sent 946
+dwm3001-3 > (958185000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=12.0 ms offset avg=0.3 ms abs max=4.9 ms
+dwm3001-3 > (958576000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 37 duplicates
+dwm3001-8 > [7] Val 946 (NIT: 98)
+dwm3001-1 > [0] Sent 947
+dwm3001-8 > [7] Val 947 (NIT: 98)
+dwm3001-2 > (959226000000) [INFO] [CLOCK_SYNC] RTT avg=10.5 ms abs max=12.0 ms offset avg=-0.1 ms abs max=1.8 ms
+dwm3001-1 > [0] Sent 948
+dwm3001-8 > [7] Val 948 (NIT: 98)
+dwm3001-1 > [0] Sent 949
+dwm3001-8 > [7] Val 949 (NIT: 98)
+dwm3001-1 > [0] Sent 950
+dwm3001-8 > [7] Val 950 (NIT: 98)
+dwm3001-1 > [0] Sent 951
+dwm3001-8 > [7] Val 951 (NIT: 98)
+dwm3001-1 > [0] Sent 952
+dwm3001-8 > [7] Val 952 (NIT: 98)
+dwm3001-1 > [0] Sent 953
+dwm3001-8 > [7] Val 953 (NIT: 98)
+dwm3001-1 > [0] Sent 954
+dwm3001-8 > [7] Val 954 (NIT: 98)
+dwm3001-4 > (966184000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=12.0 ms offset avg=0.2 ms abs max=5.5 ms
+dwm3001-1 > [0] Sent 955
+dwm3001-8 > [7] Val 955 (NIT: 98)
+dwm3001-1 > [0] Sent 956
+dwm3001-8 > [7] Val 956 (NIT: 98)
+dwm3001-1 > [0] Sent 957
+dwm3001-8 > [7] Val 957 (NIT: 98)
+dwm3001-2 > (969274000000) [INFO] [CLOCK_SYNC] RTT avg=10.8 ms abs max=12.0 ms offset avg=0.0 ms abs max=0.8 ms
+dwm3001-1 > [0] Sent 958
+dwm3001-8 > [7] Val 958 (NIT: 98)
+dwm3001-1 > [0] Sent 959
+dwm3001-8 > [7] Val 959 (NIT: 98)
+dwm3001-1 > [0] Sent 960
+dwm3001-8 > [7] Val 960 (NIT: 98)
+dwm3001-3 > (972246000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=-0.3 ms abs max=2.4 ms
+dwm3001-1 > [0] Sent 961
+dwm3001-5 > (972676000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 46 duplicates
+dwm3001-8 > [7] Val 961 (NIT: 98)
+dwm3001-1 > [0] Sent 962
+dwm3001-8 > [7] Val 962 (NIT: 98)
+dwm3001-1 > [0] Sent 963
+dwm3001-8 > [7] Val 963 (NIT: 98)
+dwm3001-1 > [0] Sent 964
+dwm3001-8 > [7] Val 964 (NIT: 98)
+dwm3001-1 > [0] Sent 965
+dwm3001-8 > [7] Val 965 (NIT: 98)
+dwm3001-1 > [0] Sent 966
+dwm3001-8 > [7] Val 966 (NIT: 98)
+dwm3001-4 > (978239000000) [INFO] [CLOCK_SYNC] RTT avg=9.4 ms abs max=11.0 ms offset avg=0.2 ms abs max=4.6 ms
+dwm3001-1 > [0] Sent 967
+dwm3001-8 > [7] Val 967 (NIT: 98)
+dwm3001-2 > (979321000000) [INFO] [CLOCK_SYNC] RTT avg=9.6 ms abs max=11.0 ms offset avg=-0.1 ms abs max=1.8 ms
+dwm3001-1 > [0] Sent 968
+dwm3001-8 > [7] Val 968 (NIT: 98)
+dwm3001-1 > [0] Sent 969
+dwm3001-8 > [7] Val 969 (NIT: 98)
+dwm3001-1 > [0] Sent 970
+dwm3001-8 > [7] Val 970 (NIT: 98)
+dwm3001-1 > [0] Sent 971
+dwm3001-8 > [7] Val 971 (NIT: 98)
+dwm3001-3 > (983299000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=12.0 ms offset avg=0.1 ms abs max=1.7 ms
+dwm3001-1 > [0] Sent 972
+dwm3001-8 > [7] Val 972 (NIT: 98)
+dwm3001-1 > [0] Sent 973
+dwm3001-8 > [7] Val 973 (NIT: 98)
+dwm3001-1 > [0] Sent 974
+dwm3001-8 > [7] Val 974 (NIT: 98)
+dwm3001-1 > [0] Sent 975
+dwm3001-7 > (986828000000) [ERROR] [NET] RUdpIpChannel: 1001 packets sent, 54 retransmissions
+dwm3001-8 > [7] Val 975 (NIT: 98)
+dwm3001-1 > [0] Sent 976
+dwm3001-8 > [7] Val 976 (NIT: 98)
+dwm3001-1 > [0] Sent 977
+dwm3001-8 > [7] Val 977 (NIT: 98)
+dwm3001-2 > (989369000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=12.0 ms offset avg=0.1 ms abs max=1.0 ms
+dwm3001-1 > [0] Sent 978
+dwm3001-8 > [7] Val 978 (NIT: 98)
+dwm3001-4 > (990304000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=12.0 ms offset avg=0.0 ms abs max=4.3 ms
+dwm3001-1 > [0] Sent 979
+dwm3001-7 > (990779000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 49 duplicates
+dwm3001-8 > [7] Val 979 (NIT: 98)
+dwm3001-1 > [0] Sent 980
+dwm3001-8 > [7] Val 980 (NIT: 98)
+dwm3001-1 > [0] Sent 981
+dwm3001-8 > [7] Val 981 (NIT: 98)
+dwm3001-1 > [0] Sent 982
+dwm3001-8 > [7] Val 982 (NIT: 98)
+dwm3001-1 > [0] Sent 983
+dwm3001-8 > [7] Val 983 (NIT: 98)
+dwm3001-1 > [0] Sent 984
+dwm3001-8 > [7] Val 984 (NIT: 98)
+dwm3001-1 > [0] Sent 985
+dwm3001-8 > [7] Val 985 (NIT: 98)
+dwm3001-3 > (997372000000) [INFO] [CLOCK_SYNC] RTT avg=10.0 ms abs max=11.0 ms offset avg=-0.1 ms abs max=1.4 ms
+dwm3001-1 > [0] Sent 986
+dwm3001-8 > [7] Val 986 (NIT: 98)
+dwm3001-1 > [0] Sent 987
+dwm3001-8 > [7] Val 987 (NIT: 98)
+dwm3001-1 > [0] Sent 988
+dwm3001-8 > [7] Val 988 (NIT: 98)
+dwm3001-1 > [0] Sent 989
+dwm3001-8 > [7] Val 989 (NIT: 98)
+dwm3001-1 > [0] Sent 990
+dwm3001-8 > [7] Val 990 (NIT: 98)
+dwm3001-1 > [0] Sent 991
+dwm3001-8 > [7] Val 991 (NIT: 98)
+dwm3001-1 > [0] Sent 992
+dwm3001-8 > [7] Val 992 (NIT: 98)
+dwm3001-2 > (1004442000000) [INFO] [CLOCK_SYNC] RTT avg=9.6 ms abs max=12.0 ms offset avg=-0.2 ms abs max=2.4 ms
+dwm3001-1 > [0] Sent 993
+dwm3001-8 > [7] Val 993 (NIT: 98)
+dwm3001-4 > (1005363000000) [INFO] [CLOCK_SYNC] RTT avg=10.2 ms abs max=11.0 ms offset avg=-0.4 ms abs max=5.6 ms
+dwm3001-1 > [0] Sent 994
+dwm3001-8 > [7] Val 994 (NIT: 98)
+dwm3001-1 > [0] Sent 995
+dwm3001-8 > [7] Val 995 (NIT: 98)
+dwm3001-3 > (1007411000000) [INFO] [CLOCK_SYNC] RTT avg=9.7 ms abs max=11.0 ms offset avg=0.2 ms abs max=2.9 ms
+dwm3001-1 > [0] Sent 996
+dwm3001-6 > (1007731000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 29 duplicates
+dwm3001-8 > [7] Val 996 (NIT: 98)
+dwm3001-1 > [0] Sent 997
+dwm3001-8 > [7] Val 997 (NIT: 98)
+dwm3001-1 > [0] Sent 998
+dwm3001-8 > [7] Val 998 (NIT: 98)
+dwm3001-1 > [0] Sent 999
+dwm3001-8 > [7] Val 999 (NIT: 98)
+dwm3001-1 > [0] Sent 1000
+dwm3001-8 > [7] Val 1000 (NIT: 98)
+dwm3001-1 > [0] Sent 1001
+dwm3001-8 > [7] Val 1001 (NIT: 98)
+dwm3001-1 > [0] Sent 1002
+dwm3001-8 > [7] Val 1002 (NIT: 98)
+dwm3001-1 > [0] Sent 1003
+dwm3001-8 > [7] Val 1003 (NIT: 98)
+dwm3001-2 > (1015494000000) [INFO] [CLOCK_SYNC] RTT avg=10.1 ms abs max=12.0 ms offset avg=0.0 ms abs max=1.5 ms
+dwm3001-1 > [0] Sent 1004
+dwm3001-8 > [7] Val 1004 (NIT: 98)
+dwm3001-1 > [0] Sent 1005
+dwm3001-8 > [7] Val 1005 (NIT: 98)
+dwm3001-3 > (1017456000000) [INFO] [CLOCK_SYNC] RTT avg=10.3 ms abs max=13.0 ms offset avg=-0.1 ms abs max=1.4 ms
+dwm3001-1 > [0] Sent 1006
+dwm3001-8 > [7] Val 1006 (NIT: 98)
+dwm3001-4 > (1018432000000) [INFO] [CLOCK_SYNC] RTT avg=9.9 ms abs max=11.0 ms offset avg=0.1 ms abs max=1.5 ms
+dwm3001-1 > [0] Sent 1007
+dwm3001-8 > [7] Val 1007 (NIT: 98)
+dwm3001-1 > [0] Sent 1008
+dwm3001-8 > [7] Val 1008 (NIT: 98)
+dwm3001-1 > [0] Sent 1009
+dwm3001-8 > [7] Val 1009 (NIT: 98)
+dwm3001-1 > [0] Sent 1010
+dwm3001-8 > [7] Val 1010 (NIT: 98)
+dwm3001-1 > [0] Sent 1011
+dwm3001-8 > [7] Val 1011 (NIT: 98)
+dwm3001-1 > [0] Sent 1012
+dwm3001-8 > [7] Val 1012 (NIT: 98)
+dwm3001-1 > [0] Sent 1013
+dwm3001-8 > [7] Val 1013 (NIT: 98)
+dwm3001-1 > [0] Sent 1014
+dwm3001-8 > [7] Val 1014 (NIT: 98)
+dwm3001-1 > [0] Sent 1015
+dwm3001-8 > [7] Val 1015 (NIT: 98)
+dwm3001-1 > [0] Sent 1016
+dwm3001-8 > [7] Val 1016 (NIT: 98)
+dwm3001-1 > [0] Sent 1017
+dwm3001-2 > (1028568000000) [INFO] [CLOCK_SYNC] RTT avg=11.7 ms abs max=20.0 ms offset avg=0.2 ms abs max=6.3 ms
+dwm3001-8 > [7] Val 1017 (NIT: 98)
+dwm3001-1 > [0] Sent 1018
+dwm3001-8 > [7] Val 1018 (NIT: 98)
+dwm3001-4 > (1030491000000) [INFO] [CLOCK_SYNC] RTT avg=11.0 ms abs max=13.0 ms offset avg=-0.8 ms abs max=3.7 ms
+dwm3001-1 > [0] Sent 1019
+dwm3001-8 > [7] Val 1019 (NIT: 98)
+dwm3001-1 > [0] Sent 1020
+dwm3001-8 > [7] Val 1020 (NIT: 98)
+dwm3001-1 > [0] Sent 1021
+dwm3001-3 > (1032546000000) [INFO] [CLOCK_SYNC] RTT avg=9.8 ms abs max=12.0 ms offset avg=1.3 ms abs max=15.5 ms
+dwm3001-8 > [7] Val 1021 (NIT: 98)
+dwm3001-1 > [0] Sent 1022
+dwm3001-8 > [7] Val 1022 (NIT: 98)
+dwm3001-1 > [0] Sent 1023
+dwm3001-8 > [7] Val 1023 (NIT: 98)
+dwm3001-1 > [0] Sent 1024
+dwm3001-8 > [7] Val 1024 (NIT: 98)
+dwm3001-1 > [0] Sent 1025
+dwm3001-8 > [7] Val 1025 (NIT: 98)
+dwm3001-1 > [0] Sent 1026
+dwm3001-8 > (1037830000000) [ERROR] [NET] RUdpIpChannel: 1001 packets received, 12 duplicates
+dwm3001-8 > [7] Val 1026 (NIT: 98)
+dwm3001-1 > [0] Sent 1027
+dwm3001-8 > [7] Val 1027 (NIT: 98)
+dwm3001-1 > [0] Sent 1028
+dwm3001-8 > [7] Val 1028 (NIT: 98)
+dwm3001-1 > [0] Sent 1029
+dwm3001-8 > [7] Val 1029 (NIT: 98)
+dwm3001-1 > [0] Sent 1030
+dwm3001-8 > [7] Val 1030 (NIT: 98)
+dwm3001-1 > [0] Sent 1031
+dwm3001-8 > [7] Val 1031 (NIT: 98)
+dwm3001-1 > [0] Sent 1032
+dwm3001-8 > [7] Val 1032 (NIT: 98)

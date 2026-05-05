@@ -85,8 +85,8 @@ preamble {=
         }
         #endif
 
-        if(self->counter % 20 == 0) {
-            printf("[Source] Emitted value: %d\n", self->counter);
+        if(self->counter % 100 == 0) {
+            printf("[Source] Emitted: %d\n", self->counter);
         }
     =}
 }
@@ -138,6 +138,9 @@ preamble {=
 
     input in: int;
 
+    state tardy_count: int = 0;
+    state deadline_miss_count: int = 0;
+
     reaction(in) {=
         int err = gpio_pin_toggle_dt(&led);
         if (err) {
@@ -152,13 +155,20 @@ preamble {=
         }
         #endif
 
-        if(in->value % 20 == 0) {
-            printf("[Sink] Received value: %d\n", in->value);
+        if(in->value % 100 == 0) {
+            printf("[Sink] Received: %d\n", in->value);
         }
     =} tardy {=
-        printf("[Sink] Reaction to value %d is tardy\n", in->value);
+        self->tardy_count++;
+        if ((self->tardy_count % 5) == 0) {
+            printf("[Sink] Tardy count=%d (latest value=%d)\n", self->tardy_count, in->value);
+        }
     =} deadline(100 msec) {=
-        printf("[Sink] Missed deadline for value %d\n", in->value);
+        self->deadline_miss_count++;
+        if ((self->deadline_miss_count % 5) == 0) {
+            printf("[Sink] Deadline misses=%d (latest value=%d)\n",
+                   self->deadline_miss_count, in->value);
+        }
     =}
 }
 
