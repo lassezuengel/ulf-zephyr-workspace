@@ -20,3 +20,5 @@ venv/
 zephyr-tests/
 
 **/.lf-monobuild
+
+/playground
