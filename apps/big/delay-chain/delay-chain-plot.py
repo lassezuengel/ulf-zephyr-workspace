@@ -36,7 +36,6 @@ CONFIG = {
         ("measurements/dwm3001/n4.csv", "N=4"),
         ("measurements/dwm3001/n6.csv", "N=6"),
         ("measurements/dwm3001/n8.csv", "N=8"),
-        ("measurements/dwm3001/n10.csv", "N=10"),
     ],
 
     # If True, look for files matching the pattern below in the current dir
