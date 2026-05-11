@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -m
+shopt -s huponexit
+cleanup() {
+  if [ "${EXITED_SUCCESSFULLY}" ] ; then
+   exit 0
+  else
+   printf "Killing federate %s.\n" ${pids[*]}
+   # The || true clause means this is not an error if kill fails.
+   kill ${pids[@]} || true
+   exit 1
+  fi
+}
+
+trap 'cleanup; exit' EXIT
+
+# Launch all federates
+pids=()
+echo "#### Launching federate FedDelayChain_srcdst"
+if [ "$1" = "-l" ]; then
+   /home/lasse/ulf-zephyr-workspace/apps/big/delay-chain/dwm3001/bin/FedDelayChain_srcdst | tee FedDelayChain_srcdst.log &
+else
+   /home/lasse/ulf-zephyr-workspace/apps/big/delay-chain/dwm3001/bin/FedDelayChain_srcdst &
+fi
+pids+=($!)
+
+echo "#### Launching federate FedDelayChain_fwds_0"
+if [ "$1" = "-l" ]; then
+   /home/lasse/ulf-zephyr-workspace/apps/big/delay-chain/dwm3001/bin/FedDelayChain_fwds_0 | tee FedDelayChain_fwds_0.log &
+else
+   /home/lasse/ulf-zephyr-workspace/apps/big/delay-chain/dwm3001/bin/FedDelayChain_fwds_0 &
+fi
+pids+=($!)
+
+# Wait for all federates to finish
+for pid in "${pids[@]}"
+do
+   wait ${pid} || exit $?
+done
+EXITED_SUCCESSFULLY=true
