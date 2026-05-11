@@ -1,0 +1,8 @@
+config POLY_CORRECTION_MAX_NODES
+	int "Maximum per-node polynomial corrections"
+	default 20
+	range 0 40
+	help
+	  Maximum number of per-node polynomial correction entries
+	  that can be stored simultaneously. Each entry costs ~22 bytes
+	  of static RAM.

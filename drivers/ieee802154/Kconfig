@@ -52,15 +52,6 @@ config IEEE802154_DSKIEL_DW1000_WITH_CRC
 	bool "use dw1000 crc functionality"
 	default y
 
-config IEEE802154_DSKIEL_DW1000_RCPHASE_CORRECTION
-	bool "Apply RCPHASE correction to CIR phase measurements"
-	default y
-	help
-	  When enabled, applies the RCPHASE (receive carrier phase adjustment)
-	  correction to the real and imaginary CIR values before storing them
-	  in tagged timestamps. This improves phase measurement accuracy for
-	  MM ranging by correcting for receiver-side phase offsets.
-
 config IEEE802154_DSKIEL_DW1000_DIRECT_ISR_PROCESSING
 	bool "Process interrupts directly in ISR context"
 	default n

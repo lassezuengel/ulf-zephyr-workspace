@@ -14,6 +14,16 @@ typedef enum {
     SCHEDULE_CONTENTION = 2,
 } schedule_type_t;
 
+/** Bias correction mode for ranging measurements. */
+typedef enum {
+    BIAS_CORRECTION_NONE = 0,            /**< No bias correction */
+    BIAS_CORRECTION_DISTANCE = 1,        /**< Distance-level correction (Decawave range tables) */
+    BIAS_CORRECTION_TIMESTAMP = 2,       /**< Timestamp-level correction (RSSI-based per RX) */
+    BIAS_CORRECTION_POLY_PER_NODE = 3,   /**< Per-node polynomial correction */
+    BIAS_CORRECTION_POLY_GLOBAL = 4,     /**< Global polynomial correction */
+    BIAS_CORRECTION_XRLOC_PER_NODE = 5,  /**< Per-node XRLoc phase bias correction */
+} bias_correction_mode_t;
+
 typedef enum {
     MTM_STATUS_SUCCESS = 0,
     MTM_STATUS_ERROR = 1,
@@ -47,13 +57,10 @@ typedef void (*mtm_cb_t)(mtm_status_t status, const struct mtm_block_result *res
 typedef void (*mm_cb_t)(mtm_status_t status,  const struct mm_block_result *result, void *user_data);
 
 struct mm_reference_block_result {
-    const struct deca_ranging_digest *digest_chan_5;
-    const struct deca_ranging_digest *digest_chan_3;
+    const struct deca_ranging_digest *digest;
     const struct mm_reference_block_config *config;
     uint64_t rtc;
-    // Channels used for this dual-channel reference ranging
-    uint8_t channel_a;
-    uint8_t channel_b;
+    uint8_t channel;  // UWB channel used for this exchange
 };
 
 typedef void (*mm_reference_cb_t)(mtm_status_t status, const struct mm_reference_block_result *result, void *user_data);
@@ -73,6 +80,7 @@ struct mtm_block_config {
     schedule_type_t schedule_type;
     uint8_t ranging_round_slots_per_phase;
     uint8_t ranging_round_phases;
+    uint16_t slot_padding_us;  /**< Per-slot padding in us (0 = use global) */
 
     mtm_cb_t mtm_cb;
     void *cb_user_data;
@@ -83,19 +91,18 @@ struct mm_reference_block_config {
     uint32_t guard_period_us;
     uint16_t timeout_us;
     deca_short_addr_t initiator_addr, responder_addr;
-
-    // Configurable UWB channels for the dual-channel reference ranging
-    // Defaults are 5 (primary) and 3 (secondary) if not set by the caller
-    uint8_t channel_a; // first channel to use (e.g., 5)
-    uint8_t channel_b; // second channel to use (e.g., 3)
+    uint8_t channel;  // UWB channel for this block instance
 
     mm_reference_cb_t mm_ref_cb;
     void *cb_user_data;
 };
 
 void mtm_set_fp_index_threshold(uint16_t threshold);
-void mtm_set_collect_cfo(bool enabled);
 void mtm_set_correct_reject_frames(bool enabled);
-void mtm_set_correct_timestamp_bias(bool enabled);
+
+void mtm_set_bias_correction_mode(bias_correction_mode_t mode);
+bias_correction_mode_t mtm_get_bias_correction_mode(void);
+bool mtm_get_reject_frames(void);
+uint16_t mtm_get_fp_index_threshold(void);
 
 #endif

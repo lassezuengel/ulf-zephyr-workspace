@@ -1,7 +1,10 @@
 #include <app/drivers/ieee802154/uwb_driver_api.h>
 #include <app/drivers/ieee802154/uwb_timestamp_utils.h>
 #include <app/drivers/ieee802154/uwb_frame_utils.h>
-/* Hardware-specific headers no longer needed - using generic UWB driver API */
+#if IS_ENABLED(CONFIG_SYNCHROFLY_BLOCK_BUTLER)
+#include <app/lib/timesync/time_synchronization.h>
+#include <app/drivers/ieee802154/timesync_butler.h>
+#endif
 
 #include <math.h>
 #include <zephyr/logging/log.h>
@@ -432,6 +435,59 @@ int deca_ranging(const struct device *dev,
 
 			memcpy(incoming_frame, rx_buf, pkt_len-FRAME_LENGTH_ADDITIONAL);
 			/* SAVE_UINT32_TO_LOG(pkt_len); */
+
+/* Butler short-routing disabled for now (warmup phase handles initial sync).
+ * Re-enable for partition merge / late-joiner support. */
+#if 0
+#if IS_ENABLED(CONFIG_SYNCHROFLY_BLOCK_BUTLER)
+			if (incoming_frame->msg_id == UWB_BUTLER_FRAME_ID &&
+			    pkt_len >= sizeof(struct butler_frame) + FRAME_LENGTH_ADDITIONAL) {
+				struct butler_frame *bf = (struct butler_frame *)rx_buf;
+				struct butler_resync_seed seed = {
+					.valid = true,
+					.sigma_node_id = bf->sigma_node_id,
+					.sigma_rtc_at_tau = bf->sigma_rtc_at_tau,
+					.sigma_dwt_at_tau = from_packed_uwb_ts(bf->sigma_dwt_at_tau),
+					.remaining_slots = bf->remaining_slots,
+					.local_rx_rtc = k_cycle_get_32(),
+					.local_rx_dwt = reception_ts_raw,
+				};
+				butler_set_resync_seed(&seed);
+				const struct butler_flood_config *butler_conf = butler_get_last_config();
+				if (butler_conf) {
+					uwb_driver->clear_timeouts(dev);
+					uwb_driver->release_device(dev);
+					struct butler_flood_result butler_result;
+					int butler_ret = uwb_butler_flood(dev,
+						(struct butler_flood_config *)butler_conf, &butler_result);
+					uwb_driver->acquire_device(dev);
+					if (butler_ret >= 0 && butler_result.converged) {
+						struct deca_glossy_result sync_result = {
+							.rtc_clock_pair = butler_result.rtc_clock_pair,
+							.deca_clock_pair = butler_result.deca_clock_pair,
+							.root_node_id = butler_result.sigma_node_id,
+							.dist_to_root = 0, .payload_size = 0,
+							.payload = NULL, .measured_constant_delay_us = -1,
+						};
+						time_sync_update(1, sync_result);
+						time_sync_set_tau_local(butler_result.rtc_clock_pair.local);
+						time_sync_set_tau_local_dwt(butler_result.deca_clock_pair.local);
+						time_sync_set_tau_ref_rtc(butler_result.rtc_clock_pair.ref);
+						time_sync_clear_dirty();
+						time_sync_request_resync();
+					} else {
+						time_sync_set_dirty();
+						time_sync_request_resync();
+					}
+				} else {
+					time_sync_set_dirty();
+					time_sync_request_resync();
+				}
+				ret = -EAGAIN;
+				goto cleanup;
+			}
+#endif
+#endif
 
 			if(incoming_frame->msg_id != UWB_MTM_RANGING_FRAME_ID || pkt_len <= offsetof(struct deca_ranging_frame, payload)) {
 				// Only log on error paths to avoid timing disruption

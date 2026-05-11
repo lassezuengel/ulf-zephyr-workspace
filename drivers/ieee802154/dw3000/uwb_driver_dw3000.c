@@ -29,6 +29,7 @@ LOG_MODULE_REGISTER(uwb_driver_dw3000, CONFIG_IEEE802154_DW3000_LOG_LEVEL);
 #define DW3000_IRQ_PREAMBLE_DETECT_TIMEOUT 5
 #define DW3000_IRQ_ERR 6
 #define DW3000_IRQ_HALF_DELAY_WARNING 7
+#define DW3000_IRQ_CANCELLED 8
 
 // DW3000 state flags
 #define DW3000_STATE_IRQ_POLLING_EMU 3
@@ -41,7 +42,7 @@ typedef enum {
 } dw3000_buffer_access_t;
 
 struct dw3000_context {
-	struct k_sem dev_lock;
+	struct k_mutex dev_lock;
 	struct k_sem phy_sem;
 	struct k_work irq_cb_work;
 	atomic_t state;
@@ -52,7 +53,7 @@ struct dw3000_context {
 };
 
 static struct dw3000_context dw3000_ctx = {
-	.dev_lock = Z_SEM_INITIALIZER(dw3000_ctx.dev_lock, 1, 1),
+	.dev_lock = Z_MUTEX_INITIALIZER(dw3000_ctx.dev_lock),
 	.phy_sem = Z_SEM_INITIALIZER(dw3000_ctx.phy_sem, 0, 1),
 };
 
@@ -162,7 +163,7 @@ static void dw3000_irq_work_handler(struct k_work *item)
     uint8_t free_phy_sem = 0;
 
     // Take device lock to read status register
-    k_sem_take(&ctx->dev_lock, K_FOREVER);
+    k_mutex_lock(&ctx->dev_lock, K_FOREVER);
 
     // Read the system status register to determine interrupt source
     uint8_t status_buf[4];
@@ -218,7 +219,7 @@ static void dw3000_irq_work_handler(struct k_work *item)
         } else {
             // No buffer has valid data - use default
             ctx->current_rx_buffer = DW3000_BUFFER_ACCESS_DEFAULT;
-            LOG_WRN("DW3000_ISR_WARNING: No RXFCG bits set (RDB_STATUS=0x%02x), using default\n", rdb_status);
+            printk("DW3000_ISR_WARNING: No RXFCG bits set (RDB_STATUS=0x%02x), using default\n", rdb_status);
         }
 
         // Clear RX good interrupt in main SYS_STATUS register
@@ -259,7 +260,7 @@ static void dw3000_irq_work_handler(struct k_work *item)
         dwt_writetodevice(SYS_STATUS_ID, 0, 4, (uint8_t*)&sys_stat);
     }
 
-    k_sem_give(&ctx->dev_lock);
+    k_mutex_unlock(&ctx->dev_lock);
 
     // Signal the PHY semaphore if we're in IRQ polling emulation mode
     if (atomic_test_bit(&ctx->state, DW3000_STATE_IRQ_POLLING_EMU) && free_phy_sem) {
@@ -292,10 +293,29 @@ static uwb_irq_state_e dw3000_wait_for_irq(const struct device *dev)
             return UWB_IRQ_ERR;
         case DW3000_IRQ_HALF_DELAY_WARNING:
             return UWB_IRQ_HALF_DELAY_WARNING;
+        case DW3000_IRQ_CANCELLED:
+            return UWB_IRQ_CANCELLED;
         case DW3000_IRQ_NONE:
         default:
             return UWB_IRQ_NONE;
     }
+}
+
+static void dw3000_cancel_wait(const struct device *dev)
+{
+    ARG_UNUSED(dev);
+
+    dw3000_ctx.phy_irq_event = DW3000_IRQ_CANCELLED;
+
+    if (atomic_test_bit(&dw3000_ctx.state, DW3000_STATE_IRQ_POLLING_EMU)) {
+        k_sem_give(&dw3000_ctx.phy_sem);
+    }
+}
+
+static void dw3000_flush_irq(const struct device *dev)
+{
+    ARG_UNUSED(dev);
+    /* DW3000 uses direct ISR processing -- no pending work to flush */
 }
 
 // ==================== TIMEOUT MANAGEMENT ====================
@@ -400,7 +420,7 @@ static void dw3000_read_rx_frame(const struct device *dev, uint8_t *frame_buffer
             dwt_readfromdevice(INDIRECT_POINTER_A_ID, 0U, frame_length, frame_buffer);
         }
     } else {
-        LOG_ERR("DW3000_RX_FRAME_ERROR: Invalid read parameters (offset=%d + length=%d > 2048)\n",
+        printk("DW3000_RX_FRAME_ERROR: Invalid read parameters (offset=%d + length=%d > 2048)\n",
                offset, frame_length);
     }
 }
@@ -658,16 +678,16 @@ static int dw3000_set_channel(const struct device *dev, uint8_t channel)
 static int dw3000_acquire_device(const struct device *dev)
 {
     ARG_UNUSED(dev);
-    // Take the device lock semaphore
-    k_sem_take(&dw3000_ctx.dev_lock, K_FOREVER);
+    // Take the device lock mutex (priority inheritance)
+    k_mutex_lock(&dw3000_ctx.dev_lock, K_FOREVER);
     return 0;
 }
 
 static void dw3000_release_device(const struct device *dev)
 {
     ARG_UNUSED(dev);
-    // Release the device lock semaphore
-    k_sem_give(&dw3000_ctx.dev_lock);
+    // Release the device lock mutex
+    k_mutex_unlock(&dw3000_ctx.dev_lock);
 }
 
 static void dw3000_get_antenna_delay(const struct device *dev, uwb_antenna_delay_t *delay)
@@ -729,6 +749,8 @@ static const uwb_driver_t dw3000_uwb_driver = {
     .start_tx = dw3000_start_tx,
     .force_trx_off = dw3000_force_trx_off,
     .wait_for_irq = dw3000_wait_for_irq,
+    .cancel_wait = dw3000_cancel_wait,
+    .flush_irq = dw3000_flush_irq,
     .set_channel = dw3000_set_channel,
 
     // Timeout management

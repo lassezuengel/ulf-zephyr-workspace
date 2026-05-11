@@ -10,6 +10,7 @@
 
 #include "mtm.h"
 #include "glossy.h"
+#include "announcement.h"
 
 typedef void (*block_handler_t)(uint64_t event_time, void *user_data);
 
@@ -24,6 +25,7 @@ struct time_sync_check_config {
 struct ls_position_block_config {
     uint8_t min_anchors;      /* Minimum anchors required (default: 3) */
     uint16_t max_age_ms;      /* Maximum anchor measurement age (default: 2000) */
+    bool constrain_z_positive; /* Constrain Z >= 0 (default: true) */
     void (*position_cb)(const struct vec3d_f *position, float residual, void *user_data);
     void *cb_user_data;
 };
@@ -55,7 +57,12 @@ void pf_position_block_handler(uint64_t rtc_event_time, void *user_data);
 void time_sync_check_block_handler(uint64_t rtc_event_time, void *user_data);
 void glossy_block_handler(uint64_t rtc_event_time, void *user_data);
 void mtm_block_handler(uint64_t rtc_event_time, void *user_data);
-void mm_block_handler(uint64_t rtc_event_time, void *user_data); // currently just uses mtm_block_config
 void mm_reference_block_handler(uint64_t rtc_event_time, void *user_data);
+
+void idle_block_handler(uint64_t rtc_event_time, void *user_data);
+
+#if IS_ENABLED(CONFIG_SYNCHROFLY_BLOCK_BUTLER)
+#include "butler.h"
+#endif
 
 #endif

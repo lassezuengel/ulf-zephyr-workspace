@@ -1,0 +1,17 @@
+# Copyright (c) 2021, Legrand North America, LLC.
+# SPDX-License-Identifier: Apache-2.0
+
+config SYNCHROFLY_BLOCK_SCHEDULER_WARMUP_MS
+	int "Warmup duration for scheduler in milliseconds"
+	default 10000
+	help
+	  Warmup duration in milliseconds. During warmup, only sync blocks
+	  (Glossy or Butler) run to bootstrap the network. All nodes transition
+	  to normal superframe execution at the same reference-time boundary.
+
+config SYNCHROFLY_SUPERFRAME_MAX_SLOTS
+	int "Maximum amount of slots contained in superframe"
+	default 70
+	help
+           This setting specifies the amount of slots contained in the superframe.
+           A slot may contain a block for execution.

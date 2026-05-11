@@ -16,54 +16,41 @@
  */
 
 /**
- * @brief Resolve range ambiguity using dual-channel phase measurements
- *
- * Uses individual phase measurements from two UWB channels to resolve the integer
- * number of wavelengths and calculate mm-accurate distance. Implements the
- * proven Python algorithm with dual-channel averaging for maximum accuracy.
- *
- * @param coarse_distance_twr Coarse distance from TWR (meters)
- * @param filtered_phase_ch5 Filtered phase measurement from channel 5 (radians)
- * @param filtered_phase_ch3 Filtered phase measurement from channel 3 (radians)
- * @param channel_5 Channel 5 number (typically 5)
- * @param channel_3 Channel 3 number (typically 3)
- * @param result Output structure for mm-accurate distance result
- * @return 0 on success, negative error code on failure
- */
-int resolve_ambiguity_dual_channel(double coarse_distance_twr,
-                                  double filtered_phase_ch5,
-                                  double filtered_phase_ch3,
-                                  uint8_t channel_5, uint8_t channel_3,
-                                  struct mm_distance_result *result);
-
-/**
  * @brief Time-series based dual-channel ambiguity resolution
  *
  * Uses recent histories of coarse TWR distance and per-channel phases to:
- *  - smooth coarse TWR distance (SG)
- *  - compute d_phase_diff sequence and anchor to smoothed TWR within ±λ/2
- *  - smooth d_phase_diff (SG) and compute final per-channel distances averaged
+ *  - smooth coarse TWR distance
+ *  - compute d_phase_diff sequence and anchor to smoothed TWR within +/-lambda/2
+ *  - smooth d_phase_diff and compute final per-channel distances averaged
+ *
+ * All filters use window_size=1 as passthrough (no filtering).
+ * poly_order=0 selects moving average, poly_order>0 selects Savitzky-Golay.
  *
  * @param s_twr   Time series of coarse TWR distances (meters)
  * @param s_phi_a Time series of channel A fine phases (radians, wrapped)
  * @param s_phi_b Time series of channel B fine phases (radians, wrapped)
+ * @param s_d_diff Time series for d_phase_diff (or NULL for global store)
  * @param initiator_id Node ID of the initiator for time series key generation
  * @param responder_id Node ID of the responder for time series key generation
  * @param channel_a Channel A number
  * @param channel_b Channel B number
- * @param window_phase SG window for phases (odd, >= 5)
- * @param poly_phase   SG polynomial order for phases
- * @param window_diff  SG window for d_phase_diff smoothing (odd, >= 5)
- * @param poly_diff    SG polynomial order for d_phase_diff
+ * @param window_phase Window for phase filtering (1=passthrough)
+ * @param poly_phase   Polynomial order for phases (0=movavg)
+ * @param window_twr   Window for TWR distance smoothing (1=passthrough)
+ * @param poly_twr     Polynomial order for TWR (0=movavg)
+ * @param window_diff  Window for d_phase_diff smoothing (1=passthrough)
+ * @param poly_diff    Polynomial order for d_phase_diff (0=movavg)
  * @param result Output distance result
  * @return 0 on success, negative on error
  */
 int resolve_ambiguity_dual_channel_ts(const ts_series_t *s_twr,
                                       const ts_series_t *s_phi_a,
                                       const ts_series_t *s_phi_b,
+                                      ts_series_t *s_d_diff,
                                       uint16_t initiator_id, uint16_t responder_id,
                                       uint8_t channel_a, uint8_t channel_b,
                                       size_t window_phase, uint8_t poly_phase,
+                                      size_t window_twr, uint8_t poly_twr,
                                       size_t window_diff, uint8_t poly_diff,
                                       struct mm_distance_result *result);
 
@@ -71,17 +58,15 @@ int resolve_ambiguity_dual_channel_ts(const ts_series_t *s_twr,
  * @brief Validate mm-accurate distance result
  *
  * Performs sanity checks on the ambiguity resolution result including
- * confidence thresholds, distance error bounds, and reasonableness checks.
+ * distance error bounds and reasonableness checks.
  *
  * @param result MM distance result to validate
  * @param coarse_distance_twr Original coarse TWR distance for comparison
  * @param max_distance_error Maximum allowed error vs TWR distance (meters)
- * @param min_confidence Minimum required confidence level (0-1)
  * @return True if result passes validation, false otherwise
  */
 bool validate_mm_distance_result(const struct mm_distance_result *result,
                                 double coarse_distance_twr,
-                                double max_distance_error,
-                                double min_confidence);
+                                double max_distance_error);
 
 #endif // AMBIGUITY_RESOLUTION_H

@@ -1,0 +1,81 @@
+menu "Tracing"
+
+config SYNCHROFLY_TRACING_SYSTEMVIEW
+    bool "Enable SEGGER SystemView tracing support"
+    depends on SYNCHROFLY
+    depends on HAS_SEGGER_RTT
+    select TRACING
+    help
+      Enable Zephyr's SEGGER SystemView tracing backend so the firmware can
+      publish runtime timing information over RTT. When enabled, SystemView can
+      attach through SEGGER RTT to visualise task scheduling and timing as
+      documented in the Zephyr tracing guide.
+
+config SEGGER_SYSVIEW_RTT_CHANNEL
+    default 2 if SYNCHROFLY_TRACING_SYSTEMVIEW
+
+config SYNCHROFLY_TRACING_SYSTEMVIEW_AUTOSTART
+    bool "Automatically start SystemView session at boot"
+    default y
+    depends on SYNCHROFLY_TRACING_SYSTEMVIEW
+    help
+      Start SystemView recording automatically during application
+      initialisation so traces are captured without needing to trigger a start
+      command from the host tool.
+
+endmenu
+
+menuconfig MTM_RANGING_SUBSYSTEM
+        bool "MTM_RANGING_SUBSYSTEM"
+        default y
+        help
+          Enable mtm ranging subsystem
+
+if MTM_RANGING_SUBSYSTEM
+
+module = MTM_RANGING_SUBSYSTEM
+module-str = mtm_ranging_subsystem
+source "subsys/logging/Kconfig.template.log_config"
+
+config NUM_NODES
+    int "Number of nodes"
+    default 2
+
+config RANGING_RADIO_SLEEP
+    bool "Ranging radio sleep"
+    default n
+
+config START_DISABLED
+    bool "Start in disabled state"
+    default n
+
+
+config GLOSSY_TX_FLOOD_START_NODE_ID
+    hex "Glossy TX flood start node ID"
+    default 0x00
+
+
+config DEFAULT_ROUND_DURATION
+    int "default duration of global event scheduling"
+    default 25
+
+config TIME_SYNCHRONIZATION_THREAD_PRIORITY
+    int "Time synchronization thread priority"
+    default -12
+    help
+      Priority of the time synchronization work queue thread.
+      Must be higher (more negative) than ALL BLE thread priorities:
+        - BT RX pri:    K_PRIO_COOP(6) = -10
+        - HCI TX:       K_PRIO_COOP(7) = -9
+        - BT RX WQ:     K_PRIO_COOP(8) = -8 (GATT callbacks here)
+        - BT Conn TX:   K_PRIO_COOP(8) = -8
+      Setting to -12 ensures time sync has highest priority.
+
+config USE_DOUBLE_SIDED
+    bool "Use double sided two way ranging"
+    default y
+
+config DWT_MTM_CIR_BUFFER_SIZE
+    int "amount of buffer space for storing CIR data"
+    default 200
+endif

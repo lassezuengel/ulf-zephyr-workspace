@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: Apache-2.0
+
+menuconfig MAC_QUEUE
+	bool "MAC Frame Queue Support"
+	help
+	  Enable MAC-level frame queueing abstraction for SynchroFly.
+	  Provides dual TX/RX queues for exchanging IEEE 802.15.4 frames
+	  between blocks and applications.
+
+if MAC_QUEUE
+
+config MAC_QUEUE_TX_DEPTH
+	int "TX queue depth"
+	default 4
+	help
+	  Maximum number of frames that can be queued for transmission.
+	  Used for MAC protocols and applications to enqueue frames
+	  that should be transmitted during the next communication opportunity.
+
+config MAC_QUEUE_RX_DEPTH
+	int "RX queue depth"
+	default 8
+	help
+	  Maximum number of received frames that can be buffered.
+	  Used to store frames received from the network that applications
+	  can consume asynchronously.
+
+config MAC_QUEUE_ENABLE_STATS
+	bool "Enable queue statistics"
+	default y
+	help
+	  Enable collection of queue statistics such as frame counts,
+	  drops, and queue utilization. Useful for debugging and
+	  performance monitoring.
+
+config MAC_QUEUE_ENABLE_SHELL
+	bool "Enable shell commands"
+	depends on SHELL
+	default y if SHELL
+	help
+	  Enable shell commands for inspecting queue state and
+	  statistics. Provides commands to view pending frames
+	  and clear queues.
+
+endif # MAC_QUEUE

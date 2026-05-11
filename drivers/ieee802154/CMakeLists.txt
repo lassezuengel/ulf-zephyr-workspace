@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 zephyr_library()
-zephyr_library_include_directories(${CMAKE_CURRENT_LIST_DIR}/../include)
 zephyr_library_sources_ifdef(CONFIG_IEEE802154_DSKIEL_DW1000
     timesync_glossy.c
     ranging_mtm.c
@@ -13,7 +12,7 @@ zephyr_library_sources_ifdef(CONFIG_IEEE802154_DSKIEL_DW1000
     uwb_utils/uwb_frame_utils.c
 )
 
-zephyr_library_sources_ifdef(CONFIG_DW1000_RANGE_BIAS_CORRECTION
+zephyr_library_sources_ifdef(CONFIG_IEEE802154_DSKIEL_DW1000
     dw1000/dw1000_range_tables.c
 )
 
@@ -29,6 +28,13 @@ if(CONFIG_IEEE802154_DSKIEL_DW1000)
     # zephyr_library_sources(dw1000/dw1000_zephyr_spi.c)
 
     zephyr_library_include_directories(dw1000)
+
+    if(CONFIG_SYNCHROFLY_BLOCK_MULOC)
+        zephyr_library_sources(ranging_muloc.c)
+    endif()
+    if(CONFIG_SYNCHROFLY_BLOCK_BUTLER)
+        zephyr_library_sources(timesync_butler.c)
+    endif()
 endif()
 
 # Add uwb_utils include directory
@@ -49,6 +55,9 @@ if(CONFIG_IEEE802154_DW3000)
         dw3000/qmath/src/qmath.c
         uwb_utils/uwb_timestamp_utils.c
         uwb_utils/uwb_frame_utils.c
+        ranging_mm.c
+        ranging_mtm.c
+        timesync_glossy.c
         uwb_driver_registry.c
     )
     zephyr_library_include_directories(
@@ -56,4 +65,11 @@ if(CONFIG_IEEE802154_DW3000)
         dw3000/dw3000
         dw3000/qmath/include
     )
+
+    if(CONFIG_SYNCHROFLY_BLOCK_MULOC)
+        zephyr_library_sources(ranging_muloc.c)
+    endif()
+    if(CONFIG_SYNCHROFLY_BLOCK_BUTLER)
+        zephyr_library_sources(timesync_butler.c)
+    endif()
 endif()

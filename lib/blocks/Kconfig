@@ -1,0 +1,88 @@
+# Copyright (c) 2021, Legrand North America, LLC.
+# SPDX-License-Identifier: Apache-2.0
+
+config SYNCHROFLY_BLOCK_LS_POSITION
+	bool "Least Squares Position Block"
+	depends on MAC_QUEUE
+	default y if CRAZYFLIE
+	default n
+	help
+	  Enable the Least Squares Position block which computes node position
+	  from anchor distances after ranging. Requires MAC_QUEUE for payload
+	  exchange. Uses approximately 1KB additional RAM for queue buffers.
+
+	  When CONFIG_CRAZYFLIE is enabled, this block also forwards the
+	  computed position to the Crazyflie STM32 via SPI.
+
+config SYNCHROFLY_BLOCK_PF_POSITION
+	bool "Particle Filter Position Block"
+	depends on MAC_QUEUE
+	default n
+	help
+	  Enable the Particle Filter Position block which computes node position
+	  using sequential Monte Carlo methods. More robust to non-Gaussian noise
+	  than least squares but requires more computation and memory.
+
+	  Anchor nodes (STATIC mode) use exactly 1 particle representing their
+	  known position. Mobile nodes use the configurable particle count below.
+
+config SYNCHROFLY_PF_MAX_PARTICLES
+	int "Maximum particles for particle filter (mobile nodes)"
+	depends on SYNCHROFLY_BLOCK_PF_POSITION
+	default 50
+	range 10 200
+	help
+	  Maximum number of particles for mobile nodes running the particle filter.
+	  Anchor nodes always use exactly 1 particle regardless of this setting.
+	  More particles improve accuracy but increase memory (16 bytes/particle)
+	  and computation time. Default 50 particles uses 800 bytes.
+
+config SYNCHROFLY_BLOCK_SWARM_RANGING
+	bool "Swarm ranging protocol block"
+	default n
+	help
+	  Enable the swarm ranging block which releases the radio for
+	  asynchronous swarm ranging protocol use during its time slot.
+	  Requires the radio arbiter module for radio ownership management.
+
+config SYNCHROFLY_BLOCK_MULOC
+	bool "MULoc anchor overhearing block"
+	default n
+	help
+	  Enable the MULoc block which implements the anchor overhearing
+	  protocol for mm-level UWB localization. Anchors broadcast in
+	  round-robin and embed CIR/phase/timestamp data from overheard
+	  transmissions. Tags passively collect all anchor measurements.
+
+	  Raw measurement data is streamed via BLE GATT notifications
+	  for offline processing (e.g., with MATLAB).
+
+config SYNCHROFLY_BLOCK_BUTLER
+	bool "Butler distributed time synchronization block"
+	default n
+	help
+	  Enable Butler: distributed time synchronization via probabilistic
+	  flooding. No single initiator required. Multiple nodes propose
+	  reference times, converge on the earliest. Uses simple offset
+	  (no skew estimation). Sync resets each round.
+
+config SYNCHROFLY_BLOCK_CIR_READ
+	bool "CIR Read block"
+	default n
+	help
+	  Enable the CIR Read block for Channel Impulse Response captures.
+	  Each node is configured as sender (transmit probe) or receiver
+	  (listen and read DW1000 accumulator). Timing is derived from
+	  glossy time synchronization. CIR data is transferred via BLE
+	  notifications. The CIR buffer is heap-allocated per capture.
+
+config SYNCHROFLY_BLOCK_SOMETHING
+	int "placeholder"
+	default 0
+	help
+	  This option primarily exists as an example of a library Kconfig
+	  setting.
+
+	  This option specifies the value for custom_get_value() to return
+	  when the input parameter is zero. (Otherwise the function returns the
+	  input parameter value.)

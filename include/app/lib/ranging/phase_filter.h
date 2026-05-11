@@ -47,12 +47,6 @@ typedef struct phase_filter_ops {
      */
     void (*reset)(void *context);
     
-    /**
-     * @brief Get current filter confidence/validity
-     * @param context Filter-specific context
-     * @return Confidence level (0-1), or negative if not applicable
-     */
-    double (*get_confidence)(void *context);
 } phase_filter_ops_t;
 
 /**

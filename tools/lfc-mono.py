@@ -67,6 +67,27 @@ def clean_build_roots(lf_project_root: Path) -> None:
             shutil.rmtree(path)
 
 
+def inject_workspace_kconfig(federation_dir: Path, workspace_kconfig: Path) -> None:
+    for kconfig_path in federation_dir.rglob("Kconfig"):
+        if not kconfig_path.is_file():
+            continue
+
+        relative_kconfig = os.path.relpath(workspace_kconfig, kconfig_path.parent)
+        include_line = f'rsource "{relative_kconfig}"'
+
+        content = kconfig_path.read_text(encoding="utf-8")
+        if include_line in content:
+            continue
+
+        lines = content.splitlines()
+        insert_at = 1 if lines and lines[0].strip() == 'source "Kconfig.zephyr"' else 0
+        new_lines = [*lines[:insert_at], include_line, *lines[insert_at:]]
+        new_content = "\n".join(new_lines)
+        if content.endswith("\n"):
+            new_content += "\n"
+        kconfig_path.write_text(new_content, encoding="utf-8")
+
+
 def main(argv: list[str]) -> int:
     if len(argv) != 1:
         log("Usage: lfc-mono.py <path/to/Federation.lf>")
@@ -123,6 +144,8 @@ def main(argv: list[str]) -> int:
         log(f"  - {(lf_file.parent.parent if lf_file.parent.name == 'src' else lf_file.parent) / 'src-gen' / federation_name}")
         log(f"  - {workspace_root / 'src-gen' / federation_name}")
         return 1
+
+    inject_workspace_kconfig(federation_dir, workspace_root / "Kconfig")
 
     build_cmd: list[str] = [sys.executable, str(build_script), str(federation_dir)]
 

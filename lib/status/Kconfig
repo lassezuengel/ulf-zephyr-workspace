@@ -1,0 +1,7 @@
+# Copyright (c) 2025 SynchroFly Project
+# SPDX-License-Identifier: Apache-2.0
+
+# Status LED module logging configuration
+module = SYNCHROFLY_STATUS
+module-str = synchrofly_status
+source "subsys/logging/Kconfig.template.log_config"

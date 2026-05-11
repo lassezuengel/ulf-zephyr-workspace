@@ -1,0 +1,4 @@
+name: local_lib
+build:
+  cmake: .
+  kconfig: Kconfig

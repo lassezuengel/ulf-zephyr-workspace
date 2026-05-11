@@ -23,6 +23,8 @@ typedef uint8_t uwb_packed_ts_t[5];
 /* UWB frame IDs */
 #define UWB_MTM_RANGING_FRAME_ID 0x01
 #define UWB_MTM_GLOSSY_TX_ID 0x02
+#define UWB_ANNOUNCEMENT_FRAME_ID 0x03
+#define UWB_BUTLER_FRAME_ID 0x04
 
 /* UWB timing configuration structure */
 struct uwb_ranging_timing {
@@ -37,7 +39,7 @@ struct uwb_ranging_timing {
 
 /**
  * @brief Correct timestamp overflow for duration calculations
- * 
+ *
  * @param end_ts End timestamp
  * @param start_ts Start timestamp
  * @return Corrected duration between timestamps
@@ -46,7 +48,7 @@ uint64_t correct_overflow(uwb_ts_t end_ts, uwb_ts_t start_ts);
 
 /**
  * @brief Convert packed timestamp to 64-bit timestamp
- * 
+ *
  * @param ts Packed timestamp (5 bytes)
  * @return 64-bit timestamp value
  */
@@ -54,7 +56,7 @@ uwb_ts_t from_packed_uwb_ts(const uwb_packed_ts_t ts);
 
 /**
  * @brief Convert 64-bit timestamp to packed timestamp
- * 
+ *
  * @param ts Packed timestamp buffer (5 bytes)
  * @param value 64-bit timestamp value
  */

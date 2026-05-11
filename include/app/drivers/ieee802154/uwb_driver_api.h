@@ -19,7 +19,8 @@ typedef enum {
     UWB_IRQ_FRAME_WAIT_TIMEOUT = 3,
     UWB_IRQ_PREAMBLE_DETECT_TIMEOUT = 4,
     UWB_IRQ_ERR = 5,
-    UWB_IRQ_HALF_DELAY_WARNING = 6
+    UWB_IRQ_HALF_DELAY_WARNING = 6,
+    UWB_IRQ_CANCELLED = 7
 } uwb_irq_state_e;
 
 // IRQ state to string conversion utility
@@ -30,7 +31,8 @@ static const char* irq_state_names[] = {
     "FRAME_WAIT_TIMEOUT",       // 3
     "PREAMBLE_DETECT_TIMEOUT",  // 4
     "ERR",                      // 5
-    "HALF_DELAY_WARNING"        // 6
+    "HALF_DELAY_WARNING",       // 6
+    "CANCELLED"                 // 7
 };
 
 static inline const char* irq_state_to_string(uwb_irq_state_e state) {
@@ -120,9 +122,11 @@ typedef uint8_t uwb_packed_ts_t[5];
 typedef uint64_t uwb_ts_t;
 
 #define DECA_NO_ADDRESS UINT16_MAX
-#define DECA_RANGING_FRAME_MAX_FRAME_SIZE 250
+#define DECA_RANGING_FRAME_HEADER_SIZE 12  /* msg_id(1) + checksum(2) + addr(2) + tx_ts(5) + rx_ts_count(1) + payload_size(1) */
+#define DECA_RANGING_FRAME_MAX_FRAME_SIZE 127  /* IEEE 802.15.4 standard frame size */
+#define DECA_RANGING_FRAME_MAX_PAYLOAD (DECA_RANGING_FRAME_MAX_FRAME_SIZE - DECA_RANGING_FRAME_HEADER_SIZE)  /* 115 bytes */
 
-// Hardware-agnostic ranging frame structure
+// Hardware-agnostic ranging frame structure (127 bytes total, IEEE 802.15.4 compliant)
 struct __attribute__((__packed__)) deca_ranging_frame  {
     uint8_t  msg_id;      // identifier of which message type during the protocol run we are sending
     uint16_t checksum;    // checksum for frame integrity verification
@@ -130,7 +134,7 @@ struct __attribute__((__packed__)) deca_ranging_frame  {
     uwb_packed_ts_t tx_ts;
     uint8_t  rx_ts_count; // amount of received timestamps
     uint8_t  payload_size;
-    uint8_t payload[250]; // payload will be located AFTER reception timestamps
+    uint8_t payload[DECA_RANGING_FRAME_MAX_PAYLOAD]; // payload will be located AFTER reception timestamps
 };
 
 // Frame type enumeration
@@ -184,6 +188,7 @@ struct deca_slot;
 struct deca_schedule {
 	uint16_t slot_count;
 	struct deca_slot *slots;
+	uint32_t schedule_hash;  /* Hash of node list + seed for debug */
 };
 
 struct deca_glossy_time_pair {
@@ -259,6 +264,58 @@ struct deca_glossy_result {
 	int32_t measured_constant_delay_us; // Measured constant delay on root node, -1 if not measured
 };
 
+/**
+ * @brief Generic glossy flood configuration
+ *
+ * Configures a single glossy flooding round without time-sync assumptions.
+ * Any node can be the initiator (not limited to "root").
+ */
+struct uwb_flood_config {
+	deca_short_addr_t node_addr;
+	bool is_initiator;            /**< true = initiate flood, false = listen and retransmit */
+	uint16_t guard_period_us;
+	uint16_t max_depth;           /**< Maximum hop count (flooding depth) */
+	uint16_t transmission_delay_us;
+	uint8_t *payload;
+	size_t payload_size;
+	uint8_t frame_id;             /**< Frame type ID (e.g., UWB_MTM_GLOSSY_TX_ID, UWB_ANNOUNCEMENT_FRAME_ID) */
+};
+
+/**
+ * @brief Raw result from a glossy flood round
+ *
+ * Contains raw timestamps and payload without time-sync computation.
+ * Callers that need time synchronization can compute it from these values.
+ */
+struct uwb_flood_result {
+	uint16_t initiator_node_id;   /**< Address of the node that initiated the flood */
+	uint8_t hop_count;            /**< Hops from initiator (0 = this node is initiator) */
+	size_t payload_size;
+	uint8_t *payload;             /**< Pointer to received payload (internal static buffer) */
+	uint32_t initiator_rtc_ts;    /**< RTC timestamp from initiator (embedded in frame) */
+	uint64_t initiator_dwt_ts;    /**< DWT timestamp from initiator (embedded in frame) */
+	uint32_t local_rtc_ts;        /**< Local RTC at reception (0 if initiator) */
+	uint64_t local_dwt_ts;        /**< Local DWT at reception (0 if initiator) */
+	int32_t measured_constant_delay_us; /**< Constant delay measurement (initiator only, -1 if N/A) */
+};
+
+/**
+ * @brief Execute a generic glossy flooding round
+ *
+ * Low-level flooding primitive. The initiator transmits a frame that is
+ * received and retransmitted by all other nodes up to max_depth hops.
+ * Does NOT compute time synchronization -- use deca_glossy_time_synchronization()
+ * if time sync is needed.
+ *
+ * @param dev UWB device
+ * @param conf Flood configuration
+ * @param result Output: raw flood results
+ * @return 0 on success, negative errno on failure
+ */
+int uwb_glossy_flood(const struct device *dev,
+		     struct uwb_flood_config *conf,
+		     struct uwb_flood_result *result);
+
 enum slot_type {
 	DENSE_LOAD_TX_BUFFER,
 	DENSE_RX_SLOT,
@@ -325,6 +382,8 @@ int      deca_glossy_time_synchronization(const struct  device *dev, struct deca
 #define UWB_MTM_REF_MEASUREMENT_EXCHANGE   0x65
 #define UWB_MTM_REF_MEASUREMENT_EXCHANGE_ACK 0x66
 
+#define UWB_MULOC_BROADCAST                 0x70  /* MULoc anchor broadcast with AO data */
+
 // Forward declaration for antenna delay structure
 typedef struct {
     uint16_t tx_ant_dly;
@@ -345,6 +404,10 @@ typedef struct uwb_driver {
     int (*start_tx)(const struct device *dev, uint64_t delayed_timestamp);
     void (*force_trx_off)(const struct device *dev);
     uwb_irq_state_e (*wait_for_irq)(const struct device *dev);
+    void (*cancel_wait)(const struct device *dev);
+    void (*flush_irq)(const struct device *dev);
+    void (*disable_int)(const struct device *dev);
+    void (*enable_int)(const struct device *dev);
     // Set UWB channel (abstracted). Return 0 on success, negative error on failure.
     int (*set_channel)(const struct device *dev, uint8_t channel);
 
@@ -378,6 +441,9 @@ typedef struct uwb_driver {
     int (*configure)(const struct device *dev, const uwb_config_t *config);
     int (*get_config)(const struct device *dev, uwb_config_t *config);
     void (*set_tx_power)(const struct device *dev, uint32_t power);
+    uint32_t (*get_tx_power)(const struct device *dev);
+    void (*set_smart_power)(const struct device *dev, bool enable);
+    bool (*get_smart_power)(const struct device *dev);
     void (*disable_txrx)(const struct device *dev);
     void (*set_frame_filter)(const struct device *dev, uint16_t enable, uint16_t allow_beacon);
 

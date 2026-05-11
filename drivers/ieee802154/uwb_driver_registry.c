@@ -3,7 +3,7 @@
 #include <zephyr/device.h>
 #include <zephyr/logging/log.h>
 
-LOG_MODULE_REGISTER(uwb_driver_registry, CONFIG_IEEE802154_DW3000_LOG_LEVEL);
+LOG_MODULE_REGISTER(uwb_driver_registry, LOG_LEVEL_INF);
 
 // Registry to store driver implementations for each device
 static const uwb_driver_t *device_drivers[32]; // Support up to 32 devices

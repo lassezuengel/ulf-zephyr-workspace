@@ -1,0 +1,19 @@
+# Copyright (c) 2021, Legrand North America, LLC.
+# SPDX-License-Identifier: Apache-2.0
+
+config SYNCHROFLY_TIMESYNC_WORK_QUEUE_STACK_SIZE
+	int "Time sync work queue stack size"
+	default 2048
+	help
+	  Stack size for the time synchronization work queue thread.
+	  Can be reduced to 1024 on memory-constrained devices.
+
+# Time synchronization module logging configuration
+module = TIME_SYNCHRONIZATION
+module-str = time_synchronization
+source "subsys/logging/Kconfig.template.log_config"
+
+# Cyclic timeutil module logging configuration
+module = CYCLIC_TIMEUTIL
+module-str = cyclic_timeutil
+source "subsys/logging/Kconfig.template.log_config"
