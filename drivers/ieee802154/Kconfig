@@ -118,6 +118,15 @@ config IEEE802154_DW3000_RX_POLLING_MODE
 	  Keep this enabled only as a fallback for bring-up or debugging.
 	  When disabled, the driver uses int-gpios callbacks to wake the RX thread.
 
+config IEEE802154_DW3000_EXCLUSIVE_UWB_MODE
+	bool "Exclusive UWB mode (disable IEEE802154 RX path)"
+	default n
+	help
+	  Keep the DW3000 UWB core initialized and registered, but disable the
+	  IEEE802154 network RX thread and interrupt-handler takeover. This is
+	  intended for Glossy/ranging workloads that use the UWB API directly and
+	  must avoid runtime interference from the network path.
+
 config IEEE802154_DW3000_INIT_PRIO
 	int "DW3000 initialization priority"
 	default 80

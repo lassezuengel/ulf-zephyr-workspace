@@ -46,7 +46,7 @@ int uwb_glossy_flood(const struct device *dev,
 	int ret = 0;
 
 	uwb_irq_state_e irq_state = UWB_IRQ_ERR;
-	uint32_t initiator_rtc_ts = 0;
+	uint64_t initiator_rtc_ts = 0;
 	uwb_ts_t initiator_dwt_ts = 0;
 
 	uint16_t timeout_us = conf->max_depth * conf->transmission_delay_us;
@@ -149,10 +149,11 @@ int uwb_glossy_flood(const struct device *dev,
 
 		bool success = false;
 		for (size_t k = 0; !success && (k < conf->max_depth || !conf->max_depth); k++) {
+			uint32_t rx_timeout = timeout_us + (timeout_us > 0 ? conf->guard_period_us : 0);
 			LOG_DBG("RECEIVER: RX attempt %u/%u, timeout=%uus",
-				k + 1, conf->max_depth, timeout_us + (timeout_us > 0 ? conf->guard_period_us : 0));
+				k + 1, conf->max_depth, rx_timeout);
 
-			uwb_driver->enable_rx(dev, timeout_us + (timeout_us > 0 ? conf->guard_period_us : 0), 0);
+			uwb_driver->enable_rx(dev, rx_timeout, 0);
 
 			uwb_driver->release_device(dev);
 			irq_state = uwb_driver->wait_for_irq(dev);
@@ -171,6 +172,9 @@ int uwb_glossy_flood(const struct device *dev,
 				uint64_t local_dwt_ts = uwb_driver->read_rx_timestamp(dev, &rx_diag);
 
 				uint16_t pkt_len = uwb_driver->get_rx_frame_length(dev);
+
+				LOG_DBG("RECEIVER: RX diagnostics: pacc=%u cir_pwr=%u fp_index=%u pkt_len=%u",
+					rx_diag.rx_pacc, rx_diag.cir_pwr, rx_diag.fp_index, pkt_len);
 
 				if (pkt_len > sizeof(buf)) {
 					uwb_driver->switch_buffers(dev);

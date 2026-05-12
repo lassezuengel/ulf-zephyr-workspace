@@ -3,14 +3,19 @@
 zephyr_library()
 zephyr_library_sources_ifdef(CONFIG_IEEE802154_DSKIEL_DW1000
     timesync_glossy.c
-    ranging_mtm.c
-    ranging_mm.c
     uwb_driver_registry.c
     dw1000/ieee802154_dw1000.c
     dw1000/uwb_driver_dw1000.c
     uwb_utils/uwb_timestamp_utils.c
     uwb_utils/uwb_frame_utils.c
 )
+
+if(CONFIG_IEEE802154_DSKIEL_DW1000 AND CONFIG_UWB_RANGING)
+    zephyr_library_sources(
+        ranging_mtm.c
+        ranging_mm.c
+    )
+endif()
 
 zephyr_library_sources_ifdef(CONFIG_IEEE802154_DSKIEL_DW1000
     dw1000/dw1000_range_tables.c
@@ -55,11 +60,16 @@ if(CONFIG_IEEE802154_DW3000)
         dw3000/qmath/src/qmath.c
         uwb_utils/uwb_timestamp_utils.c
         uwb_utils/uwb_frame_utils.c
-        ranging_mm.c
-        ranging_mtm.c
         timesync_glossy.c
         uwb_driver_registry.c
     )
+
+    if(CONFIG_UWB_RANGING)
+        zephyr_library_sources(
+            ranging_mm.c
+            ranging_mtm.c
+        )
+    endif()
     zephyr_library_include_directories(
         dw3000
         dw3000/dw3000
