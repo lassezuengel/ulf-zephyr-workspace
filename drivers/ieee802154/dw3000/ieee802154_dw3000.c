@@ -197,6 +197,11 @@ static void dw3000_iface_api_init(struct net_if *iface)
 	data->iface = iface;
 	ieee802154_init(iface);
 
+#if defined(CONFIG_IEEE802154_DW3000_EXCLUSIVE_UWB_MODE)
+	LOG_INF("IEEE802154 iface init done; runtime RX path disabled (exclusive UWB mode)");
+	return;
+#endif
+
 	/*
 	 * Some integration flows don't trigger the radio start callback in time.
 	 * Start RX proactively once the net interface is initialized.
@@ -1017,8 +1022,10 @@ static int dw3000_init(const struct device *dev)
 	 * For the IEEE802154 net path, we use a dedicated RX thread that is woken
 	 * either by IRQ callbacks or by polling, depending on Kconfig.
 	 */
+#if !defined(CONFIG_IEEE802154_DW3000_EXCLUSIVE_UWB_MODE)
 	dw3000_hw_clear_interrupt_handler();
 	dw3000_hw_interrupt_disable();
+#endif
 
 	k_mutex_init(&data->lock);
 	data->uwb = uwb_driver_get(dev);
@@ -1107,7 +1114,9 @@ static int dw3000_init(const struct device *dev)
 	LOG_WRN("DW3000 IEEE802154 init channel=%u (kconfig undefined)", data->channel);
 #endif
 
-#if defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
+#if defined(CONFIG_IEEE802154_DW3000_EXCLUSIVE_UWB_MODE)
+	LOG_INF("DW3000 IEEE802154 runtime RX disabled (exclusive UWB mode)");
+#elif defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
 	LOG_INF("DW3000 path configured for polling RX (double-buffer disabled)");
 #else
 	if (dw3000_hw_init_interrupt() != 0) {
@@ -1120,17 +1129,19 @@ static int dw3000_init(const struct device *dev)
 	LOG_INF("DW3000 path configured for IRQ-driven RX (double-buffer disabled)");
 #endif
 
-	k_thread_create(&data->rx_thread,
-			cfg->rx_stack,
-			cfg->rx_stack_size,
-			dw3000_rx_thread_fn,
-			(void *)dev,
-			NULL,
-			NULL,
-			8,
-			0,
-			K_NO_WAIT);
-	k_thread_name_set(&data->rx_thread, "dw3000_rx");
+	if (!IS_ENABLED(CONFIG_IEEE802154_DW3000_EXCLUSIVE_UWB_MODE)) {
+		k_thread_create(&data->rx_thread,
+				cfg->rx_stack,
+				cfg->rx_stack_size,
+				dw3000_rx_thread_fn,
+				(void *)dev,
+				NULL,
+				NULL,
+				8,
+				0,
+				K_NO_WAIT);
+		k_thread_name_set(&data->rx_thread, "dw3000_rx");
+	}
 
 	LOG_INF("DW3000 IEEE802154 driver initialized");
 	return 0;
