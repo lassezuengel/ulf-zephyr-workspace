@@ -1098,13 +1098,14 @@ static int dw3000_init(const struct device *dev)
 	 * sufficient for our thread-based model, avoiding state complexity and buffer tracking.
 	 */
 	dwt_setdblrxbuffmode(DBL_BUF_STATE_DIS, DBL_BUF_MODE_MAN);
-	ret = dw3000_apply_phy_config_locked(data);
+#endif /* Single-buffer */
+
+  ret = dw3000_apply_phy_config_locked(data);
 	if (ret != 0) {
 		k_mutex_unlock(&data->lock);
 		LOG_ERR("Failed to configure DW3000 PHY for IEEE802154");
 		return ret;
 	}
-#endif /* Single-buffer */
 
 #if 1
 	ret = dwt_setchannel(DWT_CH5);
@@ -1153,9 +1154,10 @@ static int dw3000_init(const struct device *dev)
 #endif
 
   // Also ok to return here (with single-buffer NOT configured)
-  printf("IEEE802154: Returning before thread creation...\n");
-  return 0;
+  // printf("IEEE802154: Returning before thread creation...\n");
+  // return 0;
 
+#if 0
 	k_thread_create(&data->rx_thread,
 			cfg->rx_stack,
 			cfg->rx_stack_size,
@@ -1167,6 +1169,7 @@ static int dw3000_init(const struct device *dev)
 			0,
 			K_NO_WAIT);
 	k_thread_name_set(&data->rx_thread, "dw3000_rx");
+#endif /* RX thread */
 
 	LOG_INF("DW3000 IEEE802154 driver initialized");
 	return 0;
