@@ -1088,7 +1088,7 @@ static int dw3000_init(const struct device *dev)
   // printf("IEEE802154: Returning a bit early...\n");
   // return 0;
 	k_mutex_lock(&data->lock, K_FOREVER);
-#if 0
+#if 1
 	/*
 	 * Use single-buffer RX mode for clarity and explicit control.
 	 * Double-buffer mode allows hardware to switch between two RX buffers automatically,
@@ -1157,7 +1157,7 @@ static int dw3000_init(const struct device *dev)
   // printf("IEEE802154: Returning before thread creation...\n");
   // return 0;
 
-#if 0
+#if 1
 	k_thread_create(&data->rx_thread,
 			cfg->rx_stack,
 			cfg->rx_stack_size,
