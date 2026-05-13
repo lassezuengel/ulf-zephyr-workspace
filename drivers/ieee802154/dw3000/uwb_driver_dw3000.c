@@ -937,11 +937,8 @@ int uwb_driver_dw3000_init(const struct device *dev)
     k_work_init(&dw3000_ctx.irq_cb_work, dw3000_irq_work_handler);
 
     // Set the custom interrupt handler in the hardware layer
+    // This call registers the handler in slot 0 and enables GPIO IRQ automatically
     dw3000_hw_set_interrupt_handler(dw3000_interrupt_handler);
-
-    // Enable GPIO interrupt
-    LOG_DBG("Enabling GPIO interrupt");
-    dw3000_hw_interrupt_enable();
 
     // Enable IRQ polling emulation mode for ranging protocol
     atomic_set_bit(&dw3000_ctx.state, DW3000_STATE_IRQ_POLLING_EMU);

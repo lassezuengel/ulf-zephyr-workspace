@@ -10,9 +10,12 @@
 LOG_MODULE_REGISTER(dw3000, CONFIG_IEEE802154_DW3000_LOG_LEVEL);
 
 #define DW_INST DT_INST(0, decawave_dw3000)
+#define DW3000_IRQ_HANDLER_SLOTS 2
 
 static struct gpio_callback gpio_cb;
-static dw3000_irq_handler_t custom_irq_handler = NULL;
+static dw3000_irq_handler_t irq_handlers[DW3000_IRQ_HANDLER_SLOTS];
+static bool irq_enabled;
+static int irq_disable_nesting = 0;  /* Track nested IRQ disable/enable calls from decamutexon/off */
 
 struct dw3000_config {
 	struct gpio_dt_spec gpio_irq;
@@ -77,13 +80,21 @@ static void dw3000_hw_isr(const struct device* dev, struct gpio_callback* cb,
 	ARG_UNUSED(cb);
 	ARG_UNUSED(pins);
 
-	// Call custom handler if set
-	if (custom_irq_handler != NULL) {
-		// Call the custom interrupt handler directly
-		custom_irq_handler();
+	if (!irq_enabled) {
+		LOG_WRN("DW3000 interrupt arrived while IRQ line is disabled");
+	}
+
+	if (irq_handlers[0] != NULL || irq_handlers[1] != NULL) {
+		LOG_DBG("DW3000 interrupt dispatched to shared handlers: slot0=%p slot1=%p",
+			(void *)irq_handlers[0], (void *)irq_handlers[1]);
+		if (irq_handlers[0] != NULL) {
+			irq_handlers[0]();
+		}
+		if (irq_handlers[1] != NULL) {
+			irq_handlers[1]();
+		}
 	} else {
-		// Fallback: just log
-		LOG_DBG("DW3000 interrupt triggered - no custom handler set");
+		LOG_DBG("DW3000 interrupt triggered with no registered handlers");
 	}
 }
 
@@ -113,20 +124,27 @@ int dw3000_hw_init_interrupt(void)
 void dw3000_hw_interrupt_enable(void)
 {
 	if (conf.gpio_irq.port) {
-		gpio_pin_interrupt_configure_dt(&conf.gpio_irq, GPIO_INT_EDGE_TO_ACTIVE);
+		irq_disable_nesting--;
+		if (irq_disable_nesting < 0) {
+			LOG_WRN("IRQ enable called without matching disable (nesting=%d); clamping to 0",
+				irq_disable_nesting);
+			irq_disable_nesting = 0;
+		}
+		LOG_DBG("DW3000 IRQ enable: nesting now=%d", irq_disable_nesting);
 	}
 }
 
 void dw3000_hw_interrupt_disable(void)
 {
 	if (conf.gpio_irq.port) {
-		gpio_pin_interrupt_configure_dt(&conf.gpio_irq, GPIO_INT_DISABLE);
+		irq_disable_nesting++;
+		LOG_DBG("DW3000 IRQ disable: nesting now=%d", irq_disable_nesting);
 	}
 }
 
 bool dw3000_hw_interrupt_is_enabled(void)
 {
-	return true; // TODO
+	return irq_enabled;
 }
 
 void dw3000_hw_fini(void)
@@ -195,12 +213,48 @@ void dw3000_hw_wakeup_pin_low(void)
 
 void dw3000_hw_set_interrupt_handler(dw3000_irq_handler_t handler)
 {
-	custom_irq_handler = handler;
-	LOG_DBG("Custom interrupt handler set");
+	int slot;
+
+	if (handler == NULL) {
+		LOG_WRN("Ignoring NULL interrupt handler registration request");
+		return;
+	}
+
+	for (slot = 0; slot < DW3000_IRQ_HANDLER_SLOTS; slot++) {
+		if (irq_handlers[slot] == handler) {
+			LOG_DBG("Interrupt handler already registered in slot %d (%p)", slot,
+				(void *)handler);
+			return;
+		}
+	}
+
+	for (slot = 0; slot < DW3000_IRQ_HANDLER_SLOTS; slot++) {
+		if (irq_handlers[slot] == NULL) {
+			irq_handlers[slot] = handler;
+			LOG_INF("Registered DW3000 IRQ handler in slot %d (%p)", slot, (void *)handler);
+
+			/* Enable GPIO IRQ when first handler is registered */
+			if (slot == 0 && conf.gpio_irq.port) {
+				irq_enabled = true;
+				gpio_pin_interrupt_configure_dt(&conf.gpio_irq, GPIO_INT_EDGE_TO_ACTIVE);
+				LOG_INF("DW3000 GPIO IRQ enabled (first handler registered)");
+			}
+			return;
+		}
+	}
+
+	LOG_WRN("IRQ handler slots full; replacing slot 1 (%p -> %p)", (void *)irq_handlers[1],
+		(void *)handler);
+	irq_handlers[1] = handler;
 }
 
 void dw3000_hw_clear_interrupt_handler(void)
 {
-	custom_irq_handler = NULL;
-	LOG_DBG("Custom interrupt handler cleared");
+	int slot;
+
+	for (slot = 0; slot < DW3000_IRQ_HANDLER_SLOTS; slot++) {
+		irq_handlers[slot] = NULL;
+	}
+
+	LOG_INF("Cleared all DW3000 IRQ handlers");
 }

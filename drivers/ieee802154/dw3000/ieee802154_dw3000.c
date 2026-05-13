@@ -21,7 +21,7 @@
 
 #include "dw3000.h"
 
-LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_INF);
 
 #define LOG_SPARSITY_INF 1
 #define LOG_SPARSITY_WARN 1
@@ -135,6 +135,7 @@ static void dw3000_irq_cb(void)
 	}
 
 	data = dev->data;
+	LOG_DBG("IEEE802154 IRQ callback: signaling RX thread for %s", dev->name);
 	k_sem_give(&data->rx_irq_sem);
 }
 
@@ -193,27 +194,10 @@ static void dw3000_iface_api_init(struct net_if *iface)
 {
 	const struct device *dev = net_if_get_device(iface);
 	struct dw3000_data *data = dev->data;
-	int ret;
 
 	net_if_set_link_addr(iface, data->mac_addr, sizeof(data->mac_addr), NET_LINK_IEEE802154);
 	data->iface = iface;
 	ieee802154_init(iface);
-
-	/*
-	 * Some integration flows don't trigger the radio start callback in time.
-	 * Start RX proactively once the net interface is initialized.
-	 *
-	 * TODO: This is probably not needed because the driver should be started
-	 * by Zephyr via the ieee802154 API.
-	 */
-	if (!atomic_get(&data->started)) {
-		ret = dw3000_start(dev);
-		if (ret) {
-			LOG_WRN("Auto-start from iface init failed: %d", ret);
-		} else {
-			LOG_INF("Auto-started radio from iface init");
-		}
-	}
 }
 
 static void dw3000_generate_mac(uint8_t *mac)
@@ -896,12 +880,18 @@ static int dw3000_start(const struct device *dev)
 {
 	struct dw3000_data *data = dev->data;
 
-	LOG_DBG("dw3000_start: Entry");
+	LOG_DBG("dw3000_start: entry for %s", dev->name);
 	k_mutex_lock(&data->lock, K_FOREVER);
 
 	atomic_set(&data->started, 1);
 
-	dwt_forcetrxoff();
+	if (data->uwb && data->uwb->disable_txrx) {
+		LOG_INF("dw3000_start: using UWB disable_txrx hook");
+		data->uwb->disable_txrx(dev);
+	} else {
+		LOG_WRN("dw3000_start: missing UWB disable_txrx hook, falling back to dwt_forcetrxoff");
+		dwt_forcetrxoff();
+	}
 
 	dw3000_clear_status_all();
 
@@ -911,10 +901,8 @@ static int dw3000_start(const struct device *dev)
 
 	LOG_INF("Radio start: channel=%u pan=0x%04x short=0x%04x", data->channel, data->pan_id,
 		data->short_addr);
-
-#if !defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
-	dw3000_hw_interrupt_enable();
-#endif
+	LOG_INF("Radio start complete: shared IRQ line is %s",
+		dw3000_hw_interrupt_is_enabled() ? "enabled" : "disabled");
 
 	return 0;
 }
@@ -923,16 +911,22 @@ static int dw3000_stop(const struct device *dev)
 {
 	struct dw3000_data *data = dev->data;
 
+	LOG_DBG("dw3000_stop: entry for %s", dev->name);
 	k_mutex_lock(&data->lock, K_FOREVER);
 	atomic_set(&data->started, 0);
-	dwt_forcetrxoff();
+	if (data->uwb && data->uwb->disable_txrx) {
+		LOG_INF("dw3000_stop: using UWB disable_txrx hook");
+		data->uwb->disable_txrx(dev);
+	} else {
+		LOG_WRN("dw3000_stop: missing UWB disable_txrx hook, falling back to dwt_forcetrxoff");
+		dwt_forcetrxoff();
+	}
 	k_mutex_unlock(&data->lock);
 
-#if !defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
-	dw3000_hw_interrupt_disable();
 	/* Wake RX thread so it can observe started=0 and park cleanly. */
 	k_sem_give(&data->rx_irq_sem);
-#endif
+	LOG_INF("Radio stop complete: shared IRQ line is %s",
+		dw3000_hw_interrupt_is_enabled() ? "enabled" : "disabled");
 
 	return 0;
 }
@@ -1004,23 +998,37 @@ static const struct ieee802154_radio_api dw3000_radio_api = {
 
 static int dw3000_init(const struct device *dev)
 {
+	// printk("IEEE802154: dw3000_init() called for device %s\n", dev->name);
 	struct dw3000_data *data = dev->data;
 	const struct dw3000_config *cfg = dev->config;
 	int ret;
 
+  for(int i = 0; i < 5; i++) {
+    printk("IEEE802154: stalling... %d\n", i);
+    k_msleep(100);
+  }
+
+	// printk("IEEE802154: Calling uwb_driver_dw3000_init()...\n");
+	// printk("IEEE802154:                                 ...\n");
 	ret = uwb_driver_dw3000_init(dev);
+	printk("IEEE802154:                                 ... done\n");
+	printk("IEEE802154: uwb_driver_dw3000_init() returned %d\n", ret);
 	if (ret < 0) {
 		LOG_ERR("Failed to initialize DW3000 core: %d", ret);
 		return ret;
 	}
 
+  // Returning here makes the system NOT crash/hang
+  // return 0;
+
+	LOG_INF("DW3000 IEEE802.15.4 driver initialized for %s mode",
+		IS_ENABLED(CONFIG_IEEE802154_DW3000_EXCLUSIVE_UWB_MODE) ? "exclusive" : "coexistence");
+	LOG_INF("IEEE802154 driver attaching to shared DW3000 UWB state");
+
 	/*
-	 * The existing UWB layer installs its own IRQ work handler for ranging.
-	 * For the IEEE802154 net path, we use a dedicated RX thread that is woken
-	 * either by IRQ callbacks or by polling, depending on Kconfig.
+	 * The UWB layer owns the low-level chip lifecycle. The net driver only
+	 * adds its own wakeup callback so both consumers can observe the same IRQ.
 	 */
-	dw3000_hw_clear_interrupt_handler();
-	dw3000_hw_interrupt_disable();
 
 	k_mutex_init(&data->lock);
 	data->uwb = uwb_driver_get(dev);
@@ -1028,11 +1036,16 @@ static int dw3000_init(const struct device *dev)
 		LOG_ERR("No registered UWB driver for %s", dev->name);
 		return -ENODEV;
 	}
-	LOG_INF("UWB hooks: tx=%d rxlen=%d rxread=%d forceoff=%d",
+	LOG_INF("UWB hooks: tx=%d rxlen=%d rxread=%d forceoff=%d enable_rx=%d wait_irq=%d enable_int=%d disable_int=%d dblbuf=%d",
 		(data->uwb->start_tx && data->uwb->setup_tx_frame) ? 1 : 0,
 		data->uwb->get_rx_frame_length ? 1 : 0,
 		data->uwb->read_rx_frame ? 1 : 0,
-		data->uwb->force_trx_off ? 1 : 0);
+		data->uwb->force_trx_off ? 1 : 0,
+		data->uwb->enable_rx ? 1 : 0,
+		data->uwb->wait_for_irq ? 1 : 0,
+		data->uwb->enable_int ? 1 : 0,
+		data->uwb->disable_int ? 1 : 0,
+		data->uwb->enable_double_buffering ? 1 : 0);
 	atomic_set(&data->started, 0);
 	dw3000_generate_mac(data->mac_addr);
 	data->pan_id = 0xffffU;
@@ -1071,7 +1084,11 @@ static int dw3000_init(const struct device *dev)
 	data->rx_last_warn_ts = 0U;
 	k_sem_init(&data->rx_irq_sem, 0, 64);
 
+  // Returning here seems to not make the system crash/hang, too
+  // printf("IEEE802154: Returning a bit early...\n");
+  // return 0;
 	k_mutex_lock(&data->lock, K_FOREVER);
+#if 0
 	/*
 	 * Use single-buffer RX mode for clarity and explicit control.
 	 * Double-buffer mode allows hardware to switch between two RX buffers automatically,
@@ -1087,19 +1104,24 @@ static int dw3000_init(const struct device *dev)
 		LOG_ERR("Failed to configure DW3000 PHY for IEEE802154");
 		return ret;
 	}
+#endif /* Single-buffer */
 
+#if 1
 	ret = dwt_setchannel(DWT_CH5);
 	if (ret != DWT_SUCCESS) {
 		k_mutex_unlock(&data->lock);
 		LOG_ERR("dwt_setchannel failed during init: ch=%u ret=%d", data->channel, ret);
 		return -EIO;
 	}
+#endif /* Set channel */
+
 	(void)dw3000_apply_filter_hw(data);
 	dwt_setrxtimeout(0);
 	dwt_setpreambledetecttimeout(0);
 	dw3000_clear_status_all();
 	dwt_forcetrxoff();
-	k_mutex_unlock(&data->lock);
+
+  k_mutex_unlock(&data->lock);
 
 #if defined(CONFIG_NET_CONFIG_IEEE802154_CHANNEL)
 	LOG_WRN("DW3000 IEEE802154 init channel=%u (kconfig=%d)",
@@ -1112,15 +1134,27 @@ static int dw3000_init(const struct device *dev)
 #if defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
 	LOG_INF("DW3000 path configured for polling RX (double-buffer disabled)");
 #else
+
 	if (dw3000_hw_init_interrupt() != 0) {
 		LOG_ERR("Failed to initialize DW3000 IRQ GPIO");
 		return -EIO;
 	}
+
+  // Glossy works if returning here (with single-buffer NOT configured)
+  // printf("IEEE802154: Unlocking and returning early before interrupt call...\n");
+  // return 0;
+
 	dw3000_irq_dev = dev;
 	dw3000_hw_set_interrupt_handler(dw3000_irq_cb);
+	LOG_INF("IEEE802154 IRQ callback registered for shared DW3000 interrupts");
 	dw3000_hw_interrupt_enable();
-	LOG_INF("DW3000 path configured for IRQ-driven RX (double-buffer disabled)");
+	LOG_INF("DW3000 path configured for IRQ-driven RX (double-buffer disabled, shared IRQ %s)",
+		dw3000_hw_interrupt_is_enabled() ? "enabled" : "disabled");
 #endif
+
+  // Also ok to return here (with single-buffer NOT configured)
+  printf("IEEE802154: Returning before thread creation...\n");
+  return 0;
 
 	k_thread_create(&data->rx_thread,
 			cfg->rx_stack,
@@ -1164,6 +1198,7 @@ static int dw3000_init(const struct device *dev)
 DT_INST_FOREACH_STATUS_OKAY(DW3000_INIT)
 
 #else // Minimal IEEE 802.15.4 driver implementation for DW3000 UWB radio
+
 #include <zephyr/logging/log.h>
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>

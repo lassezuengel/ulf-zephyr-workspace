@@ -1,14 +1,18 @@
 #include <zephyr/kernel.h>
+#include <zephyr/logging/log.h>
 
 #include "deca_interface.h"
 
 #include "dw3000_hw.h"
 #include "dw3000_spi.h"
 
+LOG_MODULE_REGISTER(deca_port, CONFIG_IEEE802154_DW3000_LOG_LEVEL);
+
 /* This file implements the functions required by decadriver */
 
 decaIrqStatus_t decamutexon(void)
 {
+	LOG_DBG("decamutexon: disabling IRQ for critical section");
 	dw3000_hw_interrupt_disable();
 	return 1;
 }
@@ -16,6 +20,7 @@ decaIrqStatus_t decamutexon(void)
 void decamutexoff(decaIrqStatus_t s)
 {
 	// TODO?: s is not used
+	LOG_DBG("decamutexoff: re-enabling IRQ after critical section");
 	dw3000_hw_interrupt_enable();
 }
 

@@ -29,6 +29,11 @@ LOG_MODULE_REGISTER(glossy_sync, LOG_LEVEL_INF);
 
 int main(void)
 {
+  for(int i = 0; i < 5; i++) {
+    printk("System alive...\n");
+    k_sleep(K_MSEC(2000));
+  }
+
     const struct device *dev = DEVICE_DT_GET(DT_CHOSEN(zephyr_ieee802154));
 
     if (!device_is_ready(dev)) {
@@ -63,9 +68,9 @@ int main(void)
     int64_t next_test_msg_ms = 5000; // Next time to output test message (in local time)
 
     // Intervals
-    int64_t glossy_interval_ms = 2000;  // 2 seconds between glossy rounds
-    int64_t glossy_fast_interval_ms = 100;  // 200ms during recovery/resync
-    int64_t test_msg_interval_ms = 5000; // 5 seconds between test messages
+    int64_t glossy_interval_ms = 2000;  // between glossy rounds
+    int64_t glossy_fast_interval_ms = 20;  // during recovery/resync
+    int64_t test_msg_interval_ms = 5000; // between test messages
 
     // Initialize scheduling: glossy starts immediately
     next_glossy_ms = k_uptime_get();
@@ -134,14 +139,16 @@ int main(void)
                 }
                 glossy_failures_in_row = 0;
             } else {
-                LOG_WRN("Glossy sync failed: %d", ret);
+                if(glossy_failures_in_row == 0) {
+                  LOG_WRN("Glossy sync failed: %d", ret);
+                }
                 glossy_failures_in_row++;
 
                 // After 3 consecutive failures, mark sync as lost and speed up retries
                 if (glossy_failures_in_row >= 3 && !sync_lost) {
                     LOG_ERR("Glossy sync lost after 3 failures - root may have restarted. Entering recovery mode.");
                     sync_lost = true;
-                } else if (glossy_failures_in_row >= 3) {
+                } else if (glossy_failures_in_row >= 3 && glossy_failures_in_row % 20 == 0) {
                     LOG_WRN("Still in sync recovery mode (failures: %d)", glossy_failures_in_row);
                 }
             }
