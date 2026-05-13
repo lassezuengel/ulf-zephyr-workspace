@@ -21,7 +21,7 @@
 
 #include "dw3000.h"
 
-LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_INF);
+LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_WRN);
 
 #define LOG_SPARSITY_INF 1
 #define LOG_SPARSITY_WARN 1
@@ -1020,27 +1020,19 @@ static int dw3000_init(const struct device *dev)
 	const struct dw3000_config *cfg = dev->config;
 	int ret;
 
-  for(int i = 0; i < 5; i++) {
-    printk("IEEE802154: stalling... %d\n", i);
-    k_msleep(100);
-  }
-
-	// printk("IEEE802154: Calling uwb_driver_dw3000_init()...\n");
-	// printk("IEEE802154:                                 ...\n");
 	ret = uwb_driver_dw3000_init(dev);
-	printk("IEEE802154:                                 ... done\n");
-	printk("IEEE802154: uwb_driver_dw3000_init() returned %d\n", ret);
 	if (ret < 0) {
 		LOG_ERR("Failed to initialize DW3000 core: %d", ret);
 		return ret;
 	}
 
-  // Returning here makes the system NOT crash/hang
-  // return 0;
-
-	LOG_INF("DW3000 IEEE802.15.4 driver initialized for %s mode",
-		IS_ENABLED(CONFIG_IEEE802154_DW3000_EXCLUSIVE_UWB_MODE) ? "exclusive" : "coexistence");
-	LOG_INF("IEEE802154 driver attaching to shared DW3000 UWB state");
+	/*
+	 * The existing UWB layer installs its own IRQ work handler for ranging.
+	 * For the IEEE802154 net path, we use a dedicated RX thread that is woken
+	 * either by IRQ callbacks or by polling, depending on Kconfig.
+	 */
+	dw3000_hw_clear_interrupt_handler();
+	dw3000_hw_interrupt_disable();
 
 	/*
 	 * The UWB layer owns the low-level chip lifecycle. The net driver only
@@ -1101,9 +1093,6 @@ static int dw3000_init(const struct device *dev)
 	data->rx_last_warn_ts = 0U;
 	k_sem_init(&data->rx_irq_sem, 0, 64);
 
-  // Returning here seems to not make the system crash/hang, too
-  // printf("IEEE802154: Returning a bit early...\n");
-  // return 0;
 	k_mutex_lock(&data->lock, K_FOREVER);
 #if 1
 	/*
@@ -1124,14 +1113,12 @@ static int dw3000_init(const struct device *dev)
 		return ret;
 	}
 
-#if 1
 	ret = dwt_setchannel(DWT_CH5);
 	if (ret != DWT_SUCCESS) {
 		k_mutex_unlock(&data->lock);
 		LOG_ERR("dwt_setchannel failed during init: ch=%u ret=%d", data->channel, ret);
 		return -EIO;
 	}
-#endif /* Set channel */
 
 	(void)dw3000_apply_filter_hw(data);
 	dwt_setrxtimeout(0);
