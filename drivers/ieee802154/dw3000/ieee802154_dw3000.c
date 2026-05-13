@@ -194,10 +194,27 @@ static void dw3000_iface_api_init(struct net_if *iface)
 {
 	const struct device *dev = net_if_get_device(iface);
 	struct dw3000_data *data = dev->data;
+	int ret;
 
 	net_if_set_link_addr(iface, data->mac_addr, sizeof(data->mac_addr), NET_LINK_IEEE802154);
 	data->iface = iface;
 	ieee802154_init(iface);
+
+	/*
+	 * Some integration flows don't trigger the radio start callback in time.
+	 * Start RX proactively once the net interface is initialized.
+	 *
+	 * TODO: This is probably not needed because the driver should be started
+	 * by Zephyr via the ieee802154 API.
+	 */
+	if (!atomic_get(&data->started)) {
+		ret = dw3000_start(dev);
+		if (ret) {
+			LOG_WRN("Auto-start from iface init failed: %d", ret);
+		} else {
+			LOG_INF("Auto-started radio from iface init");
+		}
+	}
 }
 
 static void dw3000_generate_mac(uint8_t *mac)
