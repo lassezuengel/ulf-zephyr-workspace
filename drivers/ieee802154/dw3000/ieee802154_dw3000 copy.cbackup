@@ -1,5 +1,4 @@
 #if 1 // Full IEEE 802.15.4 driver implementation for DW3000 UWB radio
-
 /*
  * Copyright (c) 2026 SynchroFly Project
  *
@@ -21,7 +20,7 @@
 
 #include "dw3000.h"
 
-LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_WRN);
+LOG_MODULE_REGISTER(ieee802154_dw3000, CONFIG_IEEE802154_DW3000_LOG_LEVEL);
 
 #define LOG_SPARSITY_INF 1
 #define LOG_SPARSITY_WARN 1
@@ -135,7 +134,6 @@ static void dw3000_irq_cb(void)
 	}
 
 	data = dev->data;
-	LOG_DBG("IEEE802154 IRQ callback: signaling RX thread for %s", dev->name);
 	k_sem_give(&data->rx_irq_sem);
 }
 
@@ -500,7 +498,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 #if defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
 		k_usleep(1000);
 #else
-		(void)k_sem_take(&data->rx_irq_sem, K_FOREVER);
+		(void)k_sem_take(&data->rx_irq_sem, K_NO_WAIT);
 #endif
 
 		k_mutex_lock(&data->lock, K_FOREVER);
@@ -918,8 +916,10 @@ static int dw3000_start(const struct device *dev)
 
 	LOG_INF("Radio start: channel=%u pan=0x%04x short=0x%04x", data->channel, data->pan_id,
 		data->short_addr);
-	LOG_INF("Radio start complete: shared IRQ line is %s",
-		dw3000_hw_interrupt_is_enabled() ? "enabled" : "disabled");
+
+#if !defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
+	dw3000_hw_interrupt_enable();
+#endif
 
 	return 0;
 }
@@ -928,7 +928,6 @@ static int dw3000_stop(const struct device *dev)
 {
 	struct dw3000_data *data = dev->data;
 
-	LOG_DBG("dw3000_stop: entry for %s", dev->name);
 	k_mutex_lock(&data->lock, K_FOREVER);
 	atomic_set(&data->started, 0);
 	if (data->uwb && data->uwb->disable_txrx) {
@@ -940,10 +939,11 @@ static int dw3000_stop(const struct device *dev)
 	}
 	k_mutex_unlock(&data->lock);
 
+#if !defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
+	dw3000_hw_interrupt_disable();
 	/* Wake RX thread so it can observe started=0 and park cleanly. */
 	k_sem_give(&data->rx_irq_sem);
-	LOG_INF("Radio stop complete: shared IRQ line is %s",
-		dw3000_hw_interrupt_is_enabled() ? "enabled" : "disabled");
+#endif
 
 	return 0;
 }
@@ -1015,7 +1015,6 @@ static const struct ieee802154_radio_api dw3000_radio_api = {
 
 static int dw3000_init(const struct device *dev)
 {
-	// printk("IEEE802154: dw3000_init() called for device %s\n", dev->name);
 	struct dw3000_data *data = dev->data;
 	const struct dw3000_config *cfg = dev->config;
 	int ret;
@@ -1034,27 +1033,17 @@ static int dw3000_init(const struct device *dev)
 	dw3000_hw_clear_interrupt_handler();
 	dw3000_hw_interrupt_disable();
 
-	/*
-	 * The UWB layer owns the low-level chip lifecycle. The net driver only
-	 * adds its own wakeup callback so both consumers can observe the same IRQ.
-	 */
-
 	k_mutex_init(&data->lock);
 	data->uwb = uwb_driver_get(dev);
 	if (data->uwb == NULL) {
 		LOG_ERR("No registered UWB driver for %s", dev->name);
 		return -ENODEV;
 	}
-	LOG_INF("UWB hooks: tx=%d rxlen=%d rxread=%d forceoff=%d enable_rx=%d wait_irq=%d enable_int=%d disable_int=%d dblbuf=%d",
+	LOG_INF("UWB hooks: tx=%d rxlen=%d rxread=%d forceoff=%d",
 		(data->uwb->start_tx && data->uwb->setup_tx_frame) ? 1 : 0,
 		data->uwb->get_rx_frame_length ? 1 : 0,
 		data->uwb->read_rx_frame ? 1 : 0,
-		data->uwb->force_trx_off ? 1 : 0,
-		data->uwb->enable_rx ? 1 : 0,
-		data->uwb->wait_for_irq ? 1 : 0,
-		data->uwb->enable_int ? 1 : 0,
-		data->uwb->disable_int ? 1 : 0,
-		data->uwb->enable_double_buffering ? 1 : 0);
+		data->uwb->force_trx_off ? 1 : 0);
 	atomic_set(&data->started, 0);
 	dw3000_generate_mac(data->mac_addr);
 	data->pan_id = 0xffffU;
@@ -1094,7 +1083,6 @@ static int dw3000_init(const struct device *dev)
 	k_sem_init(&data->rx_irq_sem, 0, 64);
 
 	k_mutex_lock(&data->lock, K_FOREVER);
-#if 1
 	/*
 	 * Use single-buffer RX mode for clarity and explicit control.
 	 * Double-buffer mode allows hardware to switch between two RX buffers automatically,
@@ -1104,9 +1092,7 @@ static int dw3000_init(const struct device *dev)
 	 * sufficient for our thread-based model, avoiding state complexity and buffer tracking.
 	 */
 	dwt_setdblrxbuffmode(DBL_BUF_STATE_DIS, DBL_BUF_MODE_MAN);
-#endif /* Single-buffer */
-
-  ret = dw3000_apply_phy_config_locked(data);
+	ret = dw3000_apply_phy_config_locked(data);
 	if (ret != 0) {
 		k_mutex_unlock(&data->lock);
 		LOG_ERR("Failed to configure DW3000 PHY for IEEE802154");
@@ -1119,14 +1105,12 @@ static int dw3000_init(const struct device *dev)
 		LOG_ERR("dwt_setchannel failed during init: ch=%u ret=%d", data->channel, ret);
 		return -EIO;
 	}
-
 	(void)dw3000_apply_filter_hw(data);
 	dwt_setrxtimeout(0);
 	dwt_setpreambledetecttimeout(0);
 	dw3000_clear_status_all();
 	dwt_forcetrxoff();
-
-  k_mutex_unlock(&data->lock);
+	k_mutex_unlock(&data->lock);
 
 #if defined(CONFIG_NET_CONFIG_IEEE802154_CHANNEL)
 	LOG_WRN("DW3000 IEEE802154 init channel=%u (kconfig=%d)",
@@ -1139,29 +1123,16 @@ static int dw3000_init(const struct device *dev)
 #if defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
 	LOG_INF("DW3000 path configured for polling RX (double-buffer disabled)");
 #else
-
 	if (dw3000_hw_init_interrupt() != 0) {
 		LOG_ERR("Failed to initialize DW3000 IRQ GPIO");
 		return -EIO;
 	}
-
-  // Glossy works if returning here (with single-buffer NOT configured)
-  // printf("IEEE802154: Unlocking and returning early before interrupt call...\n");
-  // return 0;
-
 	dw3000_irq_dev = dev;
 	dw3000_hw_set_interrupt_handler(dw3000_irq_cb);
-	LOG_INF("IEEE802154 IRQ callback registered for shared DW3000 interrupts");
 	dw3000_hw_interrupt_enable();
-	LOG_INF("DW3000 path configured for IRQ-driven RX (double-buffer disabled, shared IRQ %s)",
-		dw3000_hw_interrupt_is_enabled() ? "enabled" : "disabled");
+	LOG_INF("DW3000 path configured for IRQ-driven RX (double-buffer disabled)");
 #endif
 
-  // Also ok to return here (with single-buffer NOT configured)
-  // printf("IEEE802154: Returning before thread creation...\n");
-  // return 0;
-
-#if 1
 	k_thread_create(&data->rx_thread,
 			cfg->rx_stack,
 			cfg->rx_stack_size,
@@ -1173,7 +1144,6 @@ static int dw3000_init(const struct device *dev)
 			0,
 			K_NO_WAIT);
 	k_thread_name_set(&data->rx_thread, "dw3000_rx");
-#endif /* RX thread */
 
 	LOG_INF("DW3000 IEEE802154 driver initialized");
 	return 0;
