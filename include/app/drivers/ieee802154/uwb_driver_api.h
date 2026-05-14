@@ -408,8 +408,6 @@ typedef struct uwb_driver {
     void (*flush_irq)(const struct device *dev);
     void (*disable_int)(const struct device *dev);
     void (*enable_int)(const struct device *dev);
-    // Set UWB channel (abstracted). Return 0 on success, negative error on failure.
-    int (*set_channel)(const struct device *dev, uint8_t channel);
 
     // ==================== TIMEOUT MANAGEMENT ====================
     void (*setup_frame_timeout)(const struct device *dev, uint32_t timeout_us);
@@ -440,6 +438,10 @@ typedef struct uwb_driver {
     // ==================== CONFIGURATION ====================
     int (*configure)(const struct device *dev, const uwb_config_t *config);
     int (*get_config)(const struct device *dev, uwb_config_t *config);
+    int (*set_channel)(const struct device *dev, uint8_t channel);
+    void (*set_pan_id)(const struct device *dev, uint16_t pan_id);
+    void (*set_short_addr)(const struct device *dev, uint16_t short_addr);
+    void (*set_ieee_addr)(const struct device *dev, const uint8_t *ieee_addr);
     void (*set_tx_power)(const struct device *dev, uint32_t power);
     uint32_t (*get_tx_power)(const struct device *dev);
     void (*set_smart_power)(const struct device *dev, bool enable);

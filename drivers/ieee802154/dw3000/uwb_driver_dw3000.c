@@ -159,6 +159,16 @@ static inline int wait_for_phy(const struct device *dev) {
 static void dw3000_irq_work_handler(struct k_work *item)
 {
     struct dw3000_context *ctx = CONTAINER_OF(item, struct dw3000_context, irq_cb_work);
+
+#if 0
+    // Signal the PHY semaphore if we're in IRQ polling emulation mode
+    if (atomic_test_bit(&ctx->state, DW3000_STATE_IRQ_POLLING_EMU)) {
+        k_sem_give(&ctx->phy_sem);
+    }
+
+    return;
+#endif
+
     uint32_t sys_stat;
     uint8_t free_phy_sem = 0;
 
@@ -553,6 +563,45 @@ static int dw3000_configure(const struct device *dev, const uwb_config_t *config
     return 0;
 }
 
+static int dw3000_set_channel(const struct device *dev, uint8_t channel)
+{
+    ARG_UNUSED(dev);
+
+    if (channel == 9U) {
+        LOG_ERR("DW3000 channel 9 is unsupported (no RX preamble detection)");
+        return -ENOTSUP;
+    }
+
+    if (channel != 5U) {
+        return -EINVAL;
+    }
+
+    if (dwt_setchannel(DWT_CH5) != DWT_SUCCESS) {
+        LOG_ERR("DW3000 set_channel failed for channel=%u", channel);
+        return -EIO;
+    }
+
+    return 0;
+}
+
+static void dw3000_set_pan_id(const struct device *dev, uint16_t pan_id)
+{
+    ARG_UNUSED(dev);
+    dwt_setpanid(pan_id);
+}
+
+static void dw3000_set_short_addr(const struct device *dev, uint16_t short_addr)
+{
+    ARG_UNUSED(dev);
+    dwt_setaddress16(short_addr);
+}
+
+static void dw3000_set_ieee_addr(const struct device *dev, const uint8_t *ieee_addr)
+{
+    ARG_UNUSED(dev);
+    dwt_seteui((uint8_t *)ieee_addr);
+}
+
 static void dw3000_set_tx_power(const struct device *dev, uint32_t power)
 {
     dwt_settxpower(power);
@@ -663,14 +712,6 @@ uint32_t dwt_get_pkt_duration_ns(const struct device *dev, uint16_t psdu_len)
     return duration_ns;
 }
 
-// Set channel through the abstracted driver API - DW3000 stub for now
-static int dw3000_set_channel(const struct device *dev, uint8_t channel)
-{
-    ARG_UNUSED(dev);
-    LOG_ERR("DW3000 set_channel not implemented (requested ch=%u)", channel);
-    return -ENOTSUP;
-}
-
 // ==================== UWB DRIVER STRUCTURE ====================
 
 // ==================== DEVICE ACCESS MANAGEMENT ====================
@@ -751,7 +792,6 @@ static const uwb_driver_t dw3000_uwb_driver = {
     .wait_for_irq = dw3000_wait_for_irq,
     .cancel_wait = dw3000_cancel_wait,
     .flush_irq = dw3000_flush_irq,
-    .set_channel = dw3000_set_channel,
 
     // Timeout management
     .setup_frame_timeout = dw3000_setup_frame_timeout,
@@ -781,6 +821,10 @@ static const uwb_driver_t dw3000_uwb_driver = {
 
     // Configuration
     .configure = dw3000_configure,
+    .set_channel = dw3000_set_channel,
+    .set_pan_id = dw3000_set_pan_id,
+    .set_short_addr = dw3000_set_short_addr,
+    .set_ieee_addr = dw3000_set_ieee_addr,
     .set_tx_power = dw3000_set_tx_power,
     .disable_txrx = dw3000_disable_txrx,
     .set_frame_filter = dw3000_set_frame_filter,

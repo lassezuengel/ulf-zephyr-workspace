@@ -95,8 +95,6 @@ struct dw3000_data {
 	struct dw3000_dup_entry dup_tbl[DW3000_DUP_TRACK_SLOTS];
 };
 
-static const struct device *dw3000_irq_dev;
-
 /*
  * Static ACK packet wrapper used for fast ACK handling without consuming
  * entries from the net_pkt/net_buf RX pools.
@@ -113,32 +111,6 @@ static struct net_pkt dw3000_ack_pkt = {
 	.buffer = &dw3000_ack_frame,
 };
 
-/**
- * Handler of the DWM_IRQ GPIO interrupt, which is triggered on RX events.
- * Used to wake the RX thread to process received packets.
- *
- * TODO: The existing UWB layer also uses this interrupt for its own purposes.
- * If we want to use both functionalities simultaneously, we may need to split
- * the interrupt handling so that the UWB layer can process the interrupt and
- * then signal the DW3000 driver to wake the RX thread, instead of having the
- * DW3000 driver directly handle the GPIO interrupt.
- *
- * -> Right now, the drivers will conflict!
- */
-static void dw3000_irq_cb(void)
-{
-	const struct device *dev = dw3000_irq_dev;
-	struct dw3000_data *data;
-
-	if (dev == NULL) {
-		return;
-	}
-
-	data = dev->data;
-	LOG_DBG("IEEE802154 IRQ callback: signaling RX thread for %s", dev->name);
-	k_sem_give(&data->rx_irq_sem);
-}
-
 struct dw3000_config {
 	k_thread_stack_t *rx_stack;
 	size_t rx_stack_size;
@@ -146,46 +118,25 @@ struct dw3000_config {
 
 static int dw3000_start(const struct device *dev);
 
-static int dw3000_apply_phy_config_locked(struct dw3000_data *data)
+static int dw3000_apply_phy_config_locked(const struct device *dev)
 {
-	dwt_txconfig_t tx_cfg;
-	uint32_t tx_power;
-	dwt_config_t phy_cfg = {
-		.chan = 5U,
-		.txPreambLength = DWT_PLEN_128,
-		.rxPAC = DWT_PAC8,
-		.txCode = 10,
-		.rxCode = 10,
-		.sfdType = DWT_SFD_IEEE_4A,
-		.dataRate = DWT_BR_6M8,
-		/* Match the existing DW3000/DW1000 profile. */
-		.phrMode = DWT_PHRMODE_EXT,
-		.phrRate = DWT_PHRRATE_STD,
-		.sfdTO = 128 + 1 + 8 - 8,
-		.stsMode = DWT_STS_MODE_OFF,
-		.stsLength = DWT_STS_LEN_64,
-		.pdoaMode = DWT_PDOA_M0,
-	};
+	struct dw3000_data *data = dev->data;
+	int ret;
 
-	if (dwt_configure(&phy_cfg) != DWT_SUCCESS) {
-		return -EIO;
+	if (!data->uwb || !data->uwb->set_channel) {
+		return -ENODEV;
 	}
 
-	/*
-	 * Ensure channel-dependent MRX LUT is refreshed after PHY reconfiguration.
-	 */
-	dwt_configmrxlut(5);
+	ret = data->uwb->set_channel(dev, 5U);
+	if (ret != 0) {
+		return ret;
+	}
 
-	/*
-	 * Explicitly configure TX RF on every PHY/channel switch.
-	 */
-	tx_power = DW3000_TX_POWER_CH5;
-	tx_cfg.PGdly = DW3000_TX_PG_DELAY;
-	tx_cfg.power = tx_power;
-	tx_cfg.PGcount = 0U;
-	dwt_configuretxrf(&tx_cfg);
+	if (data->uwb->set_tx_power) {
+		data->uwb->set_tx_power(dev, DW3000_TX_POWER_CH5);
+	}
 
-	LOG_INF("Applied PHY: ch=5 code=10 tx_pwr=0x%08x", tx_power);
+	LOG_INF("Applied PHY through UWB API: ch=5 tx_pwr=0x%08x", DW3000_TX_POWER_CH5);
 
 	return 0;
 }
@@ -227,51 +178,69 @@ static void dw3000_generate_mac(uint8_t *mac)
 	mac[0] = (mac[0] & ~0x01U) | 0x02U;
 }
 
-static int dw3000_apply_filter_hw(struct dw3000_data *data)
+static int dw3000_apply_filter_hw(const struct device *dev)
 {
-	uint16_t ff = DWT_FF_BEACON_EN | DWT_FF_DATA_EN | DWT_FF_ACK_EN |
-		     DWT_FF_MAC_EN | DWT_FF_MULTI_EN;
+	struct dw3000_data *data = dev->data;
+
+	if (!data->uwb) {
+		return -ENODEV;
+	}
 
 	if (data->promiscuous) {
-		dwt_configureframefilter(0, 0);
+		if (data->uwb->set_frame_filter) {
+			data->uwb->set_frame_filter(dev, 0, 0);
+		}
 		return 0;
 	}
 
-	dwt_setpanid(data->pan_id);
-	dwt_setaddress16(data->short_addr);
-	dwt_seteui(data->mac_addr);
-	dwt_configureframefilter(DWT_FF_ENABLE_802_15_4, ff);
+	if (data->uwb->set_pan_id) {
+		data->uwb->set_pan_id(dev, data->pan_id);
+	}
+	if (data->uwb->set_short_addr) {
+		data->uwb->set_short_addr(dev, data->short_addr);
+	}
+	if (data->uwb->set_ieee_addr) {
+		data->uwb->set_ieee_addr(dev, data->mac_addr);
+	}
+	if (data->uwb->set_frame_filter) {
+		data->uwb->set_frame_filter(dev, 1U, 1U);
+	}
 
 	return 0;
 }
 
-static inline void dw3000_clear_status_all(void);
 
-static inline void dw3000_restart_rx_locked(void)
+static inline void dw3000_restart_rx_locked(const struct device *dev)
 {
-	dwt_forcetrxoff();
-	dw3000_clear_status_all();
-	dwt_setrxtimeout(0);
-	dwt_setpreambledetecttimeout(0);
-	(void)dwt_rxenable(DWT_START_RX_IMMEDIATE);
+	struct dw3000_data *data = dev->data;
+
+	if (data->uwb && data->uwb->force_trx_off) {
+		data->uwb->force_trx_off(dev);
+	}
+	if (data->uwb && data->uwb->clear_timeouts) {
+		data->uwb->clear_timeouts(dev);
+	}
+	if (data->uwb && data->uwb->enable_rx) {
+		data->uwb->enable_rx(dev, 0, 0);
+	}
 }
 
-static inline void dw3000_reenable_rx_locked(void)
+static inline void dw3000_reenable_rx_locked(const struct device *dev)
 {
+	struct dw3000_data *data = dev->data;
+
 	/*
-	 * Re-enable RX without clearing SYS_STATUS, so a frame that arrived
+	 * Re-enable RX without changing buffer ownership so a frame that arrived
 	 * around TX completion is not discarded before the RX thread can read it.
 	 */
-	dwt_setrxtimeout(0);
-	dwt_setpreambledetecttimeout(0);
-	(void)dwt_rxenable(DWT_START_RX_IMMEDIATE);
+	if (data->uwb && data->uwb->clear_timeouts) {
+		data->uwb->clear_timeouts(dev);
+	}
+	if (data->uwb && data->uwb->enable_rx) {
+		data->uwb->enable_rx(dev, 0, 0);
+	}
 }
 
-static inline void dw3000_clear_status_all(void)
-{
-	dwt_writesysstatuslo(DWT_INT_ALL_LO);
-	dwt_writesysstatushi(DWT_INT_ALL_HI);
-}
 
 static uint32_t dw3000_payload_hash(const uint8_t *buf, uint16_t len)
 {
@@ -410,7 +379,6 @@ static int dw3000_rx_capture_locked(const struct device *dev, bool *ack_handled,
 {
 	struct dw3000_data *data = dev->data;
 	enum net_verdict ack_verdict;
-	uint8_t rng = 0;
 	uint16_t phy_len = 0;
 	uint16_t pkt_len;
 
@@ -422,13 +390,18 @@ static int dw3000_rx_capture_locked(const struct device *dev, bool *ack_handled,
 		*pkt_len_out = 0U;
 	}
 
-	phy_len = dwt_getframelength(&rng);
+	if (!data->uwb || !data->uwb->get_rx_frame_length || !data->uwb->read_rx_frame) {
+		return -ENODEV;
+	}
+
+	phy_len = data->uwb->get_rx_frame_length(dev);
 	pkt_len = phy_len;
 
 	if (phy_len < DW3000_FCS_LEN || phy_len > DW3000_MAX_PHY_PACKET_SIZE) {
 		LOG_DBG("Drop invalid frame len=%u", phy_len);
-		dwt_writesysstatuslo(SYS_STATUS_ALL_RX_GOOD);
-		dw3000_restart_rx_locked();
+		if (data->uwb->switch_buffers) {
+			data->uwb->switch_buffers(dev);
+		}
 		return 0;
 	}
 
@@ -441,10 +414,10 @@ static int dw3000_rx_capture_locked(const struct device *dev, bool *ack_handled,
 	 * consume net_pkt pool entries for control traffic during bursts.
 	 */
 	if (pkt_len == DW3000_ACK_PKT_LEN) {
-		dwt_readrxdata(dw3000_ack_psdu, DW3000_ACK_PKT_LEN, 0);
-
-		dwt_writesysstatuslo(SYS_STATUS_ALL_RX_GOOD);
-		dw3000_restart_rx_locked();
+		data->uwb->read_rx_frame(dev, dw3000_ack_psdu, DW3000_ACK_PKT_LEN, 0);
+		if (data->uwb->switch_buffers) {
+			data->uwb->switch_buffers(dev);
+		}
 
 		net_pkt_cursor_init(&dw3000_ack_pkt);
 		ack_verdict = ieee802154_handle_ack(data->iface, &dw3000_ack_pkt);
@@ -456,10 +429,10 @@ static int dw3000_rx_capture_locked(const struct device *dev, bool *ack_handled,
 		return 0;
 	}
 
-	dwt_readrxdata(data->rx_stage, pkt_len, 0);
-
-	dwt_writesysstatuslo(SYS_STATUS_ALL_RX_GOOD);
-	dw3000_restart_rx_locked();
+	data->uwb->read_rx_frame(dev, data->rx_stage, pkt_len, 0);
+	if (data->uwb->switch_buffers) {
+		data->uwb->switch_buffers(dev);
+	}
 
 	if (pkt_len_out != NULL) {
 		*pkt_len_out = pkt_len;
@@ -479,11 +452,10 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 
 	while (true) {
 		struct net_pkt *pkt = NULL;
-		uint32_t status;
 		uint16_t pkt_len = 0U;
 		int rx_capture = 0;
 		bool ack_handled = false;
-		bool more_work_pending = false;
+		uwb_irq_state_e irq_state;
 
 		if (!atomic_get(&data->started) || data->iface == NULL) {
 			if (!data->rx_wait_logged) {
@@ -499,36 +471,33 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 
 #if defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
 		k_usleep(1000);
+		continue;
 #else
-		(void)k_sem_take(&data->rx_irq_sem, K_FOREVER);
+		irq_state = data->uwb->wait_for_irq(dev);
 #endif
 
 		k_mutex_lock(&data->lock, K_FOREVER);
-		status = dwt_readsysstatuslo();
 
-		if (status & DWT_INT_RXFCG_BIT_MASK) {
+		if (irq_state == UWB_IRQ_RX) {
 			rx_capture = dw3000_rx_capture_locked(dev, &ack_handled, &pkt_len);
-		} else if (status & (SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)) {
+			dw3000_restart_rx_locked(dev);
+		} else if (irq_state == UWB_IRQ_FRAME_WAIT_TIMEOUT ||
+			   irq_state == UWB_IRQ_PREAMBLE_DETECT_TIMEOUT ||
+			   irq_state == UWB_IRQ_ERR) {
 			data->rx_err_cnt++;
 			if ((data->rx_err_cnt % LOG_SPARSITY_INF) == 0U) {
-				LOG_INF("RX errors/timeouts=%u lo=0x%08x hi=0x%08x tx_entry=%u tx_attempt=%u tx_ok=%u tx_err=%u",
-					data->rx_err_cnt, status, dwt_readsysstatushi(),
+				LOG_INF("RX irq=%d errors/timeouts=%u tx_entry=%u tx_attempt=%u tx_ok=%u tx_err=%u",
+					irq_state, data->rx_err_cnt,
 					data->tx_entry_cnt, data->tx_attempt_cnt,
 					data->tx_ok_cnt, data->tx_err_cnt);
 			}
-			dwt_writesysstatuslo(status & (SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR));
-			dw3000_restart_rx_locked();
+			dw3000_restart_rx_locked(dev);
+		} else {
+			k_mutex_unlock(&data->lock);
+			continue;
 		}
-
-		status = dwt_readsysstatuslo();
-		more_work_pending = (status & (DWT_INT_RXFCG_BIT_MASK | SYS_STATUS_ALL_RX_TO |
-					      SYS_STATUS_ALL_RX_ERR)) != 0U;
 
 		k_mutex_unlock(&data->lock);
-
-		if (more_work_pending) {
-			k_sem_give(&data->rx_irq_sem);
-		}
 
 		if (ack_handled) {
 			continue;
@@ -538,8 +507,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 			continue;
 		}
 
-
-    if (dw3000_rx_is_duplicate(data, data->rx_stage, pkt_len, false)) {
+		if (dw3000_rx_is_duplicate(data, data->rx_stage, pkt_len, false)) {
 			data->rx_dup_drop_cnt++;
 			if ((data->rx_dup_drop_cnt % LOG_SPARSITY_INF) == 0U) {
 				LOG_INF("RX duplicate drops=%u submit=%u capture=%u", data->rx_dup_drop_cnt,
@@ -647,18 +615,11 @@ static int dw3000_set_channel(const struct device *dev, uint16_t channel)
 
 	k_mutex_lock(&data->lock, K_FOREVER);
 	data->channel = channel;
-	ret = dw3000_apply_phy_config_locked(data);
+	ret = dw3000_apply_phy_config_locked(dev);
 	if (ret != 0) {
 		LOG_WRN("PHY reconfigure failed for channel=%u", channel);
 		k_mutex_unlock(&data->lock);
 		return ret;
-	}
-
-	ret = dwt_setchannel(DWT_CH5);
-	if (ret != DWT_SUCCESS) {
-		LOG_WRN("dwt_setchannel failed channel=%u ret=%d", channel, ret);
-		k_mutex_unlock(&data->lock);
-		return -EIO;
 	}
 
 	LOG_INF("Channel set to %u", channel);
@@ -703,7 +664,7 @@ static int dw3000_filter(const struct device *dev,
 		return -ENOTSUP;
 	}
 
-	(void)dw3000_apply_filter_hw(data);
+	(void)dw3000_apply_filter_hw(dev);
 	k_mutex_unlock(&data->lock);
 
 	return 0;
@@ -786,19 +747,20 @@ static int dw3000_tx(const struct device *dev,
 
 		if (data->uwb && data->uwb->force_trx_off) {
 			data->uwb->force_trx_off(dev);
-		} else {
-			dwt_forcetrxoff();
 		}
 		/*
 		 * Do not clear RXFCG here; a frame may already be pending and should
 		 * be handled by the RX thread.
 		 */
-		dwt_writesysstatuslo(DWT_INT_TXFRS_BIT_MASK | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR);
-		dwt_writesysstatushi(DWT_INT_HI_CCA_FAIL_BIT_MASK);
-		dwt_setpreambledetecttimeout((start_mode == DWT_START_TX_CCA) ? DW3000_CCA_PTO_SYMBOLS : 0U);
+		if (data->uwb && data->uwb->clear_timeouts) {
+			data->uwb->clear_timeouts(dev);
+		}
+		if (data->uwb && data->uwb->setup_preamble_timeout) {
+			data->uwb->setup_preamble_timeout(dev,
+				(start_mode == DWT_START_TX_CCA) ? DW3000_CCA_PTO_SYMBOLS : 0U);
+		}
 
 		if (data->uwb && data->uwb->setup_tx_frame && data->uwb->start_tx) {
-			/* The UWB abstraction exposes immediate TX only, use direct starttx for CCA mode. */
 			data->uwb->setup_tx_frame(dev, frag->data, (uint16_t)frag->len);
 			if (start_mode == DWT_START_TX_IMMEDIATE) {
 				ret = data->uwb->start_tx(dev, 0);
@@ -823,7 +785,7 @@ static int dw3000_tx(const struct device *dev,
 		if (ret != DWT_SUCCESS) {
 			uint32_t status_lo = dwt_readsysstatuslo();
 			uint32_t status_hi = dwt_readsysstatushi();
-			dw3000_restart_rx_locked();
+			dw3000_restart_rx_locked(dev);
 			k_mutex_unlock(&data->lock);
 
 			if (use_csma && (tx_try + 1U) < max_tries) {
@@ -847,14 +809,14 @@ static int dw3000_tx(const struct device *dev,
 				if ((data->tx_ok_cnt % LOG_SPARSITY_INF) == 0U) {
 					LOG_INF("TX packets=%u", data->tx_ok_cnt);
 				}
-				dw3000_reenable_rx_locked();
+				dw3000_reenable_rx_locked(dev);
 				k_mutex_unlock(&data->lock);
 				return 0;
 			}
 
 			if ((status_hi & DWT_INT_HI_CCA_FAIL_BIT_MASK) != 0U && start_mode == DWT_START_TX_CCA) {
 				dwt_writesysstatushi(DWT_INT_HI_CCA_FAIL_BIT_MASK);
-				dw3000_restart_rx_locked();
+				dw3000_restart_rx_locked(dev);
 				k_mutex_unlock(&data->lock);
 
 				if (use_csma && (tx_try + 1U) < max_tries) {
@@ -874,7 +836,7 @@ static int dw3000_tx(const struct device *dev,
 		}
 
 		if (k_uptime_get() >= timeout_end) {
-			dw3000_restart_rx_locked();
+			dw3000_restart_rx_locked(dev);
 			k_mutex_unlock(&data->lock);
 
 			if (use_csma && (tx_try + 1U) < max_tries) {
@@ -905,17 +867,12 @@ static int dw3000_start(const struct device *dev)
 	if (data->uwb && data->uwb->disable_txrx) {
 		LOG_INF("dw3000_start: using UWB disable_txrx hook");
 		data->uwb->disable_txrx(dev);
-	} else {
-		LOG_WRN("dw3000_start: missing UWB disable_txrx hook, falling back to dwt_forcetrxoff");
-		dwt_forcetrxoff();
-	}
+		}
+		if (data->uwb && data->uwb->clear_timeouts) {
+			data->uwb->clear_timeouts(dev);
+		}
 
-	dw3000_clear_status_all();
-
-	dw3000_restart_rx_locked();
-
-	k_mutex_unlock(&data->lock);
-
+		dw3000_restart_rx_locked(dev);
 	LOG_INF("Radio start: channel=%u pan=0x%04x short=0x%04x", data->channel, data->pan_id,
 		data->short_addr);
 	LOG_INF("Radio start complete: shared IRQ line is %s",
@@ -934,9 +891,6 @@ static int dw3000_stop(const struct device *dev)
 	if (data->uwb && data->uwb->disable_txrx) {
 		LOG_INF("dw3000_stop: using UWB disable_txrx hook");
 		data->uwb->disable_txrx(dev);
-	} else {
-		LOG_WRN("dw3000_stop: missing UWB disable_txrx hook, falling back to dwt_forcetrxoff");
-		dwt_forcetrxoff();
 	}
 	k_mutex_unlock(&data->lock);
 
@@ -962,7 +916,7 @@ static int dw3000_configure(const struct device *dev,
 
 		k_mutex_lock(&data->lock, K_FOREVER);
 		data->promiscuous = config->promiscuous;
-		(void)dw3000_apply_filter_hw(data);
+		(void)dw3000_apply_filter_hw(dev);
 		k_mutex_unlock(&data->lock);
 		return 0;
 
@@ -1031,8 +985,8 @@ static int dw3000_init(const struct device *dev)
 	 * For the IEEE802154 net path, we use a dedicated RX thread that is woken
 	 * either by IRQ callbacks or by polling, depending on Kconfig.
 	 */
-	dw3000_hw_clear_interrupt_handler();
-	dw3000_hw_interrupt_disable();
+	// dw3000_hw_clear_interrupt_handler();
+	// dw3000_hw_interrupt_disable();
 
 	/*
 	 * The UWB layer owns the low-level chip lifecycle. The net driver only
@@ -1094,7 +1048,7 @@ static int dw3000_init(const struct device *dev)
 	k_sem_init(&data->rx_irq_sem, 0, 64);
 
 	k_mutex_lock(&data->lock, K_FOREVER);
-#if 1
+#if 0
 	/*
 	 * Use single-buffer RX mode for clarity and explicit control.
 	 * Double-buffer mode allows hardware to switch between two RX buffers automatically,
@@ -1106,25 +1060,20 @@ static int dw3000_init(const struct device *dev)
 	dwt_setdblrxbuffmode(DBL_BUF_STATE_DIS, DBL_BUF_MODE_MAN);
 #endif /* Single-buffer */
 
-  ret = dw3000_apply_phy_config_locked(data);
+  ret = dw3000_apply_phy_config_locked(dev);
 	if (ret != 0) {
 		k_mutex_unlock(&data->lock);
 		LOG_ERR("Failed to configure DW3000 PHY for IEEE802154");
 		return ret;
 	}
 
-	ret = dwt_setchannel(DWT_CH5);
-	if (ret != DWT_SUCCESS) {
-		k_mutex_unlock(&data->lock);
-		LOG_ERR("dwt_setchannel failed during init: ch=%u ret=%d", data->channel, ret);
-		return -EIO;
+	(void)dw3000_apply_filter_hw(dev);
+	if (data->uwb && data->uwb->clear_timeouts) {
+		data->uwb->clear_timeouts(dev);
 	}
-
-	(void)dw3000_apply_filter_hw(data);
-	dwt_setrxtimeout(0);
-	dwt_setpreambledetecttimeout(0);
-	dw3000_clear_status_all();
-	dwt_forcetrxoff();
+	if (data->uwb && data->uwb->disable_txrx) {
+		data->uwb->disable_txrx(dev);
+	}
 
   k_mutex_unlock(&data->lock);
 
@@ -1137,31 +1086,16 @@ static int dw3000_init(const struct device *dev)
 #endif
 
 #if defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
-	LOG_INF("DW3000 path configured for polling RX (double-buffer disabled)");
+	LOG_INF("DW3000 path configured for polling RX");
 #else
-
-	if (dw3000_hw_init_interrupt() != 0) {
-		LOG_ERR("Failed to initialize DW3000 IRQ GPIO");
-		return -EIO;
-	}
-
-  // Glossy works if returning here (with single-buffer NOT configured)
-  // printf("IEEE802154: Unlocking and returning early before interrupt call...\n");
-  // return 0;
-
-	dw3000_irq_dev = dev;
-	dw3000_hw_set_interrupt_handler(dw3000_irq_cb);
-	LOG_INF("IEEE802154 IRQ callback registered for shared DW3000 interrupts");
-	dw3000_hw_interrupt_enable();
-	LOG_INF("DW3000 path configured for IRQ-driven RX (double-buffer disabled, shared IRQ %s)",
-		dw3000_hw_interrupt_is_enabled() ? "enabled" : "disabled");
+	LOG_INF("DW3000 path configured for IRQ-driven RX through UWB backend");
 #endif
 
   // Also ok to return here (with single-buffer NOT configured)
   // printf("IEEE802154: Returning before thread creation...\n");
   // return 0;
 
-#if 1
+#if 0
 	k_thread_create(&data->rx_thread,
 			cfg->rx_stack,
 			cfg->rx_stack_size,
