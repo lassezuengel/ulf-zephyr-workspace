@@ -25,7 +25,7 @@
  *
  * Interrupt / RX flow
  * ====================
- * 1. Hardware IRQ fires → dw3000_interrupt_handler → k_work_submit.
+ * 1. Hardware IRQ fires -> dw3000_interrupt_handler -> k_work_submit.
  * 2. Work handler reads/clears SYS_STATUS, sets phy_irq_event, gives phy_sem.
  * 3. Dedicated IRQ dispatch thread is the ONLY waiter on wait_for_irq(); it
  *    routes IRQ events to RX and TX event queues.
@@ -141,6 +141,13 @@ static int dw3000_start(const struct device *dev);
 static inline void dw3000_reenable_rx_locked(const struct device *dev,
 					     struct dw3000_data *data)
 {
+  /*
+	 * align_double_buffering() is a no-op on DW3000 hardware but is
+	 * included for documentation and forward-compatibility: it marks the
+	 * point where the double-buffer state machine is re-synchronised
+	 * before a new RX cycle begins.
+	 */
+	data->uwb->align_double_buffering(dev);
 	data->uwb->enable_rx(dev, 0, 0);
 }
 
@@ -343,7 +350,7 @@ static int dw3000_rx_capture_locked(const struct device *dev,
 	}
 
 	/*
-	 * get_rx_frame_length goes through the UWB vtable → dwt_getframelength.
+	 * get_rx_frame_length goes through the UWB vtable -> dwt_getframelength.
 	 * The UWB driver owns SYS_STATUS at this point; we must not touch it.
 	 */
 	phy_len = data->uwb->get_rx_frame_length(dev);
@@ -351,7 +358,13 @@ static int dw3000_rx_capture_locked(const struct device *dev,
 
 	if (phy_len < DW3000_FCS_LEN || phy_len > DW3000_MAX_PHY_PACKET_SIZE) {
 		LOG_DBG("Drop invalid frame len=%u", phy_len);
-		/* Re-enable RX; UWB ISR already cleared the relevant status bits. */
+    /*
+		 * Even for dropped frames we must complete the buffer handshake
+		 * so the hardware can reuse the buffer.
+		 */
+		data->uwb->switch_buffers(dev);
+
+    /* Re-enable RX; UWB ISR already cleared the relevant status bits. */
 		dw3000_reenable_rx_locked(dev, data);
 		return 0;
 	}
@@ -372,6 +385,8 @@ static int dw3000_rx_capture_locked(const struct device *dev,
 		 */
 		data->uwb->read_rx_frame(dev, dw3000_ack_psdu,
 					 DW3000_ACK_PKT_LEN, 0);
+		data->uwb->switch_buffers(dev);
+
 		dw3000_reenable_rx_locked(dev, data);
 
 		net_pkt_cursor_init(&dw3000_ack_pkt);
@@ -384,6 +399,7 @@ static int dw3000_rx_capture_locked(const struct device *dev,
 
 	/* Read full frame via UWB vtable. */
 	data->uwb->read_rx_frame(dev, data->rx_stage, pkt_len, 0);
+	data->uwb->switch_buffers(dev);
 
 	/*
 	 * Re-enable RX immediately so hardware is ready for the next frame
@@ -420,6 +436,8 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 		}
 
 		if (!atomic_get(&data->started) || data->iface == NULL) {
+      k_usleep(500000);
+			LOG_WRN("RX thread: waiting for radio start / iface…");
 			continue;
 		}
 
@@ -447,7 +465,11 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 			 * The UWB ISR cleared the corresponding status bits.
 			 */
 			LOG_DBG("RX event=%d, restarting receiver", irq_state);
-			dw3000_reenable_rx_locked(dev, data);
+
+      /* TODO: Do we need to switch buffers here? */
+      data->uwb->switch_buffers(dev);
+
+      dw3000_reenable_rx_locked(dev, data);
 			break;
 
 		case UWB_IRQ_TX:
@@ -571,7 +593,7 @@ static int dw3000_set_channel(const struct device *dev, uint16_t channel)
 	int ret;
 
 	if (channel == 9U) {
-		LOG_ERR("Channel 9 disabled: no RX preamble detection observed");
+		LOG_ERR("Channel 9 not supported: no RX preamble detection observed");
 		return -ENOTSUP;
 	}
 	if (channel != 5U) {
@@ -751,7 +773,7 @@ static int dw3000_tx(const struct device *dev,
 		/*
 		 * Load frame into TX buffer and start transmission.
 		 * setup_tx_frame adds the 2-byte FCS length internally.
-		 * start_tx(dev, 0) → immediate TX.
+		 * start_tx(dev, 0) -> immediate TX.
 		 */
 		data->uwb->setup_tx_frame(dev, frag->data, (uint16_t)frag->len);
 
@@ -873,6 +895,12 @@ static int dw3000_start(const struct device *dev)
 	 */
 	data->uwb->force_trx_off(dev);
 	data->uwb->clear_timeouts(dev);
+	/*
+	 * Align the double-buffer state machine before the first RX enable
+	 * so both the host and the DW3000 agree on which buffer is "current".
+	 */
+	data->uwb->align_double_buffering(dev);
+
 	dw3000_reenable_rx_locked(dev, data);
 
 	data->uwb->release_device(dev);
@@ -1037,7 +1065,7 @@ static int dw3000_init(const struct device *dev)
 	 * mode.
 	 */
 	/* dwt_setdblrxbuffmode() does NOT touch SYS_ENABLE. */
-	dwt_setdblrxbuffmode(DBL_BUF_STATE_DIS, DBL_BUF_MODE_MAN);
+	// dwt_setdblrxbuffmode(DBL_BUF_STATE_DIS, DBL_BUF_MODE_MAN);
 
 	/*
 	 * Apply PHY config (channel 5, preamble, TX power).
@@ -1086,6 +1114,7 @@ static int dw3000_init(const struct device *dev)
 			K_NO_WAIT);
 	k_thread_name_set(&data->irq_thread, "dw3000_irq");
 
+  // TODO: Use handler within IRQ thread instead of another separate RX thread?
 	k_thread_create(&data->rx_thread,
 			cfg->rx_stack,
 			cfg->rx_stack_size,
@@ -1109,19 +1138,19 @@ static int dw3000_init(const struct device *dev)
 #define DT_DRV_COMPAT decawave_dw3000
 #define DWT_PSDU_LENGTH (DW3000_MAX_PHY_PACKET_SIZE - DW3000_FCS_LEN)
 
-#define DW3000_INIT(n)                                                          \
-	K_KERNEL_STACK_DEFINE(dw3000_irq_stack_##n,                             \
+#define DW3000_INIT(n)                                              \
+	K_KERNEL_STACK_DEFINE(dw3000_irq_stack_##n,                       \
 		CONFIG_IEEE802154_DW3000_IRQ_THREAD_STACK_SIZE);                \
-	K_KERNEL_STACK_DEFINE(dw3000_rx_stack_##n,                              \
+	K_KERNEL_STACK_DEFINE(dw3000_rx_stack_##n,                        \
 		CONFIG_IEEE802154_DW3000_IRQ_THREAD_STACK_SIZE);                \
-	static struct dw3000_data dw3000_data_##n;                              \
-	static const struct dw3000_config dw3000_config_##n = {                 \
-		.irq_stack      = dw3000_irq_stack_##n,                          \
-		.irq_stack_size = K_KERNEL_STACK_SIZEOF(dw3000_irq_stack_##n),   \
+	static struct dw3000_data dw3000_data_##n;                        \
+	static const struct dw3000_config dw3000_config_##n = {           \
+		.irq_stack      = dw3000_irq_stack_##n,                         \
+		.irq_stack_size = K_KERNEL_STACK_SIZEOF(dw3000_irq_stack_##n),  \
 		.rx_stack      = dw3000_rx_stack_##n,                           \
 		.rx_stack_size = K_KERNEL_STACK_SIZEOF(dw3000_rx_stack_##n),    \
-	};                                                                      \
-	NET_DEVICE_DT_INST_DEFINE(n,                                            \
+	};                                                                \
+	NET_DEVICE_DT_INST_DEFINE(n,                                      \
 		dw3000_init,                                                    \
 		NULL,                                                           \
 		&dw3000_data_##n,                                               \
