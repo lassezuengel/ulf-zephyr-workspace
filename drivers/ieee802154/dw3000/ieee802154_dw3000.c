@@ -6,7 +6,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <zephyr/logging/log.h>
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/net/ieee802154.h>
@@ -21,10 +20,9 @@
 
 #include "dw3000.h"
 
+/* logging: keep non-stat logs */
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_WRN);
-
-#define LOG_SPARSITY_INF 1
-#define LOG_SPARSITY_WARN 1
 
 #define DW3000_FCS_LEN 2U
 #define DW3000_MAX_PHY_PACKET_SIZE 127U
@@ -71,28 +69,9 @@ struct dw3000_data {
 	uint16_t short_addr;
 	uint16_t channel;
 	bool promiscuous;
-	uint32_t rx_ok_cnt;
-	uint32_t rx_err_cnt;
-	uint32_t tx_ok_cnt;
-	uint32_t tx_err_cnt;
-	uint32_t tx_attempt_cnt;
-	uint32_t tx_entry_cnt;
-	uint32_t rx_nobuf_cnt;
 	bool rx_wait_logged;
-	uint32_t rx_pkt_alloc_cnt;
-	uint32_t rx_pkt_unref_cnt;
-	uint32_t rx_frames_per_wake_cnt;
-	uint32_t rx_fast_ack_cnt;
-	uint32_t rx_capture_cnt;
-	uint32_t rx_submit_cnt;
-	uint32_t rx_same_payload_submit_cnt;
-	uint32_t rx_last_payload_hash;
-	uint16_t rx_last_payload_len;
-	uint32_t rx_dup_drop_cnt;
-	uint8_t rx_dup_next_slot;
-	uint64_t rx_last_warn_ts;
 	uint8_t rx_stage[DW3000_MAX_PHY_PACKET_SIZE];
-	struct dw3000_dup_entry dup_tbl[DW3000_DUP_TRACK_SLOTS];
+	/* statistics and duplicate tracking removed */
 };
 
 static const struct device *dw3000_irq_dev;
@@ -291,119 +270,7 @@ static uint32_t dw3000_payload_hash(const uint8_t *buf, uint16_t len)
 	return h;
 }
 
-static bool dw3000_rx_is_duplicate(struct dw3000_data *data, const uint8_t *buf, uint16_t len,
-				   bool commit)
-{
-	uint16_t fcf;
-	uint8_t seq;
-	uint8_t dst_mode;
-	uint8_t src_mode;
-	bool pan_comp;
-	uint16_t off = 3U;
-	uint16_t src_len;
-	uint32_t src_sig = 2166136261U;
-	uint32_t payload_hash;
-	uint8_t i;
-	int slot_same = -1;
-	int slot_free = -1;
-	uint8_t slot;
-
-	if (len < 3U) {
-		return false;
-	}
-
-	fcf = (uint16_t)buf[0] | ((uint16_t)buf[1] << 8);
-	if ((fcf & IEEE802154_FCF_FRAME_TYPE_MASK) != IEEE802154_FCF_FRAME_TYPE_DATA) {
-		return false;
-	}
-
-	seq = buf[2];
-	dst_mode = (uint8_t)((fcf & IEEE802154_FCF_DST_ADDR_MODE_MASK) >> IEEE802154_FCF_DST_ADDR_MODE_SHIFT);
-	src_mode = (uint8_t)((fcf & IEEE802154_FCF_SRC_ADDR_MODE_MASK) >> IEEE802154_FCF_SRC_ADDR_MODE_SHIFT);
-	pan_comp = (fcf & IEEE802154_FCF_PAN_ID_COMP) != 0U;
-
-	if (dst_mode == IEEE802154_ADDR_MODE_SHORT) {
-		off += 2U + 2U;
-	} else if (dst_mode == IEEE802154_ADDR_MODE_EXTENDED) {
-		off += 2U + 8U;
-	}
-
-	if (src_mode == IEEE802154_ADDR_MODE_NONE) {
-		return false;
-	}
-
-	if (!pan_comp) {
-		off += 2U;
-	}
-
-	if (src_mode == IEEE802154_ADDR_MODE_SHORT) {
-		src_len = 2U;
-	} else if (src_mode == IEEE802154_ADDR_MODE_EXTENDED) {
-		src_len = 8U;
-	} else {
-		return false;
-	}
-
-	if ((off + src_len) > len) {
-		return false;
-	}
-
-	payload_hash = dw3000_payload_hash(buf, len);
-
-	for (i = 0U; i < src_len; i++) {
-		src_sig ^= buf[off + i];
-		src_sig *= 16777619U;
-	}
-	src_sig ^= src_mode;
-	src_sig *= 16777619U;
-
-	for (slot = 0U; slot < DW3000_DUP_TRACK_SLOTS; slot++) {
-		if (!data->dup_tbl[slot].valid) {
-			if (slot_free < 0) {
-				slot_free = (int)slot;
-			}
-			continue;
-		}
-
-		if (data->dup_tbl[slot].src_sig == src_sig) {
-			slot_same = (int)slot;
-			break;
-		}
-	}
-
-	if (slot_same >= 0) {
-		if (data->dup_tbl[slot_same].seq == seq &&
-		    data->dup_tbl[slot_same].payload_len == len &&
-		    data->dup_tbl[slot_same].payload_hash == payload_hash) {
-			return true;
-		}
-		if (commit) {
-			data->dup_tbl[slot_same].seq = seq;
-			data->dup_tbl[slot_same].payload_hash = payload_hash;
-			data->dup_tbl[slot_same].payload_len = len;
-		}
-		return false;
-	}
-
-	if (!commit) {
-		return false;
-	}
-
-	if (slot_free >= 0) {
-		slot = (uint8_t)slot_free;
-	} else {
-		slot = data->rx_dup_next_slot;
-		data->rx_dup_next_slot = (uint8_t)((data->rx_dup_next_slot + 1U) % DW3000_DUP_TRACK_SLOTS);
-	}
-
-	data->dup_tbl[slot].src_sig = src_sig;
-	data->dup_tbl[slot].seq = seq;
-	data->dup_tbl[slot].payload_hash = payload_hash;
-	data->dup_tbl[slot].payload_len = len;
-	data->dup_tbl[slot].valid = true;
-
-	return false;
-}
+/* duplicate detection removed per cleanup */
 
 static int dw3000_rx_capture_locked(const struct device *dev, bool *ack_handled,
 					    uint16_t *pkt_len_out)
@@ -450,7 +317,6 @@ static int dw3000_rx_capture_locked(const struct device *dev, bool *ack_handled,
 		ack_verdict = ieee802154_handle_ack(data->iface, &dw3000_ack_pkt);
 		if (ack_handled != NULL && ack_verdict == NET_OK) {
 			*ack_handled = true;
-			data->rx_fast_ack_cnt++;
 		}
 
 		return 0;
@@ -464,7 +330,6 @@ static int dw3000_rx_capture_locked(const struct device *dev, bool *ack_handled,
 	if (pkt_len_out != NULL) {
 		*pkt_len_out = pkt_len;
 	}
-	data->rx_capture_cnt++;
 
 	return 1;
 }
@@ -486,16 +351,9 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 		bool more_work_pending = false;
 
 		if (!atomic_get(&data->started) || data->iface == NULL) {
-			if (!data->rx_wait_logged) {
-				LOG_INF("RX thread waiting (started=%ld iface=%p)",
-					atomic_get(&data->started), data->iface);
-				data->rx_wait_logged = true;
-			}
 			k_usleep(5000);
 			continue;
 		}
-
-		data->rx_wait_logged = false;
 
 #if defined(CONFIG_IEEE802154_DW3000_RX_POLLING_MODE)
 		k_usleep(1000);
@@ -509,13 +367,6 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 		if (status & DWT_INT_RXFCG_BIT_MASK) {
 			rx_capture = dw3000_rx_capture_locked(dev, &ack_handled, &pkt_len);
 		} else if (status & (SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)) {
-			data->rx_err_cnt++;
-			if ((data->rx_err_cnt % LOG_SPARSITY_INF) == 0U) {
-				LOG_INF("RX errors/timeouts=%u lo=0x%08x hi=0x%08x tx_entry=%u tx_attempt=%u tx_ok=%u tx_err=%u",
-					data->rx_err_cnt, status, dwt_readsysstatushi(),
-					data->tx_entry_cnt, data->tx_attempt_cnt,
-					data->tx_ok_cnt, data->tx_err_cnt);
-			}
 			dwt_writesysstatuslo(status & (SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR));
 			dw3000_restart_rx_locked();
 		}
@@ -539,14 +390,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 		}
 
 
-    if (dw3000_rx_is_duplicate(data, data->rx_stage, pkt_len, false)) {
-			data->rx_dup_drop_cnt++;
-			if ((data->rx_dup_drop_cnt % LOG_SPARSITY_INF) == 0U) {
-				LOG_INF("RX duplicate drops=%u submit=%u capture=%u", data->rx_dup_drop_cnt,
-					data->rx_submit_cnt, data->rx_capture_cnt);
-			}
-			continue;
-		}
+	/* duplicate detection removed */
 
 		/*
 		 * Allocate outside the radio lock so RX restart is not blocked by
@@ -554,65 +398,24 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 		 */
 		pkt = net_pkt_rx_alloc_with_buffer(data->iface, pkt_len, AF_UNSPEC, 0, K_NO_WAIT);
 		if (!pkt) {
-			int32_t driver_held = (int32_t)data->rx_pkt_alloc_cnt -
-				(int32_t)data->rx_pkt_unref_cnt - (int32_t)data->rx_ok_cnt;
-
-			data->rx_nobuf_cnt++;
-			if ((data->rx_nobuf_cnt % LOG_SPARSITY_WARN) == 0U) {
-				uint64_t now_ts = k_uptime_get();
-				LOG_WRN("RX dropped (no net_pkt): cnt=%u len=%u alloc=%u rx_ok=%u unref=%u held=%d fastack=%u",
-					data->rx_nobuf_cnt, pkt_len, data->rx_pkt_alloc_cnt,
-					data->rx_ok_cnt, data->rx_pkt_unref_cnt, driver_held,
-					data->rx_fast_ack_cnt);
-				data->rx_last_warn_ts = now_ts;
-			}
 			continue;
 		}
 
-		data->rx_pkt_alloc_cnt++;
 		net_pkt_cursor_init(pkt);
 		if (net_pkt_write(pkt, data->rx_stage, pkt_len) < 0) {
 			net_pkt_unref(pkt);
-			data->rx_pkt_unref_cnt++;
 			continue;
 		}
 		net_pkt_cursor_init(pkt);
 
 		if (ieee802154_handle_ack(data->iface, pkt) == NET_OK) {
 			net_pkt_unref(pkt);
-			data->rx_pkt_unref_cnt++;
 			continue;
-		}
-
-		data->rx_submit_cnt++;
-		{
-			uint32_t payload_hash = dw3000_payload_hash(data->rx_stage, pkt_len);
-
-			if (payload_hash == data->rx_last_payload_hash && pkt_len == data->rx_last_payload_len) {
-				data->rx_same_payload_submit_cnt++;
-				if ((data->rx_same_payload_submit_cnt % LOG_SPARSITY_WARN) == 0U) {
-					LOG_WRN("RX repeated payload submits=%u capture=%u submit=%u len=%u",
-						data->rx_same_payload_submit_cnt,
-						data->rx_capture_cnt,
-						data->rx_submit_cnt,
-						pkt_len);
-				}
-			}
-
-			data->rx_last_payload_hash = payload_hash;
-			data->rx_last_payload_len = pkt_len;
 		}
 
 		if (net_recv_data(data->iface, pkt) != NET_OK) {
 			net_pkt_unref(pkt);
-			data->rx_pkt_unref_cnt++;
-		} else {
-			(void)dw3000_rx_is_duplicate(data, data->rx_stage, pkt_len, true);
-			data->rx_ok_cnt++;
-			if ((data->rx_ok_cnt % LOG_SPARSITY_INF) == 0U) {
-				LOG_INF("RX packets=%u capture=%u submit=%u", data->rx_ok_cnt,
-					data->rx_capture_cnt, data->rx_submit_cnt);
-			}
+			continue;
 		}
 	}
 }
@@ -656,12 +459,9 @@ static int dw3000_set_channel(const struct device *dev, uint16_t channel)
 
 	ret = dwt_setchannel(DWT_CH5);
 	if (ret != DWT_SUCCESS) {
-		LOG_WRN("dwt_setchannel failed channel=%u ret=%d", channel, ret);
 		k_mutex_unlock(&data->lock);
 		return -EIO;
 	}
-
-	LOG_INF("Channel set to %u", channel);
 	k_mutex_unlock(&data->lock);
 
 	return 0;
@@ -685,17 +485,17 @@ static int dw3000_filter(const struct device *dev,
 		if (set) {
 			memcpy(data->mac_addr, filter->ieee_addr, sizeof(data->mac_addr));
 		}
-		LOG_INF("Filter IEEE addr %s", set ? "set" : "clear");
+		/* Filter IEEE addr set/clear */
 		break;
 
 	case IEEE802154_FILTER_TYPE_SHORT_ADDR:
 		data->short_addr = set ? filter->short_addr : 0xffffU;
-		LOG_INF("Filter short %s: 0x%04x", set ? "set" : "clear", data->short_addr);
+		/* Filter short set/clear */
 		break;
 
 	case IEEE802154_FILTER_TYPE_PAN_ID:
 		data->pan_id = set ? filter->pan_id : 0xffffU;
-		LOG_INF("Filter PAN %s: 0x%04x", set ? "set" : "clear", data->pan_id);
+		/* Filter PAN set/clear */
 		break;
 
 	default:
@@ -732,13 +532,6 @@ static int dw3000_tx(const struct device *dev,
 
 	ARG_UNUSED(pkt);
 
-	data->tx_entry_cnt++;
-	if (data->tx_entry_cnt <= 4U || (data->tx_entry_cnt % (4 * LOG_SPARSITY_INF)) == 0U) {
-		LOG_INF("TX entry=%u mode=%d frag=%p len=%u started=%ld",
-			data->tx_entry_cnt, mode, frag,
-			frag ? frag->len : 0U, atomic_get(&data->started));
-	}
-
 	if (!frag || frag->len == 0U) {
 		LOG_WRN("TX reject: empty fragment");
 		return -EINVAL;
@@ -767,11 +560,6 @@ static int dw3000_tx(const struct device *dev,
 		return -ENOTSUP;
 	}
 
-	data->tx_attempt_cnt++;
-	if (data->tx_attempt_cnt <= 8U || (data->tx_attempt_cnt % LOG_SPARSITY_INF) == 0U) {
-		LOG_INF("TX attempt=%u len=%u mode=%d", data->tx_attempt_cnt, frag->len, mode);
-	}
-
 	for (tx_try = 0U; tx_try < max_tries; tx_try++) {
 		if (use_csma && tx_try > 0U) {
 			uint32_t bo_slots = 1U << MIN(be, DW3000_CSMA_MAX_BE);
@@ -789,16 +577,12 @@ static int dw3000_tx(const struct device *dev,
 		} else {
 			dwt_forcetrxoff();
 		}
-		/*
-		 * Do not clear RXFCG here; a frame may already be pending and should
-		 * be handled by the RX thread.
-		 */
+
 		dwt_writesysstatuslo(DWT_INT_TXFRS_BIT_MASK | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR);
 		dwt_writesysstatushi(DWT_INT_HI_CCA_FAIL_BIT_MASK);
 		dwt_setpreambledetecttimeout((start_mode == DWT_START_TX_CCA) ? DW3000_CCA_PTO_SYMBOLS : 0U);
 
 		if (data->uwb && data->uwb->setup_tx_frame && data->uwb->start_tx) {
-			/* The UWB abstraction exposes immediate TX only, use direct starttx for CCA mode. */
 			data->uwb->setup_tx_frame(dev, frag->data, (uint16_t)frag->len);
 			if (start_mode == DWT_START_TX_IMMEDIATE) {
 				ret = data->uwb->start_tx(dev, 0);
@@ -806,13 +590,8 @@ static int dw3000_tx(const struct device *dev,
 				ret = dwt_starttx(start_mode);
 			}
 		} else {
-			if (data->tx_entry_cnt <= 4U || (data->tx_entry_cnt % (8 * LOG_SPARSITY_INF)) == 0U) {
-				LOG_WRN("TX using legacy direct dwt_* path");
-			}
 			ret = dwt_writetxdata((uint16_t)frag->len, frag->data, 0);
 			if (ret != DWT_SUCCESS) {
-				data->tx_err_cnt++;
-				LOG_WRN("TX data write failed ret=%d tx_err=%u", ret, data->tx_err_cnt);
 				k_mutex_unlock(&data->lock);
 				return -EIO;
 			}
@@ -821,8 +600,6 @@ static int dw3000_tx(const struct device *dev,
 			ret = dwt_starttx(start_mode);
 		}
 		if (ret != DWT_SUCCESS) {
-			uint32_t status_lo = dwt_readsysstatuslo();
-			uint32_t status_hi = dwt_readsysstatushi();
 			dw3000_restart_rx_locked();
 			k_mutex_unlock(&data->lock);
 
@@ -830,9 +607,6 @@ static int dw3000_tx(const struct device *dev,
 				continue;
 			}
 
-			data->tx_err_cnt++;
-			LOG_WRN("TX start failed ret=%d mode=%d lo=0x%08x hi=0x%08x tx_err=%u",
-				ret, mode, status_lo, status_hi, data->tx_err_cnt);
 			return -EIO;
 		}
 
@@ -843,10 +617,6 @@ static int dw3000_tx(const struct device *dev,
 
 			if (status_lo & DWT_INT_TXFRS_BIT_MASK) {
 				dwt_writesysstatuslo(DWT_INT_TXFRS_BIT_MASK);
-				data->tx_ok_cnt++;
-				if ((data->tx_ok_cnt % LOG_SPARSITY_INF) == 0U) {
-					LOG_INF("TX packets=%u", data->tx_ok_cnt);
-				}
 				dw3000_reenable_rx_locked();
 				k_mutex_unlock(&data->lock);
 				return 0;
@@ -861,8 +631,6 @@ static int dw3000_tx(const struct device *dev,
 					break;
 				}
 
-				data->tx_err_cnt++;
-				LOG_WRN("TX CCA busy mode=%d tries=%u tx_err=%u", mode, tx_try + 1U, data->tx_err_cnt);
 				return -EBUSY;
 			}
 
@@ -881,15 +649,11 @@ static int dw3000_tx(const struct device *dev,
 				continue;
 			}
 
-			data->tx_err_cnt++;
-			LOG_WRN("TX timeout lo=0x%08x hi=0x%08x tx_err=%u",
-				dwt_readsysstatuslo(), dwt_readsysstatushi(), data->tx_err_cnt);
 			return -EIO;
 		}
 	}
 
-	data->tx_err_cnt++;
-	LOG_WRN("TX CSMA exhausted tries=%u tx_err=%u", max_tries, data->tx_err_cnt);
+  LOG_ERR("TX failed after %u tries", max_tries);
 	return -EBUSY;
 }
 
@@ -903,10 +667,8 @@ static int dw3000_start(const struct device *dev)
 	atomic_set(&data->started, 1);
 
 	if (data->uwb && data->uwb->disable_txrx) {
-		LOG_INF("dw3000_start: using UWB disable_txrx hook");
 		data->uwb->disable_txrx(dev);
 	} else {
-		LOG_WRN("dw3000_start: missing UWB disable_txrx hook, falling back to dwt_forcetrxoff");
 		dwt_forcetrxoff();
 	}
 
@@ -916,11 +678,6 @@ static int dw3000_start(const struct device *dev)
 
 	k_mutex_unlock(&data->lock);
 
-	LOG_INF("Radio start: channel=%u pan=0x%04x short=0x%04x", data->channel, data->pan_id,
-		data->short_addr);
-	LOG_INF("Radio start complete: shared IRQ line is %s",
-		dw3000_hw_interrupt_is_enabled() ? "enabled" : "disabled");
-
 	return 0;
 }
 
@@ -928,22 +685,18 @@ static int dw3000_stop(const struct device *dev)
 {
 	struct dw3000_data *data = dev->data;
 
-	LOG_DBG("dw3000_stop: entry for %s", dev->name);
 	k_mutex_lock(&data->lock, K_FOREVER);
 	atomic_set(&data->started, 0);
 	if (data->uwb && data->uwb->disable_txrx) {
 		LOG_INF("dw3000_stop: using UWB disable_txrx hook");
 		data->uwb->disable_txrx(dev);
 	} else {
-		LOG_WRN("dw3000_stop: missing UWB disable_txrx hook, falling back to dwt_forcetrxoff");
 		dwt_forcetrxoff();
 	}
 	k_mutex_unlock(&data->lock);
 
 	/* Wake RX thread so it can observe started=0 and park cleanly. */
 	k_sem_give(&data->rx_irq_sem);
-	LOG_INF("Radio stop complete: shared IRQ line is %s",
-		dw3000_hw_interrupt_is_enabled() ? "enabled" : "disabled");
 
 	return 0;
 }
@@ -1045,16 +798,6 @@ static int dw3000_init(const struct device *dev)
 		LOG_ERR("No registered UWB driver for %s", dev->name);
 		return -ENODEV;
 	}
-	LOG_INF("UWB hooks: tx=%d rxlen=%d rxread=%d forceoff=%d enable_rx=%d wait_irq=%d enable_int=%d disable_int=%d dblbuf=%d",
-		(data->uwb->start_tx && data->uwb->setup_tx_frame) ? 1 : 0,
-		data->uwb->get_rx_frame_length ? 1 : 0,
-		data->uwb->read_rx_frame ? 1 : 0,
-		data->uwb->force_trx_off ? 1 : 0,
-		data->uwb->enable_rx ? 1 : 0,
-		data->uwb->wait_for_irq ? 1 : 0,
-		data->uwb->enable_int ? 1 : 0,
-		data->uwb->disable_int ? 1 : 0,
-		data->uwb->enable_double_buffering ? 1 : 0);
 	atomic_set(&data->started, 0);
 	dw3000_generate_mac(data->mac_addr);
 	data->pan_id = 0xffffU;
@@ -1062,7 +805,6 @@ static int dw3000_init(const struct device *dev)
 	data->channel = 5U;
 #if defined(CONFIG_NET_CONFIG_IEEE802154_CHANNEL)
 	if (CONFIG_NET_CONFIG_IEEE802154_CHANNEL == 9) {
-		LOG_ERR("CONFIG_NET_CONFIG_IEEE802154_CHANNEL=9 is unsupported for ieee802154_dw3000 (no RX preamble detection)");
 		return -ENOTSUP;
 	}
 	if (CONFIG_NET_CONFIG_IEEE802154_CHANNEL == 5) {
@@ -1070,27 +812,7 @@ static int dw3000_init(const struct device *dev)
 	}
 #endif
 	data->promiscuous = false;
-	data->rx_ok_cnt = 0U;
-	data->rx_err_cnt = 0U;
-	data->tx_ok_cnt = 0U;
-	data->tx_err_cnt = 0U;
-	data->tx_attempt_cnt = 0U;
-	data->tx_entry_cnt = 0U;
-	data->rx_nobuf_cnt = 0U;
-	data->rx_wait_logged = false;
-	data->rx_pkt_alloc_cnt = 0U;
-	data->rx_pkt_unref_cnt = 0U;
-	data->rx_frames_per_wake_cnt = 0U;
-	data->rx_fast_ack_cnt = 0U;
-	data->rx_capture_cnt = 0U;
-	data->rx_submit_cnt = 0U;
-	data->rx_same_payload_submit_cnt = 0U;
-	data->rx_last_payload_hash = 0U;
-	data->rx_last_payload_len = 0U;
-	data->rx_dup_drop_cnt = 0U;
-	data->rx_dup_next_slot = 0U;
-	memset(data->dup_tbl, 0, sizeof(data->dup_tbl));
-	data->rx_last_warn_ts = 0U;
+	/* statistics and duplicate tracking removed */
 	k_sem_init(&data->rx_irq_sem, 0, 64);
 
 	k_mutex_lock(&data->lock, K_FOREVER);
