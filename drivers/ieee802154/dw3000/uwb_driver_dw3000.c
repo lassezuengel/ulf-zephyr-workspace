@@ -158,6 +158,8 @@ static inline int wait_for_phy(const struct device *dev) {
 // DW3000 interrupt work handler - processes DW3000 interrupts in work queue context
 static void dw3000_irq_work_handler(struct k_work *item)
 {
+    // LOG_ERR("DW3000 IRQ: Work handler triggered");
+
     struct dw3000_context *ctx = CONTAINER_OF(item, struct dw3000_context, irq_cb_work);
     uint32_t sys_stat;
     uint8_t free_phy_sem = 0;
@@ -188,6 +190,7 @@ static void dw3000_irq_work_handler(struct k_work *item)
 
     // Process different interrupt types and map to internal IRQ states
     if (sys_stat & SYS_STATUS_TXFRS_BIT_MASK) {
+        // LOG_ERR("DW3000 IRQ: TX completion seen");
         // TX frame sent
         ctx->phy_irq_event = DW3000_IRQ_TX;
         free_phy_sem = 1;
@@ -219,7 +222,7 @@ static void dw3000_irq_work_handler(struct k_work *item)
         } else {
             // No buffer has valid data - use default
             ctx->current_rx_buffer = DW3000_BUFFER_ACCESS_DEFAULT;
-            printk("DW3000_ISR_WARNING: No RXFCG bits set (RDB_STATUS=0x%02x), using default\n", rdb_status);
+            LOG_WRN_ONCE("DW3000_ISR_WARNING: No RXFCG bits set (RDB_STATUS=0x%02x), using default\n", rdb_status);
         }
 
         // Clear RX good interrupt in main SYS_STATUS register
