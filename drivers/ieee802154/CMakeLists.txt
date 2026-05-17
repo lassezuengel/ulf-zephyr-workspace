@@ -49,6 +49,7 @@ zephyr_library_include_directories(uwb_utils)
 if(CONFIG_IEEE802154_DW3000)
     zephyr_library_sources(
         dw3000/ieee802154_dw3000.c
+        dw3000/uwb_irq_broker.c
         dw3000/uwb_driver_dw3000.c
         dw3000/deca_interface.c
         dw3000/deca_compat.c

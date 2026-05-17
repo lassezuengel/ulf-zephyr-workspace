@@ -8,6 +8,8 @@
 #include <zephyr/drivers/timer/nrf_rtc_timer.h>
 #include <zephyr/logging/log.h>
 
+#include <app/drivers/ieee802154/uwb_irq_broker.h>
+
 LOG_MODULE_REGISTER(timesync_glossy, LOG_LEVEL_INF);
 
 // TODO: we don't receive the full 128 pacc symbols, is our timing completely correct here? Maybe check phy_activate_rx_delay again
@@ -139,7 +141,7 @@ int uwb_glossy_flood(const struct device *dev,
 
 		/* Wait for TX completion */
 		uwb_driver->release_device(dev);
-		irq_state = uwb_driver->wait_for_irq(dev);
+		irq_state = uwb_broker_glossy_wait(dev, K_FOREVER);
 		uwb_driver->acquire_device(dev);
 		LOG_DBG("INITIATOR: TX IRQ received, state=%d", irq_state);
 	} else {
@@ -156,7 +158,7 @@ int uwb_glossy_flood(const struct device *dev,
 			uwb_driver->enable_rx(dev, rx_timeout, 0);
 
 			uwb_driver->release_device(dev);
-			irq_state = uwb_driver->wait_for_irq(dev);
+			irq_state = uwb_broker_glossy_wait(dev, K_FOREVER);
 			uwb_driver->acquire_device(dev);
 
 			LOG_DBG("RECEIVER: RX attempt %u IRQ state=%d", k + 1, irq_state);
@@ -210,6 +212,7 @@ int uwb_glossy_flood(const struct device *dev,
 
 				uwb_driver->switch_buffers(dev);
 
+
 				uwb_driver->setup_tx_frame(dev, (uint8_t *)&glossy_frame,
 					offsetof(struct dwt_glossy_frame_buffer, payload) + glossy_frame.payload_size);
 
@@ -234,7 +237,7 @@ int uwb_glossy_flood(const struct device *dev,
 
 				/* Wait for retransmit TX completion */
 				uwb_driver->release_device(dev);
-				irq_state = uwb_driver->wait_for_irq(dev);
+				irq_state = uwb_broker_glossy_wait(dev, K_FOREVER);
 				uwb_driver->acquire_device(dev);
 			}
 		}
@@ -270,7 +273,7 @@ int uwb_glossy_flood(const struct device *dev,
 		uwb_driver->enable_rx(dev, root_rx_timeout_us, 0);
 
 		uwb_driver->release_device(dev);
-		irq_state = uwb_driver->wait_for_irq(dev);
+		irq_state = uwb_broker_glossy_wait(dev, K_FOREVER);
 		uwb_driver->acquire_device(dev);
 
 		LOG_DBG("INITIATOR: RX measurement IRQ received, state=%d", irq_state);
@@ -353,7 +356,11 @@ int deca_glossy_time_synchronization(const struct device *dev,
 	}
 
 	struct uwb_flood_result flood_result;
-	int ret = uwb_glossy_flood(dev, &flood_conf, &flood_result);
+	int ret = -EBUSY;
+  if (uwb_broker_acquire_lease(dev) == 0) {
+      ret = uwb_glossy_flood(dev, &flood_conf, &flood_result);
+      uwb_broker_release_lease(dev);
+  }
 
 	/* Always populate basic result fields */
 	result->root_node_id = flood_result.initiator_node_id;

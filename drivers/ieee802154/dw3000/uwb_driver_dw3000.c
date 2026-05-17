@@ -41,10 +41,14 @@ typedef enum {
     DW3000_BUFFER_ACCESS_DEFAULT = 2  // Default/single buffer mode
 } dw3000_buffer_access_t;
 
+K_THREAD_STACK_DEFINE(dw3000_irq_work_stack, 1024);
+static struct k_work_q dw3000_irq_work_q;
+
 struct dw3000_context {
 	struct k_mutex dev_lock;
 	struct k_sem phy_sem;
 	struct k_work irq_cb_work;
+  bool is_single_buffering;
 	atomic_t state;
 	uint8_t phy_irq_event;
 	uint32_t phy_irq_sys_stat;
@@ -55,6 +59,7 @@ struct dw3000_context {
 static struct dw3000_context dw3000_ctx = {
 	.dev_lock = Z_MUTEX_INITIALIZER(dw3000_ctx.dev_lock),
 	.phy_sem = Z_SEM_INITIALIZER(dw3000_ctx.phy_sem, 0, 1),
+  .is_single_buffering = true,
 };
 
 
@@ -159,6 +164,7 @@ static inline int wait_for_phy(const struct device *dev) {
 static void dw3000_irq_work_handler(struct k_work *item)
 {
     // LOG_ERR("DW3000 IRQ: Work handler triggered");
+    // LOG_ERR("work handler: %u", k_cycle_get_32());
 
     struct dw3000_context *ctx = CONTAINER_OF(item, struct dw3000_context, irq_cb_work);
     uint32_t sys_stat;
@@ -190,7 +196,7 @@ static void dw3000_irq_work_handler(struct k_work *item)
 
     // Process different interrupt types and map to internal IRQ states
     if (sys_stat & SYS_STATUS_TXFRS_BIT_MASK) {
-        // LOG_ERR("DW3000 IRQ: TX completion seen");
+       // LOG_ERR("DW3000 IRQ: TX completion seen");
         // TX frame sent
         ctx->phy_irq_event = DW3000_IRQ_TX;
         free_phy_sem = 1;
@@ -275,7 +281,11 @@ static void dw3000_irq_work_handler(struct k_work *item)
 static void dw3000_interrupt_handler(void)
 {
     // Submit interrupt work to work queue for processing
-    k_work_submit(&dw3000_ctx.irq_cb_work);
+    // k_work_submit(&dw3000_ctx.irq_cb_work);
+
+    // LOG_ERR("ir handler: %u", k_cycle_get_32());
+
+    k_work_submit_to_queue(&dw3000_irq_work_q, &dw3000_ctx.irq_cb_work);
 }
 
 static uwb_irq_state_e dw3000_wait_for_irq(const struct device *dev)
@@ -337,6 +347,10 @@ static void dw3000_setup_preamble_timeout(const struct device *dev, uint16_t pac
 
 static void dw3000_enable_double_buffering(const struct device *dev, bool auto_reenable)
 {
+    struct dw3000_context *ctx = &dw3000_ctx;
+
+    ctx->is_single_buffering = false;
+
     dwt_dbl_buff_state_e state = DBL_BUF_STATE_EN;
     dwt_dbl_buff_mode_e mode = auto_reenable ? DBL_BUF_MODE_AUTO : DBL_BUF_MODE_MAN;
 
@@ -350,8 +364,24 @@ static void dw3000_enable_double_buffering(const struct device *dev, bool auto_r
             auto_reenable ? "AUTO" : "MANUAL");
 }
 
+static void dw3000_enable_single_buffering(const struct device *dev)
+{
+    struct dw3000_context *ctx = &dw3000_ctx;
+
+    ctx->is_single_buffering = true;
+
+    ull_setdblrxbuffmode(&dw3000_chip, DBL_BUF_STATE_DIS, DBL_BUF_MODE_MAN);
+}
+
 static void dw3000_switch_buffers(const struct device *dev)
 {
+    struct dw3000_context *ctx = &dw3000_ctx;
+
+    if(ctx->is_single_buffering) {
+        LOG_DBG("DW3000 switch_buffers called in single buffering mode - ignoring");
+        return;
+    }
+
     // Use DW3000's signal buffer free function which toggles buffers
     ull_signal_rx_buff_free(&dw3000_chip);
 }
@@ -762,6 +792,7 @@ static const uwb_driver_t dw3000_uwb_driver = {
     .clear_timeouts = dw3000_clear_timeouts,
 
     // Double buffering
+    .enable_single_buffering = dw3000_enable_single_buffering,
     .enable_double_buffering = dw3000_enable_double_buffering,
     .switch_buffers = dw3000_switch_buffers,
     .signal_buffer_free = dw3000_signal_buffer_free,
@@ -937,11 +968,20 @@ int uwb_driver_dw3000_init(const struct device *dev)
 
     // Initialize interrupt handling
     LOG_DBG("Initializing DW3000 interrupt handling");
+    k_work_queue_start(&dw3000_irq_work_q,
+                   dw3000_irq_work_stack,
+                   K_THREAD_STACK_SIZEOF(dw3000_irq_work_stack),
+                   K_PRIO_COOP(1),   // highest cooperative priority
+                   NULL);
+
     k_work_init(&dw3000_ctx.irq_cb_work, dw3000_irq_work_handler);
 
     // Set the custom interrupt handler in the hardware layer
     // This call registers the handler in slot 0 and enables GPIO IRQ automatically
     dw3000_hw_set_interrupt_handler(dw3000_interrupt_handler);
+
+    // TODO: Do we enable HW interrupts here?
+    dw3000_hw_interrupt_enable();
 
     // Enable IRQ polling emulation mode for ranging protocol
     atomic_set_bit(&dw3000_ctx.state, DW3000_STATE_IRQ_POLLING_EMU);

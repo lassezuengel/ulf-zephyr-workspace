@@ -417,7 +417,10 @@ typedef struct uwb_driver {
     void (*clear_timeouts)(const struct device *dev);
 
     // ==================== DOUBLE BUFFERING ====================
+    void (*enable_single_buffering)(const struct device *dev);
     void (*enable_double_buffering)(const struct device *dev, bool auto_reenable);
+    // Switch buffers (e.g., after processing a received frame, signal that the buffer can be freed and switched)
+    // This is a NOOP if the driver is in single buffering mode.
     void (*switch_buffers)(const struct device *dev);
     void (*signal_buffer_free)(const struct device *dev);
     void (*align_double_buffering)(const struct device *dev);

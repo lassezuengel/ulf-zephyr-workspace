@@ -41,6 +41,24 @@
  * 3. Block on TX event queue populated by the IRQ dispatch thread.
  */
 
+// Controls whether or not to use single buffering mode. Double-buffering seems to cause issues here.
+//
+// TODO: This can be observed both with single and double buffering,
+// but seems to be more prevalent with double-buffering.
+//
+//     [00:00:02.287,607] <wrn> ieee802154_dw3000: RX: Stray TX IRQ on RX thread, restarting RX
+//     [00:00:02.297,271] <wrn> ieee802154_dw3000: TX timeout detected
+//     [00:00:02.297,271] <wrn> ieee802154_dw3000: TX unexpected irq_state=0 (because of timeout)
+//
+// The issue seems to be that some TX IRQ is received by the IRQ scheduler before the TX function
+// even set the tx_waiting flag, causing the IRQ to be misrouted to the RX thread and cause an RX restart.
+// What is going on here?
+#define USE_SINGLE_BUFFERING 1
+// Controls whether the driver runs (i.e., starts IRQ and RX threads, allows RX/TX)
+// or returns early from init and rejects all RX/TX attempts. Useful for testing the
+// rest of the system without running the DW3000 driver.
+#define DO_NOT_RUN           0
+
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/net/ieee802154.h>
@@ -83,7 +101,6 @@ LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_WRN);
 struct dw3000_data {
 	struct net_if         *iface;
 	const uwb_driver_t    *uwb;
-	struct k_thread        irq_thread;
 	struct k_thread        rx_thread;
 	atomic_t               started;
 	atomic_t               tx_waiting;
@@ -104,8 +121,6 @@ struct dw3000_data {
 };
 
 struct dw3000_config {
-	k_thread_stack_t *irq_stack;
-	size_t            irq_stack_size;
 	k_thread_stack_t *rx_stack;
 	size_t            rx_stack_size;
 };
@@ -171,62 +186,6 @@ static void dw3000_irq_queue_push_latest(struct k_msgq *msgq,
 
 	if (k_msgq_get(msgq, &discarded, K_NO_WAIT) == 0) {
 		(void)k_msgq_put(msgq, &irq_state, K_NO_WAIT);
-	}
-}
-
-static void dw3000_irq_dispatch_thread_fn(void *arg1, void *arg2, void *arg3)
-{
-	const struct device *dev  = arg1;
-	struct dw3000_data  *data = dev->data;
-	uwb_irq_state_e      irq_state;
-	bool                 tx_pending;
-
-	ARG_UNUSED(arg2);
-	ARG_UNUSED(arg3);
-
-	while (true) {
-		irq_state = data->uwb->wait_for_irq(dev);
-		tx_pending = atomic_get(&data->tx_waiting) != 0;
-
-		switch (irq_state) {
-		case UWB_IRQ_RX:
-			dw3000_irq_queue_push_latest(&data->rx_irq_msgq, irq_state);
-			break;
-
-		case UWB_IRQ_TX:
-		case UWB_IRQ_HALF_DELAY_WARNING:
-			if (tx_pending) {
-				dw3000_irq_queue_push_latest(&data->tx_irq_msgq, irq_state);
-			} else {
-				dw3000_irq_queue_push_latest(&data->rx_irq_msgq, irq_state);
-			}
-			break;
-
-		case UWB_IRQ_FRAME_WAIT_TIMEOUT:
-		case UWB_IRQ_PREAMBLE_DETECT_TIMEOUT:
-		case UWB_IRQ_ERR:
-		case UWB_IRQ_NONE:
-			if (tx_pending) {
-				dw3000_irq_queue_push_latest(&data->tx_irq_msgq, irq_state);
-			} else {
-				dw3000_irq_queue_push_latest(&data->rx_irq_msgq, irq_state);
-			}
-			break;
-
-		case UWB_IRQ_CANCELLED:
-			/* Wake both waiters during stop/cancel transitions. */
-			dw3000_irq_queue_push_latest(&data->tx_irq_msgq, irq_state);
-			dw3000_irq_queue_push_latest(&data->rx_irq_msgq, irq_state);
-			break;
-
-		default:
-			if (tx_pending) {
-				dw3000_irq_queue_push_latest(&data->tx_irq_msgq, irq_state);
-			} else {
-				dw3000_irq_queue_push_latest(&data->rx_irq_msgq, irq_state);
-			}
-			break;
-		}
 	}
 }
 
@@ -363,7 +322,6 @@ static int dw3000_rx_capture_locked(const struct device *dev,
 		 * so the hardware can reuse the buffer.
 		 */
 		data->uwb->switch_buffers(dev);
-
     /* Re-enable RX; UWB ISR already cleared the relevant status bits. */
 		dw3000_reenable_rx_locked(dev, data);
 		return 0;
@@ -399,7 +357,7 @@ static int dw3000_rx_capture_locked(const struct device *dev,
 
 	/* Read full frame via UWB vtable. */
 	data->uwb->read_rx_frame(dev, data->rx_stage, pkt_len, 0);
-	data->uwb->switch_buffers(dev);
+  data->uwb->switch_buffers(dev);
 
 	/*
 	 * Re-enable RX immediately so hardware is ready for the next frame
@@ -448,6 +406,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 
 		switch (irq_state) {
 		case UWB_IRQ_RX:
+      LOG_WRN("RX: rxing stuff UWB_IRQ_RX.");
 			/*
 			 * A good frame has been received.  Capture it into the
 			 * staging buffer and restart RX — all under the device lock.
@@ -467,7 +426,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 			LOG_DBG("RX event=%d, restarting receiver", irq_state);
 
       /* TODO: Do we need to switch buffers here? */
-      data->uwb->switch_buffers(dev);
+		  data->uwb->switch_buffers(dev);
 
       dw3000_reenable_rx_locked(dev, data);
 			break;
@@ -514,19 +473,24 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 
 		net_pkt_cursor_init(pkt);
 		if (net_pkt_write(pkt, data->rx_stage, pkt_len) < 0) {
+			LOG_WRN("RX: Failed to write frame to net_pkt");
 			net_pkt_unref(pkt);
 			continue;
 		}
 		net_pkt_cursor_init(pkt);
 
 		if (ieee802154_handle_ack(data->iface, pkt) == NET_OK) {
+      LOG_DBG("RX: Frame was an ACK, handled internally");
 			net_pkt_unref(pkt);
 			continue;
 		}
 
 		if (net_recv_data(data->iface, pkt) != NET_OK) {
+      LOG_WRN("RX: net_recv_data failed, dropping packet");
 			net_pkt_unref(pkt);
 		}
+
+    LOG_WRN("RX: rxing done, net rcvd .");
 	}
 }
 
@@ -679,22 +643,35 @@ static int dw3000_set_txpower(const struct device *dev, int16_t dbm)
  * dispatch thread.  This avoids races with the RX path by keeping
  * wait_for_irq() in one place only.
  *
- * CSMA-CA backoff retries are driven by IRQ outcomes from that queue.
+ * TODO: CSMA-CA backoff retries should be driven by IRQ outcomes from that queue.
+ * Not yet supported.
  */
 static int dw3000_tx(const struct device *dev,
 		     enum ieee802154_tx_mode mode,
 		     struct net_pkt *pkt,
 		     struct net_buf *frag)
 {
-	struct dw3000_data *data = dev->data;
+  LOG_WRN("TX: transmitting stuff.");
+#if DO_NOT_RUN
+  return -EBUSY;
+#endif
+
+  struct dw3000_data *data = dev->data;
 	uwb_irq_state_e     irq_state;
-	bool                use_csma = false;
-	uint8_t             be       = DW3000_CSMA_MIN_BE;
+	bool                use_csma  = false;
+	uint8_t             be        = DW3000_CSMA_MIN_BE;
 	uint8_t             max_tries = 1U;
 	uint8_t             tx_try;
 	bool                cca_mode  = false;
 
 	ARG_UNUSED(pkt);
+
+  if(atomic_get(&data->tx_waiting) != 0) {
+    // TODO: This is super brittle. Also not really an error — the caller can retry later.
+    // Not sure what is going on here.
+    LOG_ERR("TX reject: already waiting on previous TX");
+    return -EBUSY;
+  }
 
 	if (!frag || frag->len == 0U) {
 		LOG_WRN("TX reject: empty fragment");
@@ -788,6 +765,7 @@ static int dw3000_tx(const struct device *dev,
        * TODO: This can break things in the UWB driver!!!
 			 */
 			if (dwt_starttx(DWT_START_TX_CCA) != DWT_SUCCESS) {
+        LOG_ERR("1 Setting tx_waiting=0");
 				atomic_set(&data->tx_waiting, 0);
 				data->uwb->setup_preamble_timeout(dev, 0U);
 				dw3000_reenable_rx_locked(dev, data);
@@ -799,7 +777,9 @@ static int dw3000_tx(const struct device *dev,
 				return -EIO;
 			}
 		} else {
-			if (data->uwb->start_tx(dev, 0) != 0) {
+			// LOG_WRN("TX: starting trans, tx_waiting=%d", atomic_get(&data->tx_waiting));
+      if (data->uwb->start_tx(dev, 0) != 0) {
+        LOG_ERR("2 Setting tx_waiting=0");
 				atomic_set(&data->tx_waiting, 0);
 				dw3000_reenable_rx_locked(dev, data);
 				data->uwb->release_device(dev);
@@ -815,6 +795,7 @@ static int dw3000_tx(const struct device *dev,
 
 		if (k_msgq_get(&data->tx_irq_msgq, &irq_state,
 			      K_MSEC(DW3000_TX_TIMEOUT_MS)) != 0) {
+			LOG_ERR("TX timed out waiting for IRQ, tx_waiting=%d", atomic_get(&data->tx_waiting));
 			irq_state = UWB_IRQ_NONE;
 		}
 		atomic_set(&data->tx_waiting, 0);
@@ -885,6 +866,7 @@ static int dw3000_start(const struct device *dev)
 
 	data->uwb->acquire_device(dev);
 	atomic_set(&data->started, 1);
+  LOG_ERR("dw3000_start: Setting tx_waiting=0");
 	atomic_set(&data->tx_waiting, 0);
 	dw3000_irq_queue_purge(&data->rx_irq_msgq);
 	dw3000_irq_queue_purge(&data->tx_irq_msgq);
@@ -913,6 +895,7 @@ static int dw3000_stop(const struct device *dev)
 
 	data->uwb->acquire_device(dev);
 	atomic_set(&data->started, 0);
+  LOG_ERR("dw3000_stop: Setting tx_waiting=0");
 	atomic_set(&data->tx_waiting, 0);
 	data->uwb->disable_txrx(dev);
 	data->uwb->release_device(dev);
@@ -1022,6 +1005,7 @@ static int dw3000_init(const struct device *dev)
 	}
 
 	atomic_set(&data->started, 0);
+  LOG_ERR("dw3000_init: Setting tx_waiting=0");
 	atomic_set(&data->tx_waiting, 0);
 	k_msgq_init(&data->rx_irq_msgq,
 		    data->rx_irq_msgq_buffer,
@@ -1065,7 +1049,10 @@ static int dw3000_init(const struct device *dev)
 	 * mode.
 	 */
 	/* dwt_setdblrxbuffmode() does NOT touch SYS_ENABLE. */
-	// dwt_setdblrxbuffmode(DBL_BUF_STATE_DIS, DBL_BUF_MODE_MAN);
+#if USE_SINGLE_BUFFERING
+  // dwt_setdblrxbuffmode(DBL_BUF_STATE_DIS, DBL_BUF_MODE_MAN);
+  data->uwb->enable_single_buffering(dev);
+#endif
 
 	/*
 	 * Apply PHY config (channel 5, preamble, TX power).
@@ -1102,19 +1089,16 @@ static int dw3000_init(const struct device *dev)
 	LOG_WRN("DW3000 IEEE802154 init channel=%u", data->channel);
 #endif
 
-	k_thread_create(&data->irq_thread,
-			cfg->irq_stack,
-			cfg->irq_stack_size,
-			dw3000_irq_dispatch_thread_fn,
-			(void *)dev,
-			NULL,
-			NULL,
-			irq_prio,
-			0,
-			K_NO_WAIT);
-	k_thread_name_set(&data->irq_thread, "dw3000_irq");
+#if DO_NOT_RUN
+  LOG_ERR("Returning early for glossy");
+  return 0;
+#endif
 
-  // TODO: Use handler within IRQ thread instead of another separate RX thread?
+  uwb_broker_init(dev,
+                  &data->rx_irq_msgq,
+                  &data->tx_irq_msgq,
+                  &data->tx_waiting);
+
 	k_thread_create(&data->rx_thread,
 			cfg->rx_stack,
 			cfg->rx_stack_size,
@@ -1139,14 +1123,10 @@ static int dw3000_init(const struct device *dev)
 #define DWT_PSDU_LENGTH (DW3000_MAX_PHY_PACKET_SIZE - DW3000_FCS_LEN)
 
 #define DW3000_INIT(n)                                              \
-	K_KERNEL_STACK_DEFINE(dw3000_irq_stack_##n,                       \
-		CONFIG_IEEE802154_DW3000_IRQ_THREAD_STACK_SIZE);                \
 	K_KERNEL_STACK_DEFINE(dw3000_rx_stack_##n,                        \
 		CONFIG_IEEE802154_DW3000_IRQ_THREAD_STACK_SIZE);                \
 	static struct dw3000_data dw3000_data_##n;                        \
 	static const struct dw3000_config dw3000_config_##n = {           \
-		.irq_stack      = dw3000_irq_stack_##n,                         \
-		.irq_stack_size = K_KERNEL_STACK_SIZEOF(dw3000_irq_stack_##n),  \
 		.rx_stack      = dw3000_rx_stack_##n,                           \
 		.rx_stack_size = K_KERNEL_STACK_SIZEOF(dw3000_rx_stack_##n),    \
 	};                                                                \

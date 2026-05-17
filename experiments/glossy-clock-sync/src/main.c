@@ -1,156 +1,22 @@
+#include <errno.h>
 #include <inttypes.h>
+#include <stdio.h>
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
+#include <zephyr/net/socket.h>
+#include <zephyr/posix/poll.h>
 #include <zephyr/sys/printk.h>
 
 #include <app/drivers/ieee802154/uwb_driver_api.h>
 
 LOG_MODULE_REGISTER(glossy_sync, LOG_LEVEL_INF);
 
-#define COMM 1
+/* ========================================================================== */
+/* Config defaults                                                             */
+/* ========================================================================== */
 
-#if COMM
-#include <errno.h>
-#include <stdio.h>
-#include <zephyr/kernel.h>
-#include <zephyr/logging/log.h>
-#include <zephyr/net/socket.h>
-
-#include <zephyr/posix/poll.h>
-#include <zephyr/posix/sys/eventfd.h>
-#include <zephyr/sys/util.h>
-
-#define PORT 4242
-#define RECV_BUF_SIZE 64
-
-static int64_t get_rtc_ms(void) {
-  return k_uptime_get();
-}
-
-#if !CONFIG_GLOSSY_IS_INITIATOR
-
-/* ── CLIENT ── */
-static void run_client(void) {
-  int sock;
-  struct sockaddr_in6 addr = {
-      .sin6_family = AF_INET6,
-      .sin6_port = htons(PORT),
-  };
-
-  inet_pton(AF_INET6, CONFIG_NET_CONFIG_MY_IPV6_ADDR, &addr.sin6_addr);
-
-  sock = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
-  if (sock < 0) {
-    LOG_ERR("Failed to create socket: %d", errno);
-    return;
-  }
-
-  if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-    LOG_ERR("bind() failed: %d", errno);
-    close(sock);
-    return;
-  }
-
-  while (true) {
-    char rx_buf[RECV_BUF_SIZE];
-    struct sockaddr_in6 from_addr;
-    socklen_t from_addrlen = sizeof(from_addr);
-
-    ssize_t len = recvfrom(sock, rx_buf, sizeof(rx_buf) - 1, 0,
-                           (struct sockaddr *)&from_addr, &from_addrlen);
-    if (len < 0) {
-      LOG_ERR("recvfrom() failed: %d", errno);
-      k_msleep(1000);
-      continue;
-    }
-
-    rx_buf[len] = '\0';
-
-    int64_t server_tx_rtc_ms;
-    if (sscanf(rx_buf, "%" SCNd64, &server_tx_rtc_ms) != 1) {
-      LOG_WRN("UDP client received malformed packet: %s", rx_buf);
-    } else {
-      int64_t client_rx_rtc_ms = get_rtc_ms();
-      int64_t clock_offset_ms = client_rx_rtc_ms - server_tx_rtc_ms;
-
-      LOG_INF("UDP client recv timestamp: server_rtc_ms=%" PRId64 ", local_rtc_ms=%" PRId64 ", clock_offset_ms=%" PRId64,
-              server_tx_rtc_ms, client_rx_rtc_ms, clock_offset_ms);
-    }
-  }
-
-  close(sock); /* unreachable, but good practice */
-}
-
-#else
-
-/* ── SERVER ── */
-static void run_server(void) {
-  int sock;
-  struct sockaddr_in6 addr = {
-      .sin6_family = AF_INET6,
-      .sin6_port = htons(PORT),
-  };
-
-  inet_pton(AF_INET6, CONFIG_NET_CONFIG_MY_IPV6_ADDR, &addr.sin6_addr);
-
-  sock = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
-  if (sock < 0) {
-    LOG_ERR("Failed to create socket: %d", errno);
-    return;
-  }
-
-  if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-    LOG_ERR("bind() failed: %d", errno);
-    close(sock);
-    return;
-  }
-
-  LOG_INF("UDP server: listening on %s:%d", CONFIG_NET_CONFIG_MY_IPV6_ADDR, PORT);
-
-  while (true) {
-    char tx_buf[RECV_BUF_SIZE];
-    struct sockaddr_in6 peer_addr = {
-        .sin6_family = AF_INET6,
-        .sin6_port = htons(PORT),
-    };
-    inet_pton(AF_INET6, CONFIG_NET_CONFIG_PEER_IPV6_ADDR, &peer_addr.sin6_addr);
-
-    int64_t server_tx_rtc_ms = get_rtc_ms();
-    int tx_len = snprintf(tx_buf, sizeof(tx_buf), "%" PRId64, server_tx_rtc_ms);
-    LOG_INF("UDP server send timestamp: rtc_ms=%" PRId64, server_tx_rtc_ms);
-
-    ssize_t sent = sendto(sock, tx_buf, tx_len, 0,
-                          (struct sockaddr *)&peer_addr, sizeof(peer_addr));
-    if (sent < 0) {
-      LOG_ERR("sendto() failed: %d", errno);
-    }
-
-    k_msleep(1000);
-  }
-
-  close(sock); /* unreachable */
-}
-
-#endif
-
-int main(void) {
-  LOG_INF("Glossy clock sync - UDP communication test");
-  k_msleep(10000); // Wait for network to be ready
-  LOG_INF("Network should be ready now, hopefully...");
-
-#if CONFIG_GLOSSY_IS_INITIATOR
-  LOG_INF("Starting as UDP server");
-  run_server();
-#else
-  LOG_INF("Starting as UDP client");
-  run_client();
-#endif
-  return 0;
-}
-
-#else /* GLOSSY */
 #ifndef CONFIG_GLOSSY_NODE_ID
 #define GLOSSY_NODE_ID 1
 #else
@@ -169,188 +35,332 @@ int main(void) {
 #define CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_TRANSMISSION_DELAY_US 750
 #endif
 
+#define PORT 4242
+#define RECV_BUF_SIZE 128
+
+/* ========================================================================== */
+/* UDP helpers                                                                 */
+/* ========================================================================== */
+
+/*
+ * Packet format: "TS <sender_uptime_ms>"
+ *
+ * Transmission delay estimate (follower side):
+ *
+ *   clock_offset_ms = follower_local_ms - initiator_local_ms
+ *                     (positive when follower clock is ahead)
+ *
+ *   delay_ms = arrival_local_ms - (sender_local_ms + clock_offset_ms)
+ */
+
+static int udp_open_socket(const char *bind_addr_str) {
+  struct sockaddr_in6 addr = {
+      .sin6_family = AF_INET6,
+      .sin6_port = htons(PORT),
+  };
+  inet_pton(AF_INET6, bind_addr_str, &addr.sin6_addr);
+
+  int sock = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
+  if (sock < 0) {
+    LOG_ERR("socket() failed: %d", errno);
+    return -1;
+  }
+  if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+    LOG_ERR("bind() failed: %d", errno);
+    close(sock);
+    return -1;
+  }
+  return sock;
+}
+
+static void udp_send_timestamp(int sock, const char *peer_addr_str) {
+  struct sockaddr_in6 peer = {
+      .sin6_family = AF_INET6,
+      .sin6_port = htons(PORT),
+  };
+  inet_pton(AF_INET6, peer_addr_str, &peer.sin6_addr);
+
+  int64_t send_ms = k_uptime_get();
+  char buf[RECV_BUF_SIZE];
+  int len = snprintf(buf, sizeof(buf), "TS %" PRId64, send_ms);
+
+  ssize_t sent = sendto(sock, buf, len, 0,
+                        (struct sockaddr *)&peer, sizeof(peer));
+  if (sent < 0) {
+    LOG_ERR("UDP TX failed: %d", errno);
+  } else {
+    LOG_INF("UDP TX: send_ms=%" PRId64, send_ms);
+  }
+}
+
+/*
+ * Wait up to timeout_ms for one UDP packet, then return.
+ * Computes and logs the delay estimate when offset is known.
+ */
+static void udp_recv_one(int sock, bool offset_known, int64_t clock_offset_ms,
+                         int timeout_ms) {
+  struct timeval tv = {
+      .tv_sec = timeout_ms / 1000,
+      .tv_usec = (timeout_ms % 1000) * 1000,
+  };
+  setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+
+  char buf[RECV_BUF_SIZE];
+  struct sockaddr_in6 from;
+  socklen_t fromlen = sizeof(from);
+
+  ssize_t len = recvfrom(sock, buf, sizeof(buf) - 1, 0,
+                         (struct sockaddr *)&from, &fromlen);
+  if (len < 0) {
+    if (errno == EAGAIN || errno == EWOULDBLOCK) {
+      LOG_WRN("UDP RX: timeout, no packet received");
+    } else {
+      LOG_ERR("recvfrom() failed: %d", errno);
+    }
+    return;
+  }
+  buf[len] = '\0';
+
+  int64_t sender_ms;
+  if (sscanf(buf, "TS %" SCNd64, &sender_ms) != 1) {
+    LOG_WRN("UDP RX: malformed packet: %s", buf);
+    return;
+  }
+
+  int64_t arrival_ms = k_uptime_get();
+
+  if (!offset_known) {
+    LOG_INF("UDP RX: sender_ms=%" PRId64 " arrival_ms=%" PRId64
+            " (offset unknown, cannot compute delay)",
+            sender_ms, arrival_ms);
+    return;
+  }
+
+  int64_t delay_ms = arrival_ms - (sender_ms + clock_offset_ms);
+  LOG_INF("UDP RX: sender_ms=%" PRId64 " arrival_ms=%" PRId64
+          " offset_ms=%" PRId64 " => one_way_delay_ms=%" PRId64,
+          sender_ms, arrival_ms, clock_offset_ms, delay_ms);
+}
+
+/* ========================================================================== */
+/* main()                                                                      */
+/* ========================================================================== */
+
 int main(void) {
-  for (int i = 0; i < 5; i++) {
+  for (int i = 0; i < 3; i++) {
     printk("System alive...\n");
     k_sleep(K_MSEC(2000));
   }
 
   const struct device *dev = DEVICE_DT_GET(DT_CHOSEN(zephyr_ieee802154));
-
   if (!device_is_ready(dev)) {
     LOG_ERR("UWB device not ready");
     return -ENODEV;
   }
 
-  LOG_INF("Glossy POC started; node id=%d role=%s", GLOSSY_NODE_ID,
-          IS_ENABLED(CONFIG_GLOSSY_IS_INITIATOR) ? "initiator" : "follower");
+  const bool is_initiator = IS_ENABLED(CONFIG_GLOSSY_IS_INITIATOR);
+
+  LOG_INF("Glossy+UDP started; node_id=%d role=%s",
+          GLOSSY_NODE_ID, is_initiator ? "initiator" : "follower");
+
+  /* ---------------------------------------------------------------------- */
+  /* UDP socket — both sides bind; initiator also sends                     */
+  /* ---------------------------------------------------------------------- */
+
+  int sock = udp_open_socket(CONFIG_NET_CONFIG_MY_IPV6_ADDR);
+  if (sock < 0) {
+    LOG_ERR("Failed to open UDP socket, aborting");
+    return -EIO;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* Glossy configuration                                                    */
+  /* ---------------------------------------------------------------------- */
 
   struct deca_glossy_configuration conf = {
       .node_addr = GLOSSY_NODE_ID,
-      .isRoot = IS_ENABLED(CONFIG_GLOSSY_IS_INITIATOR),
+      .isRoot = is_initiator,
       .guard_period_us = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_GUARD_US,
-      .max_depth = 6,
+      .max_depth = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_MAX_DEPTH,
+      .transmission_delay_us = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_TRANSMISSION_DELAY_US,
       .payload = NULL,
       .payload_size = 0,
-      .transmission_delay_us = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_TRANSMISSION_DELAY_US,
   };
 
   struct deca_glossy_result result;
 
-  // Synchronization state
-  bool is_initiator = IS_ENABLED(CONFIG_GLOSSY_IS_INITIATOR);
-  int64_t rtc_offset_ms = 0;      // Offset between this node's RTC and root's RTC (local - root)
-  bool offset_known = false;      // Whether follower has learned its offset
-  int glossy_failures_in_row = 0; // Count consecutive glossy sync failures
-  bool sync_lost = false;         // Whether we've lost sync and are in recovery mode
+  /* ---------------------------------------------------------------------- */
+  /* Synchronization state                                                   */
+  /* ---------------------------------------------------------------------- */
 
-  // Scheduling state
-  int64_t next_glossy_ms = 0;      // Next time to run glossy round (in local time)
-  int64_t next_test_msg_ms = 5000; // Next time to output test message (in local time)
+  /*
+   * clock_offset_ms = follower_local_ms - initiator_local_ms
+   * Derived from result.rtc_clock_pair each successful round.
+   */
+  int64_t clock_offset_ms = 0;
+  bool offset_known = false;
+  int failures_in_row = 0;
+  bool sync_lost = false;
 
-  // Intervals
-  int64_t glossy_interval_ms = 2000;    // between glossy rounds
-  int64_t glossy_fast_interval_ms = 20; // during recovery/resync
-  int64_t test_msg_interval_ms = 5000;  // between test messages
+  /* ---------------------------------------------------------------------- */
+  /* Scheduling                                                              */
+  /* ---------------------------------------------------------------------- */
 
-  // Initialize scheduling: glossy starts immediately
-  next_glossy_ms = k_uptime_get();
+  const int64_t GLOSSY_INTERVAL_MS = 2000;
+  const int64_t GLOSSY_FAST_INTERVAL_MS = 20;
+
+  /*
+   * UDP fires halfway through the Glossy interval, i.e.
+   * GLOSSY_INTERVAL_MS/2 after each completed Glossy round.
+   * INT64_MAX means "not yet armed".
+   */
+  int64_t next_glossy_ms = k_uptime_get();
+  int64_t next_udp_ms = INT64_MAX;
+
+  /* ---------------------------------------------------------------------- */
+  /* Event loop                                                              */
+  /* ---------------------------------------------------------------------- */
 
   while (1) {
-    int64_t current_time_ms = k_uptime_get();
-    int64_t time_to_glossy_ms = next_glossy_ms - current_time_ms;
-    int64_t time_to_test_msg_ms = next_test_msg_ms - current_time_ms;
+    int64_t now_ms = k_uptime_get();
+    int64_t to_glossy_ms = next_glossy_ms - now_ms;
+    int64_t to_udp_ms = next_udp_ms - now_ms;
 
-    // Determine which event happens first and sleep until then
-    int64_t sleep_time_ms;
-    if (time_to_glossy_ms <= 0 || time_to_test_msg_ms <= 0) {
-      // At least one event is due now
-      sleep_time_ms = 0;
-    } else {
-      // Sleep until the next event
-      sleep_time_ms = (time_to_glossy_ms < time_to_test_msg_ms) ? time_to_glossy_ms : time_to_test_msg_ms;
+    /* Sleep until the nearest due event */
+    if (to_glossy_ms > 0 && to_udp_ms > 0) {
+      k_sleep(K_MSEC(MIN(to_glossy_ms, to_udp_ms)));
     }
 
-    if (sleep_time_ms > 0) {
-      k_sleep(K_MSEC(sleep_time_ms));
-    }
+    now_ms = k_uptime_get();
+    to_glossy_ms = next_glossy_ms - now_ms;
+    to_udp_ms = next_udp_ms - now_ms;
 
-    // Re-check timing after sleep
-    current_time_ms = k_uptime_get();
-    time_to_glossy_ms = next_glossy_ms - current_time_ms;
-    time_to_test_msg_ms = next_test_msg_ms - current_time_ms;
+    /* ------------------------------------------------------------------ */
+    /* Glossy round                                                        */
+    /* ------------------------------------------------------------------ */
 
-    // Handle glossy round if due
-    if (time_to_glossy_ms <= 0) {
-      printk("[glossy] round start: role=%s id=%d\n",
-             is_initiator ? "init" : "follower",
-             GLOSSY_NODE_ID);
+    if (to_glossy_ms <= 0) {
+      LOG_INF("[glossy] round start: role=%s id=%d",
+              is_initiator ? "initiator" : "follower", GLOSSY_NODE_ID);
 
+      /*
+       * deca_glossy_time_synchronization() calls
+       * uwb_broker_acquire_lease() internally, parking the 802.15.4
+       * driver for the duration of the flood.  UDP comms resume
+       * automatically once the lease is released on return.
+       */
       int ret = deca_glossy_time_synchronization(dev, &conf, &result);
+
       if (ret == 0) {
         int64_t rtc_offset_ticks = (int64_t)result.rtc_clock_pair.local - (int64_t)result.rtc_clock_pair.ref;
         int64_t deca_offset_ticks = (int64_t)result.deca_clock_pair.local - (int64_t)result.deca_clock_pair.ref;
 
-        int64_t new_rtc_offset_ms = (rtc_offset_ticks * 1000LL) / 32768LL;
-        int64_t deca_offset_ms = (int64_t)DWT_TS_TO_US((uint64_t)(deca_offset_ticks < 0 ? -deca_offset_ticks : deca_offset_ticks)) / 1000LL;
+        int64_t new_offset_ms = (rtc_offset_ticks * 1000LL) / 32768LL;
+        int64_t deca_offset_ms = (int64_t)DWT_TS_TO_US(
+                                     (uint64_t)(deca_offset_ticks < 0
+                                                    ? -deca_offset_ticks
+                                                    : deca_offset_ticks)) /
+                                 1000LL;
         if (deca_offset_ticks < 0) {
           deca_offset_ms = -deca_offset_ms;
         }
 
-        LOG_INF("clock_offset: rtc=%" PRId64 " ms, dwt=%" PRId64 " ms",
-                new_rtc_offset_ms, deca_offset_ms);
+        clock_offset_ms = new_offset_ms;
 
-        // Follower: update offset when first obtained
-        if (!is_initiator && !offset_known) {
-          rtc_offset_ms = new_rtc_offset_ms;
+        LOG_INF("[glossy] sync ok: rtc_offset=%" PRId64
+                " ms  dwt_offset=%" PRId64 " ms",
+                new_offset_ms, deca_offset_ms);
+
+        if (!offset_known) {
           offset_known = true;
-          LOG_INF("Follower: offset synchronized, scheduling glossy to align with root");
-        } else if (!is_initiator) {
-          // Follower: update offset with latest value
-          rtc_offset_ms = new_rtc_offset_ms;
-        }
-
-        // Glossy succeeded: reset failure counter and sync recovery state
-        if (glossy_failures_in_row > 0) {
-          LOG_INF("Glossy sync recovered after %d failures", glossy_failures_in_row);
+          LOG_INF("[glossy] offset known for the first time");
         }
         if (sync_lost) {
-          LOG_INF("Sync re-established! Returning to normal glossy interval");
+          LOG_INF("[glossy] sync recovered after %d failures",
+                  failures_in_row);
           sync_lost = false;
         }
-        glossy_failures_in_row = 0;
+        failures_in_row = 0;
       } else {
-        if (glossy_failures_in_row == 0) {
-          LOG_WRN("Glossy sync failed: %d", ret);
-        }
-        glossy_failures_in_row++;
-
-        // After 3 consecutive failures, mark sync as lost and speed up retries
-        if (glossy_failures_in_row >= 3 && !sync_lost) {
-          LOG_ERR("Glossy sync lost after 3 failures - root may have restarted. Entering recovery mode.");
+        failures_in_row++;
+        LOG_WRN("[glossy] round failed (ret=%d, streak=%d)",
+                ret, failures_in_row);
+        if (failures_in_row >= 3 && !sync_lost) {
+          LOG_ERR("[glossy] sync lost — entering recovery mode");
           sync_lost = true;
-        } else if (glossy_failures_in_row >= 3 && glossy_failures_in_row % 20 == 0) {
-          LOG_WRN("Still in sync recovery mode (failures: %d)", glossy_failures_in_row);
         }
       }
 
-      printk("[glossy] round done: ret=%d\n", ret);
-
-      // Schedule next glossy round
-      current_time_ms = k_uptime_get();
-
-      // Use faster interval during recovery/resync, normal interval otherwise
-      int64_t active_interval_ms = sync_lost ? glossy_fast_interval_ms : glossy_interval_ms;
-
+      if (ret != 0) {
+        LOG_WRN("[glossy] round done: ret=%d", ret);
+      }
+      /* Schedule next Glossy round */
+      now_ms = k_uptime_get();
+      int64_t interval_ms = sync_lost ? GLOSSY_FAST_INTERVAL_MS
+                                      : GLOSSY_INTERVAL_MS;
       if (is_initiator) {
-        // Initiator: glossy at normal interval (still reachable even in recovery)
         if (sync_lost) {
-          // During recovery, keep trying more frequently too
-          next_glossy_ms = current_time_ms + active_interval_ms;
+          next_glossy_ms = now_ms + interval_ms;
         } else {
-          next_glossy_ms = ((current_time_ms / glossy_interval_ms) + 1) * glossy_interval_ms;
+          /* Snap to the global 2-second grid */
+          next_glossy_ms = ((now_ms / GLOSSY_INTERVAL_MS) + 1) * GLOSSY_INTERVAL_MS;
         }
-      } else if (offset_known) {
-        // Follower: glossy aligned to root's schedule
-        int64_t current_abs_time_ms = current_time_ms - rtc_offset_ms;
-
-        if (sync_lost) {
-          // During recovery, use fast interval to quickly re-establish
-          next_glossy_ms = current_time_ms + active_interval_ms;
-        } else {
-          // Normal operation: align to root's 2-second schedule
-          int64_t next_abs_glossy_ms = ((current_abs_time_ms / glossy_interval_ms) + 1) * glossy_interval_ms;
-          next_glossy_ms = next_abs_glossy_ms + rtc_offset_ms;
-        }
+      } else if (offset_known && !sync_lost) {
+        /* Align to initiator's 2-second grid via known offset */
+        int64_t now_initiator = now_ms - clock_offset_ms;
+        int64_t next_initiator = ((now_initiator / GLOSSY_INTERVAL_MS) + 1) * GLOSSY_INTERVAL_MS;
+        next_glossy_ms = next_initiator + clock_offset_ms;
       } else {
-        // Follower hasn't got offset yet, use fast interval to find root
-        next_glossy_ms = current_time_ms + active_interval_ms;
+        next_glossy_ms = now_ms + interval_ms;
+      }
+
+      /*
+       * Arm the UDP event halfway through the next Glossy interval.
+       * Must be scheduled in initiator-aligned time on both nodes so
+       * the follower's recvfrom fires AFTER the initiator sends.
+       *
+       * next_glossy_ms is already in initiator-aligned local time on
+       * both nodes (see scheduling above), so offsetting from that
+       * gives the same absolute moment on both clocks.
+       *
+       * Skip during recovery — the 20 ms fast interval leaves no
+       * useful window for a UDP exchange.
+       */
+      if (!sync_lost) {
+        next_udp_ms = next_glossy_ms - (GLOSSY_INTERVAL_MS / 2);
+      } else {
+        next_udp_ms = INT64_MAX;
       }
     }
 
-    // Handle test message if due
-    if (time_to_test_msg_ms <= 0) {
-      current_time_ms = k_uptime_get();
+    /* ------------------------------------------------------------------ */
+    /* UDP timestamped exchange                                            */
+    /* ------------------------------------------------------------------ */
 
-      LOG_INF("TEST MESSAGE - synchronized output (node=%d, role=%s)",
-              GLOSSY_NODE_ID, is_initiator ? "initiator" : "follower");
-
+    if (to_udp_ms <= 0) {
+      LOG_INF("[udp] exchange start: role=%s id=%d offset_known=%d "
+              "clock_offset_ms=%" PRId64,
+              is_initiator ? "initiator" : "follower", GLOSSY_NODE_ID,
+              offset_known, clock_offset_ms);
       if (is_initiator) {
-        // Initiator: test messages every 5 seconds in local time
-        next_test_msg_ms = ((current_time_ms / test_msg_interval_ms) + 1) * test_msg_interval_ms;
-      } else if (offset_known) {
-        // Follower: test messages aligned to root's 5-second schedule
-        int64_t current_abs_time_ms = current_time_ms - rtc_offset_ms;
-        int64_t next_abs_test_msg_ms = ((current_abs_time_ms / test_msg_interval_ms) + 1) * test_msg_interval_ms;
-        next_test_msg_ms = next_abs_test_msg_ms + rtc_offset_ms;
+        /*
+         * Broker is in IEEE802154 owner state here — no Glossy round
+         * is running — so the 802.15.4 driver handles this normally.
+         */
+        // udp_send_timestamp(sock, CONFIG_NET_CONFIG_PEER_IPV6_ADDR);
       } else {
-        // Follower hasn't got offset yet
-        next_test_msg_ms = current_time_ms + test_msg_interval_ms;
+        /*
+         * Drain whatever arrived since the last check.  Typically one
+         * packet sent by the initiator half an interval ago.
+         */
+        /* Block up to 500 ms — well within the 1-second window
+         * between the UDP arm point and the next Glossy round. */
+        // udp_recv_one(sock, offset_known, clock_offset_ms, 500);
       }
+      next_udp_ms = INT64_MAX; /* disarmed; re-armed after next Glossy round */
     }
   }
 
+  close(sock);
   return 0;
 }
-
-#endif

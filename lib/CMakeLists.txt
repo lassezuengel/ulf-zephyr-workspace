@@ -14,6 +14,7 @@ if(CONFIG_SYNCHROFLY)
   add_subdirectory(bias_correction)
   add_subdirectory_ifdef(CONFIG_SYNCHROFLY_SWARM_RANGING swarm_ranging)
   add_subdirectory_ifdef(CONFIG_FIRMWARE_STATS stats)
+  add_subdirectory(uwb_irq_broker)
 
   add_subdirectory_ifdef(CONFIG_CRAZYFLIE crazyflie)
 endif()
