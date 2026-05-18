@@ -406,7 +406,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 
 		switch (irq_state) {
 		case UWB_IRQ_RX:
-      LOG_WRN("RX: rxing stuff UWB_IRQ_RX.");
+      // LOG_WRN("RX: rxing stuff UWB_IRQ_RX.");
 			/*
 			 * A good frame has been received.  Capture it into the
 			 * staging buffer and restart RX — all under the device lock.
@@ -499,7 +499,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 			net_pkt_unref(pkt);
 		}
 
-    LOG_WRN("RX: rxing done, net rcvd .");
+    // LOG_WRN("RX: rxing done, net rcvd .");
 	}
 }
 
@@ -660,7 +660,7 @@ static int dw3000_tx(const struct device *dev,
 		     struct net_pkt *pkt,
 		     struct net_buf *frag)
 {
-  LOG_WRN("TX: transmitting stuff.");
+  // LOG_WRN("TX: transmitting stuff.");
 #if DO_NOT_RUN
   return -EBUSY;
 #endif
@@ -829,6 +829,7 @@ static int dw3000_tx(const struct device *dev,
 			return -EAGAIN;
 
 		case UWB_IRQ_ERR:
+      LOG_ERR("TX error observed in IRQ, irq_state=%d", irq_state);
 			/*
 			 * CCA failure is reported as an RX error (channel busy)
 			 * on the DW3000 when using DWT_START_TX_CCA.

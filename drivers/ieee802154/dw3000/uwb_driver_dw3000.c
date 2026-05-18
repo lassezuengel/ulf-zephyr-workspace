@@ -168,6 +168,7 @@ static void dw3000_irq_work_handler(struct k_work *item)
 
     struct dw3000_context *ctx = CONTAINER_OF(item, struct dw3000_context, irq_cb_work);
     uint32_t sys_stat;
+    uint32_t clear_mask = 0;
     uint8_t free_phy_sem = 0;
 
     // Take device lock to read status register
@@ -183,27 +184,17 @@ static void dw3000_irq_work_handler(struct k_work *item)
     // Track and clear SPI CRC errors for debugging statistics
     if (sys_stat & SYS_STATUS_SPICRCE_BIT_MASK) {
         ctx->spi_crc_error_count++;
-        uint32_t clear_mask = SYS_STATUS_SPICRCE_BIT_MASK;
-        dwt_writetodevice(SYS_STATUS_ID, 0, 4, (uint8_t*)&clear_mask);
+        clear_mask |= SYS_STATUS_SPICRCE_BIT_MASK;
     }
 
     // Clear unwanted TX status bits that don't have interrupts enabled
     // These bits get set during transmission but we don't want them to accumulate
     if (sys_stat & (SYS_STATUS_TXFRB_BIT_MASK | SYS_STATUS_TXPRS_BIT_MASK | SYS_STATUS_TXPHS_BIT_MASK)) {
-        uint32_t clear_mask = (sys_stat & (SYS_STATUS_TXFRB_BIT_MASK | SYS_STATUS_TXPRS_BIT_MASK | SYS_STATUS_TXPHS_BIT_MASK));
-        dwt_writetodevice(SYS_STATUS_ID, 0, 4, (uint8_t*)&clear_mask);
+        clear_mask |= (sys_stat & (SYS_STATUS_TXFRB_BIT_MASK | SYS_STATUS_TXPRS_BIT_MASK | SYS_STATUS_TXPHS_BIT_MASK));
     }
 
     // Process different interrupt types and map to internal IRQ states
-    if (sys_stat & SYS_STATUS_TXFRS_BIT_MASK) {
-       // LOG_ERR("DW3000 IRQ: TX completion seen");
-        // TX frame sent
-        ctx->phy_irq_event = DW3000_IRQ_TX;
-        free_phy_sem = 1;
-        // Clear TX interrupt
-        uint32_t clear_mask = SYS_STATUS_TXFRS_BIT_MASK;
-        dwt_writetodevice(SYS_STATUS_ID, 0, 4, (uint8_t*)&clear_mask);
-    } else if (sys_stat & SYS_STATUS_RXFCG_BIT_MASK) {
+    if (sys_stat & SYS_STATUS_RXFCG_BIT_MASK) {
         // RX frame received successfully
         ctx->phy_irq_event = DW3000_IRQ_RX;
         free_phy_sem = 1;
@@ -232,41 +223,45 @@ static void dw3000_irq_work_handler(struct k_work *item)
         }
 
         // Clear RX good interrupt in main SYS_STATUS register
-        uint32_t clear_mask = SYS_STATUS_RXFCG_BIT_MASK;
-        dwt_writetodevice(SYS_STATUS_ID, 0, 4, (uint8_t*)&clear_mask);
+        clear_mask |= SYS_STATUS_RXFCG_BIT_MASK;
+    } else if (sys_stat & SYS_STATUS_TXFRS_BIT_MASK) {
+        // TX frame sent
+        ctx->phy_irq_event = DW3000_IRQ_TX;
+        free_phy_sem = 1;
+        clear_mask |= SYS_STATUS_TXFRS_BIT_MASK;
     } else if (sys_stat & SYS_STATUS_RXFTO_BIT_MASK) {
         // RX frame timeout
         ctx->phy_irq_event = DW3000_IRQ_FRAME_WAIT_TIMEOUT;
         free_phy_sem = 1;
         // Clear RX timeout interrupt
-        uint32_t clear_mask = SYS_STATUS_RXFTO_BIT_MASK;
-        dwt_writetodevice(SYS_STATUS_ID, 0, 4, (uint8_t*)&clear_mask);
+        clear_mask |= SYS_STATUS_RXFTO_BIT_MASK;
     } else if (sys_stat & SYS_STATUS_RXPTO_BIT_MASK) {
         // RX preamble timeout
         ctx->phy_irq_event = DW3000_IRQ_PREAMBLE_DETECT_TIMEOUT;
         free_phy_sem = 1;
         // Clear preamble timeout interrupt
-        uint32_t clear_mask = SYS_STATUS_RXPTO_BIT_MASK;
-        dwt_writetodevice(SYS_STATUS_ID, 0, 4, (uint8_t*)&clear_mask);
+        clear_mask |= SYS_STATUS_RXPTO_BIT_MASK;
     } else if (sys_stat & SYS_STATUS_HPDWARN_BIT_MASK) {
         // Half period delay warning
         ctx->phy_irq_event = DW3000_IRQ_HALF_DELAY_WARNING;
         free_phy_sem = 1;
         // Clear half delay warning interrupt
-        uint32_t clear_mask = SYS_STATUS_HPDWARN_BIT_MASK;
-        dwt_writetodevice(SYS_STATUS_ID, 0, 4, (uint8_t*)&clear_mask);
+        clear_mask |= SYS_STATUS_HPDWARN_BIT_MASK;
     } else if (sys_stat & (SYS_STATUS_RXFCE_BIT_MASK | SYS_STATUS_RXFSL_BIT_MASK |
                           SYS_STATUS_RXPHE_BIT_MASK | SYS_STATUS_CIAERR_BIT_MASK)) {
         // RX errors
         ctx->phy_irq_event = DW3000_IRQ_ERR;
         free_phy_sem = 1;
         // Clear error interrupts
-        uint32_t error_mask = SYS_STATUS_RXFCE_BIT_MASK | SYS_STATUS_RXFSL_BIT_MASK |
-                             SYS_STATUS_RXPHE_BIT_MASK | SYS_STATUS_CIAERR_BIT_MASK;
-        dwt_writetodevice(SYS_STATUS_ID, 0, 4, (uint8_t*)&error_mask);
+        clear_mask |= SYS_STATUS_RXFCE_BIT_MASK | SYS_STATUS_RXFSL_BIT_MASK |
+                      SYS_STATUS_RXPHE_BIT_MASK | SYS_STATUS_CIAERR_BIT_MASK;
     } else {
         // Unknown interrupt - clear all status bits
-        dwt_writetodevice(SYS_STATUS_ID, 0, 4, (uint8_t*)&sys_stat);
+        clear_mask |= sys_stat;
+    }
+
+    if (clear_mask != 0) {
+        dwt_writetodevice(SYS_STATUS_ID, 0, 4, (uint8_t*)&clear_mask);
     }
 
     k_mutex_unlock(&ctx->dev_lock);

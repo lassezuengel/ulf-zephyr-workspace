@@ -146,9 +146,9 @@ static void broker_thread_fn(void *arg1, void *arg2, void *arg3)
         uwb_irq_state_e state = broker.uwb->wait_for_irq(broker.dev);
         broker_owner_e  owner = (broker_owner_e)atomic_get(&broker.owner);
 
-        if(state == UWB_IRQ_RX) {
-          LOG_ERR("IRQ received: state=%d, owner=%d", state, owner);
-        }
+        // if(state == UWB_IRQ_RX) {
+        //   LOG_ERR("IRQ received: state=%d, owner=%d", state, owner);
+        // }
 
         switch (owner) {
         case BROKER_OWNER_GLOSSY:
