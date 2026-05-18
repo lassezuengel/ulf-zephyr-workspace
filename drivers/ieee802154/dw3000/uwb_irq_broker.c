@@ -290,6 +290,7 @@ void uwb_broker_release_lease(const struct device *dev)
     dwt_setinterrupt(DW3000_INT_MASK, 0U, DWT_ENABLE_INT_ONLY); // restore int mask
     broker.uwb->align_double_buffering(dev);
     broker.uwb->enable_rx(dev, 0, 0);
+    broker.uwb->clear_timeouts(dev);
     broker.uwb->release_device(dev);
 
     broker_msgq_push(broker.ieee_rx_msgq, UWB_IRQ_NONE);

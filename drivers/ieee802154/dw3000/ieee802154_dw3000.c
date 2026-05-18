@@ -707,11 +707,13 @@ static int dw3000_tx(const struct device *dev,
 		cca_mode  = true;
 		use_csma  = false;
 		max_tries = 1U;
+    LOG_WRN("TX: CCA mode not fully supported, will cause issues");
 		break;
 	case IEEE802154_TX_MODE_CSMA_CA:
 		cca_mode  = true;
 		use_csma  = true;
 		max_tries = DW3000_CSMA_MAX_BACKOFFS + 1U;
+    LOG_WRN("TX: CSMA/CA mode not fully supported, will cause issues");
 		break;
 	default:
 		LOG_WRN("Unsupported TX mode=%d", mode);
