@@ -448,8 +448,17 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3)
 
 		case UWB_IRQ_NONE:
 		default:
-			/* Spurious wake — restart receiver defensively. */
-			dw3000_reenable_rx_locked(dev, data);
+      /* Check if a real RX event is already queued — process it instead */
+      {
+          uwb_irq_state_e pending;
+          if (k_msgq_get(&data->rx_irq_msgq, &pending, K_NO_WAIT) == 0
+              && pending == UWB_IRQ_RX) {
+              /* Fall through to RX capture with the real event */
+              (void)dw3000_rx_capture_locked(dev, data, &ack_handled, &pkt_len);
+          } else {
+              dw3000_reenable_rx_locked(dev, data);
+          }
+      }
 			break;
 		}
 

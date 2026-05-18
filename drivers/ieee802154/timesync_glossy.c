@@ -212,6 +212,8 @@ int uwb_glossy_flood(const struct device *dev,
 
 				uwb_driver->switch_buffers(dev);
 
+        // TODO: Remove
+        uwb_driver->force_trx_off(dev);
 
 				uwb_driver->setup_tx_frame(dev, (uint8_t *)&glossy_frame,
 					offsetof(struct dwt_glossy_frame_buffer, payload) + glossy_frame.payload_size);

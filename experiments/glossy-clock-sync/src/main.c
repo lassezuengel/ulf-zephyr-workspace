@@ -38,20 +38,36 @@ LOG_MODULE_REGISTER(glossy_sync, LOG_LEVEL_INF);
 #define PORT 4242
 #define RECV_BUF_SIZE 128
 
+/* UDP RX thread stack / priority */
+#define UDP_RX_STACK_SIZE 2048
+#define UDP_RX_PRIORITY 5
+
 /* ========================================================================== */
-/* UDP helpers                                                                 */
+/* Shared synchronisation state                                                */
 /* ========================================================================== */
 
 /*
- * Packet format: "TS <sender_uptime_ms>"
+ * Written by the main thread after every successful Glossy round.
+ * Read by the UDP RX thread for every incoming packet.
+ * Protected by sync_state_mutex.
  *
- * Transmission delay estimate (follower side):
- *
- *   clock_offset_ms = follower_local_ms - initiator_local_ms
- *                     (positive when follower clock is ahead)
- *
- *   delay_ms = arrival_local_ms - (sender_local_ms + clock_offset_ms)
+ * clock_offset_ms = follower_local_ms - initiator_local_ms
+ *   (positive when follower clock is ahead)
  */
+struct sync_state {
+  struct k_mutex mutex;
+  int64_t clock_offset_ms;
+  bool offset_known;
+};
+
+static struct sync_state g_sync = {
+    .clock_offset_ms = 0,
+    .offset_known = false,
+};
+
+/* ========================================================================== */
+/* UDP helpers                                                                 */
+/* ========================================================================== */
 
 static int udp_open_socket(const char *bind_addr_str) {
   struct sockaddr_in6 addr = {
@@ -93,53 +109,86 @@ static void udp_send_timestamp(int sock, const char *peer_addr_str) {
   }
 }
 
+/* ========================================================================== */
+/* UDP RX thread                                                               */
+/* ========================================================================== */
+
 /*
- * Wait up to timeout_ms for one UDP packet, then return.
- * Computes and logs the delay estimate when offset is known.
+ * Packet format: "TS <sender_uptime_ms>"
+ *
+ * One-way delay estimate (follower side):
+ *
+ *   clock_offset_ms = follower_local_ms - initiator_local_ms
+ *                     (positive when follower clock is ahead)
+ *
+ *   delay_ms = arrival_local_ms - (sender_local_ms + clock_offset_ms)
  */
-static void udp_recv_one(int sock, bool offset_known, int64_t clock_offset_ms,
-                         int timeout_ms) {
-  struct timeval tv = {
-      .tv_sec = timeout_ms / 1000,
-      .tv_usec = (timeout_ms % 1000) * 1000,
-  };
-  setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+
+struct udp_rx_thread_args {
+  int sock;
+};
+
+static struct udp_rx_thread_args g_udp_rx_args;
+
+K_THREAD_STACK_DEFINE(udp_rx_stack, UDP_RX_STACK_SIZE);
+static struct k_thread udp_rx_thread_data;
+
+static void udp_rx_thread_fn(void *arg1, void *arg2, void *arg3) {
+  ARG_UNUSED(arg2);
+  ARG_UNUSED(arg3);
+
+  struct udp_rx_thread_args *args = (struct udp_rx_thread_args *)arg1;
+  int sock = args->sock;
 
   char buf[RECV_BUF_SIZE];
   struct sockaddr_in6 from;
-  socklen_t fromlen = sizeof(from);
+  socklen_t fromlen;
 
-  ssize_t len = recvfrom(sock, buf, sizeof(buf) - 1, 0,
-                         (struct sockaddr *)&from, &fromlen);
-  if (len < 0) {
-    if (errno == EAGAIN || errno == EWOULDBLOCK) {
-      LOG_WRN("UDP RX: timeout, no packet received");
-    } else {
-      LOG_ERR("recvfrom() failed: %d", errno);
+  LOG_INF("[udp_rx] thread started");
+
+  while (1) {
+    fromlen = sizeof(from);
+
+    /* Blocking recvfrom — no timeout; runs until a packet arrives */
+    ssize_t len = recvfrom(sock, buf, sizeof(buf) - 1, 0,
+                           (struct sockaddr *)&from, &fromlen);
+    if (len < 0) {
+      LOG_ERR("[udp_rx] recvfrom() failed: %d", errno);
+      /* Brief back-off to avoid tight error loops */
+      k_sleep(K_MSEC(10));
+      continue;
     }
-    return;
+    buf[len] = '\0';
+
+    int64_t arrival_ms = k_uptime_get();
+
+    int64_t sender_ms;
+    if (sscanf(buf, "TS %" SCNd64, &sender_ms) != 1) {
+      LOG_WRN("[udp_rx] malformed packet: %s", buf);
+      continue;
+    }
+
+    /* Snapshot shared sync state */
+    int64_t clock_offset_ms;
+    bool offset_known;
+
+    k_mutex_lock(&g_sync.mutex, K_FOREVER);
+    clock_offset_ms = g_sync.clock_offset_ms;
+    offset_known = g_sync.offset_known;
+    k_mutex_unlock(&g_sync.mutex);
+
+    if (!offset_known) {
+      LOG_INF("[udp_rx] sender_ms=%" PRId64 " arrival_ms=%" PRId64
+              " (offset unknown, cannot compute delay)",
+              sender_ms, arrival_ms);
+      continue;
+    }
+
+    int64_t delay_ms = arrival_ms - (sender_ms + clock_offset_ms);
+    LOG_INF("[udp_rx] sender_ms=%" PRId64 " arrival_ms=%" PRId64
+            " offset_ms=%" PRId64 " => one_way_delay_ms=%" PRId64,
+            sender_ms, arrival_ms, clock_offset_ms, delay_ms);
   }
-  buf[len] = '\0';
-
-  int64_t sender_ms;
-  if (sscanf(buf, "TS %" SCNd64, &sender_ms) != 1) {
-    LOG_WRN("UDP RX: malformed packet: %s", buf);
-    return;
-  }
-
-  int64_t arrival_ms = k_uptime_get();
-
-  if (!offset_known) {
-    LOG_INF("UDP RX: sender_ms=%" PRId64 " arrival_ms=%" PRId64
-            " (offset unknown, cannot compute delay)",
-            sender_ms, arrival_ms);
-    return;
-  }
-
-  int64_t delay_ms = arrival_ms - (sender_ms + clock_offset_ms);
-  LOG_INF("UDP RX: sender_ms=%" PRId64 " arrival_ms=%" PRId64
-          " offset_ms=%" PRId64 " => one_way_delay_ms=%" PRId64,
-          sender_ms, arrival_ms, clock_offset_ms, delay_ms);
 }
 
 /* ========================================================================== */
@@ -164,7 +213,13 @@ int main(void) {
           GLOSSY_NODE_ID, is_initiator ? "initiator" : "follower");
 
   /* ---------------------------------------------------------------------- */
-  /* UDP socket — both sides bind; initiator also sends                     */
+  /* Shared state init                                                       */
+  /* ---------------------------------------------------------------------- */
+
+  k_mutex_init(&g_sync.mutex);
+
+  /* ---------------------------------------------------------------------- */
+  /* UDP socket                                                              */
   /* ---------------------------------------------------------------------- */
 
   int sock = udp_open_socket(CONFIG_NET_CONFIG_MY_IPV6_ADDR);
@@ -172,6 +227,22 @@ int main(void) {
     LOG_ERR("Failed to open UDP socket, aborting");
     return -EIO;
   }
+
+  /* ---------------------------------------------------------------------- */
+  /* Start continuous UDP RX thread (follower only; harmless on initiator)  */
+  /* ---------------------------------------------------------------------- */
+
+  g_udp_rx_args.sock = sock;
+
+  k_thread_create(&udp_rx_thread_data,
+                  udp_rx_stack,
+                  K_THREAD_STACK_SIZEOF(udp_rx_stack),
+                  udp_rx_thread_fn,
+                  &g_udp_rx_args, NULL, NULL,
+                  UDP_RX_PRIORITY,
+                  0,
+                  K_NO_WAIT);
+  k_thread_name_set(&udp_rx_thread_data, "udp_rx");
 
   /* ---------------------------------------------------------------------- */
   /* Glossy configuration                                                    */
@@ -182,7 +253,8 @@ int main(void) {
       .isRoot = is_initiator,
       .guard_period_us = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_GUARD_US,
       .max_depth = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_MAX_DEPTH,
-      .transmission_delay_us = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_TRANSMISSION_DELAY_US,
+      .transmission_delay_us =
+          CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_TRANSMISSION_DELAY_US,
       .payload = NULL,
       .payload_size = 0,
   };
@@ -190,13 +262,9 @@ int main(void) {
   struct deca_glossy_result result;
 
   /* ---------------------------------------------------------------------- */
-  /* Synchronization state                                                   */
+  /* Synchronisation state (main-thread copy, written under mutex)          */
   /* ---------------------------------------------------------------------- */
 
-  /*
-   * clock_offset_ms = follower_local_ms - initiator_local_ms
-   * Derived from result.rtc_clock_pair each successful round.
-   */
   int64_t clock_offset_ms = 0;
   bool offset_known = false;
   int failures_in_row = 0;
@@ -210,12 +278,12 @@ int main(void) {
   const int64_t GLOSSY_FAST_INTERVAL_MS = 20;
 
   /*
-   * UDP fires halfway through the Glossy interval, i.e.
-   * GLOSSY_INTERVAL_MS/2 after each completed Glossy round.
-   * INT64_MAX means "not yet armed".
+   * Initiator sends a UDP timestamp halfway through each Glossy interval
+   * so the follower's RX thread receives it well before the next round.
+   * INT64_MAX = "not yet armed".
    */
   int64_t next_glossy_ms = k_uptime_get();
-  int64_t next_udp_ms = INT64_MAX;
+  int64_t next_udp_tx_ms = INT64_MAX; /* initiator only */
 
   /* ---------------------------------------------------------------------- */
   /* Event loop                                                              */
@@ -224,7 +292,7 @@ int main(void) {
   while (1) {
     int64_t now_ms = k_uptime_get();
     int64_t to_glossy_ms = next_glossy_ms - now_ms;
-    int64_t to_udp_ms = next_udp_ms - now_ms;
+    int64_t to_udp_ms = next_udp_tx_ms - now_ms;
 
     /* Sleep until the nearest due event */
     if (to_glossy_ms > 0 && to_udp_ms > 0) {
@@ -233,7 +301,18 @@ int main(void) {
 
     now_ms = k_uptime_get();
     to_glossy_ms = next_glossy_ms - now_ms;
-    to_udp_ms = next_udp_ms - now_ms;
+    to_udp_ms = next_udp_tx_ms - now_ms;
+
+    /* ------------------------------------------------------------------ */
+    /* Initiator UDP TX                                                    */
+    /* ------------------------------------------------------------------ */
+
+    if (is_initiator && to_udp_ms <= 0) {
+      LOG_INF("[udp_tx] sending timestamp: id=%d offset_ms=%" PRId64,
+              GLOSSY_NODE_ID, clock_offset_ms);
+      udp_send_timestamp(sock, CONFIG_NET_CONFIG_PEER_IPV6_ADDR);
+      next_udp_tx_ms = INT64_MAX; /* disarmed; re-armed after next Glossy */
+    }
 
     /* ------------------------------------------------------------------ */
     /* Glossy round                                                        */
@@ -244,10 +323,10 @@ int main(void) {
               is_initiator ? "initiator" : "follower", GLOSSY_NODE_ID);
 
       /*
-       * deca_glossy_time_synchronization() calls
-       * uwb_broker_acquire_lease() internally, parking the 802.15.4
-       * driver for the duration of the flood.  UDP comms resume
-       * automatically once the lease is released on return.
+       * deca_glossy_time_synchronization() acquires the UWB broker
+       * lease internally.  The UDP RX thread will block in recvfrom()
+       * during this time and resume automatically once the lease is
+       * released on return.
        */
       int ret = deca_glossy_time_synchronization(dev, &conf, &result);
 
@@ -256,16 +335,22 @@ int main(void) {
         int64_t deca_offset_ticks = (int64_t)result.deca_clock_pair.local - (int64_t)result.deca_clock_pair.ref;
 
         int64_t new_offset_ms = (rtc_offset_ticks * 1000LL) / 32768LL;
-        int64_t deca_offset_ms = (int64_t)DWT_TS_TO_US(
-                                     (uint64_t)(deca_offset_ticks < 0
-                                                    ? -deca_offset_ticks
-                                                    : deca_offset_ticks)) /
-                                 1000LL;
+        int64_t deca_offset_ms =
+            (int64_t)DWT_TS_TO_US(
+                (uint64_t)(deca_offset_ticks < 0 ? -deca_offset_ticks
+                                                 : deca_offset_ticks)) /
+            1000LL;
         if (deca_offset_ticks < 0) {
           deca_offset_ms = -deca_offset_ms;
         }
 
         clock_offset_ms = new_offset_ms;
+
+        /* Publish updated offset to the RX thread */
+        k_mutex_lock(&g_sync.mutex, K_FOREVER);
+        g_sync.clock_offset_ms = clock_offset_ms;
+        g_sync.offset_known = true;
+        k_mutex_unlock(&g_sync.mutex);
 
         LOG_INF("[glossy] sync ok: rtc_offset=%" PRId64
                 " ms  dwt_offset=%" PRId64 " ms",
@@ -289,75 +374,43 @@ int main(void) {
           LOG_ERR("[glossy] sync lost — entering recovery mode");
           sync_lost = true;
         }
-      }
-
-      if (ret != 0) {
         LOG_WRN("[glossy] round done: ret=%d", ret);
       }
+
       /* Schedule next Glossy round */
       now_ms = k_uptime_get();
       int64_t interval_ms = sync_lost ? GLOSSY_FAST_INTERVAL_MS
                                       : GLOSSY_INTERVAL_MS;
+
       if (is_initiator) {
         if (sync_lost) {
           next_glossy_ms = now_ms + interval_ms;
         } else {
           /* Snap to the global 2-second grid */
-          next_glossy_ms = ((now_ms / GLOSSY_INTERVAL_MS) + 1) * GLOSSY_INTERVAL_MS;
+          next_glossy_ms =
+              ((now_ms / GLOSSY_INTERVAL_MS) + 1) * GLOSSY_INTERVAL_MS;
         }
       } else if (offset_known && !sync_lost) {
         /* Align to initiator's 2-second grid via known offset */
         int64_t now_initiator = now_ms - clock_offset_ms;
-        int64_t next_initiator = ((now_initiator / GLOSSY_INTERVAL_MS) + 1) * GLOSSY_INTERVAL_MS;
+        int64_t next_initiator =
+            ((now_initiator / GLOSSY_INTERVAL_MS) + 1) * GLOSSY_INTERVAL_MS;
         next_glossy_ms = next_initiator + clock_offset_ms;
       } else {
         next_glossy_ms = now_ms + interval_ms;
       }
 
       /*
-       * Arm the UDP event halfway through the next Glossy interval.
-       * Must be scheduled in initiator-aligned time on both nodes so
-       * the follower's recvfrom fires AFTER the initiator sends.
-       *
-       * next_glossy_ms is already in initiator-aligned local time on
-       * both nodes (see scheduling above), so offsetting from that
-       * gives the same absolute moment on both clocks.
-       *
-       * Skip during recovery — the 20 ms fast interval leaves no
-       * useful window for a UDP exchange.
+       * Arm the initiator TX halfway through the next Glossy interval.
+       * Both nodes use initiator-aligned time for scheduling so the
+       * follower's RX thread sees the packet well before the next round.
+       * Skip during recovery (20 ms window is too narrow).
        */
-      if (!sync_lost) {
-        next_udp_ms = next_glossy_ms - (GLOSSY_INTERVAL_MS / 2);
+      if (is_initiator && !sync_lost) {
+        next_udp_tx_ms = next_glossy_ms - (GLOSSY_INTERVAL_MS / 2);
       } else {
-        next_udp_ms = INT64_MAX;
+        next_udp_tx_ms = INT64_MAX;
       }
-    }
-
-    /* ------------------------------------------------------------------ */
-    /* UDP timestamped exchange                                            */
-    /* ------------------------------------------------------------------ */
-
-    if (to_udp_ms <= 0) {
-      LOG_INF("[udp] exchange start: role=%s id=%d offset_known=%d "
-              "clock_offset_ms=%" PRId64,
-              is_initiator ? "initiator" : "follower", GLOSSY_NODE_ID,
-              offset_known, clock_offset_ms);
-      if (is_initiator) {
-        /*
-         * Broker is in IEEE802154 owner state here — no Glossy round
-         * is running — so the 802.15.4 driver handles this normally.
-         */
-        // udp_send_timestamp(sock, CONFIG_NET_CONFIG_PEER_IPV6_ADDR);
-      } else {
-        /*
-         * Drain whatever arrived since the last check.  Typically one
-         * packet sent by the initiator half an interval ago.
-         */
-        /* Block up to 500 ms — well within the 1-second window
-         * between the UDP arm point and the next Glossy round. */
-        // udp_recv_one(sock, offset_known, clock_offset_ms, 500);
-      }
-      next_udp_ms = INT64_MAX; /* disarmed; re-armed after next Glossy round */
     }
   }
 

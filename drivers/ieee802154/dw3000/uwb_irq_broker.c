@@ -10,6 +10,8 @@
 #include <zephyr/sys/atomic.h>
 #include <zephyr/logging/log.h>
 
+#include "dw3000.h"
+
 LOG_MODULE_REGISTER(uwb_irq_broker, LOG_LEVEL_WRN);
 
 /* -------------------------------------------------------------------------- */
@@ -144,8 +146,11 @@ static void broker_thread_fn(void *arg1, void *arg2, void *arg3)
         uwb_irq_state_e state = broker.uwb->wait_for_irq(broker.dev);
         broker_owner_e  owner = (broker_owner_e)atomic_get(&broker.owner);
 
-        switch (owner) {
+        if(state == UWB_IRQ_RX) {
+          LOG_ERR("IRQ received: state=%d, owner=%d", state, owner);
+        }
 
+        switch (owner) {
         case BROKER_OWNER_GLOSSY:
             /*
              * Glossy holds the lease.  Deliver the event to the Glossy
@@ -247,6 +252,7 @@ int uwb_broker_acquire_lease(const struct device *dev)
      */
     broker_msgq_push(broker.ieee_rx_msgq, UWB_IRQ_CANCELLED);
     broker_msgq_push(broker.ieee_tx_msgq, UWB_IRQ_CANCELLED);
+    k_sleep(K_MSEC(2));  // let RX thread reach k_msgq_get() before Glossy grabs the radio
 
     /* Purge any stale events from a previous Glossy round */
     uwb_irq_state_e discard;
@@ -260,24 +266,34 @@ int uwb_broker_acquire_lease(const struct device *dev)
     return 0;
 }
 
+// TODO: This stuff is already defined in the 802154 driver .c file.
+// Move to some common header if needed by both.
+#define DW3000_INT_MASK (DWT_INT_TXFRS_BIT_MASK  | \
+			 DWT_INT_RXFCG_BIT_MASK  | \
+			 DWT_INT_RXFTO_BIT_MASK  | \
+			 DWT_INT_RXPTO_BIT_MASK  | \
+			 DWT_INT_HPDWARN_BIT_MASK)
+
 void uwb_broker_release_lease(const struct device *dev)
 {
-    ARG_UNUSED(dev);
-    __ASSERT(broker.initialized, "uwb_broker_release_lease() before init");
-
     k_mutex_lock(&broker.lease_mutex, K_FOREVER);
-
     atomic_set(&broker.owner, BROKER_OWNER_IEEE802154);
 
-    /*
-     * Wake the 802.15.4 RX thread so it re-enables RX without waiting for
-     * the next real hardware event.  The RX thread's UWB_IRQ_NONE call re-
-     * enables the receiver.
-     */
-    broker_msgq_push(broker.ieee_rx_msgq, UWB_IRQ_NONE);
+    // TODO: Do this cleanly either in the glossy code (breaks this)
+    // or in the ieee802154 driver (needs this)
+    broker.uwb->acquire_device(dev);        // need the lock for hw access
+    broker.uwb->force_trx_off(dev);         // bring radio to clean idle first
+    broker.uwb->set_frame_filter(dev,       // restore frame filter
+        DWT_FF_ENABLE_802_15_4,
+        DWT_FF_BEACON_EN | DWT_FF_DATA_EN | DWT_FF_ACK_EN |
+        DWT_FF_MAC_EN | DWT_FF_MULTI_EN);
+    dwt_setinterrupt(DW3000_INT_MASK, 0U, DWT_ENABLE_INT_ONLY); // restore int mask
+    broker.uwb->align_double_buffering(dev);
+    broker.uwb->enable_rx(dev, 0, 0);
+    broker.uwb->release_device(dev);
 
+    broker_msgq_push(broker.ieee_rx_msgq, UWB_IRQ_NONE);
     k_mutex_unlock(&broker.lease_mutex);
-    LOG_INF("BROKER: Glossy lease released, 802.15.4 resumed");
 }
 
 uwb_irq_state_e uwb_broker_glossy_wait(const struct device *dev,
