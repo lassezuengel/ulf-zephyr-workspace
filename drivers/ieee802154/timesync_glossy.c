@@ -14,7 +14,7 @@ LOG_MODULE_REGISTER(timesync_glossy, LOG_LEVEL_INF);
 
 // TODO: we don't receive the full 128 pacc symbols, is our timing completely correct here? Maybe check phy_activate_rx_delay again
 
-#define MAX_GLOSSY_PAYLOAD 50
+#define MAX_GLOSSY_PAYLOAD 10
 struct __attribute__((__packed__)) dwt_glossy_frame_buffer {
 	uint8_t msg_id;
 	uint8_t hop_count;
@@ -141,7 +141,14 @@ int uwb_glossy_flood(const struct device *dev,
 
 		/* Wait for TX completion */
 		uwb_driver->release_device(dev);
-		irq_state = uwb_broker_glossy_wait(dev, K_FOREVER);
+
+    // TODO: See below at receiver side
+    irq_state = uwb_broker_glossy_wait(dev, K_MSEC(10));
+    LOG_DBG("glossy done waiting for irq, state=%d", irq_state);
+    if(irq_state == UWB_IRQ_FRAME_WAIT_TIMEOUT) {
+      LOG_WRN("glossy wait timed out waiting for TX IRQ");
+    }
+
 		uwb_driver->acquire_device(dev);
 		LOG_DBG("INITIATOR: TX IRQ received, state=%d", irq_state);
 	} else {
@@ -165,10 +172,11 @@ int uwb_glossy_flood(const struct device *dev,
 
 			if (irq_state == UWB_IRQ_RX) {
 				uint32_t local_rtc_ts = k_cycle_get_32();
-				success = true;
 
 				struct dwt_glossy_frame_buffer glossy_frame;
 				uint8_t buf[sizeof(struct dwt_glossy_frame_buffer) + FRAME_LENGTH_ADDITIONAL];
+				size_t glossy_header_len = offsetof(struct dwt_glossy_frame_buffer, payload);
+				size_t glossy_min_len = glossy_header_len + FRAME_LENGTH_ADDITIONAL;
 
 				uwb_rx_diagnostics_t rx_diag;
 				uint64_t local_dwt_ts = uwb_driver->read_rx_timestamp(dev, &rx_diag);
@@ -186,6 +194,14 @@ int uwb_glossy_flood(const struct device *dev,
 					continue;
 				}
 
+				if (pkt_len < glossy_min_len) {
+					uwb_driver->switch_buffers(dev);
+					LOG_WRN("RECEIVER: Frame too short for glossy header (%u < %u), discarding",
+						pkt_len, (unsigned)glossy_min_len);
+					success = false;
+					continue;
+				}
+
 				uwb_driver->read_rx_frame(dev, buf, pkt_len, 0);
 
 				if (buf[0] != conf->frame_id) {
@@ -196,16 +212,34 @@ int uwb_glossy_flood(const struct device *dev,
 					continue;
 				}
 
-				if (pkt_len < FRAME_LENGTH_ADDITIONAL) {
+				memcpy(&glossy_frame, buf, pkt_len - FRAME_LENGTH_ADDITIONAL);
+
+				if (glossy_frame.payload_size > MAX_GLOSSY_PAYLOAD) {
 					uwb_driver->switch_buffers(dev);
-					LOG_WRN("RECEIVER: Frame too short (%u bytes, discarding, retrying)", pkt_len);
+					LOG_WRN("RECEIVER: Invalid payload_size=%u, discarding",
+						glossy_frame.payload_size);
 					success = false;
 					continue;
 				}
 
-				memcpy(&glossy_frame, buf, pkt_len - FRAME_LENGTH_ADDITIONAL);
+				if (pkt_len != glossy_header_len + glossy_frame.payload_size + FRAME_LENGTH_ADDITIONAL) {
+					uwb_driver->switch_buffers(dev);
+					LOG_WRN("RECEIVER: Length mismatch (pkt=%u, expected=%u), discarding",
+						pkt_len, (unsigned)(glossy_header_len + glossy_frame.payload_size + FRAME_LENGTH_ADDITIONAL));
+					success = false;
+					continue;
+				}
 
-				LOG_DBG("RECEIVER: RX success, hop_count=%u, payload_size=%u, rx_ts=0x%llx",
+				if (conf->max_depth > 0 && glossy_frame.hop_count > conf->max_depth) {
+					uwb_driver->switch_buffers(dev);
+					LOG_WRN("RECEIVER: Invalid hop_count=%u (max=%u), discarding",
+						glossy_frame.hop_count, conf->max_depth);
+					success = false;
+					continue;
+				}
+
+				success = true;
+				LOG_ERR("RECEIVER: RX success, hop_count=%u, payload_size=%u, rx_ts=0x%llx",
 					glossy_frame.hop_count, glossy_frame.payload_size, local_dwt_ts);
 
 				glossy_frame.hop_count++;
@@ -239,10 +273,23 @@ int uwb_glossy_flood(const struct device *dev,
 
 				/* Wait for retransmit TX completion */
 				uwb_driver->release_device(dev);
-				irq_state = uwb_broker_glossy_wait(dev, K_FOREVER);
-				uwb_driver->acquire_device(dev);
+        LOG_DBG("glossy waiting for irq");
+        // TODO: Does this cause the stall? same issue with TX not arriving on IEEE802.15.4 path?
+        // TODO: This was K_FOREVER before. Was an unhandled timeout causing us to freeze?
+				irq_state = uwb_broker_glossy_wait(dev, K_MSEC(10));
+				LOG_DBG("glossy done waiting for irq, state=%d", irq_state);
+        if(irq_state == UWB_IRQ_FRAME_WAIT_TIMEOUT) {
+          LOG_WRN("glossy wait timed out waiting for TX IRQ");
+        }
+        uwb_driver->acquire_device(dev);
 			}
 		}
+
+    if(!success) {
+      LOG_ERR("RECEIVER: Failed to receive glossy flood after %u attempts", conf->max_depth);
+      ret = -EIO;
+      goto cleanup;
+    }
 	}
 
 	if (irq_state == UWB_IRQ_TX) {
