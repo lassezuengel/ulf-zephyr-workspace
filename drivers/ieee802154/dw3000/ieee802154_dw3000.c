@@ -732,8 +732,9 @@ static int dw3000_tx(const struct device *dev,
   ARG_UNUSED(pkt);
 
   if (atomic_get(&data->tx_waiting) != 0) {
-    // TODO: This is super brittle. Also not really an error — the caller can retry later.
-    // Not sure what is going on here.
+    // TODO: Not really an error — the caller can retry later.
+    // Not sure what is going on here. Can we somehow do multiple TX
+    // attemps in "parallel" (i.e., before the first one completes and clears tx_waiting)?
     LOG_ERR("TX reject: already waiting on previous TX");
     return -EBUSY;
   }

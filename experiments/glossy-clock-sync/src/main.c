@@ -308,8 +308,8 @@ int main(void) {
     /* ------------------------------------------------------------------ */
 
     if (is_initiator && to_udp_ms <= 0) {
-      LOG_INF("[udp_tx] sending timestamp: id=%d offset_ms=%" PRId64,
-              GLOSSY_NODE_ID, clock_offset_ms);
+      // LOG_INF("[udp_tx] sending timestamp: id=%d offset_ms=%" PRId64,
+      //         GLOSSY_NODE_ID, clock_offset_ms);
       udp_send_timestamp(sock, CONFIG_NET_CONFIG_PEER_IPV6_ADDR);
       next_udp_tx_ms = INT64_MAX; /* disarmed; re-armed after next Glossy */
     }
@@ -374,7 +374,7 @@ int main(void) {
           LOG_ERR("[glossy] sync lost — entering recovery mode");
           sync_lost = true;
         }
-        LOG_WRN("[glossy] round done: ret=%d", ret);
+        // LOG_WRN("[glossy] round done: ret=%d", ret);
       }
 
       /* Schedule next Glossy round */

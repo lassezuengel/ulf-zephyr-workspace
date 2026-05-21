@@ -141,13 +141,12 @@ int uwb_glossy_flood(const struct device *dev,
 
 		/* Wait for TX completion */
 		uwb_driver->release_device(dev);
-
-    // TODO: See below at receiver side
-    irq_state = uwb_broker_glossy_wait(dev, K_MSEC(10));
-    LOG_DBG("glossy done waiting for irq, state=%d", irq_state);
-    if(irq_state == UWB_IRQ_FRAME_WAIT_TIMEOUT) {
-      LOG_WRN("glossy wait timed out waiting for TX IRQ");
-    }
+		k_timeout_t tx_wait = K_USEC(conf->transmission_delay_us + conf->guard_period_us + 1000);
+		irq_state = uwb_broker_glossy_wait(dev, tx_wait);
+		LOG_DBG("glossy done waiting for irq, state=%d", irq_state);
+		if (irq_state == UWB_IRQ_FRAME_WAIT_TIMEOUT) {
+			LOG_WRN("glossy wait timed out waiting for TX IRQ");
+		}
 
 		uwb_driver->acquire_device(dev);
 		LOG_DBG("INITIATOR: TX IRQ received, state=%d", irq_state);
@@ -165,10 +164,17 @@ int uwb_glossy_flood(const struct device *dev,
 			uwb_driver->enable_rx(dev, rx_timeout, 0);
 
 			uwb_driver->release_device(dev);
-			irq_state = uwb_broker_glossy_wait(dev, K_FOREVER);
+			k_timeout_t rx_wait = K_USEC(rx_timeout + 1000);
+			irq_state = uwb_broker_glossy_wait(dev, rx_wait);
 			uwb_driver->acquire_device(dev);
 
 			LOG_DBG("RECEIVER: RX attempt %u IRQ state=%d", k + 1, irq_state);
+			if (irq_state == UWB_IRQ_FRAME_WAIT_TIMEOUT) {
+			  LOG_DBG("RECEIVER: RX wait timed out, resetting transceiver");
+				uwb_driver->force_trx_off(dev);
+				uwb_driver->clear_timeouts(dev);
+				continue;
+			}
 
 			if (irq_state == UWB_IRQ_RX) {
 				uint32_t local_rtc_ts = k_cycle_get_32();
@@ -273,15 +279,13 @@ int uwb_glossy_flood(const struct device *dev,
 
 				/* Wait for retransmit TX completion */
 				uwb_driver->release_device(dev);
-        LOG_DBG("glossy waiting for irq");
-        // TODO: Does this cause the stall? same issue with TX not arriving on IEEE802.15.4 path?
-        // TODO: This was K_FOREVER before. Was an unhandled timeout causing us to freeze?
-				irq_state = uwb_broker_glossy_wait(dev, K_MSEC(10));
+				k_timeout_t tx_wait = K_USEC(conf->transmission_delay_us + conf->guard_period_us + 1000);
+				irq_state = uwb_broker_glossy_wait(dev, tx_wait);
 				LOG_DBG("glossy done waiting for irq, state=%d", irq_state);
-        if(irq_state == UWB_IRQ_FRAME_WAIT_TIMEOUT) {
-          LOG_WRN("glossy wait timed out waiting for TX IRQ");
-        }
-        uwb_driver->acquire_device(dev);
+				if (irq_state == UWB_IRQ_FRAME_WAIT_TIMEOUT) {
+					LOG_WRN("glossy wait timed out waiting for TX IRQ");
+				}
+				uwb_driver->acquire_device(dev);
 			}
 		}
 
@@ -322,10 +326,16 @@ int uwb_glossy_flood(const struct device *dev,
 		uwb_driver->enable_rx(dev, root_rx_timeout_us, 0);
 
 		uwb_driver->release_device(dev);
-		irq_state = uwb_broker_glossy_wait(dev, K_FOREVER);
+    // TODO: Does K_FOREVER cause deadlock? shouldn't be possible because we specify a timeout above...
+		irq_state = uwb_broker_glossy_wait(dev, K_USEC(root_rx_timeout_us));
 		uwb_driver->acquire_device(dev);
 
 		LOG_DBG("INITIATOR: RX measurement IRQ received, state=%d", irq_state);
+		if (irq_state == UWB_IRQ_FRAME_WAIT_TIMEOUT) {
+			LOG_DBG("INITIATOR: RX measurement wait timed out, resetting transceiver");
+			uwb_driver->force_trx_off(dev);
+			uwb_driver->clear_timeouts(dev);
+		}
 
 		if (irq_state == UWB_IRQ_RX) {
 			new_initiator_rtc_ts = k_cycle_get_32();
