@@ -10,6 +10,7 @@ target uC {
 
 preamble {=
   #include "reactor-uc/reactor-c.h"
+  #include <app/drivers/ieee802154/glossy_lf.h>
 =}
 
 // Source and Destination in one reactor/federate such that it can correctly measure the latency
@@ -20,7 +21,13 @@ reactor SourceAndDestination(period: time = 1 sec) {
 
   timer trigger(1 sec, period)
 
+  reaction(startup) {=
+    printf("Starting federation...\n");
+    glossy_lf_init(true, 1);
+  =}
+
   reaction scheduleNewDelayChain(trigger) -> out {=
+    printf("Scheduling new delay chain...\n");
     lf_set(out, lf_time_physical_elapsed());
   =}
 
@@ -36,7 +43,13 @@ reactor Forwarder(bank_index: int = 0) {
   input in: instant_t
   output out: instant_t
 
+  reaction(startup) {=
+    printf("Forwarder %d starting up...\n", self->bank_index);
+    glossy_lf_init(false, self->bank_index + 2);
+  =}
+
   reaction(in) -> out {=
+    printf("Forwarding message...\n");
     lf_set(out, in->value);
   =}
 }
@@ -44,7 +57,7 @@ reactor Forwarder(bank_index: int = 0) {
 federated reactor(n: int = 1) {
   @interface_rudp
   @clock_sync(grandmaster=true)
-  srcdst = new SourceAndDestination(period = 100 msec)
+  srcdst = new SourceAndDestination(period = 2000 msec)
 
   @interface_rudp
   fwds = new[n] Forwarder()

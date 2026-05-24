@@ -12,7 +12,7 @@
 
 #include "dw3000.h"
 
-LOG_MODULE_REGISTER(uwb_irq_broker, LOG_LEVEL_WRN);
+LOG_MODULE_REGISTER(uwb_irq_broker, LOG_LEVEL_INF);
 
 /* -------------------------------------------------------------------------- */
 /* Configuration                                                               */
@@ -258,7 +258,7 @@ int uwb_broker_acquire_lease(const struct device *dev) {
   atomic_set(&broker.owner, BROKER_OWNER_GLOSSY);
 
   k_mutex_unlock(&broker.lease_mutex);
-  LOG_INF("BROKER: Glossy lease acquired");
+  LOG_DBG("BROKER: Glossy lease acquired");
   return 0;
 }
 

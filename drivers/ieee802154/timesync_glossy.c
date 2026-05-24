@@ -245,7 +245,7 @@ int uwb_glossy_flood(const struct device *dev,
 				}
 
 				success = true;
-				LOG_ERR("RECEIVER: RX success, hop_count=%u, payload_size=%u, rx_ts=0x%llx",
+				LOG_DBG("RECEIVER: RX success, hop_count=%u, payload_size=%u, rx_ts=0x%llx",
 					glossy_frame.hop_count, glossy_frame.payload_size, local_dwt_ts);
 
 				glossy_frame.hop_count++;
@@ -316,6 +316,9 @@ int uwb_glossy_flood(const struct device *dev,
 	}
 
 	/* Constant delay measurement (initiator only) */
+  // TODO: We might want to disable this for LF (or at least allow user to disable it), since
+  // we do not need constant delay measurement for LF and it adds extra time to the flood round,
+  // especially if the initiator fails to receive the first retransmission
 	if (conf->is_initiator) {
 		LOG_DBG("INITIATOR: Enabling RX to measure constant delay from first retransmission");
 		/* timesync_debug_pulse(); */
