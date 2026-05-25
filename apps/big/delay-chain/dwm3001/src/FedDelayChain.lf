@@ -26,11 +26,11 @@ reactor SourceAndDestination(period: time = 1 sec) {
 
   reaction scheduleNewDelayChain(trigger) -> out {=
     printf("Scheduling new delay chain...\n");
-    lf_set(out, lf_time_physical_elapsed());
+    lf_set(out, lf_time_physical());
   =}
 
   reaction(in) {=
-    instant_t now = lf_time_physical_elapsed();
+    instant_t now = lf_time_physical();
     int64_t latency = now - in->value;
 
     printf("Latency: %lld.%02lld ms\n", latency / 1000000, latency % 1000000);
@@ -46,16 +46,18 @@ reactor Forwarder(bank_index: int = 0) {
   =}
 
   reaction(in) -> out {=
-    printf("Forwarding message...\n");
+    instant_t now = lf_time_physical();
+    printf("Forwarding message (offset %lld.%02lld ms)\n", (now - in->value) / 1000000, (now - in->value) % 1000000);
     lf_set(out, in->value);
   =}
 }
 
+// Use glossy clock sync:
 @external_clock_sync(module="<app/drivers/ieee802154/glossy_lf.h>")
-federated reactor(n: int = 1) {
+federated reactor(n: int = 2) {
   @interface_rudp
   @clock_sync(grandmaster=true)
-  srcdst = new SourceAndDestination(period = 2000 msec)
+  srcdst = new SourceAndDestination(period = 5000 msec)
 
   @interface_rudp
   fwds = new[n] Forwarder()

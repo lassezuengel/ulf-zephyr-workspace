@@ -99,12 +99,12 @@ int lf_clock_sync_init(bool grandmaster, int federate_id) {
   return 0;
 }
 
-int lf_clock_sync_schedule(int64_t *next_glossy_ms) {
+int lf_clock_sync_schedule(int64_t *next_sync_run_ms, int64_t *clock_offset_ms) {
   if (!g_started) {
     return -EAGAIN;
   }
 
-  if (!next_glossy_ms) {
+  if (!next_sync_run_ms || !clock_offset_ms) {
     return -EINVAL;
   }
 
@@ -124,7 +124,7 @@ int lf_clock_sync_schedule(int64_t *next_glossy_ms) {
 
   struct deca_glossy_result result;
 
-  LOG_INF("[glossy] round start: role=%s id=%d",
+  LOG_DBG("[glossy] round start: role=%s id=%d",
           g_initiator ? "initiator" : "follower", g_node_id);
 
   int ret = deca_glossy_time_synchronization(g_dev, &conf, &result);
@@ -169,19 +169,21 @@ int lf_clock_sync_schedule(int64_t *next_glossy_ms) {
     g_state.sync_lost = sync_lost;
     k_mutex_unlock(&g_state.mutex);
 
-    LOG_WRN("[glossy] round failed (ret=%d, streak=%d)",
-            ret, failures_in_row);
+    if (failures_in_row < 10 || failures_in_row % 10 == 0) {
+      LOG_WRN("[glossy] round failed (ret=%d, streak=%d)",
+              ret, failures_in_row);
+    }
     if (sync_lost && failures_in_row == 3) {
       LOG_ERR("[glossy] sync lost -- entering recovery mode");
     }
   }
 
-  int64_t clock_offset_ms;
+  int64_t measured_clock_offset_ms;
   bool offset_known;
   bool sync_lost;
 
   k_mutex_lock(&g_state.mutex, K_FOREVER);
-  clock_offset_ms = g_state.clock_offset_ms;
+  measured_clock_offset_ms = g_state.clock_offset_ms;
   offset_known = g_state.offset_known;
   sync_lost = g_state.sync_lost;
   k_mutex_unlock(&g_state.mutex);
@@ -192,19 +194,20 @@ int lf_clock_sync_schedule(int64_t *next_glossy_ms) {
 
   if (g_initiator) {
     if (sync_lost) {
-      *next_glossy_ms = now_ms + interval_ms;
+      *next_sync_run_ms = now_ms + interval_ms;
     } else {
-      *next_glossy_ms =
+      *next_sync_run_ms =
           ((now_ms / GLOSSY_INTERVAL_MS) + 1) * GLOSSY_INTERVAL_MS;
     }
   } else if (offset_known && !sync_lost) {
-    int64_t now_initiator = now_ms - clock_offset_ms;
+    int64_t now_initiator = now_ms - measured_clock_offset_ms;
     int64_t next_initiator =
         ((now_initiator / GLOSSY_INTERVAL_MS) + 1) * GLOSSY_INTERVAL_MS;
-    *next_glossy_ms = next_initiator + clock_offset_ms;
+    *next_sync_run_ms = next_initiator + measured_clock_offset_ms;
   } else {
-    *next_glossy_ms = now_ms + interval_ms;
+    *next_sync_run_ms = now_ms + interval_ms;
   }
 
+  *clock_offset_ms = measured_clock_offset_ms;
   return ret;
 }

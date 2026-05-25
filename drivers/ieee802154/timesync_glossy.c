@@ -290,7 +290,7 @@ int uwb_glossy_flood(const struct device *dev,
 		}
 
     if(!success) {
-      LOG_ERR("RECEIVER: Failed to receive glossy flood after %u attempts", conf->max_depth);
+      LOG_DBG("RECEIVER: Failed to receive glossy flood after %u attempts", conf->max_depth);
       ret = -EIO;
       goto cleanup;
     }
