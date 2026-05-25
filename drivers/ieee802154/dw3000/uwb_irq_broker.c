@@ -278,6 +278,9 @@ void uwb_broker_release_lease(const struct device *dev) {
   // or in the ieee802154 driver (needs this)
   broker.uwb->acquire_device(dev);  // need the lock for hw access
   broker.uwb->force_trx_off(dev);   // bring radio to clean idle first
+
+  // TODO: Could be an issue: the third argument is evaluated as bool in the UWB driver
+  // but we assume bit flags here. Maybe need to split into two separate calls in the UWB vtable?
   broker.uwb->set_frame_filter(dev, // restore frame filter
                                DWT_FF_ENABLE_802_15_4,
                                DWT_FF_BEACON_EN | DWT_FF_DATA_EN | DWT_FF_ACK_EN |

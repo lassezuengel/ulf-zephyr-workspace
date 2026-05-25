@@ -75,7 +75,7 @@
 #include "dw3000.h"
 
 #include <zephyr/logging/log.h>
-LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_WRN);
+LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_INF);
 
 /* ------------------------------------------------------------------ */
 /* Constants                                                           */
@@ -382,6 +382,8 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3) {
   ARG_UNUSED(arg2);
   ARG_UNUSED(arg3);
 
+  LOG_INF("DW3000 RX thread started");
+
   while (true) {
     if (k_msgq_get(&data->rx_irq_msgq, &irq_state, K_FOREVER) != 0) {
       continue;
@@ -396,7 +398,9 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3) {
     pkt_len = 0U;
     ack_handled = false;
 
+    LOG_DBG("RX thread: got IRQ event %d", irq_state);
     data->uwb->acquire_device(dev);
+    LOG_DBG("RX thread: acquired device lock for IRQ event %d", irq_state);
 
     switch (irq_state) {
     case UWB_IRQ_RX:
@@ -492,7 +496,7 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3) {
       net_pkt_unref(pkt);
     }
 
-    // LOG_WRN("RX: rxing done, net rcvd .");
+    LOG_DBG("RX: rxing done, net rcvd .");
   }
 }
 
