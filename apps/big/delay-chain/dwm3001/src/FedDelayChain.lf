@@ -53,7 +53,7 @@ reactor Forwarder(bank_index: int = 0) {
 }
 
 // Use glossy clock sync:
-@external_clock_sync(module="<app/drivers/ieee802154/glossy_lf.h>")
+// @external_clock_sync(module="<app/drivers/ieee802154/glossy_lf.h>")
 federated reactor(n: int = 2) {
   @interface_rudp
   @clock_sync(grandmaster=true)
