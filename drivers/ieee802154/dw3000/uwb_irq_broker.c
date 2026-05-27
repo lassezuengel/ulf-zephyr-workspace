@@ -79,6 +79,13 @@ static void broker_msgq_push(struct k_msgq *q, uwb_irq_state_e state) {
   }
 }
 
+static void broker_msgq_purge(struct k_msgq *q) {
+  uwb_irq_state_e discard;
+
+  while (k_msgq_get(q, &discard, K_NO_WAIT) == 0) {
+  }
+}
+
 /*
  * Route an IRQ event to the 802.15.4 driver's rx or tx queue,
  * replicating the logic that previously lived in
@@ -89,12 +96,26 @@ static void broker_route_to_ieee(uwb_irq_state_e state) {
 
   switch (state) {
   case UWB_IRQ_RX:
+    LOG_DBG("RX IRQ in broker IEEE path");
     broker_msgq_push(broker.ieee_rx_msgq, state);
     break;
 
   case UWB_IRQ_TX:
-    LOG_DBG("TX IRQ in broker");
-    broker_msgq_push(broker.ieee_tx_msgq, state);
+    LOG_DBG("TX IRQ in broker IEEE path");
+    if (tx_pending) {
+      broker_msgq_push(broker.ieee_tx_msgq, state);
+    } else {
+      broker_msgq_push(broker.ieee_rx_msgq, state);
+    }
+    break;
+
+  case UWB_IRQ_CCA_BUSY:
+    LOG_DBG("CCA busy IRQ in broker IEEE path");
+    if (tx_pending) {
+      broker_msgq_push(broker.ieee_tx_msgq, state);
+    } else {
+      broker_msgq_push(broker.ieee_rx_msgq, state);
+    }
     break;
 
   case UWB_IRQ_HALF_DELAY_WARNING:
@@ -106,6 +127,7 @@ static void broker_route_to_ieee(uwb_irq_state_e state) {
     break;
 
   case UWB_IRQ_CANCELLED:
+    LOG_DBG("CANCEL IRQ in broker IEEE path");
     /* Wake both — used during stop transitions */
     broker_msgq_push(broker.ieee_tx_msgq, state);
     broker_msgq_push(broker.ieee_rx_msgq, state);
@@ -215,7 +237,6 @@ void uwb_broker_init(const struct device *dev,
 }
 
 int uwb_broker_acquire_lease(const struct device *dev) {
-  ARG_UNUSED(dev);
   __ASSERT(broker.initialized, "uwb_broker_acquire_lease() before init");
 
   k_mutex_lock(&broker.lease_mutex, K_FOREVER);
@@ -250,10 +271,22 @@ int uwb_broker_acquire_lease(const struct device *dev) {
   broker_msgq_push(broker.ieee_tx_msgq, UWB_IRQ_CANCELLED);
   k_sleep(K_MSEC(2)); // let RX thread reach k_msgq_get() before Glossy grabs the radio
 
-  /* Purge any stale events from a previous Glossy round */
-  uwb_irq_state_e discard;
-  while (k_msgq_get(&broker.glossy_msgq, &discard, K_NO_WAIT) == 0) {
+  /*
+   * Park the radio and drain stale IRQs before switching ownership.  This
+   * matters now that the UWB driver preserves a queue of IRQ events: an
+   * 802.15.4 RX/TX/timeout event queued before the lease must not become
+   * the first event observed by Glossy.
+   */
+  broker.uwb->acquire_device(dev);
+  broker.uwb->force_trx_off(dev);
+  broker.uwb->clear_timeouts(dev);
+  if (broker.uwb->flush_irq != NULL) {
+    broker.uwb->flush_irq(dev);
   }
+  broker.uwb->release_device(dev);
+
+  /* Purge any stale events from a previous Glossy round */
+  broker_msgq_purge(&broker.glossy_msgq);
 
   atomic_set(&broker.owner, BROKER_OWNER_GLOSSY);
 
@@ -269,15 +302,20 @@ int uwb_broker_acquire_lease(const struct device *dev) {
                          DWT_INT_RXFTO_BIT_MASK | \
                          DWT_INT_RXPTO_BIT_MASK | \
                          DWT_INT_HPDWARN_BIT_MASK)
+#define DW3000_INT_MASK_HI DWT_INT_HI_CCA_FAIL_BIT_MASK
 
 void uwb_broker_release_lease(const struct device *dev) {
   k_mutex_lock(&broker.lease_mutex, K_FOREVER);
-  atomic_set(&broker.owner, BROKER_OWNER_IEEE802154);
 
   // TODO: Do this cleanly either in the glossy code (breaks this)
   // or in the ieee802154 driver (needs this)
   broker.uwb->acquire_device(dev);  // need the lock for hw access
   broker.uwb->force_trx_off(dev);   // bring radio to clean idle first
+  broker.uwb->clear_timeouts(dev);
+  if (broker.uwb->flush_irq != NULL) {
+    broker.uwb->flush_irq(dev);
+  }
+  broker_msgq_purge(&broker.glossy_msgq);
 
   // TODO: Could be an issue: the third argument is evaluated as bool in the UWB driver
   // but we assume bit flags here. Maybe need to split into two separate calls in the UWB vtable?
@@ -285,12 +323,12 @@ void uwb_broker_release_lease(const struct device *dev) {
                                DWT_FF_ENABLE_802_15_4,
                                DWT_FF_BEACON_EN | DWT_FF_DATA_EN | DWT_FF_ACK_EN |
                                    DWT_FF_MAC_EN | DWT_FF_MULTI_EN);
-  dwt_setinterrupt(DW3000_INT_MASK, 0U, DWT_ENABLE_INT_ONLY); // restore int mask
+  dwt_setinterrupt(DW3000_INT_MASK, DW3000_INT_MASK_HI, DWT_ENABLE_INT_ONLY); // restore int mask
   broker.uwb->align_double_buffering(dev);
   broker.uwb->enable_rx(dev, 0, 0);
-  broker.uwb->clear_timeouts(dev);
   broker.uwb->release_device(dev);
 
+  atomic_set(&broker.owner, BROKER_OWNER_IEEE802154);
   broker_msgq_push(broker.ieee_rx_msgq, UWB_IRQ_NONE);
   k_mutex_unlock(&broker.lease_mutex);
 }

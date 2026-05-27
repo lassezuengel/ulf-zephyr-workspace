@@ -71,6 +71,7 @@
 #include <zephyr/sys/byteorder.h>
 
 #include <app/drivers/ieee802154/uwb_driver_api.h>
+#include <app/drivers/ieee802154/uwb_irq_broker.h>
 
 #include "dw3000.h"
 
@@ -94,6 +95,7 @@ LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_INF);
 #define DW3000_TX_POWER_CH5 0xFDFDFDFDUL
 #define DW3000_RX_IRQ_QUEUE_LEN 16U
 #define DW3000_TX_IRQ_QUEUE_LEN 4U
+#define IEEE802154_FCF_ACK_REQUEST 0x0020U
 
 /* ------------------------------------------------------------------ */
 /* Device data / config                                                */
@@ -174,8 +176,9 @@ static void dw3000_irq_queue_purge(struct k_msgq *msgq) {
 }
 
 /* Keep the latest IRQ if queue pressure occurs under bursty traffic. */
-static void dw3000_irq_queue_push_latest(struct k_msgq *msgq,
-                                         uwb_irq_state_e irq_state) {
+static void __attribute__((unused))
+dw3000_irq_queue_push_latest(struct k_msgq *msgq,
+                             uwb_irq_state_e irq_state) {
   uwb_irq_state_e discarded;
 
   if (k_msgq_put(msgq, &irq_state, K_NO_WAIT) == 0) {
@@ -223,6 +226,7 @@ static int dw3000_apply_filter_hw(struct dw3000_data *data) {
                          DWT_INT_RXFTO_BIT_MASK | \
                          DWT_INT_RXPTO_BIT_MASK | \
                          DWT_INT_HPDWARN_BIT_MASK)
+#define DW3000_INT_MASK_HI DWT_INT_HI_CCA_FAIL_BIT_MASK
 
 /**
  * @brief Apply default PHY configuration for channel 5.
@@ -266,9 +270,9 @@ static int dw3000_apply_phy_config_locked(struct dw3000_data *data) {
    * Restore interrupt enables wiped by dwt_configure().
    * DWT_ENABLE_INT_ONLY leaves already-set bits untouched and adds ours.
    */
-  dwt_setinterrupt(DW3000_INT_MASK, 0U, DWT_ENABLE_INT_ONLY);
+  dwt_setinterrupt(DW3000_INT_MASK, DW3000_INT_MASK_HI, DWT_ENABLE_INT_ONLY);
 
-  LOG_INF("Applied PHY: ch=5 code=10 tx_pwr=0x%08x", DW3000_TX_POWER_CH5);
+  LOG_INF("Applied PHY: ch=5 code=10 tx_pwr=0x%08lx", DW3000_TX_POWER_CH5);
   return 0;
 }
 
@@ -584,7 +588,7 @@ static int dw3000_set_channel(const struct device *dev, uint16_t channel) {
     return -EIO;
   }
   /* Restore interrupt mask after dwt_setchannel (precaution). */
-  dwt_setinterrupt(DW3000_INT_MASK, 0U, DWT_ENABLE_INT_ONLY);
+  dwt_setinterrupt(DW3000_INT_MASK, DW3000_INT_MASK_HI, DWT_ENABLE_INT_ONLY);
 
   data->uwb->release_device(dev);
   return 0;
@@ -631,7 +635,8 @@ static int dw3000_set_txpower(const struct device *dev, int16_t dbm) {
   return 0;
 }
 
-static void dw3000_log_tx_frame_header(const uint8_t *psdu, uint16_t len) {
+static void __attribute__((unused))
+dw3000_log_tx_frame_header(const uint8_t *psdu, uint16_t len) {
   uint16_t fcf;
   uint8_t seq;
   uint8_t dst_mode;
@@ -706,6 +711,17 @@ static void dw3000_log_tx_frame_header(const uint8_t *psdu, uint16_t len) {
 /* TX                                                                  */
 /* ------------------------------------------------------------------ */
 
+static bool dw3000_tx_ack_requested(const struct net_buf *frag) {
+  uint16_t fcf;
+
+  if (frag == NULL || frag->len < sizeof(uint16_t)) {
+    return false;
+  }
+
+  fcf = sys_get_le16(frag->data);
+  return (fcf & IEEE802154_FCF_ACK_REQUEST) != 0U;
+}
+
 /**
  * @brief Transmit a frame.
  *
@@ -732,6 +748,7 @@ static int dw3000_tx(const struct device *dev,
   uint8_t max_tries = 1U;
   uint8_t tx_try;
   bool cca_mode = false;
+  bool tx_expect_response;
 
   ARG_UNUSED(pkt);
 
@@ -755,6 +772,7 @@ static int dw3000_tx(const struct device *dev,
     LOG_WRN("TX reject: frame too large len=%u", frag->len);
     return -EMSGSIZE;
   }
+  tx_expect_response = dw3000_tx_ack_requested(frag);
 
   // dw3000_log_tx_frame_header(frag->data, frag->len);
 
@@ -805,10 +823,12 @@ static int dw3000_tx(const struct device *dev,
      */
     data->uwb->force_trx_off(dev);
 
+    data->uwb->clear_timeouts(dev);
+
     /*
      * For CCA mode, configure a short preamble detection timeout so
-     * the DW3000 can sense the channel.  The UWB driver's preamble
-     * timeout helper goes through dwt_setpreambledetecttimeout.
+     * the DW3000 can sense the channel.  This must happen after
+     * clear_timeouts(), because that helper also clears PTO.
      */
     if (cca_mode) {
       data->uwb->setup_preamble_timeout(dev,
@@ -817,7 +837,6 @@ static int dw3000_tx(const struct device *dev,
       data->uwb->setup_preamble_timeout(dev, 0U);
     }
 
-    data->uwb->clear_timeouts(dev); /* clear frame timeout */
     dw3000_irq_queue_purge(&data->tx_irq_msgq);
     atomic_set(&data->tx_waiting, 1);
 
@@ -828,18 +847,18 @@ static int dw3000_tx(const struct device *dev,
      */
     data->uwb->setup_tx_frame(dev, frag->data, (uint16_t)frag->len);
 
-    if (cca_mode) {
-      /*
-       * CCA TX: start with DWT_START_TX_CCA.  The DW3000 will
-       * listen for a preamble first; if the channel is busy it
-       * raises CCA_FAIL instead of TXFRS.  We use the UWB
-       * vtable's start_tx for the delayed path but need CCA
-       * mode — fall back to the direct deca API for this flag.
-       *
-       * TODO: This can break things in the UWB driver!!!
-       */
-      if (dwt_starttx(DWT_START_TX_CCA) != DWT_SUCCESS) {
-        LOG_ERR("1 Setting tx_waiting=0");
+    if (data->uwb->start_tx_ext != NULL) {
+      uint32_t tx_flags = 0U;
+
+      if (cca_mode) {
+        tx_flags |= UWB_TX_FLAG_CCA;
+      }
+      if (tx_expect_response) {
+        tx_flags |= UWB_TX_FLAG_RESPONSE_EXPECTED;
+      }
+
+      if (data->uwb->start_tx_ext(dev, 0, tx_flags) != 0) {
+        LOG_ERR("TX start failed: Setting tx_waiting=0");
         atomic_set(&data->tx_waiting, 0);
         data->uwb->setup_preamble_timeout(dev, 0U);
         dw3000_reenable_rx_locked(dev, data);
@@ -850,15 +869,25 @@ static int dw3000_tx(const struct device *dev,
         }
         return -EIO;
       }
-    } else {
-      // LOG_WRN("TX: starting trans, tx_waiting=%d", atomic_get(&data->tx_waiting));
-      if (data->uwb->start_tx(dev, 0) != 0) {
-        LOG_ERR("2 Setting tx_waiting=0");
+    } else if (cca_mode) {
+      if (dwt_starttx(DWT_START_TX_CCA) != DWT_SUCCESS) {
+        LOG_ERR("TX CCA start failed: Setting tx_waiting=0");
         atomic_set(&data->tx_waiting, 0);
+        data->uwb->setup_preamble_timeout(dev, 0U);
         dw3000_reenable_rx_locked(dev, data);
         data->uwb->release_device(dev);
+
+        if (use_csma && (tx_try + 1U) < max_tries) {
+          continue;
+        }
         return -EIO;
       }
+    } else if (data->uwb->start_tx(dev, 0) != 0) {
+      LOG_ERR("TX start failed: Setting tx_waiting=0");
+      atomic_set(&data->tx_waiting, 0);
+      dw3000_reenable_rx_locked(dev, data);
+      data->uwb->release_device(dev);
+      return -EIO;
     }
 
     /*
@@ -869,7 +898,7 @@ static int dw3000_tx(const struct device *dev,
 
     if (k_msgq_get(&data->tx_irq_msgq, &irq_state,
                    K_MSEC(DW3000_TX_TIMEOUT_MS)) != 0) {
-      LOG_ERR("TX timed out waiting for IRQ, tx_waiting=%d", atomic_get(&data->tx_waiting));
+      LOG_ERR("TX timed out waiting for IRQ, tx_waiting=%ld", atomic_get(&data->tx_waiting));
       irq_state = UWB_IRQ_NONE;
     }
     atomic_set(&data->tx_waiting, 0);
@@ -878,8 +907,14 @@ static int dw3000_tx(const struct device *dev,
 
     switch (irq_state) {
     case UWB_IRQ_TX:
-      /* Success — re-enable RX and return. */
-      dw3000_reenable_rx_locked(dev, data);
+      /*
+       * Success.  When TX was started with RESPONSE_EXPECTED, the DW3000
+       * has already turned RX back on at the radio boundary; avoid
+       * disturbing that ACK receive window.
+       */
+      if (!tx_expect_response) {
+        dw3000_reenable_rx_locked(dev, data);
+      }
       data->uwb->release_device(dev);
       return 0;
 
@@ -892,6 +927,15 @@ static int dw3000_tx(const struct device *dev,
       dw3000_reenable_rx_locked(dev, data);
       data->uwb->release_device(dev);
       return -EAGAIN;
+
+    case UWB_IRQ_CCA_BUSY:
+      LOG_DBG("TX CCA busy");
+      dw3000_reenable_rx_locked(dev, data);
+      data->uwb->release_device(dev);
+      if (use_csma && (tx_try + 1U) < max_tries) {
+        break; /* outer for loop — backoff */
+      }
+      return -EBUSY;
 
     case UWB_IRQ_ERR:
       LOG_ERR("TX error observed in IRQ, irq_state=%d", irq_state);
@@ -1057,7 +1101,6 @@ static int dw3000_init(const struct device *dev) {
   struct dw3000_data *data = dev->data;
   const struct dw3000_config *cfg = dev->config;
   int ret;
-  int irq_prio = 7;
   int rx_prio = 8;
 
   /* Initialize the UWB hardware layer (resets chip, configures SPI,
@@ -1145,7 +1188,7 @@ static int dw3000_init(const struct device *dev) {
     LOG_ERR("dwt_setchannel failed during init");
     return -EIO;
   }
-  dwt_setinterrupt(DW3000_INT_MASK, 0U, DWT_ENABLE_INT_ONLY);
+  dwt_setinterrupt(DW3000_INT_MASK, DW3000_INT_MASK_HI, DWT_ENABLE_INT_ONLY);
 
   (void)dw3000_apply_filter_hw(data);
   data->uwb->clear_timeouts(dev);

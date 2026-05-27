@@ -20,7 +20,8 @@ typedef enum {
     UWB_IRQ_PREAMBLE_DETECT_TIMEOUT = 4,
     UWB_IRQ_ERR = 5,
     UWB_IRQ_HALF_DELAY_WARNING = 6,
-    UWB_IRQ_CANCELLED = 7
+    UWB_IRQ_CANCELLED = 7,
+    UWB_IRQ_CCA_BUSY = 8
 } uwb_irq_state_e;
 
 // IRQ state to string conversion utility
@@ -32,7 +33,8 @@ static const char* irq_state_names[] = {
     "PREAMBLE_DETECT_TIMEOUT",  // 4
     "ERR",                      // 5
     "HALF_DELAY_WARNING",       // 6
-    "CANCELLED"                 // 7
+    "CANCELLED",                // 7
+    "CCA_BUSY"                  // 8
 };
 
 static inline const char* irq_state_to_string(uwb_irq_state_e state) {
@@ -97,6 +99,9 @@ typedef struct {
     uint16_t sfd_timeout;                  // SFD timeout in symbols
     bool smart_power;                      // Smart power control enable
 } uwb_config_t;
+
+#define UWB_TX_FLAG_CCA (1U << 0)
+#define UWB_TX_FLAG_RESPONSE_EXPECTED (1U << 1)
 
 // Radio-specific constants structure for abstraction
 typedef struct {
@@ -402,6 +407,7 @@ typedef struct uwb_driver {
     // ==================== TRANSCEIVER CONTROL ====================
     int (*enable_rx)(const struct device *dev, uint32_t timeout_us, uint64_t delayed_timestamp);
     int (*start_tx)(const struct device *dev, uint64_t delayed_timestamp);
+    int (*start_tx_ext)(const struct device *dev, uint64_t delayed_timestamp, uint32_t flags);
     void (*force_trx_off)(const struct device *dev);
     uwb_irq_state_e (*wait_for_irq)(const struct device *dev);
     void (*cancel_wait)(const struct device *dev);

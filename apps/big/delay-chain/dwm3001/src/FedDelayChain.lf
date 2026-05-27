@@ -57,7 +57,7 @@ reactor Forwarder(bank_index: int = 0) {
 federated reactor(n: int = 2) {
   @interface_rudp
   @clock_sync(grandmaster=true)
-  srcdst = new SourceAndDestination(period = 5000 msec)
+  srcdst = new SourceAndDestination(period = 1000 msec)
 
   @interface_rudp
   fwds = new[n] Forwarder()
