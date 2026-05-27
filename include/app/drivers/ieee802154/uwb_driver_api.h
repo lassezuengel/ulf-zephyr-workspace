@@ -412,6 +412,9 @@ typedef struct uwb_driver {
     uwb_irq_state_e (*wait_for_irq)(const struct device *dev);
     void (*cancel_wait)(const struct device *dev);
     void (*flush_irq)(const struct device *dev);
+    void (*read_irq_status)(const struct device *dev, uint32_t *status_lo, uint32_t *status_hi);
+    void (*consume_irq_status)(const struct device *dev, uint32_t status_lo_mask, uint32_t status_hi_mask);
+    void (*complete_rx)(const struct device *dev);
     void (*disable_int)(const struct device *dev);
     void (*enable_int)(const struct device *dev);
     // Set UWB channel (abstracted). Return 0 on success, negative error on failure.

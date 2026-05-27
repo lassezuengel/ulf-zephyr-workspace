@@ -26,19 +26,21 @@
  * Interrupt / RX flow
  * ====================
  * 1. Hardware IRQ fires -> dw3000_interrupt_handler -> k_work_submit.
- * 2. Work handler reads/clears SYS_STATUS, sets phy_irq_event, gives phy_sem.
- * 3. Dedicated IRQ dispatch thread is the ONLY waiter on wait_for_irq(); it
- *    routes IRQ events to RX and TX event queues.
- * 4. RX thread dequeues RX events, acquires device lock, reads frame via UWB
- *    vtable (read_rx_frame / get_rx_frame_length), re-enables RX via
- *    enable_rx(), releases lock.
+ * 2. Work handler latches IRQ status and wakes the broker. RXFCG is not
+ *    cleared until the frame payload has been captured.
+ * 3. The broker is the ONLY waiter on wait_for_irq(); it routes wakeups to RX
+ *    and TX event queues.
+ * 4. RX thread dequeues wakeups, acquires device lock, drains latched/current
+ *    status via the UWB vtable, reads frames, completes RX, re-enables RX,
+ *    and releases the lock.
  * 5. Frame is dispatched to the net stack outside the lock.
  *
  * TX flow
  * ========
  * 1. force_trx_off (via vtable).
  * 2. setup_tx_frame + start_tx (via vtable).
- * 3. Block on TX event queue populated by the IRQ dispatch thread.
+ * 3. Poll DW3000 status under the UWB device lock until TX is terminal.
+ *    Brokered IRQ events are wake hints only; they are not correctness state.
  */
 
 // Controls whether or not to use single buffering mode. Double-buffering seems to cause issues here.
@@ -86,6 +88,7 @@ LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_INF);
 #define DW3000_MAX_PHY_PACKET_SIZE 127U
 #define DW3000_ACK_PKT_LEN 3U
 #define DW3000_TX_TIMEOUT_MS 10
+#define DW3000_TX_POLL_US 250U
 #define DW3000_CSMA_MAX_BACKOFFS 4U
 #define DW3000_CSMA_MIN_BE 3U
 #define DW3000_CSMA_MAX_BE 5U
@@ -95,7 +98,18 @@ LOG_MODULE_REGISTER(ieee802154_dw3000, LOG_LEVEL_INF);
 #define DW3000_TX_POWER_CH5 0xFDFDFDFDUL
 #define DW3000_RX_IRQ_QUEUE_LEN 16U
 #define DW3000_TX_IRQ_QUEUE_LEN 4U
+#define DW3000_RX_DRAIN_BUDGET 8U
 #define IEEE802154_FCF_ACK_REQUEST 0x0020U
+#define DW3000_STATUS_RX_GOOD DWT_INT_RXFCG_BIT_MASK
+#define DW3000_STATUS_TX_DONE DWT_INT_TXFRS_BIT_MASK
+#define DW3000_STATUS_TX_PROGRESS (DWT_INT_TXFRB_BIT_MASK | \
+                                   DWT_INT_TXPRS_BIT_MASK | \
+                                   DWT_INT_TXPHS_BIT_MASK)
+#define DW3000_STATUS_RX_TIMEOUTS SYS_STATUS_ALL_RX_TO
+#define DW3000_STATUS_RX_ERRORS SYS_STATUS_ALL_RX_ERR
+#define DW3000_STATUS_HALF_DELAY DWT_INT_HPDWARN_BIT_MASK
+#define DW3000_STATUS_CCA_BUSY_HI DWT_INT_HI_CCA_FAIL_BIT_MASK
+#define DW3000_STATUS_CMD_ERR_HI 0x100U
 
 /* ------------------------------------------------------------------ */
 /* Device data / config                                                */
@@ -172,6 +186,41 @@ static void dw3000_irq_queue_purge(struct k_msgq *msgq) {
   uwb_irq_state_e discarded;
 
   while (k_msgq_get(msgq, &discarded, K_NO_WAIT) == 0) {
+  }
+}
+
+static void dw3000_read_irq_status_locked(struct dw3000_data *data,
+                                          const struct device *dev,
+                                          uint32_t *status_lo,
+                                          uint32_t *status_hi) {
+  if (data->uwb->read_irq_status != NULL) {
+    data->uwb->read_irq_status(dev, status_lo, status_hi);
+    return;
+  }
+
+  if (status_lo != NULL) {
+    *status_lo = 0U;
+  }
+  if (status_hi != NULL) {
+    *status_hi = 0U;
+  }
+}
+
+static void dw3000_consume_irq_status_locked(struct dw3000_data *data,
+                                             const struct device *dev,
+                                             uint32_t status_lo_mask,
+                                             uint32_t status_hi_mask) {
+  if (data->uwb->consume_irq_status != NULL) {
+    data->uwb->consume_irq_status(dev, status_lo_mask, status_hi_mask);
+  }
+}
+
+static void dw3000_complete_rx_locked(struct dw3000_data *data,
+                                      const struct device *dev) {
+  if (data->uwb->complete_rx != NULL) {
+    data->uwb->complete_rx(dev);
+  } else {
+    data->uwb->switch_buffers(dev);
   }
 }
 
@@ -320,8 +369,7 @@ static int dw3000_rx_capture_locked(const struct device *dev,
      * Even for dropped frames we must complete the buffer handshake
      * so the hardware can reuse the buffer.
      */
-    data->uwb->switch_buffers(dev);
-    /* Re-enable RX; UWB ISR already cleared the relevant status bits. */
+    dw3000_complete_rx_locked(data, dev);
     dw3000_reenable_rx_locked(dev, data);
     return 0;
   }
@@ -342,7 +390,7 @@ static int dw3000_rx_capture_locked(const struct device *dev,
      */
     data->uwb->read_rx_frame(dev, dw3000_ack_psdu,
                              DW3000_ACK_PKT_LEN, 0);
-    data->uwb->switch_buffers(dev);
+    dw3000_complete_rx_locked(data, dev);
 
     dw3000_reenable_rx_locked(dev, data);
 
@@ -356,7 +404,7 @@ static int dw3000_rx_capture_locked(const struct device *dev,
 
   /* Read full frame via UWB vtable. */
   data->uwb->read_rx_frame(dev, data->rx_stage, pkt_len, 0);
-  data->uwb->switch_buffers(dev);
+  dw3000_complete_rx_locked(data, dev);
 
   /*
    * Re-enable RX immediately so hardware is ready for the next frame
@@ -369,6 +417,82 @@ static int dw3000_rx_capture_locked(const struct device *dev,
   }
 
   return 1;
+}
+
+static int dw3000_rx_drain_status_locked(const struct device *dev,
+                                         struct dw3000_data *data,
+                                         bool *ack_handled,
+                                         uint16_t *pkt_len_out) {
+  bool saw_ack = false;
+
+  if (ack_handled != NULL) {
+    *ack_handled = false;
+  }
+  if (pkt_len_out != NULL) {
+    *pkt_len_out = 0U;
+  }
+
+  for (uint8_t i = 0U; i < DW3000_RX_DRAIN_BUDGET; i++) {
+    uint32_t status_lo = 0U;
+    uint32_t status_hi = 0U;
+    uint32_t rx_faults;
+
+    dw3000_read_irq_status_locked(data, dev, &status_lo, &status_hi);
+
+    if ((status_lo & DW3000_STATUS_RX_GOOD) != 0U) {
+      bool ack_this = false;
+      uint16_t pkt_len = 0U;
+      int captured;
+
+      captured = dw3000_rx_capture_locked(dev, data, &ack_this, &pkt_len);
+      if (captured > 0 && pkt_len != 0U) {
+        if (pkt_len_out != NULL) {
+          *pkt_len_out = pkt_len;
+        }
+        if (ack_handled != NULL) {
+          *ack_handled = false;
+        }
+        return 1;
+      }
+
+      saw_ack = saw_ack || ack_this;
+      continue;
+    }
+
+    rx_faults = status_lo & (DW3000_STATUS_RX_TIMEOUTS |
+                             DW3000_STATUS_RX_ERRORS);
+    if (rx_faults != 0U) {
+      LOG_DBG("RX fault status=0x%08x, restarting receiver", rx_faults);
+      dw3000_consume_irq_status_locked(data, dev, rx_faults, 0U);
+      dw3000_reenable_rx_locked(dev, data);
+      continue;
+    }
+
+    if ((status_lo & DW3000_STATUS_TX_DONE) != 0U) {
+      LOG_DBG("RX path consumed stray TX done status");
+      dw3000_consume_irq_status_locked(data, dev, DW3000_STATUS_TX_DONE, 0U);
+      dw3000_reenable_rx_locked(dev, data);
+      continue;
+    }
+
+    if ((status_lo & DW3000_STATUS_HALF_DELAY) != 0U ||
+        (status_hi & (DW3000_STATUS_CCA_BUSY_HI |
+                      DW3000_STATUS_CMD_ERR_HI)) != 0U) {
+      dw3000_consume_irq_status_locked(data, dev,
+                                       status_lo & DW3000_STATUS_HALF_DELAY,
+                                       status_hi & (DW3000_STATUS_CCA_BUSY_HI |
+                                                    DW3000_STATUS_CMD_ERR_HI));
+      dw3000_reenable_rx_locked(dev, data);
+      continue;
+    }
+
+    break;
+  }
+
+  if (ack_handled != NULL) {
+    *ack_handled = saw_ack;
+  }
+  return 0;
 }
 
 /* ------------------------------------------------------------------ */
@@ -389,8 +513,8 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3) {
   LOG_INF("DW3000 RX thread started");
 
   while (true) {
-    if (k_msgq_get(&data->rx_irq_msgq, &irq_state, K_FOREVER) != 0) {
-      continue;
+    if (k_msgq_get(&data->rx_irq_msgq, &irq_state, K_MSEC(1)) != 0) {
+      irq_state = UWB_IRQ_NONE;
     }
 
     if (!atomic_get(&data->started) || data->iface == NULL) {
@@ -399,69 +523,22 @@ static void dw3000_rx_thread_fn(void *arg1, void *arg2, void *arg3) {
       continue;
     }
 
+    if (!uwb_broker_ieee_active()) {
+      continue;
+    }
+
     pkt_len = 0U;
     ack_handled = false;
 
-    LOG_DBG("RX thread: got IRQ event %d", irq_state);
-    data->uwb->acquire_device(dev);
-    LOG_DBG("RX thread: acquired device lock for IRQ event %d", irq_state);
-
-    switch (irq_state) {
-    case UWB_IRQ_RX:
-      // LOG_WRN("RX: rxing stuff UWB_IRQ_RX.");
-      /*
-       * A good frame has been received.  Capture it into the
-       * staging buffer and restart RX — all under the device lock.
-       * The UWB ISR has already cleared RXFCG in SYS_STATUS.
-       */
-      (void)dw3000_rx_capture_locked(dev, data,
-                                     &ack_handled, &pkt_len);
-      break;
-
-    case UWB_IRQ_FRAME_WAIT_TIMEOUT:
-    case UWB_IRQ_PREAMBLE_DETECT_TIMEOUT:
-    case UWB_IRQ_ERR:
-      /*
-       * Transient RX failure — restart receiver.
-       * The UWB ISR cleared the corresponding status bits.
-       */
-      LOG_DBG("RX event=%d, restarting receiver", irq_state);
-
-      /* TODO: Do we need to switch buffers here? */
-      data->uwb->switch_buffers(dev);
-
-      dw3000_reenable_rx_locked(dev, data);
-      break;
-
-    case UWB_IRQ_TX:
-      /*
-       * TX completion observed on the RX thread.  This can
-       * happen if the TX caller was cancelled or timed out.
-       * Simply restart the receiver so we don't stay deaf.
-       */
-      LOG_WRN("RX: Stray TX IRQ on RX thread, restarting RX");
-      dw3000_reenable_rx_locked(dev, data);
-      break;
-
-    case UWB_IRQ_CANCELLED:
+    LOG_DBG("RX thread: got wake event %d", irq_state);
+    if (irq_state == UWB_IRQ_CANCELLED) {
       /* Driver is stopping — let the loop re-evaluate started. */
-      data->uwb->release_device(dev);
       continue;
-
-    case UWB_IRQ_NONE:
-    default:
-      /* Check if a real RX event is already queued — process it instead */
-      {
-        uwb_irq_state_e pending;
-        if (k_msgq_get(&data->rx_irq_msgq, &pending, K_NO_WAIT) == 0 && pending == UWB_IRQ_RX) {
-          /* Fall through to RX capture with the real event */
-          (void)dw3000_rx_capture_locked(dev, data, &ack_handled, &pkt_len);
-        } else {
-          dw3000_reenable_rx_locked(dev, data);
-        }
-      }
-      break;
     }
+
+    data->uwb->acquire_device(dev);
+    LOG_DBG("RX thread: acquired device lock for wake event %d", irq_state);
+    (void)dw3000_rx_drain_status_locked(dev, data, &ack_handled, &pkt_len);
 
     data->uwb->release_device(dev);
 
@@ -711,7 +788,7 @@ dw3000_log_tx_frame_header(const uint8_t *psdu, uint16_t len) {
 /* TX                                                                  */
 /* ------------------------------------------------------------------ */
 
-static bool dw3000_tx_ack_requested(const struct net_buf *frag) {
+static bool __attribute__((unused)) dw3000_tx_ack_requested(const struct net_buf *frag) {
   uint16_t fcf;
 
   if (frag == NULL || frag->len < sizeof(uint16_t)) {
@@ -725,12 +802,9 @@ static bool dw3000_tx_ack_requested(const struct net_buf *frag) {
 /**
  * @brief Transmit a frame.
  *
- * TX completion is detected via a TX IRQ queue fed by the dedicated IRQ
- * dispatch thread.  This avoids races with the RX path by keeping
- * wait_for_irq() in one place only.
- *
- * TODO: CSMA-CA backoff retries should be driven by IRQ outcomes from that queue.
- * Not yet supported.
+ * IEEE TX follows the known-good driver's status-driven semantics: own the
+ * radio lock from forced-idle through terminal TX status, then restart RX
+ * before releasing the lock. Broker events only wake/purge queues.
  */
 static int dw3000_tx(const struct device *dev,
                      enum ieee802154_tx_mode mode,
@@ -742,13 +816,11 @@ static int dw3000_tx(const struct device *dev,
 #endif
 
   struct dw3000_data *data = dev->data;
-  uwb_irq_state_e irq_state;
   bool use_csma = false;
   uint8_t be = DW3000_CSMA_MIN_BE;
   uint8_t max_tries = 1U;
   uint8_t tx_try;
   bool cca_mode = false;
-  bool tx_expect_response;
 
   ARG_UNUSED(pkt);
 
@@ -772,7 +844,10 @@ static int dw3000_tx(const struct device *dev,
     LOG_WRN("TX reject: frame too large len=%u", frag->len);
     return -EMSGSIZE;
   }
-  tx_expect_response = dw3000_tx_ack_requested(frag);
+  /*
+   * Keep software ACK behavior aligned with the known-good driver for now.
+   * DWT_RESPONSE_EXPECTED intermittently trips CMD_ERR under IEEE traffic.
+   */
 
   // dw3000_log_tx_frame_header(frag->data, frag->len);
 
@@ -788,13 +863,13 @@ static int dw3000_tx(const struct device *dev,
     cca_mode = true;
     use_csma = false;
     max_tries = 1U;
-    LOG_WRN("TX: CCA mode not fully supported, will cause issues");
+    // LOG_WRN("TX: CCA mode not fully supported, will cause issues");
     break;
   case IEEE802154_TX_MODE_CSMA_CA:
     cca_mode = true;
     use_csma = true;
     max_tries = DW3000_CSMA_MAX_BACKOFFS + 1U;
-    LOG_WRN("TX: CSMA/CA mode not fully supported, will cause issues");
+    // LOG_WRN("TX: CSMA/CA mode not fully supported, will cause issues");
     break;
   default:
     LOG_WRN("Unsupported TX mode=%d", mode);
@@ -802,6 +877,11 @@ static int dw3000_tx(const struct device *dev,
   }
 
   for (tx_try = 0U; tx_try < max_tries; tx_try++) {
+    int ret;
+    int64_t timeout_end;
+    uint32_t status_lo = 0U;
+    uint32_t status_hi = 0U;
+
     /* CSMA-CA: random backoff before retry. */
     if (use_csma && tx_try > 0U) {
       uint32_t bo_slots = 1U << MIN(be, DW3000_CSMA_MAX_BE);
@@ -815,13 +895,21 @@ static int dw3000_tx(const struct device *dev,
 
     data->uwb->acquire_device(dev);
 
-    /*
-     * Stop any ongoing RX before configuring TX.
-     * Goes through the UWB vtable — the vtable calls dwt_forcetrxoff
-     * which is safe here because we hold the device lock that the
-     * UWB ISR work handler also waits on.
-     */
     data->uwb->force_trx_off(dev);
+
+    /*
+     * Match known-good ownership: do not clear RXFCG here. A valid pending
+     * frame remains owned by the RX path and must be completed only after
+     * its payload has been read.
+     */
+    dw3000_consume_irq_status_locked(data, dev,
+                                     DW3000_STATUS_TX_DONE |
+                                     DW3000_STATUS_TX_PROGRESS |
+                                     DW3000_STATUS_RX_TIMEOUTS |
+                                     DW3000_STATUS_RX_ERRORS |
+                                     DW3000_STATUS_HALF_DELAY,
+                                     DW3000_STATUS_CCA_BUSY_HI |
+                                     DW3000_STATUS_CMD_ERR_HI);
 
     data->uwb->clear_timeouts(dev);
 
@@ -847,126 +935,124 @@ static int dw3000_tx(const struct device *dev,
      */
     data->uwb->setup_tx_frame(dev, frag->data, (uint16_t)frag->len);
 
-    if (data->uwb->start_tx_ext != NULL) {
-      uint32_t tx_flags = 0U;
-
-      if (cca_mode) {
-        tx_flags |= UWB_TX_FLAG_CCA;
+    if (cca_mode) {
+      if (data->uwb->start_tx_ext != NULL) {
+        ret = data->uwb->start_tx_ext(dev, 0, UWB_TX_FLAG_CCA);
+      } else {
+        ret = dwt_starttx(DWT_START_TX_CCA);
       }
-      if (tx_expect_response) {
-        tx_flags |= UWB_TX_FLAG_RESPONSE_EXPECTED;
-      }
+    } else {
+      ret = data->uwb->start_tx(dev, 0);
+    }
 
-      if (data->uwb->start_tx_ext(dev, 0, tx_flags) != 0) {
-        LOG_ERR("TX start failed: Setting tx_waiting=0");
-        atomic_set(&data->tx_waiting, 0);
-        data->uwb->setup_preamble_timeout(dev, 0U);
-        dw3000_reenable_rx_locked(dev, data);
-        data->uwb->release_device(dev);
-
-        if (use_csma && (tx_try + 1U) < max_tries) {
-          continue;
-        }
-        return -EIO;
-      }
-    } else if (cca_mode) {
-      if (dwt_starttx(DWT_START_TX_CCA) != DWT_SUCCESS) {
-        LOG_ERR("TX CCA start failed: Setting tx_waiting=0");
-        atomic_set(&data->tx_waiting, 0);
-        data->uwb->setup_preamble_timeout(dev, 0U);
-        dw3000_reenable_rx_locked(dev, data);
-        data->uwb->release_device(dev);
-
-        if (use_csma && (tx_try + 1U) < max_tries) {
-          continue;
-        }
-        return -EIO;
-      }
-    } else if (data->uwb->start_tx(dev, 0) != 0) {
-      LOG_ERR("TX start failed: Setting tx_waiting=0");
+    if (ret != DWT_SUCCESS) {
+      dw3000_read_irq_status_locked(data, dev, &status_lo, &status_hi);
+      LOG_WRN("TX start failed ret=%d mode=%d lo=0x%08x hi=0x%08x",
+              ret, mode, status_lo, status_hi);
       atomic_set(&data->tx_waiting, 0);
+      data->uwb->setup_preamble_timeout(dev, 0U);
       dw3000_reenable_rx_locked(dev, data);
       data->uwb->release_device(dev);
+      dw3000_irq_queue_purge(&data->tx_irq_msgq);
+
+      if (use_csma && (tx_try + 1U) < max_tries) {
+        continue;
+      }
       return -EIO;
     }
 
-    /*
-     * Release the device lock BEFORE blocking on TX IRQ queue so
-     * that the UWB ISR work handler and IRQ dispatch thread can run.
-     */
-    data->uwb->release_device(dev);
+    timeout_end = k_uptime_get() + DW3000_TX_TIMEOUT_MS;
+    while (k_uptime_get() < timeout_end) {
+      uint32_t rx_noise;
+      uint32_t tx_progress;
 
-    if (k_msgq_get(&data->tx_irq_msgq, &irq_state,
-                   K_MSEC(DW3000_TX_TIMEOUT_MS)) != 0) {
-      LOG_ERR("TX timed out waiting for IRQ, tx_waiting=%ld", atomic_get(&data->tx_waiting));
-      irq_state = UWB_IRQ_NONE;
-    }
-    atomic_set(&data->tx_waiting, 0);
+      dw3000_read_irq_status_locked(data, dev, &status_lo, &status_hi);
 
-    data->uwb->acquire_device(dev);
-
-    switch (irq_state) {
-    case UWB_IRQ_TX:
-      /*
-       * Success.  When TX was started with RESPONSE_EXPECTED, the DW3000
-       * has already turned RX back on at the radio boundary; avoid
-       * disturbing that ACK receive window.
-       */
-      if (!tx_expect_response) {
-        dw3000_reenable_rx_locked(dev, data);
-      }
-      data->uwb->release_device(dev);
-      return 0;
-
-    case UWB_IRQ_HALF_DELAY_WARNING:
-      /*
-       * Delayed TX scheduled too close to current time.
-       * Treat as failure; caller should retry if applicable.
-       */
-      LOG_WRN("TX half-delay warning");
-      dw3000_reenable_rx_locked(dev, data);
-      data->uwb->release_device(dev);
-      return -EAGAIN;
-
-    case UWB_IRQ_CCA_BUSY:
-      LOG_DBG("TX CCA busy");
-      dw3000_reenable_rx_locked(dev, data);
-      data->uwb->release_device(dev);
-      if (use_csma && (tx_try + 1U) < max_tries) {
-        break; /* outer for loop — backoff */
-      }
-      return -EBUSY;
-
-    case UWB_IRQ_ERR:
-      LOG_ERR("TX error observed in IRQ, irq_state=%d", irq_state);
-      /*
-       * CCA failure is reported as an RX error (channel busy)
-       * on the DW3000 when using DWT_START_TX_CCA.
-       */
-      if (cca_mode) {
+      if ((status_lo & DW3000_STATUS_TX_DONE) != 0U) {
+        dw3000_consume_irq_status_locked(data, dev,
+                                         DW3000_STATUS_TX_DONE |
+                                             DW3000_STATUS_TX_PROGRESS,
+                                         0U);
+        atomic_set(&data->tx_waiting, 0);
+        data->uwb->setup_preamble_timeout(dev, 0U);
         dw3000_reenable_rx_locked(dev, data);
         data->uwb->release_device(dev);
+        dw3000_irq_queue_purge(&data->tx_irq_msgq);
+        return 0;
+      }
+
+      if ((status_hi & DW3000_STATUS_CCA_BUSY_HI) != 0U) {
+        LOG_DBG("TX CCA busy");
+        dw3000_consume_irq_status_locked(data, dev, 0U,
+                                         DW3000_STATUS_CCA_BUSY_HI);
+        atomic_set(&data->tx_waiting, 0);
+        data->uwb->setup_preamble_timeout(dev, 0U);
+        dw3000_reenable_rx_locked(dev, data);
+        data->uwb->release_device(dev);
+        dw3000_irq_queue_purge(&data->tx_irq_msgq);
+
         if (use_csma && (tx_try + 1U) < max_tries) {
-          break; /* outer for loop — backoff */
+          goto next_tx_try;
         }
         return -EBUSY;
       }
-      /* Fall through for non-CCA errors. */
-      __fallthrough;
 
-    case UWB_IRQ_FRAME_WAIT_TIMEOUT:
-    case UWB_IRQ_PREAMBLE_DETECT_TIMEOUT:
-    case UWB_IRQ_CANCELLED:
-    case UWB_IRQ_NONE:
-    default:
-      LOG_WRN("TX unexpected irq_state=%d", irq_state);
-      dw3000_reenable_rx_locked(dev, data);
-      data->uwb->release_device(dev);
-      if (use_csma && (tx_try + 1U) < max_tries) {
-        break; /* outer for loop — backoff */
+      if ((status_hi & DW3000_STATUS_CMD_ERR_HI) != 0U) {
+        LOG_WRN("TX command error status_lo=0x%08x status_hi=0x%08x",
+                status_lo, status_hi);
+        dw3000_consume_irq_status_locked(data, dev, 0U,
+                                         DW3000_STATUS_CMD_ERR_HI);
+        atomic_set(&data->tx_waiting, 0);
+        data->uwb->setup_preamble_timeout(dev, 0U);
+        dw3000_reenable_rx_locked(dev, data);
+        data->uwb->release_device(dev);
+        dw3000_irq_queue_purge(&data->tx_irq_msgq);
+
+        if (use_csma && (tx_try + 1U) < max_tries) {
+          goto next_tx_try;
+        }
+        return -EIO;
       }
-      return -EIO;
+
+      if ((status_lo & DW3000_STATUS_HALF_DELAY) != 0U) {
+        LOG_WRN("TX half-delay warning");
+        dw3000_consume_irq_status_locked(data, dev,
+                                         DW3000_STATUS_HALF_DELAY, 0U);
+        atomic_set(&data->tx_waiting, 0);
+        data->uwb->setup_preamble_timeout(dev, 0U);
+        dw3000_reenable_rx_locked(dev, data);
+        data->uwb->release_device(dev);
+        dw3000_irq_queue_purge(&data->tx_irq_msgq);
+        return -EAGAIN;
+      }
+
+      rx_noise = status_lo & (DW3000_STATUS_RX_ERRORS |
+                              DW3000_STATUS_RX_TIMEOUTS);
+      tx_progress = status_lo & DW3000_STATUS_TX_PROGRESS;
+      if ((rx_noise | tx_progress) != 0U) {
+        dw3000_consume_irq_status_locked(data, dev,
+                                         rx_noise | tx_progress, 0U);
+      }
+
+      k_usleep(DW3000_TX_POLL_US);
     }
+
+    dw3000_read_irq_status_locked(data, dev, &status_lo, &status_hi);
+    LOG_WRN("TX timed out waiting for TXFRS status_lo=0x%08x status_hi=0x%08x",
+            status_lo, status_hi);
+    atomic_set(&data->tx_waiting, 0);
+    data->uwb->setup_preamble_timeout(dev, 0U);
+    dw3000_reenable_rx_locked(dev, data);
+    data->uwb->release_device(dev);
+    dw3000_irq_queue_purge(&data->tx_irq_msgq);
+
+    if (use_csma && (tx_try + 1U) < max_tries) {
+      continue;
+    }
+    return -EIO;
+
+  next_tx_try:
+    continue;
   }
 
   LOG_ERR("TX failed after %u tries", max_tries);
@@ -995,6 +1081,9 @@ static int dw3000_start(const struct device *dev) {
    */
   data->uwb->force_trx_off(dev);
   data->uwb->clear_timeouts(dev);
+  if (data->uwb->flush_irq != NULL) {
+    data->uwb->flush_irq(dev);
+  }
   /*
    * Align the double-buffer state machine before the first RX enable
    * so both the host and the DW3000 agree on which buffer is "current".
@@ -1192,6 +1281,9 @@ static int dw3000_init(const struct device *dev) {
 
   (void)dw3000_apply_filter_hw(data);
   data->uwb->clear_timeouts(dev);
+  if (data->uwb->flush_irq != NULL) {
+    data->uwb->flush_irq(dev);
+  }
 
   data->uwb->release_device(dev);
 

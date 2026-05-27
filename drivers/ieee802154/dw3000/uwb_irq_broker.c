@@ -39,6 +39,7 @@ static struct {
   /* Lease state */
   struct k_mutex lease_mutex;
   atomic_t owner; /* broker_owner_e */
+  atomic_t ieee_paused;
 
   /* Borrowed pointers to 802.15.4 driver queues */
   struct k_msgq *ieee_rx_msgq;
@@ -221,6 +222,7 @@ void uwb_broker_init(const struct device *dev,
               BROKER_GLOSSY_MSGQ_LEN);
 
   atomic_set(&broker.owner, BROKER_OWNER_IEEE802154);
+  atomic_set(&broker.ieee_paused, 0);
 
   k_thread_create(&broker.thread,
                   broker_thread_stack,
@@ -240,6 +242,7 @@ int uwb_broker_acquire_lease(const struct device *dev) {
   __ASSERT(broker.initialized, "uwb_broker_acquire_lease() before init");
 
   k_mutex_lock(&broker.lease_mutex, K_FOREVER);
+  atomic_set(&broker.ieee_paused, 1);
 
   /*
    * Refuse if the 802.15.4 driver is mid-TX.  A TX is considered active
@@ -249,6 +252,7 @@ int uwb_broker_acquire_lease(const struct device *dev) {
    */
   if (atomic_get(broker.ieee_tx_waiting) != 0) {
     LOG_WRN("BROKER: acquire_lease rejected - 802.15.4 TX in progress");
+    atomic_set(&broker.ieee_paused, 0);
     k_mutex_unlock(&broker.lease_mutex);
     return -EBUSY;
   }
@@ -329,8 +333,15 @@ void uwb_broker_release_lease(const struct device *dev) {
   broker.uwb->release_device(dev);
 
   atomic_set(&broker.owner, BROKER_OWNER_IEEE802154);
+  atomic_set(&broker.ieee_paused, 0);
   broker_msgq_push(broker.ieee_rx_msgq, UWB_IRQ_NONE);
   k_mutex_unlock(&broker.lease_mutex);
+}
+
+bool uwb_broker_ieee_active(void) {
+  return broker.initialized &&
+         (broker_owner_e)atomic_get(&broker.owner) == BROKER_OWNER_IEEE802154 &&
+         atomic_get(&broker.ieee_paused) == 0;
 }
 
 uwb_irq_state_e uwb_broker_glossy_wait(const struct device *dev,
