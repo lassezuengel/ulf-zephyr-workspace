@@ -239,6 +239,7 @@ struct deca_ranging_configuration {
 struct deca_glossy_configuration {
 	deca_short_addr_t node_addr;
 	bool isRoot;
+  bool measure_constant_delay;
 	uint16_t guard_period_us;
 	uint16_t max_depth;
 	uint8_t *payload;
@@ -278,6 +279,7 @@ struct deca_glossy_result {
 struct uwb_flood_config {
 	deca_short_addr_t node_addr;
 	bool is_initiator;            /**< true = initiate flood, false = listen and retransmit */
+  bool measure_constant_delay; /**< If true, initiator will enable RX after transmission to measure constant delay from first retransmission (only applicable to initiator) */
 	uint16_t guard_period_us;
 	uint16_t max_depth;           /**< Maximum hop count (flooding depth) */
 	uint16_t transmission_delay_us;

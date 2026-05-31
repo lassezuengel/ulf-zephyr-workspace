@@ -194,7 +194,7 @@ int uwb_glossy_flood(const struct device *dev,
 
 				if (pkt_len > sizeof(buf)) {
 					uwb_driver->switch_buffers(dev);
-					LOG_WRN("RECEIVER: Frame too large for glossy buffer (%u > %u), discarding",
+					LOG_DBG("RECEIVER: Frame too large for glossy buffer (%u > %u), discarding",
 						pkt_len, (unsigned)sizeof(buf));
 					success = false;
 					continue;
@@ -202,7 +202,7 @@ int uwb_glossy_flood(const struct device *dev,
 
 				if (pkt_len < glossy_min_len) {
 					uwb_driver->switch_buffers(dev);
-					LOG_WRN("RECEIVER: Frame too short for glossy header (%u < %u), discarding",
+					LOG_DBG("RECEIVER: Frame too short for glossy header (%u < %u), discarding",
 						pkt_len, (unsigned)glossy_min_len);
 					success = false;
 					continue;
@@ -319,7 +319,7 @@ int uwb_glossy_flood(const struct device *dev,
   // TODO: We might want to disable this for LF (or at least allow user to disable it), since
   // we do not need constant delay measurement for LF and it adds extra time to the flood round,
   // especially if the initiator fails to receive the first retransmission
-	if (conf->is_initiator) {
+	if (conf->is_initiator && conf->measure_constant_delay) {
 		LOG_DBG("INITIATOR: Enabling RX to measure constant delay from first retransmission");
 		/* timesync_debug_pulse(); */
 		uint32_t new_initiator_rtc_ts;
@@ -406,6 +406,7 @@ int deca_glossy_time_synchronization(const struct device *dev,
 		.guard_period_us = conf->guard_period_us,
 		.max_depth = conf->max_depth,
 		.transmission_delay_us = conf->transmission_delay_us,
+    .measure_constant_delay = conf->measure_constant_delay,
 		.payload = conf->payload,
 		.payload_size = conf->payload_size,
 		.frame_id = UWB_MTM_GLOSSY_TX_ID,
