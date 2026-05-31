@@ -56,3 +56,20 @@ per node. This makes the nearly linear Glossy hop-to-hop behavior easier to
 inspect.
 
 ![Hop offsets linear trend](hop-offsets-linear-trend.svg)
+
+## Glossy RTC Drift
+
+`glossy-rtc-offset-plot.py` extracts the Glossy `rtc_offset=... ms` reports and
+plots their development over elapsed log time. `dwm3001-1` is the Glossy root
+and reference device, so all other offsets are relative to it. The first
+reported offset for each device is treated as the constant startup offset and
+subtracted from that device's later measurements, so the plot shows drift from
+the first sync rather than absolute clock offset.
+
+Regenerate this plot with:
+
+```sh
+python3 glossy-rtc-offset-plot.py
+```
+
+![Glossy RTC drift](glossy-rtc-drift.svg)
