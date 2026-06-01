@@ -78,7 +78,7 @@ CONFIG = {
     # --- Misc ---
     "show_points": True,
     "show_means": True,
-    "annotate_n": True,
+    "annotate_n": False,
     "show_grid": True,
     "y_axis_zero": True,
     "y_axis_top_margin": 1.12,
