@@ -30,6 +30,8 @@ LOG_MODULE_REGISTER(uwb_driver_dw3000, CONFIG_IEEE802154_DW3000_LOG_LEVEL);
 #define DW3000_IRQ_ERR 6
 #define DW3000_IRQ_HALF_DELAY_WARNING 7
 #define DW3000_IRQ_CANCELLED 8
+#define DW3000_IRQ_CCA_BUSY 9
+#define DW3000_IRQ_MSGQ_LEN 16
 
 // DW3000 state flags
 #define DW3000_STATE_IRQ_POLLING_EMU 3
@@ -46,19 +48,22 @@ static struct k_work_q dw3000_irq_work_q;
 
 struct dw3000_context {
   struct k_mutex dev_lock;
-  struct k_sem phy_sem;
+  struct k_msgq phy_irq_msgq;
   struct k_work irq_cb_work;
   bool is_single_buffering;
+  bool rx_event_pending;
   atomic_t state;
-  uint8_t phy_irq_event;
   uint32_t phy_irq_sys_stat;
+  uint32_t phy_irq_sys_stat_hi;
+  uint32_t latched_status_lo;
+  uint32_t latched_status_hi;
   uint32_t spi_crc_error_count;             // Track SPI CRC errors for debugging
   dw3000_buffer_access_t current_rx_buffer; // Which buffer contains valid RX data
+  char phy_irq_msgq_buffer[DW3000_IRQ_MSGQ_LEN * sizeof(uint8_t)];
 };
 
 static struct dw3000_context dw3000_ctx = {
     .dev_lock = Z_MUTEX_INITIALIZER(dw3000_ctx.dev_lock),
-    .phy_sem = Z_SEM_INITIALIZER(dw3000_ctx.phy_sem, 0, 1),
     .is_single_buffering = true,
 };
 
@@ -95,6 +100,8 @@ static uint64_t dw3000_system_timestamp(const struct device *dev) {
 
 // ==================== TRANSCEIVER CONTROL ====================
 
+static int dw3000_start_tx_ext(const struct device *dev, uint64_t delayed_timestamp, uint32_t flags);
+
 static int dw3000_enable_rx(const struct device *dev, uint32_t timeout_us, uint64_t delayed_timestamp) {
   // Set bias_trim to 7 for receiving (from ull_rxenable)
   uint32_t pll_common_val = RF_PLL_COMMON;
@@ -114,43 +121,94 @@ static int dw3000_enable_rx(const struct device *dev, uint32_t timeout_us, uint6
 }
 
 static int dw3000_start_tx(const struct device *dev, uint64_t delayed_timestamp) {
-  // Direct TX implementation bypassing ull_starttx for simpler logic
+  ARG_UNUSED(dev);
+
   if (delayed_timestamp > 0) {
-    // Set delayed transmission timestamp (upper 32 bits)
     dwt_setdelayedtrxtime((uint32_t)(delayed_timestamp >> 8));
     LOG_DBG("Starting delayed TX at 0x%08x", (uint32_t)(delayed_timestamp >> 8));
-
-    // Delayed TX without response (we don't need expect_response for now)
     dwt_writetodevice(CMD_DTX, 0, 0, NULL);
   } else {
     LOG_DBG("Starting immediate TX");
-
-    // Immediate TX without response (we don't need expect_response for now)
     dwt_writetodevice(CMD_TX, 0, 0, NULL);
   }
 
+  if ((dwt_readsysstatushi() & SYS_STATUS_HI_CMD_ERR_BIT_MASK) != 0U) {
+    dwt_writesysstatushi(SYS_STATUS_HI_CMD_ERR_BIT_MASK);
+    return -EIO;
+  }
+
   return 0;
+}
+
+static int dw3000_start_tx_ext(const struct device *dev, uint64_t delayed_timestamp, uint32_t flags) {
+  uint8_t mode = 0U;
+  int ret;
+
+  if (flags == 0U) {
+    return dw3000_start_tx(dev, delayed_timestamp);
+  }
+
+  if (delayed_timestamp > 0) {
+    mode |= DWT_START_TX_DELAYED;
+    dwt_setdelayedtrxtime((uint32_t)(delayed_timestamp >> 8));
+  }
+  if ((flags & UWB_TX_FLAG_CCA) != 0U) {
+    mode |= DWT_START_TX_CCA;
+  }
+  if ((flags & UWB_TX_FLAG_RESPONSE_EXPECTED) != 0U) {
+    mode |= DWT_RESPONSE_EXPECTED;
+  }
+
+  ret = dwt_starttx(mode);
+  if ((dwt_readsysstatushi() & SYS_STATUS_HI_CMD_ERR_BIT_MASK) != 0U) {
+    dwt_writesysstatushi(SYS_STATUS_HI_CMD_ERR_BIT_MASK);
+    return -EIO;
+  }
+
+  return ret;
 }
 
 static void dw3000_force_trx_off(const struct device *dev) {
   dwt_forcetrxoff();
 }
 
-// DW3000 wait_for_phy implementation with semaphore blocking
+static void dw3000_irq_queue_push(uint8_t irq_state) {
+  uint8_t discarded;
+
+  if (k_msgq_put(&dw3000_ctx.phy_irq_msgq, &irq_state, K_NO_WAIT) == 0) {
+    return;
+  }
+
+  if (k_msgq_get(&dw3000_ctx.phy_irq_msgq, &discarded, K_NO_WAIT) == 0) {
+    (void)k_msgq_put(&dw3000_ctx.phy_irq_msgq, &irq_state, K_NO_WAIT);
+  }
+}
+
+// DW3000 wait_for_phy implementation with queued IRQ events.
 static inline int wait_for_phy(const struct device *dev) {
+  uint8_t irq_state;
+
   ARG_UNUSED(dev);
 
-  // Block on the PHY semaphore until an interrupt occurs
-  if (k_sem_take(&dw3000_ctx.phy_sem, K_FOREVER)) {
-    // Timeout or error occurred
+  if (k_msgq_get(&dw3000_ctx.phy_irq_msgq, &irq_state, K_FOREVER) != 0) {
     return DW3000_IRQ_NONE;
   }
 
-  // Get the IRQ event that was stored by the interrupt handler
-  uint8_t irq_state = dw3000_ctx.phy_irq_event;
-  dw3000_ctx.phy_irq_event = DW3000_IRQ_NONE;
-
   return irq_state;
+}
+
+static void dw3000_select_rx_buffer_from_status(struct dw3000_context *ctx) {
+  uint8_t rdb_status = 0;
+
+  dwt_readfromdevice(RDB_STATUS_ID, 0, 1, &rdb_status);
+
+  if ((rdb_status & RDB_STATUS_RXFCG1_BIT_MASK) != 0U) {
+    ctx->current_rx_buffer = DW3000_BUFFER_ACCESS_1;
+  } else if ((rdb_status & RDB_STATUS_RXFCG0_BIT_MASK) != 0U) {
+    ctx->current_rx_buffer = DW3000_BUFFER_ACCESS_0;
+  } else {
+    ctx->current_rx_buffer = DW3000_BUFFER_ACCESS_DEFAULT;
+  }
 }
 
 // DW3000 interrupt work handler - processes DW3000 interrupts in work queue context
@@ -160,18 +218,18 @@ static void dw3000_irq_work_handler(struct k_work *item) {
 
   struct dw3000_context *ctx = CONTAINER_OF(item, struct dw3000_context, irq_cb_work);
   uint32_t sys_stat;
+  uint32_t sys_stat_hi;
   uint32_t clear_mask = 0;
-  uint8_t free_phy_sem = 0;
+  uint32_t clear_mask_hi = 0;
+  uint8_t observed_events = 0;
 
   // Take device lock to read status register
   k_mutex_lock(&ctx->dev_lock, K_FOREVER);
 
-  // Read the system status register to determine interrupt source
-  uint8_t status_buf[4];
-  dwt_readfromdevice(SYS_STATUS_ID, 0, 4, status_buf);
-  sys_stat = (uint32_t)status_buf[0] | ((uint32_t)status_buf[1] << 8) |
-             ((uint32_t)status_buf[2] << 16) | ((uint32_t)status_buf[3] << 24);
+  sys_stat = dwt_readsysstatuslo();
+  sys_stat_hi = dwt_readsysstatushi();
   ctx->phy_irq_sys_stat = sys_stat;
+  ctx->phy_irq_sys_stat_hi = sys_stat_hi;
 
   // Track and clear SPI CRC errors for debugging statistics
   if (sys_stat & SYS_STATUS_SPICRCE_BIT_MASK) {
@@ -185,83 +243,92 @@ static void dw3000_irq_work_handler(struct k_work *item) {
     clear_mask |= (sys_stat & (SYS_STATUS_TXFRB_BIT_MASK | SYS_STATUS_TXPRS_BIT_MASK | SYS_STATUS_TXPHS_BIT_MASK));
   }
 
-  // Process different interrupt types and map to internal IRQ states
-  if (sys_stat & SYS_STATUS_RXFCG_BIT_MASK) {
-    // RX frame received successfully
-    ctx->phy_irq_event = DW3000_IRQ_RX;
-    free_phy_sem = 1;
+  if ((sys_stat_hi & DWT_INT_HI_CCA_FAIL_BIT_MASK) != 0U) {
+    ctx->latched_status_hi |= DWT_INT_HI_CCA_FAIL_BIT_MASK;
+    dw3000_irq_queue_push(DW3000_IRQ_CCA_BUSY);
+    observed_events++;
+    clear_mask_hi |= DWT_INT_HI_CCA_FAIL_BIT_MASK;
+  }
 
-    // Read RDB_STATUS to determine which buffer contains valid data
-    uint8_t rdb_status = 0;
-    dwt_readfromdevice(RDB_STATUS_ID, 0, 1, &rdb_status);
+  if ((sys_stat_hi & SYS_STATUS_HI_CMD_ERR_BIT_MASK) != 0U) {
+    ctx->latched_status_hi |= SYS_STATUS_HI_CMD_ERR_BIT_MASK;
+    dw3000_irq_queue_push(DW3000_IRQ_ERR);
+    observed_events++;
+    clear_mask_hi |= SYS_STATUS_HI_CMD_ERR_BIT_MASK;
+  }
 
-    // Determine which buffer has valid RX data based on RXFCG bits
-    if (rdb_status & RDB_STATUS_RXFCG1_BIT_MASK) {
-      // Buffer 1 has valid data
-      ctx->current_rx_buffer = DW3000_BUFFER_ACCESS_1;
-      // Clear buffer 1 events in RDB_STATUS
-      uint8_t clear_buf1 = DWT_RDB_STATUS_CLEAR_BUFF1_EVENTS;
-      dwt_writetodevice(RDB_STATUS_ID, 0, 1, &clear_buf1);
-    } else if (rdb_status & RDB_STATUS_RXFCG0_BIT_MASK) {
-      // Buffer 0 has valid data
-      ctx->current_rx_buffer = DW3000_BUFFER_ACCESS_0;
-      // Clear buffer 0 events in RDB_STATUS
-      uint8_t clear_buf0 = DWT_RDB_STATUS_CLEAR_BUFF0_EVENTS;
-      dwt_writetodevice(RDB_STATUS_ID, 0, 1, &clear_buf0);
-    } else {
-      // No buffer has valid data - use default
-      ctx->current_rx_buffer = DW3000_BUFFER_ACCESS_DEFAULT;
-      LOG_WRN_ONCE("DW3000_ISR_WARNING: No RXFCG bits set (RDB_STATUS=0x%02x), using default\n", rdb_status);
-    }
+  if ((sys_stat & SYS_STATUS_HPDWARN_BIT_MASK) != 0U) {
+    ctx->latched_status_lo |= SYS_STATUS_HPDWARN_BIT_MASK;
+    dw3000_irq_queue_push(DW3000_IRQ_HALF_DELAY_WARNING);
+    observed_events++;
+    clear_mask |= SYS_STATUS_HPDWARN_BIT_MASK;
+  }
 
-    // Clear RX good interrupt in main SYS_STATUS register
-    clear_mask |= SYS_STATUS_RXFCG_BIT_MASK;
-  } else if (sys_stat & SYS_STATUS_TXFRS_BIT_MASK) {
-    // TX frame sent
-    ctx->phy_irq_event = DW3000_IRQ_TX;
-    free_phy_sem = 1;
+  if ((sys_stat & SYS_STATUS_TXFRS_BIT_MASK) != 0U) {
+    ctx->latched_status_lo |= SYS_STATUS_TXFRS_BIT_MASK;
+    dw3000_irq_queue_push(DW3000_IRQ_TX);
+    observed_events++;
     clear_mask |= SYS_STATUS_TXFRS_BIT_MASK;
-  } else if (sys_stat & SYS_STATUS_RXFTO_BIT_MASK) {
+  }
+
+  if (sys_stat & SYS_STATUS_RXFCG_BIT_MASK) {
+    /*
+     * RXFCG protects the frame payload.  Leave it set until the IEEE or
+     * Glossy consumer has read the frame and calls complete_rx().
+     */
+    ctx->latched_status_lo |= SYS_STATUS_RXFCG_BIT_MASK;
+    dw3000_select_rx_buffer_from_status(ctx);
+    if (!ctx->rx_event_pending) {
+      dw3000_irq_queue_push(DW3000_IRQ_RX);
+      ctx->rx_event_pending = true;
+    }
+    observed_events++;
+  }
+
+  if (sys_stat & SYS_STATUS_RXFTO_BIT_MASK) {
     // RX frame timeout
-    ctx->phy_irq_event = DW3000_IRQ_FRAME_WAIT_TIMEOUT;
-    free_phy_sem = 1;
+    ctx->latched_status_lo |= SYS_STATUS_RXFTO_BIT_MASK;
+    dw3000_irq_queue_push(DW3000_IRQ_FRAME_WAIT_TIMEOUT);
+    observed_events++;
     // Clear RX timeout interrupt
     clear_mask |= SYS_STATUS_RXFTO_BIT_MASK;
-  } else if (sys_stat & SYS_STATUS_RXPTO_BIT_MASK) {
+  }
+
+  if (sys_stat & SYS_STATUS_RXPTO_BIT_MASK) {
     // RX preamble timeout
-    ctx->phy_irq_event = DW3000_IRQ_PREAMBLE_DETECT_TIMEOUT;
-    free_phy_sem = 1;
+    ctx->latched_status_lo |= SYS_STATUS_RXPTO_BIT_MASK;
+    dw3000_irq_queue_push(DW3000_IRQ_PREAMBLE_DETECT_TIMEOUT);
+    observed_events++;
     // Clear preamble timeout interrupt
     clear_mask |= SYS_STATUS_RXPTO_BIT_MASK;
-  } else if (sys_stat & SYS_STATUS_HPDWARN_BIT_MASK) {
-    // Half period delay warning
-    ctx->phy_irq_event = DW3000_IRQ_HALF_DELAY_WARNING;
-    free_phy_sem = 1;
-    // Clear half delay warning interrupt
-    clear_mask |= SYS_STATUS_HPDWARN_BIT_MASK;
-  } else if (sys_stat & (SYS_STATUS_RXFCE_BIT_MASK | SYS_STATUS_RXFSL_BIT_MASK |
+  }
+
+  if (sys_stat & (SYS_STATUS_RXFCE_BIT_MASK | SYS_STATUS_RXFSL_BIT_MASK |
                          SYS_STATUS_RXPHE_BIT_MASK | SYS_STATUS_CIAERR_BIT_MASK)) {
     // RX errors
-    ctx->phy_irq_event = DW3000_IRQ_ERR;
-    free_phy_sem = 1;
+    ctx->latched_status_lo |= sys_stat & (SYS_STATUS_RXFCE_BIT_MASK | SYS_STATUS_RXFSL_BIT_MASK |
+                                          SYS_STATUS_RXPHE_BIT_MASK | SYS_STATUS_CIAERR_BIT_MASK);
+    dw3000_irq_queue_push(DW3000_IRQ_ERR);
+    observed_events++;
     // Clear error interrupts
     clear_mask |= SYS_STATUS_RXFCE_BIT_MASK | SYS_STATUS_RXFSL_BIT_MASK |
                   SYS_STATUS_RXPHE_BIT_MASK | SYS_STATUS_CIAERR_BIT_MASK;
-  } else {
+  }
+
+  if (observed_events == 0U) {
     // Unknown interrupt - clear all status bits
     clear_mask |= sys_stat;
+    clear_mask_hi |= sys_stat_hi;
   }
 
   if (clear_mask != 0) {
-    dwt_writetodevice(SYS_STATUS_ID, 0, 4, (uint8_t *)&clear_mask);
+    dwt_writesysstatuslo(clear_mask);
+  }
+  if (clear_mask_hi != 0) {
+    dwt_writesysstatushi(clear_mask_hi);
   }
 
   k_mutex_unlock(&ctx->dev_lock);
-
-  // Signal the PHY semaphore if we're in IRQ polling emulation mode
-  if (atomic_test_bit(&ctx->state, DW3000_STATE_IRQ_POLLING_EMU) && free_phy_sem) {
-    k_sem_give(&ctx->phy_sem);
-  }
 }
 
 // DW3000 interrupt handler - called by hardware interrupt
@@ -293,6 +360,8 @@ static uwb_irq_state_e dw3000_wait_for_irq(const struct device *dev) {
     return UWB_IRQ_HALF_DELAY_WARNING;
   case DW3000_IRQ_CANCELLED:
     return UWB_IRQ_CANCELLED;
+  case DW3000_IRQ_CCA_BUSY:
+    return UWB_IRQ_CCA_BUSY;
   case DW3000_IRQ_NONE:
   default:
     return UWB_IRQ_NONE;
@@ -302,16 +371,98 @@ static uwb_irq_state_e dw3000_wait_for_irq(const struct device *dev) {
 static void dw3000_cancel_wait(const struct device *dev) {
   ARG_UNUSED(dev);
 
-  dw3000_ctx.phy_irq_event = DW3000_IRQ_CANCELLED;
-
-  if (atomic_test_bit(&dw3000_ctx.state, DW3000_STATE_IRQ_POLLING_EMU)) {
-    k_sem_give(&dw3000_ctx.phy_sem);
-  }
+  dw3000_irq_queue_push(DW3000_IRQ_CANCELLED);
 }
 
 static void dw3000_flush_irq(const struct device *dev) {
   ARG_UNUSED(dev);
-  /* DW3000 uses direct ISR processing -- no pending work to flush */
+  uint8_t discard;
+
+  while (k_msgq_get(&dw3000_ctx.phy_irq_msgq, &discard, K_NO_WAIT) == 0) {
+  }
+  dw3000_ctx.latched_status_lo = 0U;
+  dw3000_ctx.latched_status_hi = 0U;
+  dw3000_ctx.rx_event_pending = false;
+  dwt_writesysstatuslo(SYS_STATUS_ALL_RX_GOOD |
+                       SYS_STATUS_ALL_RX_TO |
+                       SYS_STATUS_ALL_RX_ERR |
+                       SYS_STATUS_TXFRS_BIT_MASK |
+                       SYS_STATUS_HPDWARN_BIT_MASK |
+                       SYS_STATUS_TXFRB_BIT_MASK |
+                       SYS_STATUS_TXPRS_BIT_MASK |
+                       SYS_STATUS_TXPHS_BIT_MASK |
+                       SYS_STATUS_SPICRCE_BIT_MASK);
+  dwt_writesysstatushi(DWT_INT_HI_CCA_FAIL_BIT_MASK |
+                       SYS_STATUS_HI_CMD_ERR_BIT_MASK);
+}
+
+static void dw3000_read_irq_status(const struct device *dev,
+                                   uint32_t *status_lo,
+                                   uint32_t *status_hi) {
+  uint32_t lo;
+  uint32_t hi;
+
+  ARG_UNUSED(dev);
+
+  lo = dwt_readsysstatuslo();
+  hi = dwt_readsysstatushi();
+
+  if ((lo & SYS_STATUS_RXFCG_BIT_MASK) != 0U) {
+    dw3000_ctx.latched_status_lo |= SYS_STATUS_RXFCG_BIT_MASK;
+    dw3000_select_rx_buffer_from_status(&dw3000_ctx);
+  }
+
+  if (status_lo != NULL) {
+    *status_lo = lo | dw3000_ctx.latched_status_lo;
+  }
+  if (status_hi != NULL) {
+    *status_hi = hi | dw3000_ctx.latched_status_hi;
+  }
+}
+
+static void dw3000_consume_irq_status(const struct device *dev,
+                                      uint32_t status_lo_mask,
+                                      uint32_t status_hi_mask) {
+  ARG_UNUSED(dev);
+
+  dw3000_ctx.latched_status_lo &= ~status_lo_mask;
+  dw3000_ctx.latched_status_hi &= ~status_hi_mask;
+  if ((status_lo_mask & SYS_STATUS_RXFCG_BIT_MASK) != 0U) {
+    dw3000_ctx.rx_event_pending = false;
+  }
+
+  if (status_lo_mask != 0U) {
+    dwt_writesysstatuslo(status_lo_mask);
+  }
+  if (status_hi_mask != 0U) {
+    dwt_writesysstatushi(status_hi_mask);
+  }
+}
+
+static void dw3000_complete_rx(const struct device *dev) {
+  ARG_UNUSED(dev);
+
+  if (!dw3000_ctx.is_single_buffering) {
+    switch (dw3000_ctx.current_rx_buffer) {
+    case DW3000_BUFFER_ACCESS_1: {
+      uint8_t clear_buf1 = DWT_RDB_STATUS_CLEAR_BUFF1_EVENTS;
+      dwt_writetodevice(RDB_STATUS_ID, 0, 1, &clear_buf1);
+      break;
+    }
+    case DW3000_BUFFER_ACCESS_0: {
+      uint8_t clear_buf0 = DWT_RDB_STATUS_CLEAR_BUFF0_EVENTS;
+      dwt_writetodevice(RDB_STATUS_ID, 0, 1, &clear_buf0);
+      break;
+    }
+    default:
+      break;
+    }
+    ull_signal_rx_buff_free(&dw3000_chip);
+  }
+
+  dw3000_ctx.latched_status_lo &= ~SYS_STATUS_ALL_RX_GOOD;
+  dw3000_ctx.rx_event_pending = false;
+  dwt_writesysstatuslo(SYS_STATUS_ALL_RX_GOOD);
 }
 
 // ==================== TIMEOUT MANAGEMENT ====================
@@ -353,15 +504,7 @@ static void dw3000_enable_single_buffering(const struct device *dev) {
 }
 
 static void dw3000_switch_buffers(const struct device *dev) {
-  struct dw3000_context *ctx = &dw3000_ctx;
-
-  if (ctx->is_single_buffering) {
-    LOG_DBG("DW3000 switch_buffers called in single buffering mode - ignoring");
-    return;
-  }
-
-  // Use DW3000's signal buffer free function which toggles buffers
-  ull_signal_rx_buff_free(&dw3000_chip);
+  dw3000_complete_rx(dev);
 }
 
 static void __attribute__((unused)) dw3000_sync_rx_buffer_pointer(const struct device *dev) {
@@ -369,8 +512,7 @@ static void __attribute__((unused)) dw3000_sync_rx_buffer_pointer(const struct d
 }
 
 static void dw3000_signal_buffer_free(const struct device *dev) {
-  // DW3000 doesn't have explicit buffer free signaling
-  // This is handled automatically by buffer switching
+  dw3000_complete_rx(dev);
 }
 
 static void dw3000_align_double_buffering(const struct device *dev) {
@@ -718,10 +860,14 @@ static const uwb_driver_t dw3000_uwb_driver = {
     // Transceiver control
     .enable_rx = dw3000_enable_rx,
     .start_tx = dw3000_start_tx,
+    .start_tx_ext = dw3000_start_tx_ext,
     .force_trx_off = dw3000_force_trx_off,
     .wait_for_irq = dw3000_wait_for_irq,
     .cancel_wait = dw3000_cancel_wait,
     .flush_irq = dw3000_flush_irq,
+    .read_irq_status = dw3000_read_irq_status,
+    .consume_irq_status = dw3000_consume_irq_status,
+    .complete_rx = dw3000_complete_rx,
     .set_channel = dw3000_set_channel,
 
     // Timeout management
@@ -889,7 +1035,7 @@ int uwb_driver_dw3000_init(const struct device *dev) {
                             DWT_INT_RXPTO_BIT_MASK |  // RX preamble timeout
                             DWT_INT_HPDWARN_BIT_MASK; // Half period delay warning
 
-  dwt_setinterrupt(interrupt_mask, 0, DWT_ENABLE_INT_ONLY);
+  dwt_setinterrupt(interrupt_mask, DWT_INT_HI_CCA_FAIL_BIT_MASK, DWT_ENABLE_INT_ONLY);
 
   // Read and verify device ID
   uint32_t verified_dev_id = dwt_readdevid();
@@ -904,6 +1050,11 @@ int uwb_driver_dw3000_init(const struct device *dev) {
 
   // Initialize interrupt handling
   LOG_DBG("Initializing DW3000 interrupt handling");
+  k_msgq_init(&dw3000_ctx.phy_irq_msgq,
+              dw3000_ctx.phy_irq_msgq_buffer,
+              sizeof(uint8_t),
+              DW3000_IRQ_MSGQ_LEN);
+
   k_work_queue_start(&dw3000_irq_work_q,
                      dw3000_irq_work_stack,
                      K_THREAD_STACK_SIZEOF(dw3000_irq_work_stack),

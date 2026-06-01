@@ -80,6 +80,15 @@ int uwb_broker_acquire_lease(const struct device *dev);
 void uwb_broker_release_lease(const struct device *dev);
 
 /**
+ * @brief Return true when IEEE 802.15.4 may actively touch the radio.
+ *
+ * This is stronger than "owner is IEEE": it is false while a Glossy lease is
+ * being acquired/released, so timed IEEE RX status polling can park without
+ * racing the lease transition.
+ */
+bool uwb_broker_ieee_active(void);
+
+/**
  * @brief Wait for the next IRQ event while the Glossy lease is held.
  *
  * Replaces direct uwb_driver->wait_for_irq() calls inside
