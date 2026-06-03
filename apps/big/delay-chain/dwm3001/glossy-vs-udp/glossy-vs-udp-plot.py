@@ -25,6 +25,7 @@ os.environ.setdefault(
     "MPLCONFIGDIR", str(pathlib.Path(tempfile.gettempdir()) / "matplotlib")
 )
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
@@ -38,21 +39,70 @@ CONFIG = {
     # --- Input files ---
     # Each entry: (path, plot_label)
     "input_files": [
-        (SCRIPT_DIR / "glossyrun.txt", "Glossy clock sync"),
-        (SCRIPT_DIR / "udprun.txt", "UDP clock sync"),
+        (SCRIPT_DIR / "glossyrun.txt", "Glossy"),
+        (SCRIPT_DIR / "udprun.txt", "LF (UDP)"),
     ],
 
     # --- Output ---
     # None -> interactive; otherwise save combined figure to this path.
-    "output_file": SCRIPT_DIR / "glossy-vs-udp.svg",
-    "dpi": 150,
-    "font_family": "Times New Roman",
+    # PDF is the most convenient vector format for \includegraphics in LaTeX.
+    "output_file": SCRIPT_DIR / "glossy-vs-udp.pdf",
+    "dpi": 300,
+    # Keep the declared figure size in the PDF. Tight-cropped bounding boxes can
+    # make LaTeX rescale text unexpectedly when using \includegraphics[width=...].
+    "bbox_inches": None,
+
+    # LaTeX/thesis-friendly sizing.
+    # If you know your thesis \textwidth, set "latex_text_width_pt" to the
+    # value printed by \the\textwidth and keep the fractions below. Otherwise
+    # the explicit *_width_in values are used.
+    "latex_text_width_pt": 426.79135,
+    # Width fractions are the intended LaTeX include widths for each PDF.
+    # Include a generated PDF at the same width fraction to preserve font sizes.
+    "combined_width_fraction": 1.0,
+    "latency_width_fraction": 0.48,
+    "retransmission_width_fraction": 0.48,
+    "hop_offset_width_fraction": 1.0,
+    "hop_offset_linear_trend_width_fraction": 1.0,
+
+    # Aspect ratios are height / width. The panel defaults mirror the original
+    # plot proportions, just scaled to the intended LaTeX width.
+    "combined_aspect_ratio": 0.46,
+    "latency_aspect_ratio": 1,
+    "retransmission_aspect_ratio": 1,
+    "hop_offset_aspect_ratio": 3.2 / 5.2,
+    "hop_offset_linear_trend_aspect_ratio": 3.2 / 5.2,
+
+    # Fallback absolute widths, used only when latex_text_width_pt is None.
+    "combined_width_in": 6.6,
+    "latency_width_in": 3.2,
+    "retransmission_width_in": 3.2,
+    "hop_offset_width_in": 6.6,
+    "hop_offset_linear_trend_width_in": 6.6,
+
+    # Matplotlib PDF output embeds these fonts directly. Keep figures at their
+    # intended LaTeX size; scaling them later also scales these font sizes.
+    "font_family": "serif",
+    "font_size_pt": 10,
+    "axis_label_size_pt": 10,
+    "title_size_pt": 10,
+    "tick_label_size_pt": 8.5,
+    "legend_size_pt": 8.5,
+    "annotation_size_pt": 8,
+    "font_serif": ["Times New Roman", "Times", "DejaVu Serif"],
+
+    # Optional PGF export for \input{...}. This matches a XeLaTeX/LuaLaTeX
+    # thesis that selects Times New Roman via fontspec.
+    "use_latex_text": False,
+    "pgf_texsystem": "xelatex",
+    "latex_preamble": r"\usepackage{fontspec}\setmainfont{Times New Roman}",
+    "output_pgf": False,
 
     # Per-plot export. Each can be None or a path string/pathlib.Path.
-    "output_latency_boxplot": SCRIPT_DIR / "latency-boxplot.svg",
-    "output_retransmission_boxplot": SCRIPT_DIR / "retransmission-boxplot.svg",
-    "output_hop_offset_plot": SCRIPT_DIR / "hop-offsets.svg",
-    "output_hop_offset_linear_trend_plot": SCRIPT_DIR / "hop-offsets-linear-trend.svg",
+    "output_latency_boxplot": SCRIPT_DIR / "latency-boxplot.pdf",
+    "output_retransmission_boxplot": SCRIPT_DIR / "retransmission-boxplot.pdf",
+    "output_hop_offset_plot": SCRIPT_DIR / "hop-offsets.pdf",
+    "output_hop_offset_linear_trend_plot": SCRIPT_DIR / "hop-offsets-linear-trend.pdf",
 
     # --- Plot selection ---
     "show_latency_boxplot": True,
@@ -61,6 +111,7 @@ CONFIG = {
     "show_titles": False,
 
     # --- Labels ---
+    "clock_sync_x_label": "clock sync",
     "latency_y_label": "Latency (ms)",
     "retransmission_y_label": "Retransmissions (%)",
     "hop_offset_y_label": "Forwarding offset (ms)",
@@ -137,13 +188,47 @@ class RunData:
         return [sample.percent for sample in self.retransmissions]
 
 
-def apply_font(cfg: dict) -> None:
-    fam = cfg.get("font_family", "sans-serif")
-    if fam == "Times New Roman":
-        plt.rcParams["font.family"] = "serif"
-        plt.rcParams["font.serif"] = ["Times New Roman", "Times", "DejaVu Serif"]
-    else:
-        plt.rcParams["font.family"] = fam
+def latex_pt_to_in(pt: float) -> float:
+    return pt / 72.27
+
+
+def thesis_width_in(cfg: dict, fraction_key: str, fallback_key: str) -> float:
+    text_width_pt = cfg.get("latex_text_width_pt")
+    if text_width_pt:
+        return latex_pt_to_in(float(text_width_pt)) * float(cfg[fraction_key])
+    return float(cfg[fallback_key])
+
+
+def figure_size_from_width_fraction(
+    cfg: dict, fraction_key: str, fallback_width_key: str, aspect_ratio_key: str
+) -> tuple[float, float]:
+    width_in = thesis_width_in(cfg, fraction_key, fallback_width_key)
+    return (width_in, width_in * float(cfg[aspect_ratio_key]))
+
+
+def apply_plot_style(cfg: dict) -> None:
+    font_size = cfg.get("font_size_pt", 10)
+    mpl.rcParams.update(
+        {
+            "font.family": cfg.get("font_family", "serif"),
+            "font.serif": cfg.get("font_serif", ["DejaVu Serif"]),
+            "font.size": font_size,
+            "axes.labelsize": cfg.get("axis_label_size_pt", font_size),
+            "axes.titlesize": cfg.get("title_size_pt", font_size),
+            "legend.fontsize": cfg.get("legend_size_pt", max(font_size - 1, 6)),
+            "xtick.labelsize": cfg.get("tick_label_size_pt", max(font_size - 1, 6)),
+            "ytick.labelsize": cfg.get("tick_label_size_pt", max(font_size - 1, 6)),
+            "lines.linewidth": 1.2,
+            "pdf.fonttype": 42,
+            "ps.fonttype": 42,
+            "svg.fonttype": "none",
+            "text.usetex": bool(cfg.get("use_latex_text", False)),
+            "text.latex.preamble": cfg.get("latex_preamble", ""),
+            "pgf.texsystem": cfg.get("pgf_texsystem", "pdflatex"),
+            "pgf.rcfonts": False,
+            "pgf.preamble": cfg.get("latex_preamble", ""),
+        }
+    )
 
 
 def parse_offset_ms(raw: str) -> float | None:
@@ -227,7 +312,7 @@ def collect_data(cfg: dict) -> list[RunData]:
 
 def _style_ax(ax: plt.Axes, cfg: dict, title: str = "") -> None:
     if title and cfg.get("show_titles", True):
-        ax.set_title(title, fontsize=11, pad=6)
+        ax.set_title(title, pad=6)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     if cfg["show_grid"]:
@@ -318,6 +403,9 @@ def _plot_boxplot(
     if cfg.get("annotate_n", True):
         ymin, ymax = ax.get_ylim()
         y_text = ymin + (ymax - ymin) * 0.02
+        font_size = cfg.get(
+            "annotation_size_pt", max(cfg.get("font_size_pt", 10) - 2, 6)
+        )
         for idx, values in non_empty:
             ax.text(
                 idx + 1,
@@ -325,12 +413,13 @@ def _plot_boxplot(
                 f"n={len(values)}",
                 ha="center",
                 va="bottom",
-                fontsize=8,
+                fontsize=font_size,
                 alpha=0.75,
             )
 
     ax.set_xticks(range(1, len(labels) + 1))
     ax.set_xticklabels(labels)
+    ax.set_xlabel(cfg.get("clock_sync_x_label", ""))
     ax.set_ylabel(y_label)
     ax.yaxis.set_major_formatter(ticker.StrMethodFormatter(value_format))
     _set_y_limits(ax, series, cfg)
@@ -460,7 +549,7 @@ def plot_hop_offset_plot(ax: plt.Axes, data: list[RunData], cfg: dict) -> None:
     ax.set_xticklabels([f"{node}" for node in nodes])
     ax.set_xlabel("dwm3001 node")
     ax.set_ylabel(cfg["hop_offset_y_label"])
-    ax.legend(frameon=False, fontsize=9)
+    ax.legend(frameon=False)
     _style_ax(ax, cfg, "Hop Offsets")
 
 
@@ -513,8 +602,18 @@ def plot_hop_offset_linear_trend_plot(
     ax.set_xticklabels([f"{node}" for node in nodes])
     ax.set_xlabel("dwm3001 node")
     ax.set_ylabel(cfg["hop_offset_y_label"])
-    ax.legend(frameon=False, fontsize=9)
+    ax.legend(frameon=False)
     _style_ax(ax, cfg, f"Hop Offset {trend_label}")
+
+
+def save_figure(fig: plt.Figure, output_path: pathlib.Path, cfg: dict) -> None:
+    fig.savefig(output_path, dpi=cfg["dpi"], bbox_inches=cfg.get("bbox_inches"))
+    print(f"Saved {output_path}")
+
+    if cfg.get("output_pgf", False) and output_path.suffix.lower() != ".pgf":
+        pgf_path = output_path.with_suffix(".pgf")
+        fig.savefig(pgf_path, bbox_inches=cfg.get("bbox_inches"))
+        print(f"Saved {pgf_path}")
 
 
 def save_panel(
@@ -530,12 +629,43 @@ def save_panel(
     fig, ax = plt.subplots(figsize=figure_size)
     plot_func(ax, data, cfg)
     fig.tight_layout()
-    fig.savefig(output_path, dpi=cfg["dpi"], bbox_inches="tight")
+    save_figure(fig, output_path, cfg)
     plt.close(fig)
-    print(f"Saved {output_path}")
 
 
-def print_summary(data: list[RunData]) -> None:
+def print_figure_size_summary(
+    cfg: dict, figure_sizes: dict[str, tuple[float, float]]
+) -> None:
+    print("\nFigure sizes")
+    print("------------")
+    rows = [
+        ("output_file", "combined_width_fraction", "combined"),
+        ("output_latency_boxplot", "latency_width_fraction", "latency"),
+        (
+            "output_retransmission_boxplot",
+            "retransmission_width_fraction",
+            "retransmission",
+        ),
+        ("output_hop_offset_plot", "hop_offset_width_fraction", "hop offsets"),
+        (
+            "output_hop_offset_linear_trend_plot",
+            "hop_offset_linear_trend_width_fraction",
+            "hop offset trend",
+        ),
+    ]
+    for output_key, fraction_key, size_key in rows:
+        output_file = cfg.get(output_key)
+        if not output_file:
+            continue
+        width_in, height_in = figure_sizes[size_key]
+        print(
+            f"{pathlib.Path(output_file).name}: "
+            f"{cfg[fraction_key]:.2f}\\textwidth, "
+            f"{width_in:.2f} x {height_in:.2f} in"
+        )
+
+
+def print_summary(data: list[RunData], cfg: dict) -> None:
     print("\nSummary")
     print("-------")
     for run in data:
@@ -560,15 +690,15 @@ def print_summary(data: list[RunData]) -> None:
         else:
             print(f"{run.label}: retransmission stats n=0")
 
-        configured_nodes = CONFIG.get("hop_offset_nodes", list(range(1, 9)))
+        configured_nodes = cfg.get("hop_offset_nodes", list(range(1, 9)))
         hop_counts = [
-            len(hop_offset_values_for_node(run, node, CONFIG))
+            len(hop_offset_values_for_node(run, node, cfg))
             for node in configured_nodes
         ]
         if any(hop_counts):
             medians = []
             for node in configured_nodes:
-                values = hop_offset_values_for_node(run, node, CONFIG)
+                values = hop_offset_values_for_node(run, node, cfg)
                 medians.append(np.median(values) if values else np.nan)
             median_text = ", ".join(
                 f"{node}:{median:.2f}"
@@ -582,9 +712,9 @@ def print_summary(data: list[RunData]) -> None:
 
 def main() -> None:
     cfg = CONFIG
-    apply_font(cfg)
+    apply_plot_style(cfg)
     data = collect_data(cfg)
-    print_summary(data)
+    print_summary(data, cfg)
 
     panels = []
     if cfg.get("show_latency_boxplot", True):
@@ -599,7 +729,45 @@ def main() -> None:
 
     fig_size = cfg.get("figure_size")
     if fig_size is None:
-        fig_size = (4.4 * len(panels), 3.3)
+        fig_size = figure_size_from_width_fraction(
+            cfg,
+            "combined_width_fraction",
+            "combined_width_in",
+            "combined_aspect_ratio",
+        )
+
+    latency_figure_size = figure_size_from_width_fraction(
+        cfg,
+        "latency_width_fraction",
+        "latency_width_in",
+        "latency_aspect_ratio",
+    )
+    retransmission_figure_size = figure_size_from_width_fraction(
+        cfg,
+        "retransmission_width_fraction",
+        "retransmission_width_in",
+        "retransmission_aspect_ratio",
+    )
+    hop_offset_figure_size = figure_size_from_width_fraction(
+        cfg,
+        "hop_offset_width_fraction",
+        "hop_offset_width_in",
+        "hop_offset_aspect_ratio",
+    )
+    hop_offset_linear_trend_figure_size = figure_size_from_width_fraction(
+        cfg,
+        "hop_offset_linear_trend_width_fraction",
+        "hop_offset_linear_trend_width_in",
+        "hop_offset_linear_trend_aspect_ratio",
+    )
+    figure_sizes = {
+        "combined": fig_size,
+        "latency": latency_figure_size,
+        "retransmission": retransmission_figure_size,
+        "hop offsets": hop_offset_figure_size,
+        "hop offset trend": hop_offset_linear_trend_figure_size,
+    }
+    print_figure_size_summary(cfg, figure_sizes)
 
     fig, axes = plt.subplots(1, len(panels), figsize=fig_size)
     if len(panels) == 1:
@@ -617,6 +785,7 @@ def main() -> None:
         pathlib.Path(cfg["output_latency_boxplot"])
         if cfg.get("output_latency_boxplot")
         else None,
+        figure_size=latency_figure_size,
     )
     save_panel(
         plot_retransmission_boxplot,
@@ -625,6 +794,7 @@ def main() -> None:
         pathlib.Path(cfg["output_retransmission_boxplot"])
         if cfg.get("output_retransmission_boxplot")
         else None,
+        figure_size=retransmission_figure_size,
     )
     save_panel(
         plot_hop_offset_plot,
@@ -633,7 +803,7 @@ def main() -> None:
         pathlib.Path(cfg["output_hop_offset_plot"])
         if cfg.get("output_hop_offset_plot")
         else None,
-        figure_size=(5.2, 3.2),
+        figure_size=hop_offset_figure_size,
     )
     save_panel(
         plot_hop_offset_linear_trend_plot,
@@ -642,14 +812,13 @@ def main() -> None:
         pathlib.Path(cfg["output_hop_offset_linear_trend_plot"])
         if cfg.get("output_hop_offset_linear_trend_plot")
         else None,
-        figure_size=(5.2, 3.2),
+        figure_size=hop_offset_linear_trend_figure_size,
     )
 
     output_file = cfg.get("output_file")
     if output_file:
         output_path = pathlib.Path(output_file)
-        fig.savefig(output_path, dpi=cfg["dpi"], bbox_inches="tight")
-        print(f"Saved {output_path}")
+        save_figure(fig, output_path, cfg)
     else:
         plt.show()
 
