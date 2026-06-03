@@ -17,8 +17,16 @@ Edit the CONFIG dict below to customise the plot to your needs.
 """
 
 import csv
+import os
 import sys
 import pathlib
+import tempfile
+
+os.environ.setdefault(
+    "MPLCONFIGDIR", str(pathlib.Path(tempfile.gettempdir()) / "matplotlib")
+)
+
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
@@ -38,15 +46,46 @@ CONFIG = {
         ("measurements/dwm3001/n8.csv", "N=8"),
     ],
 
+    "script_dir": pathlib.Path(__file__).resolve().parent,
+
     # If True, look for files matching the pattern below in the current dir
     # and ignore input_files above.
     "auto_discover": False,
     "auto_discover_glob": "n*.csv",
 
     # --- Output ---
-    "output_file": None,          # None → interactive; "plot.png" → save
-    "dpi":         150,
-    "font_family": "Times New Roman",
+    "output_file": "measurements/dwm3001/fig_delay_chain.pdf",
+    "dpi":         300,
+    "bbox_inches": None,
+
+    # LaTeX/thesis-friendly sizing. Keep every generated PDF at 1\textwidth
+    # and include it at width=\textwidth to preserve the configured font sizes.
+    "latex_text_width_pt": 426.79135,
+    "combined_width_fraction": 1.0,
+    "boxplot_width_fraction": 1.0,
+    "mean_line_width_fraction": 1.0,
+    "iqr_line_width_fraction": 1.0,
+    "combined_aspect_ratio": 0.46,
+    "boxplot_aspect_ratio": 5.5 / 8.8,
+    "mean_line_aspect_ratio": 4.5 / 8.8,
+    "iqr_line_aspect_ratio": 5.5 / 8.8,
+    "combined_width_in": 6.6,
+    "boxplot_width_in": 6.6,
+    "mean_line_width_in": 6.6,
+    "iqr_line_width_in": 6.6,
+
+    "font_family": "serif",
+    "font_size_pt": 10,
+    "axis_label_size_pt": 10,
+    "title_size_pt": 10,
+    "tick_label_size_pt": 8.5,
+    "legend_size_pt": 8.5,
+    "annotation_size_pt": 8,
+    "font_serif": ["Times New Roman", "Times", "DejaVu Serif"],
+    "use_latex_text": False,
+    "pgf_texsystem": "xelatex",
+    "latex_preamble": r"\usepackage{fontspec}\setmainfont{Times New Roman}",
+    "output_pgf": False,
 
     # --- Column names in the CSV (case-insensitive match) ---
     "col_no_sync": "delayNoClockSyn",
@@ -68,17 +107,17 @@ CONFIG = {
     # Supported extensions: .png .pdf .svg .eps (anything matplotlib accepts).
     # .pdf and .svg are recommended for LaTeX (\includegraphics{}).
     # When set, that single panel is saved as its own figure at the same dpi.
-    "output_boxplot":   None,   # e.g. "fig_boxplot.pdf"
-    "output_mean_line": None,   # e.g. "fig_mean.pdf"
-    "output_iqr_line":  None,   # e.g. "fig_iqr.pdf"
+    "output_boxplot":   "measurements/dwm3001/fig_boxplot.pdf",
+    "output_mean_line": "measurements/dwm3001/fig_mean.pdf",
+    "output_iqr_line":  "measurements/dwm3001/fig_iqr.pdf",
 
     # --- SVG export of each individual panel ---
     # Each can be None (skip) or a file path string.
     # Useful for importing into LaTeX or Inkscape.
     # The panel is rendered as a standalone figure at the same dpi.
-    "svg_boxplot":   "measurements/dwm3001/fig_boxplot.svg",   # e.g. "fig_boxplot.svg"
-    "svg_mean_line": "measurements/dwm3001/fig_mean.svg",   # e.g. "fig_mean.svg"
-    "svg_iqr_line":  "measurements/dwm3001/fig_iqr.svg",   # e.g. "fig_iqr.svg"
+    "svg_boxplot":   None,
+    "svg_mean_line": None,
+    "svg_iqr_line":  None,
 
     # --- Labels ---
     "y_label":         "Latency (ms)",
@@ -112,13 +151,54 @@ CONFIG = {
 
 # ── helpers ───────────────────────────────────────────────────────────────────
 
-def apply_font(cfg: dict) -> None:
-    fam = cfg.get("font_family", "sans-serif")
-    if fam == "Times New Roman":
-        plt.rcParams["font.family"] = "serif"
-        plt.rcParams["font.serif"]  = ["Times New Roman", "Times", "DejaVu Serif"]
-    else:
-        plt.rcParams["font.family"] = fam
+def latex_pt_to_in(pt: float) -> float:
+    return pt / 72.27
+
+
+def thesis_width_in(cfg: dict, fraction_key: str, fallback_key: str) -> float:
+    text_width_pt = cfg.get("latex_text_width_pt")
+    if text_width_pt:
+        return latex_pt_to_in(float(text_width_pt)) * float(cfg[fraction_key])
+    return float(cfg[fallback_key])
+
+
+def figure_size_from_width_fraction(
+    cfg: dict, fraction_key: str, fallback_width_key: str, aspect_ratio_key: str
+) -> tuple[float, float]:
+    width_in = thesis_width_in(cfg, fraction_key, fallback_width_key)
+    return (width_in, width_in * float(cfg[aspect_ratio_key]))
+
+
+def resolve_output_path(path: str | pathlib.Path, cfg: dict) -> pathlib.Path:
+    output_path = pathlib.Path(path)
+    if output_path.is_absolute():
+        return output_path
+    return pathlib.Path(cfg["script_dir"]) / output_path
+
+
+def apply_plot_style(cfg: dict) -> None:
+    font_size = cfg.get("font_size_pt", 10)
+    mpl.rcParams.update(
+        {
+            "font.family": cfg.get("font_family", "serif"),
+            "font.serif": cfg.get("font_serif", ["DejaVu Serif"]),
+            "font.size": font_size,
+            "axes.labelsize": cfg.get("axis_label_size_pt", font_size),
+            "axes.titlesize": cfg.get("title_size_pt", font_size),
+            "legend.fontsize": cfg.get("legend_size_pt", max(font_size - 1, 6)),
+            "xtick.labelsize": cfg.get("tick_label_size_pt", max(font_size - 1, 6)),
+            "ytick.labelsize": cfg.get("tick_label_size_pt", max(font_size - 1, 6)),
+            "lines.linewidth": 1.2,
+            "pdf.fonttype": 42,
+            "ps.fonttype": 42,
+            "svg.fonttype": "none",
+            "text.usetex": bool(cfg.get("use_latex_text", False)),
+            "text.latex.preamble": cfg.get("latex_preamble", ""),
+            "pgf.texsystem": cfg.get("pgf_texsystem", "pdflatex"),
+            "pgf.rcfonts": False,
+            "pgf.preamble": cfg.get("latex_preamble", ""),
+        }
+    )
 
 
 def load_two_column_csv(filepath: str,
@@ -228,7 +308,7 @@ def collect_data(cfg: dict) -> list[tuple[str, list[float], list[float]]]:
 
 def _style_ax(ax: plt.Axes, cfg: dict, title: str = "") -> None:
     if title and cfg.get("show_titles", True):
-        ax.set_title(title, fontsize=11, pad=6)
+        ax.set_title(title, pad=6)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     if cfg["show_grid"]:
@@ -307,9 +387,9 @@ def plot_grouped_boxplot(ax: plt.Axes,
                _darken(cfg["color_sync"]),     cfg["label_sync"])
 
     ax.set_xticks(xtick_pos)
-    ax.set_xticklabels(xtick_labels, fontsize=10)
-    ax.set_xlabel(cfg["x_label"], fontsize=11)
-    ax.set_ylabel(cfg["y_label"], fontsize=11)
+    ax.set_xticklabels(xtick_labels)
+    ax.set_xlabel(cfg["x_label"])
+    ax.set_ylabel(cfg["y_label"])
 
     if cfg["y_axis_zero"]:
         ax.set_ylim(bottom=0)
@@ -322,13 +402,27 @@ def plot_grouped_boxplot(ax: plt.Axes,
         y_bot = ax.get_ylim()[0]
         for (_, ns, sy), c_ns, c_sy in zip(data, positions_no, positions_syn):
             if ns:
-                ax.text(c_ns, y_bot, f"n={len(ns)}", ha="center", va="bottom",
-                        fontsize=7, color="#666666")
+                ax.text(
+                    c_ns,
+                    y_bot,
+                    f"n={len(ns)}",
+                    ha="center",
+                    va="bottom",
+                    fontsize=cfg.get("annotation_size_pt", 8),
+                    color="#666666",
+                )
             if sy:
-                ax.text(c_sy, y_bot, f"n={len(sy)}", ha="center", va="bottom",
-                        fontsize=7, color="#666666")
+                ax.text(
+                    c_sy,
+                    y_bot,
+                    f"n={len(sy)}",
+                    ha="center",
+                    va="bottom",
+                    fontsize=cfg.get("annotation_size_pt", 8),
+                    color="#666666",
+                )
 
-    ax.legend(fontsize=9, framealpha=0.7, loc="upper left")
+    ax.legend(framealpha=0.7, loc="upper left")
     _style_ax(ax, cfg, "Latency distribution per chain length")
 
 
@@ -366,9 +460,9 @@ def plot_mean_line(ax: plt.Axes,
                     alpha=0.10, color="#888888")
 
     ax.set_xticks(x)
-    ax.set_xticklabels(labels, fontsize=10)
-    ax.set_xlabel(cfg["x_label"], fontsize=11)
-    ax.set_ylabel(cfg["y_label"], fontsize=11)
+    ax.set_xticklabels(labels)
+    ax.set_xlabel(cfg["x_label"])
+    ax.set_ylabel(cfg["y_label"])
 
     if cfg["y_axis_zero"]:
         ax.set_ylim(bottom=0)
@@ -380,7 +474,7 @@ def plot_mean_line(ax: plt.Axes,
         )
         ax.set_ylim(top=top * cfg["y_axis_top_margin"])
 
-    ax.legend(fontsize=9, framealpha=0.7)
+    ax.legend(framealpha=0.7)
     _style_ax(ax, cfg, "Mean latency ± SEM vs. chain length")
 
 
@@ -424,9 +518,9 @@ def plot_iqr_line(ax: plt.Axes,
             label=f"{cfg['label_sync']} – p95")
 
     ax.set_xticks(x)
-    ax.set_xticklabels(labels, fontsize=10)
-    ax.set_xlabel(cfg["x_label"], fontsize=11)
-    ax.set_ylabel("Latency (ms)", fontsize=11)
+    ax.set_xticklabels(labels)
+    ax.set_xlabel(cfg["x_label"])
+    ax.set_ylabel("Latency (ms)")
 
     if cfg["y_axis_zero"]:
         ax.set_ylim(bottom=0)
@@ -435,7 +529,7 @@ def plot_iqr_line(ax: plt.Axes,
         if finite:
             ax.set_ylim(top=max(finite) * cfg["y_axis_top_margin"])
 
-    ax.legend(fontsize=8, framealpha=0.7, ncol=2)
+    ax.legend(framealpha=0.7, ncol=2)
     _style_ax(ax, cfg, "Latency spread (IQR) and 95th percentile vs. chain length")
 
 
@@ -468,22 +562,54 @@ def export_mean_csv(path: str,
                         n_sy, f"{m_sy:.6g}", f"{e_sy:.6g}"])
     print(f"  CSV (mean line data)   → {path}")
 
-def _save_single_panel(plot_fn, data, cfg, outpath: str) -> None:
-    """Render one panel into its own figure and save it."""
-    if cfg["figure_size"] is None:
-        fig_w = max(5, 2.2 * len(data))
-        size = (fig_w, 4.5)
-    else:
-        # Use half the combined width for a single panel
-        w, h = cfg["figure_size"]
-        size = (w / max(1, cfg.get("_n_panels", 1)), h)
+def save_figure(fig: plt.Figure, output_path: pathlib.Path, cfg: dict, label: str) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, dpi=cfg["dpi"], bbox_inches=cfg.get("bbox_inches"))
+    print(f"  Plot ({label})        -> {output_path}")
 
-    fig, ax = plt.subplots(figsize=size, dpi=cfg["dpi"])
+    if cfg.get("output_pgf", False) and output_path.suffix.lower() != ".pgf":
+        pgf_path = output_path.with_suffix(".pgf")
+        fig.savefig(pgf_path, bbox_inches=cfg.get("bbox_inches"))
+        print(f"  Plot ({label} PGF)    -> {pgf_path}")
+
+
+def _save_single_panel(
+    plot_fn,
+    data,
+    cfg,
+    outpath: str | pathlib.Path,
+    figure_size: tuple[float, float],
+    label: str,
+) -> None:
+    """Render one panel into its own figure and save it."""
+    fig, ax = plt.subplots(figsize=figure_size, dpi=cfg["dpi"])
     plot_fn(ax, data, cfg)
     fig.tight_layout()
-    fig.savefig(outpath, bbox_inches="tight")
+    save_figure(fig, resolve_output_path(outpath, cfg), cfg, label)
     plt.close(fig)
-    print(f"  Plot (single panel)    → {outpath}")
+
+
+def print_figure_size_summary(
+    cfg: dict, figure_sizes: dict[str, tuple[float, float]]
+) -> None:
+    print("\nFigure sizes")
+    print("------------")
+    rows = [
+        ("output_file", "combined_width_fraction", "combined"),
+        ("output_boxplot", "boxplot_width_fraction", "boxplot"),
+        ("output_mean_line", "mean_line_width_fraction", "mean line"),
+        ("output_iqr_line", "iqr_line_width_fraction", "iqr line"),
+    ]
+    for output_key, fraction_key, size_key in rows:
+        output_file = cfg.get(output_key)
+        if not output_file:
+            continue
+        width_in, height_in = figure_sizes[size_key]
+        print(
+            f"{pathlib.Path(output_file).name}: "
+            f"{cfg[fraction_key]:.2f}\\textwidth, "
+            f"{width_in:.2f} x {height_in:.2f} in"
+        )
 
 
 def _darken(hex_color: str, factor: float = 0.65) -> str:
@@ -502,7 +628,7 @@ def main() -> None:
     if len(sys.argv) > 1:
         cfg["output_file"] = sys.argv[1]
 
-    apply_font(cfg)
+    apply_plot_style(cfg)
 
     data = collect_data(cfg)
 
@@ -531,11 +657,43 @@ def main() -> None:
         sys.exit("All panels disabled – nothing to plot.")
 
     if cfg["figure_size"] is None:
-        fig_w = max(7, 2.5 * len(data))
-        cfg["figure_size"] = (fig_w * n_panels * 0.6, 4.5)
+        combined_figure_size = figure_size_from_width_fraction(
+            cfg,
+            "combined_width_fraction",
+            "combined_width_in",
+            "combined_aspect_ratio",
+        )
+    else:
+        combined_figure_size = cfg["figure_size"]
+
+    boxplot_figure_size = figure_size_from_width_fraction(
+        cfg,
+        "boxplot_width_fraction",
+        "boxplot_width_in",
+        "boxplot_aspect_ratio",
+    )
+    mean_line_figure_size = figure_size_from_width_fraction(
+        cfg,
+        "mean_line_width_fraction",
+        "mean_line_width_in",
+        "mean_line_aspect_ratio",
+    )
+    iqr_line_figure_size = figure_size_from_width_fraction(
+        cfg,
+        "iqr_line_width_fraction",
+        "iqr_line_width_in",
+        "iqr_line_aspect_ratio",
+    )
+    figure_sizes = {
+        "combined": combined_figure_size,
+        "boxplot": boxplot_figure_size,
+        "mean line": mean_line_figure_size,
+        "iqr line": iqr_line_figure_size,
+    }
+    print_figure_size_summary(cfg, figure_sizes)
 
     fig, axes = plt.subplots(1, n_panels,
-                             figsize=cfg["figure_size"],
+                             figsize=combined_figure_size,
                              dpi=cfg["dpi"])
     if n_panels == 1:
         axes = [axes]
@@ -554,27 +712,53 @@ def main() -> None:
     if cfg.get("show_titles", True):
         fig.suptitle(
             "LF Delay-Chain Transmission Latency: Clock Sync Impact",
-            fontsize=13, fontweight="bold", y=1.01,
+            fontweight="bold", y=1.01,
         )
     fig.tight_layout()
 
     if cfg["output_file"]:
-        fig.savefig(cfg["output_file"], bbox_inches="tight")
-        print(f"  Plot (combined)        -> {cfg['output_file']}")
+        save_figure(
+            fig,
+            resolve_output_path(cfg["output_file"], cfg),
+            cfg,
+            "combined",
+        )
     else:
         plt.show()
 
     # --- Per-panel exports ---
-    cfg["_n_panels"] = n_panels   # sizing hint for _save_single_panel
     panel_map = [
-        ("show_boxplot",   "svg_boxplot",   plot_grouped_boxplot),
-        ("show_mean_line", "svg_mean_line",  plot_mean_line),
-        ("show_iqr_line",  "svg_iqr_line",   plot_iqr_line),
+        (
+            "show_boxplot",
+            "output_boxplot",
+            "svg_boxplot",
+            plot_grouped_boxplot,
+            boxplot_figure_size,
+            "boxplot",
+        ),
+        (
+            "show_mean_line",
+            "output_mean_line",
+            "svg_mean_line",
+            plot_mean_line,
+            mean_line_figure_size,
+            "mean line",
+        ),
+        (
+            "show_iqr_line",
+            "output_iqr_line",
+            "svg_iqr_line",
+            plot_iqr_line,
+            iqr_line_figure_size,
+            "iqr line",
+        ),
     ]
-    for show_key, svg_key, fn in panel_map:
-        outpath = cfg.get(svg_key)
-        if outpath and cfg.get(show_key, True):
-            _save_single_panel(fn, data, cfg, outpath)
+    for show_key, output_key, svg_key, fn, figure_size, label in panel_map:
+        if not cfg.get(show_key, True):
+            continue
+        for outpath in (cfg.get(output_key), cfg.get(svg_key)):
+            if outpath:
+                _save_single_panel(fn, data, cfg, outpath, figure_size, label)
 
 
 if __name__ == "__main__":
