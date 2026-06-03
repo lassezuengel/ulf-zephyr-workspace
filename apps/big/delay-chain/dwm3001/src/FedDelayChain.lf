@@ -47,17 +47,17 @@ reactor Forwarder(bank_index: int = 0) {
 
   reaction(in) -> out {=
     instant_t now = lf_time_physical();
-    // printf("Forwarding message (offset %lld.%02lld ms)\n", (now - in->value) / 1000000, (now - in->value) % 1000000);
+    printf("Forwarding message (offset %lld.%02lld ms)\n", (now - in->value) / 1000000, (now - in->value) % 1000000);
     lf_set(out, in->value);
   =}
 }
 
 // Use glossy clock sync:
 @external_clock_sync(module="<app/drivers/ieee802154/glossy_lf.h>")
-federated reactor(n: int = 7) {
+federated reactor(n: int = 15) {
   @interface_rudp
   @clock_sync(grandmaster=true)
-  srcdst = new SourceAndDestination(period = 33300 msec)
+  srcdst = new SourceAndDestination(period = 250 msec)
 
   @interface_rudp
   fwds = new[n] Forwarder()
