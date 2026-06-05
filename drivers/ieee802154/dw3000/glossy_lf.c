@@ -240,9 +240,9 @@ int lf_clock_sync_schedule(int64_t *next_sync_run_ms, int64_t *clock_offset_ms) 
     g_state.failures_in_row = 0;
     k_mutex_unlock(&g_state.mutex);
 
-    LOG_INF("[glossy] sync ok: rtc_offset=%" PRId64
+    LOG_INF("[glossy] sync ok: hops=%u rtc_offset=%" PRId64
             " ms  dwt_offset=%" PRId64 " ms",
-            new_offset_ms, deca_offset_ms);
+            result.dist_to_root, new_offset_ms, deca_offset_ms);
   } else {
     int failures_in_row;
     bool sync_lost;
