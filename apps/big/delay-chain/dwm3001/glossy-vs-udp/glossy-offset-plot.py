@@ -153,6 +153,7 @@ CONFIG = {
     "sync_hop_unknown_color": "#AAAAAA",
     "sync_hop_colorbar_label": "Average Glossy sync hops",
     "sync_hop_line_gradient_steps": 24,
+    "hop_count_tick_rotation": 45,
 
     # Figure size is computed automatically unless this is set.
     "figure_size": None,
@@ -768,6 +769,18 @@ def add_sync_hop_colorbar(
     colorbar.update_ticks()
 
 
+def set_hop_count_ticks(
+    ax: plt.Axes, hop_counts: np.ndarray, cfg: dict
+) -> None:
+    ax.set_xticks(hop_counts)
+    ax.set_xticklabels(
+        [f"{hop_count}" for hop_count in range(len(hop_counts))],
+        rotation=cfg.get("hop_count_tick_rotation", 45),
+        ha="right",
+        rotation_mode="anchor",
+    )
+
+
 def plot_hop_offset_plot(ax: plt.Axes, data: list[RunData], cfg: dict) -> None:
     nodes = cfg.get("hop_offset_nodes", list(range(1, 9)))
     hop_counts = np.arange(len(nodes), dtype=float)
@@ -873,8 +886,7 @@ def plot_hop_offset_plot(ax: plt.Axes, data: list[RunData], cfg: dict) -> None:
         sys.exit(f"Error: unsupported hop_offset_y_scale '{y_scale}'")
 
     ax.axhline(0, color="#222222", linewidth=0.8, alpha=0.6)
-    ax.set_xticks(hop_counts)
-    ax.set_xticklabels([f"{hop_count}" for hop_count in range(len(nodes))])
+    set_hop_count_ticks(ax, hop_counts, cfg)
     ax.set_xlabel(cfg["hop_count_x_label"])
     ax.set_ylabel(cfg["hop_offset_y_label"])
     if cfg.get("show_hop_offset_legend", True):
@@ -955,8 +967,7 @@ def plot_hop_offset_linear_trend_plot(
         return
 
     ax.axhline(0, color="#222222", linewidth=0.8, alpha=0.6)
-    ax.set_xticks(hop_counts)
-    ax.set_xticklabels([f"{hop_count}" for hop_count in range(len(nodes))])
+    set_hop_count_ticks(ax, hop_counts, cfg)
     ax.set_xlabel(cfg["hop_count_x_label"])
     ax.set_ylabel(cfg["hop_offset_y_label"])
     if cfg.get("show_hop_offset_legend", True):
