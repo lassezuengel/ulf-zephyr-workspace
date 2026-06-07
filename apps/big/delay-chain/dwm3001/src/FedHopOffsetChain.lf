@@ -12,11 +12,8 @@ preamble {=
   #include "reactor-uc/reactor-c.h"
 =}
 
-// Source and Destination in one reactor/federate such that it can correctly measure the latency
-// (otherwise the physical clocks of source and destination might differ)
-reactor SourceAndDestination(period: time = 1 sec) {
+reactor Source(period: time = 1 sec) {
   output out: instant_t
-  input in: instant_t
 
   timer trigger(500 msec, period)
 
@@ -27,13 +24,6 @@ reactor SourceAndDestination(period: time = 1 sec) {
   reaction scheduleNewDelayChain(trigger) -> out {=
     printf("Scheduling new delay chain...\n");
     lf_set(out, lf_time_physical());
-  =}
-
-  reaction(in) {=
-    instant_t now = lf_time_physical();
-    int64_t latency = now - in->value;
-
-    printf("Latency: %lld.%02lld ms\n", latency / 1000000, latency % 1000000);
   =}
 }
 
@@ -54,14 +44,14 @@ reactor Forwarder(bank_index: int = 0) {
 
 // Use glossy clock sync:
 @external_clock_sync(module="<app/drivers/ieee802154/glossy_lf.h>")
-federated reactor(n: int = 7) {
+federated reactor(n: int = 24) {
   @interface_rudp
   @clock_sync(grandmaster=true)
-  srcdst = new SourceAndDestination(period = 10000 msec)
+  srcdst = new Source(period = 1000 msec)
 
   @interface_rudp
   fwds = new[n] Forwarder()
 
   @buffer(20)
-  srcdst.out, fwds.out ~> fwds.in, srcdst.in
+  srcdst.out, fwds.out ~> fwds.in
 }

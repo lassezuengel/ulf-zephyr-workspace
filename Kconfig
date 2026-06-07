@@ -54,6 +54,16 @@ config GLOSSY_TX_FLOOD_START_NODE_ID
     hex "Glossy TX flood start node ID"
     default 0x00
 
+config SYNCHROFLY_GLOSSY_TEST_DROP_HOP0_PERCENT
+    int "Test probability for ignoring direct Glossy frames"
+    default 0
+    range 0 100
+    help
+      Percentage probability that a non-initiator ignores a valid Glossy
+      frame whose on-air hop count is zero. The node does not relay that
+      frame and continues listening for a later retransmission. This is an
+      experimental multi-hop propagation test; leave at zero normally.
+
 
 config DEFAULT_ROUND_DURATION
     int "default duration of global event scheduling"

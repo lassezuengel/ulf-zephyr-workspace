@@ -103,9 +103,22 @@ static uint64_t dw3000_system_timestamp(const struct device *dev) {
 static int dw3000_start_tx_ext(const struct device *dev, uint64_t delayed_timestamp, uint32_t flags);
 
 static int dw3000_enable_rx(const struct device *dev, uint32_t timeout_us, uint64_t delayed_timestamp) {
+  uint32_t status_hi;
+
+  ARG_UNUSED(dev);
+
   // Set bias_trim to 7 for receiving (from ull_rxenable)
   uint32_t pll_common_val = RF_PLL_COMMON;
   dwt_writetodevice(PLL_COMMON_ID, 0, 4, (uint8_t *)&pll_common_val);
+
+  /*
+   * CMD_ERR is sticky. Clear an older command failure so the status read
+   * below reports whether this RX command was accepted.
+   */
+  status_hi = dwt_readsysstatushi();
+  if ((status_hi & SYS_STATUS_HI_CMD_ERR_BIT_MASK) != 0U) {
+    dwt_writesysstatushi(SYS_STATUS_HI_CMD_ERR_BIT_MASK);
+  }
 
   if (delayed_timestamp > 0) {
     dwt_setdelayedtrxtime((uint32_t)(delayed_timestamp >> 8));
@@ -115,6 +128,12 @@ static int dw3000_enable_rx(const struct device *dev, uint32_t timeout_us, uint6
       dwt_setrxtimeout(timeout_us);
     }
     dwt_writetodevice(CMD_RX, 0, 0, NULL);
+  }
+
+  status_hi = dwt_readsysstatushi();
+  if ((status_hi & SYS_STATUS_HI_CMD_ERR_BIT_MASK) != 0U) {
+    dwt_writesysstatushi(SYS_STATUS_HI_CMD_ERR_BIT_MASK);
+    return -EIO;
   }
 
   return 0;

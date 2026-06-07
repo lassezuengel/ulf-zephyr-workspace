@@ -7,6 +7,7 @@
 #include <math.h>
 #include <zephyr/drivers/timer/nrf_rtc_timer.h>
 #include <zephyr/logging/log.h>
+#include <zephyr/random/random.h>
 
 #include <app/drivers/ieee802154/uwb_irq_broker.h>
 
@@ -26,6 +27,48 @@ struct __attribute__((__packed__)) dwt_glossy_frame_buffer {
 };
 
 static uint8_t received_glossy_payload[MAX_GLOSSY_PAYLOAD];
+
+static int glossy_enable_rx(const struct device *dev,
+	const uwb_driver_t *uwb_driver, uint32_t timeout_us) {
+	int ret = uwb_driver->enable_rx(dev, timeout_us, 0);
+
+	if (ret == 0) {
+		return 0;
+	}
+
+	LOG_WRN("RX enable rejected (ret=%d); forcing idle and retrying", ret);
+	uwb_driver->force_trx_off(dev);
+	uwb_driver->clear_timeouts(dev);
+	return uwb_driver->enable_rx(dev, timeout_us, 0);
+}
+
+static uwb_irq_state_e glossy_wait_for_tx(const struct device *dev,
+	uint32_t timeout_us) {
+	uint32_t start_cycles = k_cycle_get_32();
+
+	while (true) {
+		uint32_t elapsed_us = k_cyc_to_us_floor32(k_cycle_get_32() - start_cycles);
+		if (elapsed_us >= timeout_us) {
+			return UWB_IRQ_FRAME_WAIT_TIMEOUT;
+		}
+
+		uwb_irq_state_e state = uwb_broker_glossy_wait(
+			dev, K_USEC(timeout_us - elapsed_us));
+		if (state == UWB_IRQ_TX ||
+		    state == UWB_IRQ_ERR ||
+		    state == UWB_IRQ_HALF_DELAY_WARNING ||
+		    state == UWB_IRQ_CANCELLED) {
+			return state;
+		}
+
+		/*
+		 * RX completion can leave another RX-phase event queued before the
+		 * relay command is issued. Do not let that event end the TX phase
+		 * and trigger cleanup while the delayed transmission is pending.
+		 */
+		LOG_DBG("Ignoring stale IRQ state %d while waiting for relay TX", state);
+	}
+}
 
 
 static K_SEM_DEFINE(read_dwt_sys_clock, 0, 1);
@@ -156,12 +199,20 @@ int uwb_glossy_flood(const struct device *dev,
 			conf->frame_id, conf->max_depth, timeout_us);
 
 		bool success = false;
+		bool rx_armed = false;
 		for (size_t k = 0; !success && (k < conf->max_depth || !conf->max_depth); k++) {
 			uint32_t rx_timeout = timeout_us + (timeout_us > 0 ? conf->guard_period_us : 0);
 			LOG_DBG("RECEIVER: RX attempt %u/%u, timeout=%uus",
 				k + 1, conf->max_depth, rx_timeout);
 
-			uwb_driver->enable_rx(dev, rx_timeout, 0);
+			if (!rx_armed) {
+				ret = glossy_enable_rx(dev, uwb_driver, rx_timeout);
+				if (ret != 0) {
+					LOG_ERR("RECEIVER: Failed to enable RX (ret=%d)", ret);
+					goto cleanup;
+				}
+			}
+			rx_armed = false;
 
 			uwb_driver->release_device(dev);
 			k_timeout_t rx_wait = K_USEC(rx_timeout + 1000);
@@ -184,13 +235,10 @@ int uwb_glossy_flood(const struct device *dev,
 				size_t glossy_header_len = offsetof(struct dwt_glossy_frame_buffer, payload);
 				size_t glossy_min_len = glossy_header_len + FRAME_LENGTH_ADDITIONAL;
 
-				uwb_rx_diagnostics_t rx_diag;
-				uint64_t local_dwt_ts = uwb_driver->read_rx_timestamp(dev, &rx_diag);
+				uint64_t local_dwt_ts = uwb_driver->read_rx_timestamp(dev, NULL);
 
 				uint16_t pkt_len = uwb_driver->get_rx_frame_length(dev);
-
-				LOG_DBG("RECEIVER: RX diagnostics: pacc=%u cir_pwr=%u fp_index=%u pkt_len=%u",
-					rx_diag.rx_pacc, rx_diag.cir_pwr, rx_diag.fp_index, pkt_len);
+				LOG_DBG("RECEIVER: RX frame length=%u", pkt_len);
 
 				if (pkt_len > sizeof(buf)) {
 					uwb_driver->switch_buffers(dev);
@@ -244,6 +292,38 @@ int uwb_glossy_flood(const struct device *dev,
 					continue;
 				}
 
+				if (glossy_frame.hop_count == 0 &&
+				    CONFIG_SYNCHROFLY_GLOSSY_TEST_DROP_HOP0_PERCENT > 0) {
+					uint32_t drop_roll = sys_rand32_get() % 100U;
+
+					if (drop_roll <
+					    CONFIG_SYNCHROFLY_GLOSSY_TEST_DROP_HOP0_PERCENT) {
+						uwb_driver->switch_buffers(dev);
+						ret = glossy_enable_rx(dev, uwb_driver, rx_timeout);
+						uwb_ts_t rearm_ts =
+							uwb_driver->system_timestamp(dev) & UWB_TS_MASK;
+						uint32_t rearm_elapsed_us =
+							uwb_driver->timestamp_to_us(
+								dev,
+								(rearm_ts - local_dwt_ts) & UWB_TS_MASK);
+
+						if (ret != 0) {
+							LOG_ERR("TEST: Failed to re-arm RX after dropping direct frame (ret=%d)",
+								ret);
+							goto cleanup;
+						}
+
+						rx_armed = true;
+						LOG_WRN("TEST: Ignoring direct Glossy frame (roll=%u, drop=%u%%); RX re-armed after %uus of %uus relay delay",
+							drop_roll,
+							CONFIG_SYNCHROFLY_GLOSSY_TEST_DROP_HOP0_PERCENT,
+							rearm_elapsed_us,
+							conf->transmission_delay_us);
+						success = false;
+						continue;
+					}
+				}
+
 				success = true;
 				LOG_DBG("RECEIVER: RX success, hop_count=%u, payload_size=%u, rx_ts=0x%llx",
 					glossy_frame.hop_count, glossy_frame.payload_size, local_dwt_ts);
@@ -253,7 +333,7 @@ int uwb_glossy_flood(const struct device *dev,
 				uwb_driver->switch_buffers(dev);
 
         // TODO: Remove
-        uwb_driver->force_trx_off(dev);
+        // uwb_driver->force_trx_off(dev);
 
 				uwb_driver->setup_tx_frame(dev, (uint8_t *)&glossy_frame,
 					offsetof(struct dwt_glossy_frame_buffer, payload) + glossy_frame.payload_size);
@@ -261,7 +341,11 @@ int uwb_glossy_flood(const struct device *dev,
 				uwb_ts_t tx_delay_dtu = uwb_driver->us_to_timestamp(dev, conf->transmission_delay_us);
 				uwb_ts_t programmed_tx_ts = (local_dwt_ts + tx_delay_dtu) & UWB_TS_MASK;
 
-				uwb_driver->start_tx(dev, programmed_tx_ts);
+				ret = uwb_driver->start_tx(dev, programmed_tx_ts);
+				if (ret != 0) {
+					LOG_ERR("RECEIVER: Failed to schedule relay TX (ret=%d)", ret);
+					goto cleanup;
+				}
 				/* timesync_debug_pulse(); */
 
 				/* Populate result with raw timestamps (no sync computation) */
@@ -279,8 +363,9 @@ int uwb_glossy_flood(const struct device *dev,
 
 				/* Wait for retransmit TX completion */
 				uwb_driver->release_device(dev);
-				k_timeout_t tx_wait = K_USEC(conf->transmission_delay_us + conf->guard_period_us + 1000);
-				irq_state = uwb_broker_glossy_wait(dev, tx_wait);
+				uint32_t tx_wait_us =
+					conf->transmission_delay_us + conf->guard_period_us + 1000;
+				irq_state = glossy_wait_for_tx(dev, tx_wait_us);
 				LOG_DBG("glossy done waiting for irq, state=%d", irq_state);
 				if (irq_state == UWB_IRQ_FRAME_WAIT_TIMEOUT) {
 					LOG_WRN("glossy wait timed out waiting for TX IRQ");
@@ -326,7 +411,12 @@ int uwb_glossy_flood(const struct device *dev,
 		uint32_t root_rx_timeout_us = conf->transmission_delay_us + conf->guard_period_us + 1000;
 		LOG_DBG("INITIATOR: RX timeout set to %uus (tx_delay=%u + guard=%u + margin=1000)",
 			root_rx_timeout_us, conf->transmission_delay_us, conf->guard_period_us);
-		uwb_driver->enable_rx(dev, root_rx_timeout_us, 0);
+		ret = glossy_enable_rx(dev, uwb_driver, root_rx_timeout_us);
+		if (ret != 0) {
+			LOG_ERR("INITIATOR: Failed to enable RX for delay measurement (ret=%d)",
+				ret);
+			goto cleanup;
+		}
 
 		uwb_driver->release_device(dev);
     // TODO: Does K_FOREVER cause deadlock? shouldn't be possible because we specify a timeout above...
