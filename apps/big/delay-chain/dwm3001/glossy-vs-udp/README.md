@@ -11,13 +11,39 @@ compares two clock-synchronization approaches:
 
 The chain logs end-to-end latency at `dwm3001-1`, per-hop forwarding offsets
 from the intermediate federates, and RUDP retransmission statistics. The helper
-script `glossy-vs-udp-plot.py` extracts those measurements and generates the
+script `glossy-offset-plot.py` extracts those measurements and generates the
 figures below.
 
 Regenerate the plots with:
 
 ```sh
-python3 glossy-vs-udp-plot.py
+python3 glossy-offset-plot.py glossyrun.txt udprun.txt
+```
+
+Passing only a Glossy log generates its symmetric-log and linear-trend
+forwarding-offset plots:
+
+```sh
+python3 glossy-offset-plot.py glossy-multihop/n25/glossyrun.txt
+```
+
+Generated PDFs are written to the directory containing the Glossy log.
+Forwarding-offset plots show the first eight detected nodes by default. The
+x-axis maps their device IDs to contiguous hop counts starting at zero. Use
+`--node-count N` (or `-n N`) to show the first N nodes, and use `0` to include
+all nodes detected in the input logs:
+
+```sh
+python3 glossy-offset-plot.py --node-count 0 \
+    glossy-multihop/n25/glossyrun.txt
+```
+
+First-seen node order is preserved by default. Pass `--sort` to order the
+selected nodes by ascending average forwarding offset from the Glossy log:
+
+```sh
+python3 glossy-offset-plot.py --node-count 0 --sort \
+    glossy-multihop/n25/glossyrun.txt
 ```
 
 ## Combined Overview
@@ -45,8 +71,11 @@ clock-sync run shows substantially higher retransmission pressure.
 ## Hop Offsets
 
 Forwarding offsets are extracted from lines such as `Forwarding message (offset
-5.00 ms)`. Only `dwm3001-1` through `dwm3001-8` are shown; `dwm3001-15` and
-`dwm3001-16` also logged values but are outside the contiguous first chain.
+5.00 ms)`. Device IDs are mapped to contiguous hop counts on the x-axis.
+Each Glossy marker is colored by the device's average `sync ok: hops=...`
+value. Hop 1 is blue and hop 2 is yellow; fractional averages interpolate
+between those colors. The initiator is shown as hop 0. Lines between devices
+use a continuous gradient between the neighboring marker colors.
 
 The symmetric-log plot keeps both negative offsets and large UDP excursions
 visible.
