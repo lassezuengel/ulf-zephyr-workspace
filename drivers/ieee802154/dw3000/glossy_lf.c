@@ -20,14 +20,14 @@ LOG_MODULE_REGISTER(glossy_lf, LOG_LEVEL_INF);
 #endif
 
 #ifndef CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_TRANSMISSION_DELAY_US
-#define CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_TRANSMISSION_DELAY_US 750
+#define CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_TRANSMISSION_DELAY_US 1250
 #endif
 
 #define GLOSSY_INTERVAL_MS 2000
-#define GLOSSY_SYNC_LOST_FAILURES 10
+#define GLOSSY_SYNC_LOST_FAILURES 5
 #define GLOSSY_INITIAL_SEARCH_DEPTH 300
 #define GLOSSY_RECOVERY_MIN_RADIUS_MS 20
-#define GLOSSY_RECOVERY_MAX_RADIUS_MS 500
+#define GLOSSY_RECOVERY_MAX_RADIUS_MS 1000
 
 struct glossy_lf_sync_state {
   struct k_mutex mutex;
@@ -35,6 +35,8 @@ struct glossy_lf_sync_state {
   bool offset_known;
   bool sync_lost;
   int failures_in_row;
+  ExternalClockSyncResultCallback result_callback;
+  void *result_callback_user_data;
 };
 
 static struct glossy_lf_sync_state g_state = {
@@ -42,6 +44,8 @@ static struct glossy_lf_sync_state g_state = {
     .offset_known = false,
     .sync_lost = false,
     .failures_in_row = 0,
+    .result_callback = NULL,
+    .result_callback_user_data = NULL,
 };
 
 static const struct device *g_dev;
@@ -143,7 +147,14 @@ void glossy_lf_get_state(struct glossy_lf_state *state) {
   k_mutex_unlock(&g_state.mutex);
 }
 
-int lf_clock_sync_init(bool grandmaster, int federate_id) {
+int lf_clock_sync_init(bool grandmaster, int federate_id,
+                       ExternalClockSyncResultCallback result_callback,
+                       void *result_callback_user_data,
+                       bool *lf_drives_sync_schedule) {
+  if (!result_callback || !lf_drives_sync_schedule) {
+    return -EINVAL;
+  }
+
   int ret = glossy_lf_init(grandmaster, federate_id);
   if (ret != 0 && ret != -EALREADY) {
     return ret;
@@ -154,19 +165,32 @@ int lf_clock_sync_init(bool grandmaster, int federate_id) {
   g_state.offset_known = false;
   g_state.sync_lost = false;
   g_state.failures_in_row = 0;
+  g_state.result_callback = result_callback;
+  g_state.result_callback_user_data = result_callback_user_data;
   k_mutex_unlock(&g_state.mutex);
+
+  /* Glossy has no private worker or timer; reactor-uc schedules every round. */
+  *lf_drives_sync_schedule = true;
 
   LOG_INF("[glossy] external clock sync initialized");
 
   return 0;
 }
 
-int lf_clock_sync_schedule(int64_t *next_sync_run_ms, int64_t *clock_offset_ms) {
+int lf_clock_sync_schedule(void) {
   if (!g_started) {
     return -EAGAIN;
   }
 
-  if (!next_sync_run_ms || !clock_offset_ms) {
+  ExternalClockSyncResultCallback result_callback;
+  void *result_callback_user_data;
+
+  k_mutex_lock(&g_state.mutex, K_FOREVER);
+  result_callback = g_state.result_callback;
+  result_callback_user_data = g_state.result_callback_user_data;
+  k_mutex_unlock(&g_state.mutex);
+
+  if (!result_callback) {
     return -EINVAL;
   }
 
@@ -211,7 +235,7 @@ int lf_clock_sync_schedule(int64_t *next_sync_run_ms, int64_t *clock_offset_ms) 
           g_initiator ? "initiator" : "follower", g_node_id, conf.max_depth,
           recovery_radius_ms);
 
-  if(g_initiator) {
+  if (g_initiator) {
     LOG_INF("[glossy] initiator starting round");
   }
 
@@ -279,25 +303,29 @@ int lf_clock_sync_schedule(int64_t *next_sync_run_ms, int64_t *clock_offset_ms) 
   k_mutex_unlock(&g_state.mutex);
 
   int64_t now_ms = k_uptime_get();
+  int64_t next_sync_run_ms;
 
   if (g_initiator) {
-    *next_sync_run_ms = glossy_next_boundary_ms(now_ms);
+    next_sync_run_ms = glossy_next_boundary_ms(now_ms);
   } else if (offset_known) {
     int64_t next_radius_ms =
         sync_lost ? glossy_recovery_radius_ms(failures_in_row) : 0;
 
-    *next_sync_run_ms = glossy_next_follower_run_ms(
+    next_sync_run_ms = glossy_next_follower_run_ms(
         now_ms, measured_clock_offset_ms, next_radius_ms);
 
     if (next_radius_ms > 0) {
       LOG_WRN("[glossy] recovery window: next=%" PRId64
               " now=%" PRId64 " radius=%" PRId64 " ms",
-              *next_sync_run_ms, now_ms, next_radius_ms);
+              next_sync_run_ms, now_ms, next_radius_ms);
     }
   } else {
-    *next_sync_run_ms = now_ms + GLOSSY_INTERVAL_MS;
+    next_sync_run_ms = now_ms + GLOSSY_INTERVAL_MS;
   }
 
-  *clock_offset_ms = measured_clock_offset_ms;
-  return ret;
+  result_callback(result_callback_user_data, ret, next_sync_run_ms,
+                  measured_clock_offset_ms);
+
+  /* The synchronous request was accepted; ret is the synchronization result. */
+  return 0;
 }

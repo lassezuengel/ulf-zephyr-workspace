@@ -11,12 +11,12 @@ choice SYNCHROFLY_NETWORK_SETTINGS_SOURCE
 	default SYNCHROFLY_NETWORK_SETTINGS_SOURCE_COMPILE_TIME
 	help
 	  Determines where network settings values come from at runtime.
-	  
+
 	  COMPILE_TIME: Settings hardcoded from Kconfig at compile time.
 	                Getters return CONFIG values, ignoring NVS.
 	                Setters still write to NVS for future use.
 	                Use for testbed deployments with guaranteed behavior.
-	  
+
 	  DYNAMIC: Settings loaded from NVS flash storage at boot.
 	           Can be changed at runtime via shell/BLE.
 	           Use for development and configurable deployments.
@@ -102,7 +102,7 @@ config SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_MAX_DEPTH
 
 config SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_TRANSMISSION_DELAY_US
 	int "Default Glossy transmission delay in microseconds"
-	default 750
+	default 1250
 	range 100 5000
 	help
 	  Delay in microseconds between receiving and retransmitting in Glossy
