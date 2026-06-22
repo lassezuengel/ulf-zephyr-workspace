@@ -5,7 +5,8 @@ Glossy log and, optionally, a paired UDP experiment log.
 
 Usage:
 
-    python3 glossy-offset-plot.py [--node-count N] [--sort] GLOSSY_LOG [UDP_LOG]
+    python3 glossy-offset-plot.py [--node-count N] [--hop-label-step N] [--sort]
+                                  GLOSSY_LOG [UDP_LOG]
 
 The script expects log lines like:
 
@@ -153,6 +154,7 @@ CONFIG = {
     "sync_hop_unknown_color": "#AAAAAA",
     "sync_hop_colorbar_label": "Average Glossy sync hops",
     "sync_hop_line_gradient_steps": 24,
+    "hop_count_label_step": 1,
     "hop_count_tick_rotation": 45,
 
     # Figure size is computed automatically unless this is set.
@@ -279,9 +281,18 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="order hops by ascending average Glossy forwarding offset",
     )
+    parser.add_argument(
+        "--hop-label-step",
+        type=int,
+        default=1,
+        metavar="N",
+        help="label every Nth hop on the x axis (default: 1)",
+    )
     args = parser.parse_args()
     if args.node_count < 0:
         parser.error("--node-count must be 0 or greater")
+    if args.hop_label_step < 1:
+        parser.error("--hop-label-step must be 1 or greater")
     return args
 
 
@@ -294,6 +305,7 @@ def configure_for_inputs(args: argparse.Namespace) -> dict:
     cfg["output_hop_offset_plot"] = output_dir / "hop-offsets.pdf"
     cfg["hop_offset_node_count"] = args.node_count
     cfg["sort_hop_offsets"] = args.sort
+    cfg["hop_count_label_step"] = args.hop_label_step
 
     if args.udp_log is None:
         cfg["output_file"] = None
@@ -772,9 +784,11 @@ def add_sync_hop_colorbar(
 def set_hop_count_ticks(
     ax: plt.Axes, hop_counts: np.ndarray, cfg: dict
 ) -> None:
-    ax.set_xticks(hop_counts)
+    label_step = max(1, int(cfg.get("hop_count_label_step", 1)))
+    labelled_hop_counts = hop_counts[::label_step]
+    ax.set_xticks(labelled_hop_counts)
     ax.set_xticklabels(
-        [f"{hop_count}" for hop_count in range(len(hop_counts))],
+        [f"{int(hop_count)}" for hop_count in labelled_hop_counts],
         rotation=cfg.get("hop_count_tick_rotation", 45),
         ha="right",
         rotation_mode="anchor",

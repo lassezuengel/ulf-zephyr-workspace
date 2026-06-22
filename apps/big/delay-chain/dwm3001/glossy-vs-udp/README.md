@@ -46,6 +46,14 @@ python3 glossy-offset-plot.py --node-count 0 --sort \
     glossy-multihop/n25/glossyrun.txt
 ```
 
+For plots with many hops, label only every second hop to keep the x axis
+readable (use a larger step if needed):
+
+```bash
+python3 glossy-offset-plot.py --node-count 0 --hop-label-step 2 \
+    glossy-multihop/n33/glossyrun.txt
+```
+
 ## Combined Overview
 
 `glossy-vs-udp.svg` combines the main latency, retransmission, and hop-offset

@@ -25,7 +25,7 @@ LOG_MODULE_REGISTER(glossy_lf, LOG_LEVEL_INF);
 
 #define GLOSSY_INTERVAL_MS 2000
 #define GLOSSY_SYNC_LOST_FAILURES 5
-#define GLOSSY_INITIAL_SEARCH_DEPTH 300
+#define GLOSSY_INITIAL_SEARCH_DEPTH 500
 #define GLOSSY_RECOVERY_MIN_RADIUS_MS 20
 #define GLOSSY_RECOVERY_MAX_RADIUS_MS 1000
 
@@ -52,7 +52,6 @@ static const struct device *g_dev;
 static bool g_initiator;
 static bool g_started;
 static int g_node_id;
-static bool g_initial_sync_tried;
 
 static int64_t glossy_recovery_radius_ms(int failures_in_row) {
   if (failures_in_row < GLOSSY_SYNC_LOST_FAILURES) {
@@ -124,7 +123,6 @@ int glossy_lf_init(bool initiator, int node_id) {
   }
 
   g_initiator = initiator;
-  g_initial_sync_tried = false;
   k_mutex_init(&g_state.mutex);
 
   g_started = true;
@@ -208,7 +206,7 @@ int lf_clock_sync_schedule(void) {
           : 0;
   uint16_t max_depth = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_MAX_DEPTH;
 
-  if (!g_initial_sync_tried) {
+  if (!g_initiator && !offset_known_before_round) {
     max_depth = GLOSSY_INITIAL_SEARCH_DEPTH;
   } else if (recovery_radius_ms > 0) {
     max_depth = glossy_depth_for_search_window_ms(2 * recovery_radius_ms);
@@ -225,8 +223,6 @@ int lf_clock_sync_schedule(void) {
       .payload = NULL,
       .payload_size = 0,
   };
-
-  g_initial_sync_tried = true;
 
   struct deca_glossy_result result;
 

@@ -44,10 +44,10 @@ reactor Forwarder(bank_index: int = 0) {
 
 // Use glossy clock sync:
 @external_clock_sync(module="<app/drivers/ieee802154/glossy_lf.h>")
-federated reactor(n: int = 24) {
+federated reactor(n: int = 32) {
   @interface_rudp
   @clock_sync(grandmaster=true)
-  srcdst = new Source(period = 1000 msec)
+  srcdst = new Source(period = 20000 msec)
 
   @interface_rudp
   fwds = new[n] Forwarder()
