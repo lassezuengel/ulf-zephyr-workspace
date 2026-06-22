@@ -25,9 +25,15 @@ LOG_MODULE_REGISTER(glossy_lf, LOG_LEVEL_INF);
 
 #define GLOSSY_INTERVAL_MS 2000
 #define GLOSSY_SYNC_LOST_FAILURES 5
-#define GLOSSY_INITIAL_SEARCH_DEPTH 500
 #define GLOSSY_RECOVERY_MIN_RADIUS_MS 20
 #define GLOSSY_RECOVERY_MAX_RADIUS_MS 1000
+
+static int64_t glossy_flood_latency_ms(void) {
+  int64_t latency_us = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_GUARD_US +
+                       (int64_t)CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_MAX_DEPTH *
+                           CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_TRANSMISSION_DELAY_US;
+  return (latency_us + 999) / 1000;
+}
 
 struct glossy_lf_sync_state {
   struct k_mutex mutex;
@@ -68,23 +74,6 @@ static int64_t glossy_recovery_radius_ms(int failures_in_row) {
   return radius_ms > GLOSSY_RECOVERY_MAX_RADIUS_MS
              ? GLOSSY_RECOVERY_MAX_RADIUS_MS
              : radius_ms;
-}
-
-static uint16_t glossy_depth_for_search_window_ms(int64_t search_window_ms) {
-  const int64_t tx_delay_us =
-      CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_TRANSMISSION_DELAY_US;
-  const int64_t guard_us = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_GUARD_US;
-  const int64_t target_us = search_window_ms * 1000;
-
-  uint16_t depth = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_MAX_DEPTH;
-
-  while ((int64_t)depth * ((int64_t)depth * tx_delay_us + guard_us) <
-             target_us &&
-         depth < GLOSSY_INITIAL_SEARCH_DEPTH) {
-    depth++;
-  }
-
-  return depth;
 }
 
 static int64_t glossy_next_boundary_ms(int64_t initiator_time_ms) {
@@ -204,12 +193,12 @@ int lf_clock_sync_schedule(void) {
       (!g_initiator && offset_known_before_round)
           ? glossy_recovery_radius_ms(failures_before_round)
           : 0;
-  uint16_t max_depth = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_MAX_DEPTH;
-
+  uint32_t rx_window_us = 0;
   if (!g_initiator && !offset_known_before_round) {
-    max_depth = GLOSSY_INITIAL_SEARCH_DEPTH;
+    rx_window_us = (GLOSSY_INTERVAL_MS + glossy_flood_latency_ms()) * 1000;
   } else if (recovery_radius_ms > 0) {
-    max_depth = glossy_depth_for_search_window_ms(2 * recovery_radius_ms);
+    rx_window_us =
+        (2 * recovery_radius_ms + glossy_flood_latency_ms()) * 1000;
   }
 
   struct deca_glossy_configuration conf = {
@@ -217,7 +206,8 @@ int lf_clock_sync_schedule(void) {
       .isRoot = g_initiator,
       .measure_constant_delay = false, // We do not need constant delay measurement for LF, and it adds extra time to the flood round
       .guard_period_us = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_GUARD_US,
-      .max_depth = max_depth,
+      .max_depth = CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_MAX_DEPTH,
+      .rx_window_us = rx_window_us,
       .transmission_delay_us =
           CONFIG_SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_TRANSMISSION_DELAY_US,
       .payload = NULL,
@@ -227,9 +217,9 @@ int lf_clock_sync_schedule(void) {
   struct deca_glossy_result result;
 
   LOG_DBG("[glossy] round start: role=%s id=%d depth=%d radius=%" PRId64
-          " ms",
+          " ms window=%u us",
           g_initiator ? "initiator" : "follower", g_node_id, conf.max_depth,
-          recovery_radius_ms);
+          recovery_radius_ms, conf.rx_window_us);
 
   if (g_initiator) {
     LOG_INF("[glossy] initiator starting round");
@@ -238,12 +228,14 @@ int lf_clock_sync_schedule(void) {
   int ret = deca_glossy_time_synchronization(g_dev, &conf, &result);
 
   if (ret == 0) {
-    int64_t rtc_offset_ticks = (int64_t)result.rtc_clock_pair.local -
-                               (int64_t)result.rtc_clock_pair.ref;
+    int32_t rtc_offset_ticks =
+        (int32_t)((uint32_t)result.rtc_clock_pair.local -
+                  (uint32_t)result.rtc_clock_pair.ref);
     int64_t deca_offset_ticks = (int64_t)result.deca_clock_pair.local -
                                 (int64_t)result.deca_clock_pair.ref;
 
-    int64_t new_offset_ms = (rtc_offset_ticks * 1000LL) / 32768LL;
+    int64_t new_offset_ms = ((int64_t)rtc_offset_ticks * 1000LL) /
+                            CONFIG_SYS_CLOCK_TICKS_PER_SEC;
     int64_t deca_offset_ms =
         (int64_t)DWT_TS_TO_US(
             (uint64_t)(deca_offset_ticks < 0 ? -deca_offset_ticks
@@ -263,7 +255,7 @@ int lf_clock_sync_schedule(void) {
     LOG_INF("[glossy] sync ok: hops=%u rtc_offset=%" PRId64
             " ms  dwt_offset=%" PRId64 " ms",
             result.dist_to_root, new_offset_ms, deca_offset_ms);
-  } else {
+  } else if (ret != -EBUSY) {
     int failures_in_row;
     bool sync_lost;
 
@@ -285,6 +277,8 @@ int lf_clock_sync_schedule(void) {
     if (sync_lost && failures_in_row == GLOSSY_SYNC_LOST_FAILURES) {
       LOG_ERR("[glossy] sync lost -- entering recovery mode");
     }
+  } else {
+    LOG_WRN("[glossy] round skipped: UWB radio busy");
   }
 
   int64_t measured_clock_offset_ms;
@@ -310,7 +304,7 @@ int lf_clock_sync_schedule(void) {
     next_sync_run_ms = glossy_next_follower_run_ms(
         now_ms, measured_clock_offset_ms, next_radius_ms);
 
-    if (next_radius_ms > 0) {
+    if (sync_lost) {
       LOG_WRN("[glossy] recovery window: next=%" PRId64
               " now=%" PRId64 " radius=%" PRId64 " ms",
               next_sync_run_ms, now_ms, next_radius_ms);

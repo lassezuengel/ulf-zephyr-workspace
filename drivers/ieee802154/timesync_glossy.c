@@ -13,6 +13,10 @@
 
 LOG_MODULE_REGISTER(timesync_glossy, LOG_LEVEL_INF);
 
+#ifndef CONFIG_SYNCHROFLY_GLOSSY_TEST_DROP_HOP0_PERCENT
+#define CONFIG_SYNCHROFLY_GLOSSY_TEST_DROP_HOP0_PERCENT 0
+#endif
+
 // TODO: we don't receive the full 128 pacc symbols, is our timing completely correct here? Maybe check phy_activate_rx_delay again
 
 #define MAX_GLOSSY_PAYLOAD 10
@@ -91,10 +95,15 @@ int uwb_glossy_flood(const struct device *dev,
 	int ret = 0;
 
 	uwb_irq_state_e irq_state = UWB_IRQ_ERR;
-	uint64_t initiator_rtc_ts = 0;
+	uint32_t initiator_rtc_ts = 0;
 	uwb_ts_t initiator_dwt_ts = 0;
 
-	uint16_t timeout_us = conf->max_depth * conf->transmission_delay_us;
+	bool explicit_rx_window = conf->rx_window_us > 0U;
+	uint32_t legacy_rx_timeout_us = conf->guard_period_us +
+		(uint32_t)conf->max_depth * conf->transmission_delay_us;
+	uint32_t rx_window_us = explicit_rx_window
+		? conf->rx_window_us
+		: (uint32_t)conf->max_depth * legacy_rx_timeout_us;
 
 	/* Initialize result */
 	result->measured_constant_delay_us = -1;
@@ -133,8 +142,8 @@ int uwb_glossy_flood(const struct device *dev,
 
 	/* --- Initiator path --- */
 	if (conf->is_initiator) {
-		LOG_DBG("INITIATOR: Starting flood round, frame_id=0x%02x, max_depth=%u, tx_delay=%uus, guard=%uus, timeout=%uus",
-			conf->frame_id, conf->max_depth, conf->transmission_delay_us, conf->guard_period_us, timeout_us);
+		LOG_DBG("INITIATOR: Starting flood round, frame_id=0x%02x, max_depth=%u, tx_delay=%uus, guard=%uus",
+			conf->frame_id, conf->max_depth, conf->transmission_delay_us, conf->guard_period_us);
 
 		initiator_rtc_ts = k_cycle_get_32() + 2;
 		z_nrf_rtc_timer_set(1, initiator_rtc_ts, read_deca_system_timestamp, (void *)dev);
@@ -195,18 +204,34 @@ int uwb_glossy_flood(const struct device *dev,
 		LOG_DBG("INITIATOR: TX IRQ received, state=%d", irq_state);
 	} else {
 		/* --- Receiver path --- */
-		LOG_DBG("RECEIVER: Starting RX attempts, frame_id=0x%02x, max_depth=%u, timeout=%uus",
-			conf->frame_id, conf->max_depth, timeout_us);
+		LOG_DBG("RECEIVER: Starting RX, frame_id=0x%02x, max_depth=%u, window=%uus",
+			conf->frame_id, conf->max_depth, rx_window_us);
 
 		bool success = false;
 		bool rx_armed = false;
-		for (size_t k = 0; !success && (k < conf->max_depth || !conf->max_depth); k++) {
-			uint32_t rx_timeout = timeout_us + (timeout_us > 0 ? conf->guard_period_us : 0);
-			LOG_DBG("RECEIVER: RX attempt %u/%u, timeout=%uus",
-				k + 1, conf->max_depth, rx_timeout);
+		int64_t rx_deadline_us = explicit_rx_window
+			? k_ticks_to_us_floor64(k_uptime_ticks()) + rx_window_us
+			: 0;
+		for (size_t attempt = 0;
+		     !success && (explicit_rx_window || attempt < conf->max_depth ||
+		                  conf->max_depth == 0U);
+		     attempt++) {
+			int64_t remaining_us = explicit_rx_window
+				? rx_deadline_us - k_ticks_to_us_floor64(k_uptime_ticks())
+				: legacy_rx_timeout_us + 1000;
+			if (explicit_rx_window && remaining_us <= 0) {
+				irq_state = UWB_IRQ_FRAME_WAIT_TIMEOUT;
+				break;
+			}
 
 			if (!rx_armed) {
-				ret = glossy_enable_rx(dev, uwb_driver, rx_timeout);
+				if (explicit_rx_window) {
+					/* Recovery uses one software-bounded continuous RX window. */
+					uwb_driver->clear_timeouts(dev);
+				}
+				ret = glossy_enable_rx(
+					dev, uwb_driver,
+					explicit_rx_window ? 0U : legacy_rx_timeout_us);
 				if (ret != 0) {
 					LOG_ERR("RECEIVER: Failed to enable RX (ret=%d)", ret);
 					goto cleanup;
@@ -215,15 +240,19 @@ int uwb_glossy_flood(const struct device *dev,
 			rx_armed = false;
 
 			uwb_driver->release_device(dev);
-			k_timeout_t rx_wait = K_USEC(rx_timeout + 1000);
+			k_timeout_t rx_wait = K_USEC(remaining_us);
 			irq_state = uwb_broker_glossy_wait(dev, rx_wait);
 			uwb_driver->acquire_device(dev);
 
-			LOG_DBG("RECEIVER: RX attempt %u IRQ state=%d", k + 1, irq_state);
+			LOG_DBG("RECEIVER: RX attempt %u IRQ state=%d", attempt + 1, irq_state);
 			if (irq_state == UWB_IRQ_FRAME_WAIT_TIMEOUT) {
-			  LOG_DBG("RECEIVER: RX wait timed out, resetting transceiver");
+				LOG_DBG("RECEIVER: RX %s expired",
+					explicit_rx_window ? "window" : "attempt");
 				uwb_driver->force_trx_off(dev);
 				uwb_driver->clear_timeouts(dev);
+				if (explicit_rx_window) {
+					break;
+				}
 				continue;
 			}
 
@@ -299,7 +328,12 @@ int uwb_glossy_flood(const struct device *dev,
 					if (drop_roll <
 					    CONFIG_SYNCHROFLY_GLOSSY_TEST_DROP_HOP0_PERCENT) {
 						uwb_driver->switch_buffers(dev);
-						ret = glossy_enable_rx(dev, uwb_driver, rx_timeout);
+						if (explicit_rx_window) {
+							uwb_driver->clear_timeouts(dev);
+						}
+						ret = glossy_enable_rx(
+							dev, uwb_driver,
+							explicit_rx_window ? 0U : legacy_rx_timeout_us);
 						uwb_ts_t rearm_ts =
 							uwb_driver->system_timestamp(dev) & UWB_TS_MASK;
 						uint32_t rearm_elapsed_us =
@@ -393,7 +427,7 @@ int uwb_glossy_flood(const struct device *dev,
 	} else if (irq_state == UWB_IRQ_FRAME_WAIT_TIMEOUT ||
 		   irq_state == UWB_IRQ_PREAMBLE_DETECT_TIMEOUT) {
 		LOG_DBG("Flood timeout: irq_state=%d, is_initiator=%d, max_depth=%u, timeout=%uus",
-			irq_state, conf->is_initiator, conf->max_depth, timeout_us);
+			irq_state, conf->is_initiator, conf->max_depth, rx_window_us);
 		ret = -ETIMEDOUT;
 		goto cleanup;
 	} else if (irq_state != UWB_IRQ_TX) {
@@ -495,6 +529,7 @@ int deca_glossy_time_synchronization(const struct device *dev,
 		.is_initiator = conf->isRoot,
 		.guard_period_us = conf->guard_period_us,
 		.max_depth = conf->max_depth,
+		.rx_window_us = conf->rx_window_us,
 		.transmission_delay_us = conf->transmission_delay_us,
     .measure_constant_delay = conf->measure_constant_delay,
 		.payload = conf->payload,
@@ -508,7 +543,9 @@ int deca_glossy_time_synchronization(const struct device *dev,
 		flood_conf.payload_size = 0;
 	}
 
-	struct uwb_flood_result flood_result;
+	struct uwb_flood_result flood_result = {
+		.measured_constant_delay_us = -1,
+	};
 	int ret = -EBUSY;
   if (uwb_broker_acquire_lease(dev) == 0) {
       ret = uwb_glossy_flood(dev, &flood_conf, &flood_result);
@@ -543,10 +580,12 @@ int deca_glossy_time_synchronization(const struct device *dev,
 
 		const uwb_driver_t *uwb_driver = uwb_driver_get(dev);
 
-		rtc_inst->local = flood_result.local_rtc_ts
-			- (((flood_result.hop_count * (uint64_t)conf->transmission_delay_us)
-			    + CONFIG_SYNCHROFLY_GLOSSY_CONSTANT_DELAY_US + conf->guard_period_us)
-			   * CONFIG_SYS_CLOCK_TICKS_PER_SEC) / 1000000;
+		uint64_t rtc_correction_us =
+			flood_result.hop_count * (uint64_t)conf->transmission_delay_us +
+			CONFIG_SYNCHROFLY_GLOSSY_CONSTANT_DELAY_US + conf->guard_period_us;
+		uint32_t rtc_correction = (uint32_t)(
+			rtc_correction_us * CONFIG_SYS_CLOCK_TICKS_PER_SEC / 1000000ULL);
+		rtc_inst->local = (uint32_t)(flood_result.local_rtc_ts - rtc_correction);
 
 		/* Subtract one from hop_count since we align RMARKERS, not IRQ issuance */
 		dwt_inst->local = flood_result.local_dwt_ts

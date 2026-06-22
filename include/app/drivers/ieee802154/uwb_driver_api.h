@@ -242,6 +242,7 @@ struct deca_glossy_configuration {
   bool measure_constant_delay;
 	uint16_t guard_period_us;
 	uint16_t max_depth;
+	uint32_t rx_window_us;      /**< Receiver listening time; 0 derives it from max_depth */
 	uint8_t *payload;
 	size_t payload_size;
 	uint16_t transmission_delay_us;
@@ -282,6 +283,7 @@ struct uwb_flood_config {
   bool measure_constant_delay; /**< If true, initiator will enable RX after transmission to measure constant delay from first retransmission (only applicable to initiator) */
 	uint16_t guard_period_us;
 	uint16_t max_depth;           /**< Maximum hop count (flooding depth) */
+	uint32_t rx_window_us;        /**< Receiver listening time; 0 derives it from max_depth */
 	uint16_t transmission_delay_us;
 	uint8_t *payload;
 	size_t payload_size;
