@@ -11,11 +11,7 @@ This repository constitutes the playground and evaluation basis for the thesis
 - `tools/` contains local build tooling. In particular, `tools/lfc-mono.py` wraps `lfc-dev` and then builds the generated federation through `tools/lf-federation-build.py`, which is usually faster for federated applications because it can reuse generated C code and Zephyr/reactor-uc build artifacts across federates.
 - `py/` contains additional Python scripts for deploying and managing experiments on testbeds.
 
-The Glossy implementation and related driver additions live on the `driver-cleanup-steps` branch:
-
-```sh
-git switch driver-cleanup-steps
-```
+The Glossy implementation and related driver additions live on **this** branch! :) They may be merged into the main reactor-uc repository in the future, but for now they are kept here to avoid polluting the main repository with additional code. Furthermore, the IEEE802.15.4 driver changes needed to support coexistence with Glossy are also kept on this branch, separating them from the main (and first/original) driver implementation in reactor-uc.
 
 They are kept on that branch because they alter driver performance and therefore change experimental results.
 
@@ -82,6 +78,8 @@ For faster rebuilds of federated applications, use the local mono-build helper:
 ```sh
 python3 tools/lfc-mono.py src/PingPong.lf
 ```
+
+Using the `lfc-mono.py` script is also needed for building federated applications that use glossy clock sync, as this script automatically handles additional dependencies imposed by the glossy clock sync implementation.
 
 ### Getting started
 
