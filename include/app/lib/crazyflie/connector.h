@@ -72,6 +72,22 @@ int crazyflie_measurements_add_tof(deca_short_addr_t addr, float tof,
                                    crazyflie_measurements_t *measurements);
 
 /**
+ * @brief Add a pre-computed distance measurement (meters)
+ *
+ * Unlike crazyflie_measurements_add_tof() which takes a time-of-flight
+ * and converts internally, this function takes a distance in meters
+ * directly. Use this when the distance has already been computed and
+ * filtered (e.g., from node_table_get_filtered_distance_m()).
+ *
+ * @param addr Node address of the ranging responder
+ * @param distance_m Distance in meters
+ * @param measurements Container to add to
+ * @return 0 on success, -ENOMEM if container full
+ */
+int crazyflie_measurements_add_distance(deca_short_addr_t addr, float distance_m,
+                                        crazyflie_measurements_t *measurements);
+
+/**
  * @brief Add a phase measurement
  *
  * @param addr Node address
@@ -110,7 +126,6 @@ int crazyflie_measurements_add_position(deca_short_addr_t addr, float position[3
  * @param addr Node address
  * @param distance_mm MM-accurate distance in meters
  * @param distance_twr Coarse TWR distance in meters
- * @param confidence Confidence level (0-1)
  * @param phase_chan_5 Channel 5 phase
  * @param phase_chan_3 Channel 3 phase
  * @param channels Channel bitmask
@@ -119,7 +134,7 @@ int crazyflie_measurements_add_position(deca_short_addr_t addr, float position[3
  */
 int crazyflie_measurements_add_mm_accurate(deca_short_addr_t addr,
                                            float distance_mm, float distance_twr,
-                                           float confidence, float phase_chan_5,
+                                           float phase_chan_5,
                                            float phase_chan_3, uint8_t channels,
                                            crazyflie_measurements_t *measurements);
 
@@ -128,16 +143,30 @@ int crazyflie_measurements_add_mm_accurate(deca_short_addr_t addr,
  *
  * @param addr Node address
  * @param distance Distance in meters
- * @param confidence Confidence level (0-1)
  * @param phase_diff Phase difference between channels
  * @param method Measurement method (0=single, 1=dual-channel)
  * @param measurements Container to add to
  * @return 0 on success, -ENOMEM if container full
  */
 int crazyflie_measurements_add_dual_channel(deca_short_addr_t addr,
-                                            float distance, float confidence,
+                                            float distance,
                                             float phase_diff, uint8_t method,
                                             crazyflie_measurements_t *measurements);
+
+/**
+ * @brief Add a radial velocity measurement
+ *
+ * Radial velocity is the scalar rate of change of distance to a known point.
+ * Positive = moving away from anchor, negative = moving toward anchor.
+ *
+ * @param addr Node address of the ranging responder
+ * @param radial_velocity_ms Radial velocity in m/s
+ * @param measurements Container to add to
+ * @return 0 on success, -ENOMEM if container full
+ */
+int crazyflie_measurements_add_radial_velocity(deca_short_addr_t addr,
+                                               float radial_velocity_ms,
+                                               crazyflie_measurements_t *measurements);
 
 /**
  * @brief Queue measurements for transmission to Crazyflie
@@ -179,5 +208,37 @@ int send_measurement_to_crazyflie(crazyflie_measurements_t *measurements,
  *   crazyflie_send_crtp(pkt, sizeof(pkt));
  */
 int crazyflie_send_crtp(const uint8_t *data, size_t len);
+
+/**
+ * @brief Callback type for CRTP packets received from Crazyflie
+ *
+ * This callback is invoked when the Crazyflie sends a CRTP packet to the UWB deck
+ * (e.g., log data, parameter responses). The callback is called from the connector
+ * thread context.
+ *
+ * @param data CRTP packet data: [header (1 byte)] [payload (0-30 bytes)]
+ * @param len Total length of data (1-31 bytes)
+ */
+typedef void (*crazyflie_crtp_rx_callback_t)(const uint8_t *data, size_t len);
+
+/**
+ * @brief Register a callback for CRTP packets from Crazyflie
+ *
+ * Register a callback to receive CRTP packets sent from the Crazyflie to the
+ * UWB deck. This enables bidirectional CRTP communication - the UWB deck can
+ * send requests to the Crazyflie and receive responses.
+ *
+ * Typical use case: BLE GATT service receives CRTP request from phone,
+ * forwards to Crazyflie via crazyflie_send_crtp(), receives response via
+ * this callback, and sends back to phone via BLE notify.
+ *
+ * @param callback Function to call when CRTP packet is received, or NULL to unregister
+ *
+ * @note Only one callback can be registered at a time. Calling this function
+ *       again will replace the previous callback.
+ * @note The callback is invoked from the connector thread context. Keep
+ *       processing quick or offload to another thread.
+ */
+void crazyflie_register_crtp_rx_callback(crazyflie_crtp_rx_callback_t callback);
 
 #endif /* SYNCHROFLY_CRAZYFLIE_CONNECTOR_H */

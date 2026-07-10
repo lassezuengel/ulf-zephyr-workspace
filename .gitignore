@@ -22,3 +22,6 @@ zephyr-tests/
 **/.lf-monobuild
 
 /playground
+
+**/build-follower
+**/build-init

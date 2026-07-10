@@ -1,0 +1,58 @@
+choice SYNCHROFLY_NODE_ID_SOURCE
+	prompt "Node ID source"
+	default SYNCHROFLY_NODE_ID_FROM_HWINFO
+
+config SYNCHROFLY_NODE_ID_FROM_HWINFO
+	bool "Use hardware info for node ID"
+	help
+	  Derive node ID from hardware information.
+
+config SYNCHROFLY_NODE_ID_FROM_TABLE
+	bool "Use predefined table for node ID"
+	help
+	  Use a statically configured table to determine node ID.
+
+config SYNCHROFLY_NODE_ID_FROM_SETTINGS
+	bool "Read from settings subsystem"
+	help
+	  Use settings subsystem to determine node ID.
+endchoice
+
+choice SYNCHROFLY_ROOT_NODE_SOURCE
+	prompt "Root node designation source"
+	default SYNCHROFLY_ROOT_NODE_FROM_STATIC
+
+config SYNCHROFLY_ROOT_NODE_FROM_STATIC
+	bool "Use static configuration"
+	help
+	  Determine root node status by comparing node address with
+	  CONFIG_GLOSSY_TX_FLOOD_START_NODE_ID at compile time.
+	  Useful for automated testbed deployments.
+
+config SYNCHROFLY_ROOT_NODE_FROM_SETTINGS
+	bool "Read from settings subsystem"
+	help
+	  Read root node status from settings subsystem, allowing
+	  runtime configuration via GATT or shell commands.
+	  Useful for field deployments where network topology is
+	  configured dynamically.
+endchoice
+
+config SYNCHROFLY_BLOCK_HEAP_SIZE
+	int "Block heap size in bytes"
+	default 6144
+	help
+	  Dedicated heap for transient per-block allocations (digest,
+	  schedule, measurements, swarm ranging). Separated from the
+	  system heap to prevent fragmentation from interleaving
+	  short-lived block allocations with long-lived time series.
+
+config SYNCHROFLY_RADIO_ARBITER
+	bool "Radio arbiter for async protocol coexistence"
+	default n
+	help
+	  Enable the radio arbiter module which manages radio ownership
+	  between the synchronous superframe scheduler and asynchronous
+	  background protocols. When enabled, superframe blocks implicitly
+	  claim the radio, and a baseline block can release it for
+	  background protocol use.

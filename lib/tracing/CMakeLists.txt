@@ -1,0 +1,3 @@
+zephyr_library()
+
+zephyr_library_sources_ifdef(CONFIG_SYNCHROFLY_TRACING_SYSTEMVIEW tracing_systemview.c)

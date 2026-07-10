@@ -1,0 +1,218 @@
+# Copyright (c) 2021, Legrand North America, LLC.
+# SPDX-License-Identifier: Apache-2.0
+
+config SYNCHROFLY_RANGING
+	bool "Enable ranging methods (TWR/TDOA)"
+	help
+	  Enable ranging methods
+
+
+config DECA_RANGING_DIGEST_HEAP_SIZE
+	int "Digest heap size in bytes"
+	default 16384
+	range 256 65536
+	help
+	  Size of the heap used for ranging digest allocation. This heap stores
+	  frame containers and frame data during ranging operations. Increase if
+	  you get allocation failures with large ranging rounds.
+
+	  Recommended minimum: 16KB for typical MTM operations
+	  Each frame requires approximately 500 bytes (container + frame data)
+
+config MM_RANGING_TIME_SERIES_HEAP_SIZE
+	int "Time series heap size in bytes"
+	default 8192
+	range 256 32768
+	help
+	  Size of the heap used for time series storage allocation. This heap stores
+	  time series data structures and sample buffers for mm-accurate ranging.
+
+	  Each time series requires approximately:
+	  - Structure overhead: ~32 bytes
+	  - Sample buffer: series_size * 8 bytes
+
+	  For typical usage with 4-6 node pairs and 3-4 series per pair:
+	  - Conservative: 4KB (small networks)
+	  - Recommended: 8KB (typical networks)
+	  - Large networks: 16KB+
+
+config MM_RANGING_FILTER_CONTEXT_SIZE
+	int "Phase filter context size in bytes"
+	default 768
+	range 256 2048
+	help
+	  Memory allocation size per phase filter context for millimeter-accurate ranging.
+	  Each filter context needs space for its state and circular buffers.
+
+	  For moving average filters with window size N:
+	  - Context struct: ~48 bytes
+	  - Sample buffer: N * 8 bytes
+	  - Unwrapped phase buffer: N * 8 bytes
+	  Total needed: 48 + 16*N bytes
+
+	  For Savitzky-Golay filters with window size N:
+	  - Context struct: ~60 bytes
+	  - 5 sample buffers: 5 * N * 8 bytes
+	  - 2 double buffers: 2 * N * 8 bytes
+	  Total needed: 60 + 56*N bytes
+
+	  Default 768 bytes supports Savitzky-Golay with window size ~13.
+
+config MM_RANGING_TIME_SERIES_SIZE
+	int "Time series history size for ambiguity resolution"
+	default 15
+	range 5 64
+	help
+	  Number of measurements stored in time series for ambiguity resolution
+	  in dual-channel millimeter-accurate ranging. Each series stores historical
+	  data for TWR distance, phase measurements (both channels), and delta-phi.
+
+	  Larger values provide better filtering and trend analysis but consume
+	  more memory. Each measurement point requires ~32 bytes across all series.
+
+	  Memory usage per node pair: ~4 * size * 32 bytes = ~128 * size bytes
+	  Default 15: ~1.9KB per node pair
+	  Max 64: ~8.2KB per node pair
+
+config MM_RANGING_ENABLE_RESIDUAL_PHASE_FILTERING
+	bool "Enable residual phase filtering in fine phase computation"
+	default n
+	help
+	  Enable filtering of residual phase in compute_fine_phase_mm function.
+	  When enabled, residual phase values are stored in time series and
+	  filtered using the configured filter type (moving average or Savitzky-Golay).
+
+	  This allows selective filtering of the residual phase component used
+	  in fine phase recovery.
+
+	  When disabled, raw unfiltered residual phase is used directly.
+
+	  Disable this to test raw residual phase quality or for debugging.
+
+config MM_RANGING_ENABLE_FINE_PHASE_FILTERING
+	bool "Enable filtering for recovered fine phase measurements"
+	default n
+	help
+	  Enable smoothing of recovered fine phase values using a separate
+	  unwrapped time series per node pair and channel. This allows
+	  Savitzky-Golay or moving-average filters to operate on continuous
+	  phase evolution before the result is wrapped back into [0, 2π].
+
+	  When disabled, raw fine phase measurements are propagated without
+	  additional smoothing.
+
+config MM_RANGING_FILTER_WINDOW_SIZE
+	int "Default phase filter window size"
+	default 10
+	range 3 100
+	help
+	  Default window size for phase filtering in millimeter-accurate ranging.
+	  Larger windows provide better noise reduction but require more memory
+	  and introduce more latency.
+
+	  IMPORTANT: Must be <= CONFIG_MM_RANGING_TIME_SERIES_SIZE to avoid
+	  accessing more data than available in history buffer.
+
+	  Must be compatible with MM_RANGING_FILTER_CONTEXT_SIZE:
+	  Required context size >= 48 + 16 * window_size
+
+config MM_RANGING_RESIDUAL_PHASE_FILTER_WINDOW_SIZE
+	int "Residual phase filter window size"
+	depends on MM_RANGING_ENABLE_RESIDUAL_PHASE_FILTERING
+	default 10
+	range 3 100
+	help
+	  Window size for residual phase filtering in compute_fine_phase_mm.
+	  This is independent of the main MM_RANGING_FILTER_WINDOW_SIZE setting.
+
+	  Larger windows provide better noise reduction but require more memory
+	  and introduce more latency.
+
+	  IMPORTANT: Must be <= CONFIG_MM_RANGING_TIME_SERIES_SIZE to avoid
+	  accessing more data than available in history buffer.
+
+config MM_RANGING_USE_SAVITZKY_GOLAY
+	bool "Use Savitzky-Golay filter for phase measurements"
+	default n
+	help
+	  Enable Savitzky-Golay filter for phase measurements instead of
+	  simple moving average. Savitzky-Golay provides better smoothing
+	  while preserving important signal features, matching the Python
+	  reference implementation (scipy.signal.savgol_filter).
+
+	  When enabled, phase measurements (fine_phase_ch5, fine_phase_ch3,
+	  coarse_phase) will use Savitzky-Golay filtering, while other
+	  measurements (TWR TOF, CFO) continue using moving average.
+
+if MM_RANGING_USE_SAVITZKY_GOLAY
+
+config SAVITZKY_GOLAY_WINDOW_SIZE
+	int "Savitzky-Golay filter window size"
+	default 10
+	range 5 13
+	help
+	  Window size for Savitzky-Golay filter. Must be odd number.
+
+	  Larger windows provide more smoothing but increase latency.
+	  Must not exceed MAX_WINDOW (13) from external library.
+
+config SAVITZKY_GOLAY_POLY_ORDER
+	int "Savitzky-Golay polynomial order"
+	default 3
+	range 2 6
+	help
+	  Polynomial order for Savitzky-Golay filter fitting.
+	  Default 3 matches Python reference implementation.
+
+	  Higher orders can better preserve signal features but may
+	  introduce artifacts. Must be less than window size.
+
+endif # MM_RANGING_USE_SAVITZKY_GOLAY
+
+choice MM_RANGING_ALGORITHM_TYPE
+	prompt "Time series ambiguity resolution algorithm"
+	default MM_RANGING_USE_MATLAB_ALGORITHM
+	help
+	  Choose between different time series-based ambiguity resolution algorithms.
+
+	  The MATLAB algorithm uses the approach from the reference MATLAB script with
+	  error correction and lambda_new calculation.
+
+	  The Paper algorithm uses the original paper's approach with time series smoothing
+	  for noise reduction while maintaining the proven mathematical foundation.
+
+	config MM_RANGING_USE_MATLAB_ALGORITHM
+		bool "MATLAB-style algorithm (current default)"
+		help
+		  Use the MATLAB-based algorithm (resolve_ambiguity_dual_channel_ts).
+		  This is the current default implementation.
+
+endchoice
+
+config SYNCHROFLY_RANGING_SOMETHING
+	int "placeholder"
+	default 0
+	help
+	  This option primarily exists as an example of a library Kconfig
+	  setting.
+
+	  This option specifies the value for custom_get_value() to return
+	  when the input parameter is zero. (Otherwise the function returns the
+	  input parameter value.)
+
+# MM ranging module logging configuration
+module = TWR_MM
+module-str = twr_mm
+source "subsys/logging/Kconfig.template.log_config"
+
+# Phase recovery module logging configuration
+module = PHASE_RECOVERY
+module-str = phase_recovery
+source "subsys/logging/Kconfig.template.log_config"
+
+# Ambiguity resolution module logging configuration
+module = AMBIGUITY_RESOLUTION
+module-str = ambiguity_resolution
+source "subsys/logging/Kconfig.template.log_config"
+
+

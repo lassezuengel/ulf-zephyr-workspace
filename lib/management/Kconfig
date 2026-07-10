@@ -1,0 +1,121 @@
+config SYNCHROFLY_MANAGEMENT_NETWORK_MAX_NODES
+	int "maximum amount of nodes network management supports"
+	default 255
+	help
+	  This option specifies the upper limit for the number of nodes that can be managed
+	  in the network. Higher values allow more nodes but increase memory usage. Set this
+	  according to the expected size of your deployment.
+
+choice SYNCHROFLY_NETWORK_SETTINGS_SOURCE
+	prompt "Network settings source policy"
+	default SYNCHROFLY_NETWORK_SETTINGS_SOURCE_COMPILE_TIME
+	help
+	  Determines where network settings values come from at runtime.
+
+	  COMPILE_TIME: Settings hardcoded from Kconfig at compile time.
+	                Getters return CONFIG values, ignoring NVS.
+	                Setters still write to NVS for future use.
+	                Use for testbed deployments with guaranteed behavior.
+
+	  DYNAMIC: Settings loaded from NVS flash storage at boot.
+	           Can be changed at runtime via shell/BLE.
+	           Use for development and configurable deployments.
+
+config SYNCHROFLY_NETWORK_SETTINGS_SOURCE_COMPILE_TIME
+	bool "Compile-time (CONFIG values, NVS ignored)"
+	help
+	  Network settings are hardcoded at compile time from Kconfig.
+	  NVS values are loaded but ignored by getters.
+	  Setters still write to NVS for future mode switching.
+	  Provides guaranteed consistent behavior for testbed deployments.
+
+config SYNCHROFLY_NETWORK_SETTINGS_SOURCE_DYNAMIC
+	bool "Dynamic (NVS flash storage)"
+	help
+	  Network settings loaded from NVS at boot, can be changed via shell/BLE.
+	  Settings persist across reboots.
+	  Use for development and configurable deployments.
+
+endchoice
+
+config SYNCHROFLY_NETWORK_SETTINGS_FIRST_BOOT_INIT
+	bool "Initialize NVS with CONFIG defaults on first image confirmation"
+	default y
+	depends on MCUBOOT_IMG_MANAGER
+	help
+	  When a new firmware image is confirmed (first successful boot),
+	  automatically save all CONFIG default values to NVS storage.
+	  This ensures NVS is initialized with known-good values.
+	  Only happens once per image (when boot_write_img_confirmed() succeeds).
+
+menu "Network Settings Defaults"
+
+config SYNCHROFLY_NETWORK_DEFAULT_SCHEDULE_TYPE
+	int "Default schedule type (0=BASIC, 1=HASHED, 2=CONTENTION)"
+	default 1
+	range 0 2
+	help
+	  Default scheduling algorithm for network operations.
+	  0 = SCHEDULE_BASIC: Basic scheduling
+	  1 = SCHEDULE_HASHED: Nodes are scheduled based on hash of their ID
+	  2 = SCHEDULE_CONTENTION: Contention-based scheduling
+
+config SYNCHROFLY_NETWORK_DEFAULT_RANGING_ROUND_SLOTS_PER_PHASE
+	int "Default ranging round slots per phase"
+	default 15
+	range 1 255
+	help
+	  Number of time slots allocated per phase in a ranging round.
+	  This affects how many ranging operations can occur in each phase.
+
+config SYNCHROFLY_NETWORK_DEFAULT_RANGING_ROUND_PHASES
+	int "Default number of ranging round phases"
+	default 3
+	range 1 255
+	help
+	  Number of phases in each ranging round. More phases allow more
+	  ranging combinations but increase the round duration.
+
+config SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_GUARD_US
+	int "Default Glossy guard period in microseconds"
+	default 2000
+	range 100 10000
+	help
+	  Guard time in microseconds for Glossy time synchronization protocol.
+	  This prevents overlapping transmissions between nodes.
+
+config SYNCHROFLY_NETWORK_DEFAULT_SUPERFRAME_SLOTS
+	int "Default number of superframe slots"
+	default 40
+	range 1 1000
+	help
+	  Total number of time slots in a superframe. This determines the
+	  length of the complete communication cycle.
+
+config SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_MAX_DEPTH
+	int "Default Glossy maximum flooding depth"
+	default 6
+	range 1 20
+	help
+	  Maximum number of hops for Glossy flooding protocol. Higher values
+	  allow synchronization across more hops but increase latency.
+
+config SYNCHROFLY_NETWORK_DEFAULT_GLOSSY_TRANSMISSION_DELAY_US
+	int "Default Glossy transmission delay in microseconds"
+	default 1250
+	range 100 5000
+	help
+	  Delay in microseconds between receiving and retransmitting in Glossy
+	  protocol. This affects synchronization accuracy and reliability.
+
+config SYNCHROFLY_GLOSSY_CONSTANT_DELAY_US
+	int "Glossy constant hardware processing delay in microseconds"
+	default 331
+	range 0 1000
+	help
+	  Hardware-specific constant delay representing the processing time
+	  between frame reception interrupt and the actual RTC timestamp capture.
+	  This value is measured by the root node's extra RX and should match
+	  the hardware characteristics. Default 227us is for DW1000.
+
+endmenu

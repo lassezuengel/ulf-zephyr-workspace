@@ -1,6 +1,9 @@
 #include <app/drivers/ieee802154/uwb_driver_api.h>
 #include <app/drivers/ieee802154/uwb_timestamp_utils.h>
 #include <app/drivers/ieee802154/uwb_frame_utils.h>
+#include <app/lib/bluetooth/ab_testing.h>
+/* Weak fallback when A/B testing BLE service is not compiled in */
+__weak uint8_t ab_testing_get_value(uint8_t index) { return 0; }
 /* Hardware-specific headers no longer needed - using generic UWB driver API */
 
 #include <math.h>
@@ -166,6 +169,11 @@ static int read_cir_first_path(const struct device *dev,
     // Use fp_index from diagnostics captured alongside the RX timestamp
     uint16_t fp_index = diag->fp_index >> 6;
 
+    // A/B toggle 1: 0 = leading edge (fp_index), 1 = peak (fp_index+1)
+    if (ab_testing_get_value(AB_TEST_CIR_TAP_OFFSET)) {
+        fp_index += 1;
+    }
+
     // CIR access is held active by the calling protocol; just compute offsets and fetch
     // Calculate offset for the first path sample
     uint16_t offset = fp_index * 4;
@@ -195,12 +203,10 @@ static int read_cir_first_path(const struct device *dev,
  */
 static void apply_rcphase_correction(int16_t *fp_re, int16_t *fp_im, uint8_t rcphase)
 {
-#ifdef CONFIG_IEEE802154_DSKIEL_DW1000_RCPHASE_CORRECTION
-    // Convert RCPHASE to radians: 360°/(2^7) degrees per LSB
-    // RCPHASE is 7-bit unsigned (0-127), each LSB = 2.8125°
-    double phase_correction = rcphase*(2*M_PI / 128.0); // Convert to radians
+    // A/B toggle 0: 0 = old (add phase), 1 = fixed (subtract phase)
+    double sign = ab_testing_get_value(AB_TEST_RCPHASE_DIRECTION) ? -1.0 : 1.0;
+    double phase_correction = sign * rcphase * (2*M_PI / 128.0);
 
-    // Apply rotation: [re', im'] = [re*cos(θ) - im*sin(θ), re*sin(θ) + im*cos(θ)]
     double cos_theta = cos(phase_correction);
     double sin_theta = sin(phase_correction);
 
@@ -209,7 +215,6 @@ static void apply_rcphase_correction(int16_t *fp_re, int16_t *fp_im, uint8_t rcp
 
     *fp_re = new_re;
     *fp_im = new_im;
-#endif
 }
 
 int deca_ranging_mm(const struct device *dev,
@@ -348,8 +353,8 @@ int deca_ranging_mm(const struct device *dev,
 			// For now, assume PRF64 (this should be made configurable or detected)
 			a_const = radio_constants->rssi_constants.prf64;
 
-			rx_level = 10.0f * log10f(cir_pwr * BIT(17) /
-				(rx_pacc * rx_pacc)) - a_const;
+			rx_level = 10.0f * log10f((float)cir_pwr * (float)BIT(17) /
+				((float)rx_pacc * (float)rx_pacc)) - a_const;
 
 			bias_correction = conf->correct_timestamp_bias ? get_range_bias_by_rssi(rx_level) : 0;
 
@@ -402,9 +407,18 @@ int deca_ranging_mm(const struct device *dev,
 				incoming_frame_info->fp_ampl3 = rx_diag.fp_ampl3;
 				incoming_frame_info->std_noise = rx_diag.std_noise;
 				incoming_frame_info->rx_level = rx_level;
-				incoming_frame_info->fp_re = fp_re;
-                                incoming_frame_info->fp_im = fp_im;
 				incoming_frame_info->rx_phase = rx_diag.rx_phase;
+
+				// Apply RCPHASE correction to container CIR values
+				{
+					int16_t corrected_re = fp_re;
+					int16_t corrected_im = fp_im;
+					apply_rcphase_correction(&corrected_re, &corrected_im, rx_diag.rx_phase);
+					incoming_frame_info->fp_re = corrected_re;
+					incoming_frame_info->fp_im = corrected_im;
+					fp_re = corrected_re;
+					fp_im = corrected_im;
+				}
 
 				if(conf->cfo) {
 					// warning this has to be adjusted for other data rates. -1e6 * (((((float) cfo)) / (((float) (2 * 1024) / 998.4e6) * 2^17)) / 6489.6e6)
@@ -424,13 +438,9 @@ int deca_ranging_mm(const struct device *dev,
 					curr_rx_ts->addr = incoming_frame->addr;
 					curr_rx_ts->slot = s - 1;
 
-					// Apply RCPHASE correction before storing
-					int16_t corrected_re = fp_re;
-					int16_t corrected_im = fp_im;
-					apply_rcphase_correction(&corrected_re, &corrected_im, rx_diag.rx_phase);
-
-					curr_rx_ts->re = corrected_re;
-                                        curr_rx_ts->im = corrected_im;
+					// fp_re/fp_im already RCPHASE-corrected above
+					curr_rx_ts->re = fp_re;
+					curr_rx_ts->im = fp_im;
 
 					stored_timestamp_count++;
 				}
@@ -595,8 +605,15 @@ int deca_ranging_mm(const struct device *dev,
                                 // store re and im from fp_index as well for this
                                 // transmission (+1 -> garbage byte)
                                 uint8_t *valid_cir_mem = cir_acc_mem+1;
-				fp_re = ((int16_t *)valid_cir_mem)[current_slot->meta.from_index*2];
-                                fp_im = ((int16_t *)valid_cir_mem)[current_slot->meta.from_index*2+1];
+                                uint16_t tap_idx = current_slot->meta.from_index;
+                                // A/B toggle 1: use fp_index+1 (peak) instead of fp_index (leading edge)
+                                if (ab_testing_get_value(AB_TEST_CIR_TAP_OFFSET) &&
+                                    current_slot->meta.only_first_path &&
+                                    tap_idx + 1 <= to_index - from_index) {
+                                    tap_idx += 1;
+                                }
+				fp_re = ((int16_t *)valid_cir_mem)[tap_idx*2];
+                                fp_im = ((int16_t *)valid_cir_mem)[tap_idx*2+1];
 
                                 conf->cir_handler(s, valid_cir_mem, (to_index - from_index + 1)*4);
                             }
@@ -1120,6 +1137,7 @@ static int process_rx_frame(struct mm_protocol_context *ctx,
     container->fp_im = fp_im;
     container->rx_phase = rx_diag->rx_phase;
     container->rx_pacc = rx_diag->rx_pacc;
+    container->rx_level = rx_diag->rx_level;
 
     // Store reception data based on state
     switch (step->state) {
@@ -1384,6 +1402,7 @@ static int execute_rx_step(struct mm_protocol_context *ctx,
     uwb_ts_t rx_ts = uwb_driver->read_rx_timestamp(ctx->dev, &rx_diag);
     int16_t fp_re = 0, fp_im = 0;
     read_cir_first_path(ctx->dev, &rx_diag, &fp_re, &fp_im);
+    /* apply_rcphase_correction(&fp_re, &fp_im, rx_diag.rx_phase); */
 
     if (pkt_len <= offsetof(struct deca_ranging_frame, payload)) {
         printk("MM_REF: ERROR - Frame too small: %u bytes\n", pkt_len);

@@ -1,0 +1,35 @@
+# Copyright (c) 2021, Legrand North America, LLC.
+# SPDX-License-Identifier: Apache-2.0
+
+config SYNCHROFLY_SCHEDULING_MTM_MAX_SLOTS
+	int "max slots for a MTM schedule"
+	default 100
+	help
+	  This option primarily exists as an example of a library Kconfig
+	  setting.
+
+	  This option specifies the value for custom_get_value() to return
+	  when the input parameter is zero. (Otherwise the function returns the
+	  input parameter value.)
+
+config CONTENTION_PARTICIPATION_PROBABILITY
+	int "Contention participation probability (%)"
+	default 80
+	range 0 100
+	help
+	  Probability (in percentage) that a node will participate in ranging
+	  during contention-based MTM blocks. This controls network load and
+	  interference levels. 100% means all nodes always participate,
+	  while lower values create random participation patterns.
+
+config SYNCHROFLY_SCHEDULING_SLOT_PADDING_US
+	int "Slot duration padding time in microseconds"
+	default 50
+	range 10 1000
+	help
+	  Padding time added to calculated slot duration to compensate for
+	  unaccounted timing factors in the ideal slot calculation. The need
+	  for significant padding (e.g., 200us) indicates missing components
+	  in the slot duration model such as radio state transitions, interrupt
+	  latencies, or processing delays. Higher values ensure reliable
+	  operation but reduce throughput.

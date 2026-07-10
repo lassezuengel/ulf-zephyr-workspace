@@ -1,0 +1,25 @@
+menu "Zephyr UWB Libraries"
+
+config SYNCHROFLY
+	bool "enable synchrofly libraries"
+	default false
+	help
+          If true build Synchrofly libraries.
+
+rsource "timesync/Kconfig"
+rsource "scheduling/Kconfig"
+rsource "localization/Kconfig"
+rsource "ranging/Kconfig"
+rsource "logging/Kconfig"
+rsource "system/Kconfig"
+rsource "management/Kconfig"
+rsource "blocks/Kconfig"
+rsource "communication/Kconfig"
+rsource "bluetooth/Kconfig"
+rsource "node_table/Kconfig"
+rsource "crazyflie/Kconfig"
+rsource "swarm_ranging/Kconfig"
+rsource "bias_correction/Kconfig"
+rsource "stats/Kconfig"
+
+endmenu

@@ -55,6 +55,7 @@ struct block_type_info {
     size_t runtime_config_size;             /**< Size of runtime config struct */
     build_runtime_config_fn build_runtime;  /**< BLE -> runtime converter */
     build_ble_config_fn build_ble;          /**< Runtime -> BLE converter */
+    bool needs_sync;                        /**< If true, skip when time sync is dirty */
 };
 
 /**

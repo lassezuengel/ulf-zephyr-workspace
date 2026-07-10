@@ -102,6 +102,34 @@ bool get_node_is_root(void);
 int set_node_is_root(bool is_root);
 
 /**
+ * @brief Get whether free-running mode is enabled (no time sync required)
+ *
+ * @return true if free-running mode is enabled
+ */
+bool get_node_free_running(void);
+
+/**
+ * @brief Set free-running mode and persist to settings
+ *
+ * @param enable true to enable free-running mode
+ * @return 0 on success, negative errno on failure
+ */
+int set_node_free_running(bool enable);
+
+/**
+ * @brief Get the time sync mode (0=SKEW, 1=OFFSET)
+ */
+uint8_t get_node_sync_mode(void);
+
+/**
+ * @brief Set time sync mode and persist to settings
+ *
+ * @param mode 0=TIME_SYNC_MODE_SKEW, 1=TIME_SYNC_MODE_OFFSET
+ * @return 0 on success, negative errno on failure
+ */
+int set_node_sync_mode(uint8_t mode);
+
+/**
  * @brief Get the stored node configuration position
  *
  * @param pos Pointer to position structure to fill

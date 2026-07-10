@@ -1,0 +1,57 @@
+target uC {
+  platform: {
+    name: Zephyr,
+    board: decawave_dwm3001cdk
+  },
+  net-interface: sicslowpan,
+  logging: error,
+  clock-sync: off
+}
+
+preamble {=
+  #include "reactor-uc/reactor-c.h"
+=}
+
+reactor Source(period: time = 1 sec) {
+  output out: instant_t
+
+  timer trigger(2500 msec, period)
+
+  reaction(startup) {=
+    printf("Starting federation...\n");
+  =}
+
+  reaction scheduleNewDelayChain(trigger) -> out {=
+    printf("Scheduling new delay chain...\n");
+    lf_set(out, lf_time_physical());
+  =}
+}
+
+reactor Forwarder(bank_index: int = 0) {
+  input in: instant_t
+  output out: instant_t
+
+  reaction(startup) {=
+    printf("Forwarder %d starting up...\n", self->bank_index);
+  =}
+
+  reaction(in) -> out {=
+    instant_t now = lf_time_physical();
+    printf("Forwarding message (offset %lld.%02lld ms)\n", (now - in->value) / 1000000, (now - in->value) % 1000000);
+    lf_set(out, in->value);
+  =}
+}
+
+// Use glossy clock sync:
+@external_clock_sync(module="<app/drivers/ieee802154/glossy_lf.h>")
+federated reactor(n: int = 32) {
+  @interface_rudp
+  @clock_sync(grandmaster=true)
+  srcdst = new Source(period = 1000 msec)
+
+  @interface_rudp
+  fwds = new[n] Forwarder()
+
+  @buffer(20)
+  srcdst.out, fwds.out ~> fwds.in
+}

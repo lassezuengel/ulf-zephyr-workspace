@@ -1,0 +1,10 @@
+# Copyright (c) 2021, Legrand North America, LLC.
+# SPDX-License-Identifier: Apache-2.0
+
+config SYNCHROFLY_LOG_TWR_JSON
+	bool "Print TWR/ranging JSON messages via printk"
+	default y
+	help
+	  When enabled, ranging results are printed as JSON messages
+	  over the debug channel (RTT/UART). Disable to suppress
+	  these messages and reduce output bandwidth.

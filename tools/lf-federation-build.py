@@ -69,12 +69,20 @@ def resolve_extra_zephyr_modules(workspace_root: Path) -> list[Path]:
     if local_drivers.exists() and local_drivers.is_dir() and local_drivers not in merged:
         merged.append(local_drivers)
 
+    local_lib = (workspace_root / "lib").resolve()
+    if local_lib.exists() and local_lib.is_dir() and local_lib not in merged:
+        merged.append(local_lib)
+
     # Also include the repository-level drivers module where this script lives,
     # so app-local src-gen paths still pick up local Zephyr drivers/Kconfig.
     repo_root = Path(__file__).resolve().parent.parent
     repo_drivers = (repo_root / "drivers").resolve()
     if repo_drivers.exists() and repo_drivers.is_dir() and repo_drivers not in merged:
         merged.append(repo_drivers)
+
+    repo_lib = (repo_root / "lib").resolve()
+    if repo_lib.exists() and repo_lib.is_dir() and repo_lib not in merged:
+        merged.append(repo_lib)
 
     return merged
 
@@ -209,6 +217,31 @@ def stage_shared_inputs(seed_federate: Path, staging_src: Path, dry_run: bool) -
             shutil.copy2(src, dst)
 
     return errors
+
+
+def inject_workspace_kconfig(kconfig_path: Path, workspace_kconfig: Path, dry_run: bool) -> None:
+    if not kconfig_path.exists() or not kconfig_path.is_file():
+        return
+
+    relative_kconfig = os.path.relpath(workspace_kconfig, kconfig_path.parent)
+    include_line = f'rsource "{relative_kconfig}"'
+
+    content = kconfig_path.read_text(encoding="utf-8")
+    if include_line in content:
+        return
+
+    lines = content.splitlines()
+    insert_at = 1 if lines and lines[0].strip() == 'source "Kconfig.zephyr"' else 0
+    new_lines = [*lines[:insert_at], include_line, *lines[insert_at:]]
+    new_content = "\n".join(new_lines)
+    if content.endswith("\n"):
+        new_content += "\n"
+
+    if dry_run:
+        log(f"[dry-run] patch Kconfig {kconfig_path} with {include_line}")
+        return
+
+    kconfig_path.write_text(new_content, encoding="utf-8")
 
 
 def copy_artifacts(staging_build_dir: Path, federation_dir: Path, federate_name: str, dry_run: bool) -> None:
@@ -386,6 +419,9 @@ def build_monodir(
         staging_src.mkdir(parents=True, exist_ok=True)
         staging_build.mkdir(parents=True, exist_ok=True)
 
+    workspace_root = Path(__file__).resolve().parent.parent
+    workspace_kconfig = workspace_root / "Kconfig"
+
     errors = 0
     # Pin shared Zephyr/runtime inputs from the first federate so expensive
     # dependency graphs are configured once and reused across federates.
@@ -394,6 +430,7 @@ def build_monodir(
         staging_src=staging_src,
         dry_run=dry_run,
     )
+    inject_workspace_kconfig(staging_src / "Kconfig", workspace_kconfig, dry_run=dry_run)
     if errors:
         return errors
 
@@ -405,6 +442,7 @@ def build_monodir(
     for i, federate in enumerate(federates):
         log(f"\n[monobuild] sync {federate.name}")
         sync_tree(federate, staging_src, dry_run=dry_run, exclude_top=sync_exclude)
+        inject_workspace_kconfig(staging_src / "Kconfig", workspace_kconfig, dry_run=dry_run)
 
         source_signature = compute_staging_source_signature(staging_src)
 

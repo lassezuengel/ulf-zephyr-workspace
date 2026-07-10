@@ -1,0 +1,82 @@
+# SwarmRanging library Kconfig
+
+config SYNCHROFLY_SWARM_RANGING
+	bool "SwarmRanging protocol library"
+	default n
+	help
+	  Enable the SwarmRanging protocol library. This provides the
+	  SEU-NetSI swarm ranging implementation as a shared library
+	  that can be used by multiple applications.
+
+if SYNCHROFLY_SWARM_RANGING
+
+config SWARM_RANGING_PERIOD_MS
+	int "Default ranging period in milliseconds"
+	default 200
+	range 50 1000
+	help
+	  Default period for sending ranging messages.
+
+config SWARM_RANGING_TABLE_SIZE
+	int "Maximum ranging table size"
+	default 20
+	range 5 32
+	help
+	  Maximum number of neighbors to track in ranging table.
+
+config SWARM_NEIGHBOR_ADDRESS_MAX
+	int "Maximum neighbor address"
+	default 32
+	range 8 64
+	help
+	  Maximum address value for neighbors. Used for bitset sizing.
+
+config SWARM_RANGING_RX_QUEUE_SIZE
+	int "Ranging RX message queue size"
+	default 5
+	range 2 10
+	help
+	  Size of the queue for incoming ranging messages.
+
+config SWARM_RANGING_TX_STACK_SIZE
+	int "Ranging TX thread stack size"
+	default 1024
+	range 512 2048
+	help
+	  Stack size for ranging TX thread in bytes.
+
+config SWARM_RANGING_RX_STACK_SIZE
+	int "Ranging RX thread stack size"
+	default 1024
+	range 512 2048
+	help
+	  Stack size for ranging RX thread in bytes.
+
+config SWARM_RANGING_THREAD_PRIORITY
+	int "Ranging thread priority"
+	default 5
+	range 1 15
+	help
+	  Priority for ranging TX and RX threads.
+
+config SWARM_UWB_RX_STACK_SIZE
+	int "UWB RX thread stack size"
+	default 2048
+	range 512 4096
+	help
+	  Stack size for UWB hardware RX thread in bytes.
+
+config SWARM_ENABLE_BUS_BOARDING
+	bool "Enable bus boarding scheme"
+	default n
+	help
+	  Enable bus boarding scheme for ranging message scheduling.
+
+config SWARM_ENABLE_DYNAMIC_PERIOD
+	bool "Enable dynamic ranging period"
+	default n
+	help
+	  Enable dynamic adjustment of ranging period based on
+	  distance and velocity.
+
+endif # SYNCHROFLY_SWARM_RANGING

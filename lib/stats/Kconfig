@@ -1,0 +1,19 @@
+config FIRMWARE_STATS
+	bool "Enable on-demand firmware statistics collection"
+	default n
+	help
+	  Central statistics module that tracks counters on demand.
+	  Stats are activated via BLE subscription and use atomic
+	  operations for ISR-safe updates.
+
+if FIRMWARE_STATS
+
+config FIRMWARE_STATS_MAX_SLOTS
+	int "Maximum simultaneous tracked statistics"
+	default 8
+	range 1 32
+	help
+	  Each slot consumes 16 bytes of static RAM. The default of 8
+	  allows tracking e.g. 3 global counters + 5 per-neighbor stats.
+
+endif # FIRMWARE_STATS

@@ -1,0 +1,17 @@
+config CRAZYFLIE
+	bool "Whether to enable crazyflie connector integration"
+        default false
+	depends on $(dt_compat_enabled,synchrofly-hci-slave)
+	help
+          build with connector utilities. Requires synchrofly-hci-slave device in DT.
+
+config CRAZYFLIE_CONNECTOR_MEASUREMENTS_BUFFER_SIZE
+	int "Maximum amount of measurements which can be allocated"
+        default 20
+	help
+	  defined the maximum amount of measurements which a SPI transfer from Synchrofly
+          to the Crazyflie might contain.
+
+module = SPI_CONNECTOR
+module-str = SPI Connector (Crazyflie HCI)
+source "subsys/logging/Kconfig.template.log_config"

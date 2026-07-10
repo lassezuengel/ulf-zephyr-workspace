@@ -1,0 +1,11 @@
+mainmenu "Glossy Clock Sync"
+
+source "Kconfig.zephyr"
+
+config GLOSSY_IS_INITIATOR
+    bool "Act as glossy initiator"
+    default n
+
+config GLOSSY_NODE_ID
+    int "Node ID for glossy"
+    default 1

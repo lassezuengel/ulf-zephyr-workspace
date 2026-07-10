@@ -52,15 +52,6 @@ config IEEE802154_DSKIEL_DW1000_WITH_CRC
 	bool "use dw1000 crc functionality"
 	default y
 
-config IEEE802154_DSKIEL_DW1000_RCPHASE_CORRECTION
-	bool "Apply RCPHASE correction to CIR phase measurements"
-	default y
-	help
-	  When enabled, applies the RCPHASE (receive carrier phase adjustment)
-	  correction to the real and imaginary CIR values before storing them
-	  in tagged timestamps. This improves phase measurement accuracy for
-	  MM ranging by correcting for receiver-side phase offsets.
-
 config IEEE802154_DSKIEL_DW1000_DIRECT_ISR_PROCESSING
 	bool "Process interrupts directly in ISR context"
 	default n
@@ -126,6 +117,15 @@ config IEEE802154_DW3000_RX_POLLING_MODE
 	  Use RX polling in the DW3000 network driver instead of GPIO IRQ wakeups.
 	  Keep this enabled only as a fallback for bring-up or debugging.
 	  When disabled, the driver uses int-gpios callbacks to wake the RX thread.
+
+config IEEE802154_DW3000_EXCLUSIVE_UWB_MODE
+	bool "Exclusive UWB mode (disable IEEE802154 RX path)"
+	default n
+	help
+	  Keep the DW3000 UWB core initialized and registered, but disable the
+	  IEEE802154 network RX thread and interrupt-handler takeover. This is
+	  intended for Glossy/ranging workloads that use the UWB API directly and
+	  must avoid runtime interference from the network path.
 
 config IEEE802154_DW3000_INIT_PRIO
 	int "DW3000 initialization priority"

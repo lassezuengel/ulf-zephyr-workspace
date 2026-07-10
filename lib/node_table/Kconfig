@@ -1,0 +1,192 @@
+# Copyright (c) 2025
+# SPDX-License-Identifier: Apache-2.0
+
+menuconfig NODE_TABLE
+	bool "Node table for tracking network nodes"
+	default y if SYNCHROFLY
+	help
+	  Enable the node table abstraction for tracking
+	  information about other nodes in the network.
+	  Used for maintaining neighbor lists, distance
+	  measurements, and network topology information.
+
+if NODE_TABLE
+
+config NODE_TABLE_MAX_ENTRIES
+	int "Maximum number of node entries"
+	default 8
+	range 4 128
+	help
+	  Maximum number of nodes that can be tracked.
+	  Each entry uses approximately 20 bytes of RAM.
+	  For a typical network of 10-20 nodes, 32 is sufficient.
+
+config NODE_TABLE_EVICTION_TIMEOUT_MS
+	int "Default eviction timeout in milliseconds (0 = disabled)"
+	default 0
+	range 0 600000
+	help
+	  Timeout after which stale node entries are removed from the table.
+	  Entries not updated within this period are evicted.
+	  0 disables eviction. Can be changed at runtime via BLE.
+
+config NODE_TABLE_LOG_LEVEL
+	int "Log level for node table module"
+	default 1
+	range 0 4
+	help
+	  Sets the logging verbosity for the node table module.
+	  0 = OFF, 1 = ERR, 2 = WRN, 3 = INF, 4 = DBG
+
+config NODE_TABLE_DISTANCE_SERIES_ENABLED
+	bool "Enable distance time series per node"
+	default y
+	help
+	  Store multiple distance samples per node instead of just last_distance_mm.
+	  Enables optional Savitzky-Golay filtering on distance measurements.
+	  When disabled, uses legacy single int32_t last_distance_mm field.
+
+config NODE_TABLE_DISTANCE_SERIES_CAPACITY
+	int "Distance series capacity per node"
+	default 1
+	range 1 64
+	depends on NODE_TABLE_DISTANCE_SERIES_ENABLED
+	help
+	  Maximum distance samples to store per node entry.
+	  Each sample uses 4 bytes (float). Memory usage per node:
+	  capacity * 4 bytes + ~32 bytes overhead.
+
+	  DWM1001 (64KB RAM): Use 1 to minimize memory
+	  UWBDeck (256KB RAM): Use 15 for effective filtering
+
+config NODE_TABLE_DISTANCE_FILTER_ENABLED
+	bool "Enable Savitzky-Golay filtering by default"
+	default n
+	depends on NODE_TABLE_DISTANCE_SERIES_ENABLED
+	help
+	  When enabled, node_table_get_filtered_distance_m() applies
+	  Savitzky-Golay filter to stored distance samples by default.
+	  Can be toggled at runtime via BLE.
+	  
+	  Requires CONFIG_MM_RANGING_USE_SAVITZKY_GOLAY=y for actual filtering.
+
+config NODE_TABLE_DISTANCE_FILTER_WINDOW_SIZE
+	int "Default filter window size"
+	default 5
+	range 3 33
+	depends on NODE_TABLE_DISTANCE_FILTER_ENABLED
+	help
+	  Default window size for Savitzky-Golay filter.
+	  Must be odd and <= distance series capacity.
+	  Larger windows provide more smoothing but more lag.
+
+config NODE_TABLE_DISTANCE_FILTER_POLY_ORDER
+	int "Default filter polynomial order"
+	default 2
+	range 1 5
+	depends on NODE_TABLE_DISTANCE_FILTER_ENABLED
+	help
+	  Polynomial order for Savitzky-Golay filter.
+	  Must be less than window size.
+	  Higher orders preserve more high-frequency content.
+
+config NODE_TABLE_OUTLIER_FILTER_ENABLED
+	bool "Enable outlier pre-filter by default"
+	default n
+	depends on NODE_TABLE_DISTANCE_SERIES_ENABLED
+	help
+	  When enabled, incoming distance measurements are checked against
+	  the existing time series before being stored. Samples that deviate
+	  more than the configured threshold from the series mean are rejected.
+	  Can be toggled at runtime via BLE.
+
+config NODE_TABLE_OUTLIER_FILTER_THRESHOLD
+	int "Default outlier threshold (x10)"
+	default 30
+	range 10 100
+	depends on NODE_TABLE_DISTANCE_SERIES_ENABLED
+	help
+	  Mean Absolute Deviation multiplier for outlier rejection, scaled x10.
+	  E.g., 30 = 3.0x MAD. Lower values reject more aggressively.
+	  Range: 10 (1.0x) to 100 (10.0x). Runtime-configurable via BLE.
+
+config NODE_TABLE_MM_ENABLED
+	bool "Store MM ranging data per node"
+	default y
+	depends on NODE_TABLE_DISTANCE_SERIES_ENABLED
+	help
+	  Adds per-node MM time series (double-precision) and snapshot
+	  fields for millimeter-accuracy ranging data.
+	  Required for MM data streaming via BLE.
+
+config NODE_TABLE_MM_SERIES_CAPACITY
+	int "MM time series capacity per node"
+	default 15
+	range 5 64
+	depends on NODE_TABLE_MM_ENABLED
+	help
+	  Maximum number of samples per MM time series per node.
+	  Each sample is 8 bytes (double). There are 4 series per node
+	  (TWR, phase_ch_a, phase_ch_b, d_diff).
+	  Memory per node: 4 * capacity * 8 bytes + overhead.
+
+config NODE_TABLE_MM_FILTER_WINDOW_SIZE
+	int "Default MM d_diff filter window size"
+	default 10
+	range 1 33
+	depends on NODE_TABLE_MM_ENABLED
+	help
+	  Default window size for d_diff (phase difference) filtering in MM
+	  ranging. 1 = passthrough (no filtering). Runtime-configurable via BLE.
+
+config NODE_TABLE_MM_FILTER_POLY_ORDER
+	int "Default MM d_diff filter polynomial order"
+	default 3
+	range 0 6
+	depends on NODE_TABLE_MM_ENABLED
+	help
+	  Default polynomial order for d_diff Savitzky-Golay filter.
+	  0 = moving average, >0 = Savitzky-Golay.
+	  Must be less than the window size. Runtime-configurable via BLE.
+
+config NODE_TABLE_MM_PHASE_FILTER_WINDOW_SIZE
+	int "Default MM phase filter window size"
+	default 7
+	range 1 13
+	depends on NODE_TABLE_MM_ENABLED
+	help
+	  Window size for phase filtering (unwrap-filter-rewrap).
+	  Controls smoothing of Ch A and Ch B phases in ambiguity
+	  resolution. 1 = passthrough. Must not exceed MAX_WINDOW (13).
+	  Runtime-configurable via BLE.
+
+config NODE_TABLE_MM_PHASE_FILTER_POLY_ORDER
+	int "Default MM phase filter polynomial order"
+	default 3
+	range 0 6
+	depends on NODE_TABLE_MM_ENABLED
+	help
+	  Polynomial order for phase Savitzky-Golay filter.
+	  0 = moving average, >0 = Savitzky-Golay.
+	  Must be less than window size. Runtime-configurable via BLE.
+
+config NODE_TABLE_MM_TWR_FILTER_WINDOW_SIZE
+	int "Default MM TWR filter window size"
+	default 10
+	range 1 33
+	depends on NODE_TABLE_MM_ENABLED
+	help
+	  Window size for TWR (coarse distance) smoothing in MM ranging.
+	  1 = passthrough (no filtering). Runtime-configurable via BLE.
+
+config NODE_TABLE_MM_TWR_FILTER_POLY_ORDER
+	int "Default MM TWR filter polynomial order"
+	default 3
+	range 0 6
+	depends on NODE_TABLE_MM_ENABLED
+	help
+	  Polynomial order for TWR Savitzky-Golay filter.
+	  0 = moving average, >0 = Savitzky-Golay.
+	  Must be less than window size. Runtime-configurable via BLE.
+
+endif # NODE_TABLE

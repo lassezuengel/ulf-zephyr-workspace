@@ -38,8 +38,6 @@
 #define INTERNAL_CLOCK_FREQ     32768           // Internal RTC frequency
 #define TS_CLOCK_FREQ           (128 * 499.2e6) // Timestamp clock frequency
 
-// Confidence thresholds for ambiguity resolution
-#define MM_MIN_CONFIDENCE       0.7
 #define MM_MAX_PHASE_DIFF       (MM_PI / 2.0)
 
 // Convenience macros

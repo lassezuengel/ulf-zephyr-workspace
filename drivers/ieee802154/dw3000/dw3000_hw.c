@@ -79,6 +79,7 @@ static void dw3000_hw_isr(const struct device* dev, struct gpio_callback* cb,
 
 	// Call custom handler if set
 	if (custom_irq_handler != NULL) {
+   // LOG_ERR("DW3000 ISR: calling");
 		// Call the custom interrupt handler directly
 		custom_irq_handler();
 	} else {

@@ -18,8 +18,6 @@ int dwt_set_channel(const struct device *dev, uint16_t channel);
 uint64_t dwt_system_ts(const struct device *dev);
 
 /* DW1000 range bias correction function */
-#ifdef CONFIG_DW1000_RANGE_BIAS_CORRECTION
 double dwt_getrangebias(uint8_t chan, float range, uint8_t prf);
-#endif
 
 #endif /* ZEPHYR_INCLUDE_DRIVERS_IEEE802154_DW1000_USER_CAU_H_ */
