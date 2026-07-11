@@ -1,0 +1,4 @@
+key,label,detail,n,mean_ms,median_ms,std_ms,sem_ms,iqr_ms,p90_ms,p95_ms,p99_ms,min_ms,max_ms,over_50_ms_percent,over_100_ms_percent
+no_sync,No sync,"RUDP data, no clock sync",489,30.82,30,5.23782,0.236862,2,33,35,48.96,29,94,1.02249,0
+udp_sync,UDP sync,"RUDP data, UDP clock sync",593,36.3912,30,19.6367,0.806383,3,48.8,75,133.64,29,182,9.94941,2.36088
+rudp_sync,RUDP sync,"RUDP data, RUDP clock sync",572,43.1556,31,37.2852,1.55897,5,72,98.9,234.29,29,362,15.2098,4.8951

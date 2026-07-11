@@ -41,12 +41,16 @@ reactor Forwarder(bank_index: int = 0) {
   =}
 }
 
-federated reactor(n: int = 9) {
+# Specify the number of forwarders in the delay chain
+# as well as the clock sync channel (dedicated UDP vs reliable channel)
+# here:
+federated reactor(n: int = 3) {
   @interface_rudp
-  @clock_sync(grandmaster=true)
+  @clock_sync(dedicated=false, grandmaster=true)
   srcdst = new SourceAndDestination(period = 100 msec)
 
   @interface_rudp
+  @clock_sync(dedicated=false)
   fwds = new[n] Forwarder()
 
   @buffer(20)
