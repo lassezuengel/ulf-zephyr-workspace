@@ -98,11 +98,14 @@ CONFIG = {
     ],
 
     # --- Plot detail ---
+    "plot_kind": "violin",
     "show_points": False,
     "point_alpha": 0.12,
     "point_size": 9,
     "jitter_width": 0.16,
-    "show_mean": True,
+    "show_mean": False,
+    "show_iqr": False,
+    "show_median": False,
     "show_p95": False,
     "show_sample_count": False,
     "show_clipped_count": False,
@@ -111,6 +114,10 @@ CONFIG = {
     "show_titles": False,
     "legend_loc": "lower left",
     "show_outlier_fliers": False,
+    "violin_width": 0.78,
+    "violin_alpha": 0.62,
+    "violin_clip_to_focus": True,
+    "violin_bw_method": 0.18,
     "box_width": 0.56,
     "box_alpha": 0.62,
     "median_line_width": 1.25,
@@ -118,11 +125,11 @@ CONFIG = {
 
     # Focus the main thesis figure on the dense low-latency region. Values
     # above this range are counted and marked near the top of the plot.
-    "focus_ylim": (0, 45),
+    "focus_ylim": (0, 350),
 
     # Optional broken y-axis mode for inspecting the long tail.
     "use_broken_y_axis": False,
-    "lower_ylim": (0, 45),
+    "lower_ylim": (0, 350),
     "upper_ylim": None,      # None -> derived from all values above lower_ylim[1]
     "upper_axis_height_ratio": 0.42,
     "broken_axis_gap": 0.06,
@@ -414,7 +421,113 @@ def _style_axis(ax: plt.Axes, cfg: dict) -> None:
         ax.grid(axis="y", which="minor", linestyle=":", linewidth=0.35, alpha=0.22)
 
 
-def _draw_distribution(
+def _visible_values(values: np.ndarray, cfg: dict) -> np.ndarray:
+    if not cfg.get("violin_clip_to_focus", False) or not cfg.get("focus_ylim"):
+        return values
+
+    y_min, y_max = cfg["focus_ylim"]
+    visible = values[(values >= y_min) & (values <= y_max)]
+    return visible if visible.size else values
+
+
+def _draw_violin_distribution(
+    ax: plt.Axes,
+    series: list[Series],
+    cfg: dict,
+    rng: np.random.Generator,
+) -> None:
+    data = [_visible_values(s.values, cfg) for s in series]
+    positions = np.arange(1, len(series) + 1)
+
+    violins = ax.violinplot(
+        data,
+        positions=positions,
+        widths=cfg["violin_width"],
+        showmeans=False,
+        showmedians=False,
+        showextrema=False,
+        bw_method=cfg.get("violin_bw_method"),
+    )
+
+    for body, s in zip(violins["bodies"], series):
+        body.set_facecolor(s.color)
+        body.set_edgecolor(_darken(s.color))
+        body.set_alpha(cfg["violin_alpha"])
+        body.set_linewidth(0.9)
+
+    if cfg.get("show_iqr", True):
+        for pos, s, values in zip(positions, series, data):
+            q1, median, q3 = np.percentile(values, [25, 50, 75])
+            dark = _darken(s.color, 0.5)
+            ax.plot(
+                [pos, pos],
+                [q1, q3],
+                color=dark,
+                linewidth=3.0,
+                solid_capstyle="round",
+                zorder=5,
+                label="IQR" if pos == 1 else None,
+            )
+            if cfg.get("show_median", True):
+                ax.plot(
+                    [pos - 0.16, pos + 0.16],
+                    [median, median],
+                    color="#222222",
+                    linewidth=1.35,
+                    solid_capstyle="round",
+                    zorder=6,
+                    label="median" if pos == 1 else None,
+                )
+
+    if cfg.get("show_points", True):
+        for pos, s, values in zip(positions, series, data):
+            jitter = rng.uniform(
+                -cfg["jitter_width"],
+                cfg["jitter_width"],
+                size=values.size,
+            )
+            ax.scatter(
+                np.full(values.size, pos) + jitter,
+                values,
+                s=cfg["point_size"],
+                color=s.color,
+                alpha=cfg["point_alpha"],
+                linewidths=0,
+                zorder=2,
+            )
+
+    if cfg.get("show_mean", True):
+        means = [np.mean(s.values) for s in series]
+        ax.scatter(
+            positions,
+            means,
+            marker="D",
+            s=20,
+            facecolor="white",
+            edgecolor="#222222",
+            linewidth=0.75,
+            zorder=7,
+            label="mean",
+        )
+
+    if cfg.get("show_p95", True):
+        p95 = [np.percentile(s.values, 95) for s in series]
+        ax.scatter(
+            positions,
+            p95,
+            marker="^",
+            s=24,
+            facecolor="#222222",
+            edgecolor="white",
+            linewidth=0.45,
+            zorder=8,
+            label="p95",
+        )
+
+    _style_axis(ax, cfg)
+
+
+def _draw_boxplot_distribution(
     ax: plt.Axes,
     series: list[Series],
     cfg: dict,
@@ -498,6 +611,20 @@ def _draw_distribution(
         )
 
     _style_axis(ax, cfg)
+
+
+def _draw_distribution(
+    ax: plt.Axes,
+    series: list[Series],
+    cfg: dict,
+    rng: np.random.Generator,
+) -> None:
+    if cfg.get("plot_kind") == "violin":
+        _draw_violin_distribution(ax, series, cfg, rng)
+    elif cfg.get("plot_kind") == "boxplot":
+        _draw_boxplot_distribution(ax, series, cfg, rng)
+    else:
+        raise ValueError("Unknown plot_kind. Use 'violin' or 'boxplot'.")
 
 
 def _add_broken_axis_marks(
