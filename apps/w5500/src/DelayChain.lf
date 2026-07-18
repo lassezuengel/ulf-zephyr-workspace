@@ -1,0 +1,67 @@
+target uC {
+    platform: {
+        name: Zephyr,
+        board: w5500_evb_pico
+    },
+    net-interface: ethernet,
+    logging: warn,
+    clock-sync: on
+}
+
+preamble {=
+  #include "reactor-uc/reactor-c.h"
+=}
+
+// Source and Destination in one reactor/federate such that it can correctly measure the latency
+// (otherwise the physical clocks of source and destination might differ)
+reactor SourceAndDestination(period: time = 1 sec) {
+  output out: instant_t
+  input in: instant_t
+
+  timer trigger(500 msec, period)
+
+  reaction(startup) {=
+    printf("Starting federation...\n");
+  =}
+
+  reaction scheduleNewDelayChain(trigger) -> out {=
+    printf("Scheduling new delay chain...\n");
+    lf_set(out, lf_time_physical());
+  =}
+
+  reaction(in) {=
+    instant_t now = lf_time_physical();
+    int64_t latency = now - in->value;
+
+    printf("Latency: %lld.%02lld ms\n", latency / 1000000, latency % 1000000);
+  =}
+}
+
+reactor Forwarder(bank_index: int = 0) {
+  input in: instant_t
+  output out: instant_t
+
+  reaction(startup) {=
+    printf("Forwarder %d starting up...\n", self->bank_index);
+  =}
+
+  reaction(in) -> out {=
+    instant_t now = lf_time_physical();
+    printf("Forwarding message (offset %lld.%02lld ms)\n", (now - in->value) / 1000000, (now - in->value) % 1000000);
+    lf_set(out, in->value);
+  =}
+}
+
+@clock_sync(dedicated=false)
+federated reactor {
+  @interface_tcp(address="192.168.50.10")
+  @clock_sync(dedicated=false, grandmaster=true)
+  srcdst = new SourceAndDestination(period = 20 msec)
+
+  @interface_tcp(address="192.168.50.11")
+  @clock_sync(dedicated=false)
+  fwd = new Forwarder()
+
+  @buffer(20)
+  srcdst.out, fwd.out ~> fwd.in, srcdst.in
+}
