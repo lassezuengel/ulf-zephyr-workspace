@@ -1,5 +1,3 @@
-TODO: Multi-hop glossy! Pitch? Framing, pdf output, scalability
-
 # Glossy vs. UDP Clock Sync Delay-Chain Experiment
 
 This folder contains one comparison run for the DWM3001 delay-chain example.

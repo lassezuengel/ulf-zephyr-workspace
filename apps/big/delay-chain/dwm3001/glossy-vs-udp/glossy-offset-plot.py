@@ -60,8 +60,8 @@ CONFIG = {
     # Width fractions are the intended LaTeX include widths for each PDF.
     # Include a generated PDF at the same width fraction to preserve font sizes.
     "combined_width_fraction": 1.0,
-    "latency_width_fraction": 0.48,
-    "retransmission_width_fraction": 0.48,
+    "latency_width_fraction": 0.6,
+    "retransmission_width_fraction": 0.6,
     "hop_offset_width_fraction": 1.0,
     "hop_offset_linear_trend_width_fraction": 1.0,
 
