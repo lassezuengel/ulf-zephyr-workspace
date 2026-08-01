@@ -102,6 +102,7 @@ CONFIG = {
     "output_latency_boxplot": SCRIPT_DIR / "latency-boxplot.pdf",
     "output_retransmission_boxplot": SCRIPT_DIR / "retransmission-boxplot.pdf",
     "output_hop_offset_plot": SCRIPT_DIR / "hop-offsets.pdf",
+    "output_hop_offset_zoom_plot": SCRIPT_DIR / "hop-offsets-zoom.pdf",
     "output_hop_offset_linear_trend_plot": SCRIPT_DIR / "hop-offsets-linear-trend.pdf",
 
     # --- Plot selection ---
@@ -145,6 +146,22 @@ CONFIG = {
     "hop_offset_show_points": False,
     "hop_offset_point_alpha": 0.08,
     "hop_offset_trend_stat": "median",  # "median" or "mean"
+
+    # --- Glossy forwarding-offset zoom inset ---
+    # Position and size are fractions of the main axes. Position is
+    # (left, bottom), where (0, 0) is the main axes' lower-left corner.
+    "hop_offset_zoom_inset_position": (0.4, 0.13),
+    "hop_offset_zoom_inset_width": 0.43,
+    "hop_offset_zoom_inset_height": 0.40,
+    # The zoom plots every run. Stronger fill and an outline make both narrow
+    # IQR bands easier to distinguish where they overlap.
+    "hop_offset_zoom_iqr_alpha": 0.30,
+    "hop_offset_zoom_iqr_edge_width": 0.8,
+    # Data-coordinate limits of the enlarged region. The inset is linear even
+    # when the main hop-offset plot uses a symmetric-log scale.
+    "hop_offset_zoom_x_limits": (3.2, 3.8),
+    "hop_offset_zoom_y_limits": (12, 25),
+    "hop_offset_zoom_show_indicator": True,
 
     # Figure size is computed automatically unless this is set.
     "figure_size": None,
@@ -473,14 +490,24 @@ def hop_offset_values_for_node(run: RunData, node: int, cfg: dict) -> list[float
     return [0.0] * sample_count
 
 
-def plot_hop_offset_plot(ax: plt.Axes, data: list[RunData], cfg: dict) -> None:
+def _plot_hop_offset_series(
+    ax: plt.Axes,
+    data: list[RunData],
+    cfg: dict,
+    run_indices: list[int] | None = None,
+    iqr_alpha: float = 0.16,
+    iqr_edge_width: float = 0.0,
+) -> bool:
     nodes = cfg.get("hop_offset_nodes", list(range(1, 9)))
     colors = [cfg["color_glossy"], cfg["color_udp"]][: len(data)]
+    if run_indices is None:
+        run_indices = list(range(len(data)))
 
     plotted = False
     rng = np.random.default_rng(7)
 
-    for run_idx, run in enumerate(data):
+    for run_idx in run_indices:
+        run = data[run_idx]
         series = [hop_offset_values_for_node(run, node, cfg) for node in nodes]
         medians = [np.median(values) if values else np.nan for values in series]
         q1 = [np.percentile(values, 25) if values else np.nan for values in series]
@@ -499,8 +526,9 @@ def plot_hop_offset_plot(ax: plt.Axes, data: list[RunData], cfg: dict) -> None:
                 q1,
                 q3,
                 color=color,
-                alpha=0.16,
-                linewidth=0,
+                alpha=iqr_alpha,
+                linewidth=iqr_edge_width,
+                edgecolor=color,
             )
 
         ax.plot(
@@ -528,6 +556,13 @@ def plot_hop_offset_plot(ax: plt.Axes, data: list[RunData], cfg: dict) -> None:
                     zorder=1,
                 )
 
+    return plotted
+
+
+def plot_hop_offset_plot(ax: plt.Axes, data: list[RunData], cfg: dict) -> None:
+    nodes = cfg.get("hop_offset_nodes", list(range(1, 9)))
+    plotted = _plot_hop_offset_series(ax, data, cfg)
+
     if not plotted:
         ax.text(0.5, 0.5, "No data", ha="center", va="center", transform=ax.transAxes)
         ax.set_axis_off()
@@ -551,6 +586,59 @@ def plot_hop_offset_plot(ax: plt.Axes, data: list[RunData], cfg: dict) -> None:
     ax.set_ylabel(cfg["hop_offset_y_label"])
     ax.legend(frameon=False)
     _style_ax(ax, cfg, "Hop Offsets")
+
+
+def add_hop_offset_zoom_inset(
+    ax: plt.Axes, data: list[RunData], cfg: dict
+) -> plt.Axes:
+    """Add a linear inset enlarging the forwarding-offset IQR bands."""
+    left, bottom = cfg.get("hop_offset_zoom_inset_position", (0.07, 0.53))
+    width = cfg.get("hop_offset_zoom_inset_width", 0.43)
+    height = cfg.get("hop_offset_zoom_inset_height", 0.40)
+    inset = ax.inset_axes([left, bottom, width, height], zorder=5)
+
+    _plot_hop_offset_series(
+        inset,
+        data,
+        cfg,
+        iqr_alpha=float(cfg.get("hop_offset_zoom_iqr_alpha", 0.30)),
+        iqr_edge_width=float(cfg.get("hop_offset_zoom_iqr_edge_width", 0.8)),
+    )
+    inset.set_xscale("linear")
+    inset.set_yscale("linear")
+    inset.xaxis.set_major_locator(ticker.MaxNLocator(nbins=5))
+    inset.tick_params(
+        axis="both",
+        labelsize=cfg.get("annotation_size_pt", 8),
+        direction="in",
+    )
+    inset.tick_params(axis="x", labelbottom=False)
+    inset.set_title(
+        "IQR detail",
+        fontsize=cfg.get("annotation_size_pt", 8),
+        pad=2,
+    )
+    inset.axhline(0, color="#222222", linewidth=0.6, alpha=0.6)
+    if cfg.get("show_grid", True):
+        inset.grid(axis="y", linestyle=":", alpha=0.3)
+
+    # Apply these last: set_xticks()/tick locators may otherwise expand the
+    # view limits to include ticks outside the requested zoom region.
+    inset.set_xlim(*cfg.get("hop_offset_zoom_x_limits", (0.75, 8.25)))
+    inset.set_ylim(*cfg.get("hop_offset_zoom_y_limits", (-3, 65)))
+
+    if cfg.get("hop_offset_zoom_show_indicator", True):
+        ax.indicate_inset_zoom(inset, edgecolor="#555555", alpha=0.75)
+
+    return inset
+
+
+def plot_hop_offset_zoom_plot(
+    ax: plt.Axes, data: list[RunData], cfg: dict
+) -> None:
+    plot_hop_offset_plot(ax, data, cfg)
+    if ax.axison:
+        add_hop_offset_zoom_inset(ax, data, cfg)
 
 
 def hop_offset_trend(values: list[float], cfg: dict) -> float:
@@ -647,6 +735,11 @@ def print_figure_size_summary(
             "retransmission",
         ),
         ("output_hop_offset_plot", "hop_offset_width_fraction", "hop offsets"),
+        (
+            "output_hop_offset_zoom_plot",
+            "hop_offset_width_fraction",
+            "hop offset zoom",
+        ),
         (
             "output_hop_offset_linear_trend_plot",
             "hop_offset_linear_trend_width_fraction",
@@ -765,6 +858,7 @@ def main() -> None:
         "latency": latency_figure_size,
         "retransmission": retransmission_figure_size,
         "hop offsets": hop_offset_figure_size,
+        "hop offset zoom": hop_offset_figure_size,
         "hop offset trend": hop_offset_linear_trend_figure_size,
     }
     print_figure_size_summary(cfg, figure_sizes)
@@ -802,6 +896,15 @@ def main() -> None:
         cfg,
         pathlib.Path(cfg["output_hop_offset_plot"])
         if cfg.get("output_hop_offset_plot")
+        else None,
+        figure_size=hop_offset_figure_size,
+    )
+    save_panel(
+        plot_hop_offset_zoom_plot,
+        data,
+        cfg,
+        pathlib.Path(cfg["output_hop_offset_zoom_plot"])
+        if cfg.get("output_hop_offset_zoom_plot")
         else None,
         figure_size=hop_offset_figure_size,
     )
